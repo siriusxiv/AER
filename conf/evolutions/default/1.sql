@@ -4,7 +4,7 @@
 # --- !Ups
 
 create table commune (
-  ville_id                  MEDIUMINT(8) UNSIGNED not null,
+  ville_id                  MEDIUMINT(8) UNSIGNED auto_increment not null,
   ville_departement_departement_id INT(11),
   ville_slug                varchar(255),
   ville_nom                 VARCHAR(45),
@@ -37,13 +37,33 @@ create table commune (
 ;
 
 create table departement (
-  departement_id            INT(11) not null,
+  departement_id            INT(11) auto_increment not null,
   departement_code          VARCHAR(3),
   departement_nom           varchar(255),
   departement_nom_uppercase varchar(255),
   departement_slug          varchar(255),
   departement_nom_soundex   VARCHAR(20),
   constraint pk_departement primary key (departement_id))
+;
+
+create table droits (
+  droits                    varchar(255) not null,
+  constraint pk_droits primary key (droits))
+;
+
+create table fiche (
+  fiche_id                  bigint auto_increment not null,
+  fiche_lieudit             varchar(255),
+  fiche_date_min            datetime,
+  fiche_date                datetime,
+  fiche_memo                TEXT,
+  fiche_utm_utm             VARCHAR(4),
+  fiche_commune_ville_id    MEDIUMINT(8) UNSIGNED,
+  fiche_gps_coordinates     varchar(255),
+  utm1x1                    varchar(255),
+  vue                       tinyint(1) default 0,
+  validee                   tinyint(1) default 0,
+  constraint pk_fiche primary key (fiche_id))
 ;
 
 create table utms (
@@ -54,32 +74,28 @@ create table utms (
   constraint pk_utms primary key (utm))
 ;
 
-create sequence commune_seq;
-
-create sequence departement_seq;
-
-create sequence utms_seq;
-
 alter table commune add constraint fk_commune_ville_departement_1 foreign key (ville_departement_departement_id) references departement (departement_id) on delete restrict on update restrict;
 create index ix_commune_ville_departement_1 on commune (ville_departement_departement_id);
+alter table fiche add constraint fk_fiche_fiche_utm_2 foreign key (fiche_utm_utm) references utms (utm) on delete restrict on update restrict;
+create index ix_fiche_fiche_utm_2 on fiche (fiche_utm_utm);
+alter table fiche add constraint fk_fiche_fiche_commune_3 foreign key (fiche_commune_ville_id) references commune (ville_id) on delete restrict on update restrict;
+create index ix_fiche_fiche_commune_3 on fiche (fiche_commune_ville_id);
 
 
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+SET FOREIGN_KEY_CHECKS=0;
 
-drop table if exists commune;
+drop table commune;
 
-drop table if exists departement;
+drop table departement;
 
-drop table if exists utms;
+drop table droits;
 
-SET REFERENTIAL_INTEGRITY TRUE;
+drop table fiche;
 
-drop sequence if exists commune_seq;
+drop table utms;
 
-drop sequence if exists departement_seq;
-
-drop sequence if exists utms_seq;
+SET FOREIGN_KEY_CHECKS=1;
 

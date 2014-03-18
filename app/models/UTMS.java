@@ -23,4 +23,9 @@ public class UTMS extends Model {
 	public String maille100x100;
 	
 	public static Finder<String,UTMS> find = new Finder<String,UTMS>(String.class, UTMS.class);
+
+	@Override
+	public String toString(){
+		return utm;
+	}
 }
