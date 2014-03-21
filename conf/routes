@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /indentification            controllers.Application.identification()
+GET     /identification            controllers.Application.identification()
 GET     /inscription                controllers.Application.inscription()
 GET     /retrouverMotDePasse        controllers.Application.retrouverMotDePasse()
 
@@ -24,7 +24,7 @@ GET     /temoignagesValides         controllers.Application.temoignagesValides()
 
 #routes pour les admins
 GET     /menuAdmin                   controllers.Application.menuAdmin()
-GET     /assignerExpert              controllers.Application.assignerExpert()
+GET     /assignerExperts              controllers.Application.assignerExperts()
 GET     /demandesInscription         controllers.Application.demandesInscription()
 GET     /gererBaseDeDonneesInsectes  controllers.Application.gererBaseDeDonneesInsectes()
 GET     /listeMembres                controllers.Application.listeMembres()
