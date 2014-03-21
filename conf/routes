@@ -4,6 +4,31 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+GET     /indentification            controllers.Application.identification()
+GET     /inscription                controllers.Application.inscription()
+GET     /retrouverMotDePasse        controllers.Application.retrouverMotDePasse()
+
+#routes pour l'utilisateur
+GET     /menuUtilisateur            controllers.Application.menuUtilisateur()
+GET     /informationsPersonnelles   controllers.Application.informationsPersonnelles()
+GET     /consulterDonnees           controllers.Application.consulterDonnees()
+GET     /historique                 controllers.Application.historique()
+
+#routes concernant la fiche de témoignage
+GET     /ficheDeTemoignage          controllers.Application.ficheDeTemoignage()
+
+#routes pour les experts
+GET     /menuExpert                 controllers.Application.menuExpert()
+GET     /temoignagesAValider        controllers.Application.temoignagesAValider()
+GET     /temoignagesValides         controllers.Application.temoignagesValides()
+
+#routes pour les admins
+GET     /menuAdmin                   controllers.Application.menuAdmin()
+GET     /assignerExpert              controllers.Application.assignerExpert()
+GET     /demandesInscription         controllers.Application.demandesInscription()
+GET     /gererBaseDeDonneesInsectes  controllers.Application.gererBaseDeDonneesInsectes()
+GET     /listeMembres                controllers.Application.listeMembres()
+GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
