@@ -1,0 +1,49 @@
+@*********************************************************************************
+ * 
+ *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *   
+ ********************************************************************************@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Inscription</title>
+<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/options.png")">
+<link rel="icon" type="image/png" href="@routes.Assets.at("images/options.png")">
+<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/application.css")">
+</head>
+<body>
+	<header>
+		<dl>
+		<a href="/">Retour</a>
+		</dl>
+	</header>
+	<h1> Page pour s'inscrire </h1>
+	<form action="/inscription" method="GET">
+	<b>Nom </b><input type="text" size="20" name="Nom" value="">
+	<b>Prénom </b><input type="text" size="20" name="Prénom" value=""><br>
+	<form><b>Civilité </b><input type="radio" name="Civilité" value="homme">M  <input type="radio" name="Civilité" value="femme">Mme </form> 
+	<b>Adresse e-mail </b><input type="text" size="40" name="e-mail" value=""><br>
+	<b>Adresse postale </b><input type="text" size="40" name="postale" value=""><br>
+	<b>Code Postal </b><input type="text" size="10" name="CP" value=""><b> Commune </b><input type="text" size="20" name="commune" value=""><br>
+	<b>Pays </b><select><option value="-1">France</option><option value="pays_id">Autre</option></select><br>
+	<b>Téléphone </b><input type="text" size="10" name="tel" value=""><br>
+	<b>Tél.Portable </b><input type="text" size="10" name="telport" value=""><br>
+	<b>Date de naissance </b><input type="text" size="1" name="jour" value=""><input type="text" size="1" name="mois" value=""><input type="text" size="3" name="année" value="">
+	<p><b>Choix du Mot de Passe </b><input type="text" size="25" name="mdp" value=""><br>
+	<b>Confirmer Mot de Passe</b><input type="text" size="20" name="mdpconf" value=""></p>
+	<button type="submit">Valider</button>
+	</form>
+</body>
+</html>
