@@ -18,13 +18,34 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Menu </title>
-<!-- rajouter la source du fichier css 
-<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/application.css")" >
--->
+<title>Menu Utilisateur</title>
+<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/options.png")">
+<link rel="icon" type="image/png" href="@routes.Assets.at("images/options.png")">
+<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/application.css")">
 </head>
 <body>
-
+	<header>
+		<dl>
+		<a href="/">Retour</a>
+		</dl>
+	</header>
+	<h1> Page des options disponibles pour l'utilisateur </h1>
+	<dl>
+		<dt>
+		<a href="/ficheDeTemoignage">Témoignage</a>
+		</dt>
+		<dt>
+		<a href="/historique">Historique</a>
+		</dt>
+		<dt>
+		<a href="/informationsPersonnelles">Informations personnelles</a>
+		</dt>
+		<dt>
+		<a href="/consulterDonnees">Consulter les données</a>
+		</dt>
+		<dt>
+		<a href="/identification">Se Déconnecter</a>
+		</dt>
 
 </body>
 </html>
