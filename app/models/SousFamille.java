@@ -50,6 +50,9 @@ public class SousFamille extends Model{
 
 	@Override
 	public String toString(){
-		return sous_famille_nom;
+		if(sous_famille_existe)
+			return sous_famille_nom;
+		else
+			return Espece.find.where().eq("espece_sous_famille", this).findUnique().toString();
 	}
 }
