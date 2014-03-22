@@ -688,6 +688,7 @@ INSERT INTO `sous_famille` (`sous_famille_id`, `sous_famille_nom`,`sous_famille_
 (497,'',0,45),
 (498,'',0,45),
 (499,'',0,45),
+(500,'',0,45),
 (501,'',0,45),
 (502,'',0,45),
 (503,'',0,45),
