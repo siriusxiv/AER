@@ -18,57 +18,36 @@
 
 package models;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import com.avaje.ebean.Expr;
+import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
 
 /**
- * Source des données :
- * http://sql.sh/1879-base-donnees-departements-francais
+ * 3 niveaux de confidentialite :
+ * confidentialite_id=1 -> on peut divulguer tout ses témoignages
+ * confidentialite_id=2 -> on peut divulguer au cas par cas
+ * confidentialite_id=3 -> on ne peut divulguer à personne
  * @author malik
  *
  */
 @SuppressWarnings("serial")
 @Entity
-public class Departement extends Model {
+public class Confidentialite extends Model {
 	@Id
-	@Column(columnDefinition="VARCHAR(3)")
-	public String departement_code;
-	public String departement_nom;
-	public String departement_nom_uppercase;
-	public String departement_slug;
-	@Column(columnDefinition="VARCHAR(20)")
-	public String departement_nom_soundex;
+	public Integer confidentialite_id;
+	@NotNull
+	public String confidentialite_intitule;
+	@NotNull
+	@Column(columnDefinition="TEXT")
+	public String confidentialite_explication;
 	
-	public static Finder<Integer,Departement> find = new Finder<Integer,Departement>(Integer.class, Departement.class);
+	public static Finder<Integer,Confidentialite> find = new Finder<Integer,Confidentialite>(Integer.class, Confidentialite.class);
 
-	public static List<Departement> findDepartementsAER(){
-		return find.where().or(
-					Expr.eq("departement_code","44"),
-					Expr.or(
-						Expr.eq("departement_code","85"),
-						Expr.or(
-							Expr.eq("departement_code","56"),
-							Expr.or(
-								Expr.eq("departement_code","35"),
-								Expr.or(
-									Expr.eq("departement_code","79"),
-									Expr.eq("departement_code","17")
-								)
-							)
-						)
-					)
-				).findList();
-	}
-	
 	@Override
 	public String toString(){
-		return departement_code+" - "+departement_nom;
+		return confidentialite_intitule;
 	}
 }

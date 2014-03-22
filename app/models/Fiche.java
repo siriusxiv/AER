@@ -18,57 +18,47 @@
 
 package models;
 
-import java.util.List;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import com.avaje.ebean.Expr;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
 
 /**
- * Source des données :
- * http://sql.sh/1879-base-donnees-departements-francais
+ * Pour l'instant, les coordonnées GPS et les mailles utm 1x1 ne sont pas
+ * utilisées.
  * @author malik
  *
  */
 @SuppressWarnings("serial")
 @Entity
-public class Departement extends Model {
+public class Fiche extends Model {
 	@Id
-	@Column(columnDefinition="VARCHAR(3)")
-	public String departement_code;
-	public String departement_nom;
-	public String departement_nom_uppercase;
-	public String departement_slug;
-	@Column(columnDefinition="VARCHAR(20)")
-	public String departement_nom_soundex;
+	public Long fiche_id;
+	public String fiche_lieudit;
+	public Calendar fiche_date_min;
+	@NotNull
+	public Calendar fiche_date;
+	@Column(columnDefinition="TEXT")
+	public String fiche_memo;
+	@ManyToOne
+	@NotNull
+	public UTMS fiche_utm;
+	@ManyToOne
+	public Commune fiche_commune;
+	public String fiche_gps_coordinates;
+	public String fiche_utm1x1;
+	@NotNull
+	public Calendar fiche_date_soumission;
 	
-	public static Finder<Integer,Departement> find = new Finder<Integer,Departement>(Integer.class, Departement.class);
-
-	public static List<Departement> findDepartementsAER(){
-		return find.where().or(
-					Expr.eq("departement_code","44"),
-					Expr.or(
-						Expr.eq("departement_code","85"),
-						Expr.or(
-							Expr.eq("departement_code","56"),
-							Expr.or(
-								Expr.eq("departement_code","35"),
-								Expr.or(
-									Expr.eq("departement_code","79"),
-									Expr.eq("departement_code","17")
-								)
-							)
-						)
-					)
-				).findList();
-	}
+	public static Finder<Long,Fiche> find = new Finder<Long,Fiche>(Long.class, Fiche.class);
 	
 	@Override
 	public String toString(){
-		return departement_code+" - "+departement_nom;
+		return fiche_id+"-"+fiche_utm;
 	}
 }

@@ -22,6 +22,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
 
@@ -43,7 +44,9 @@ public class Commune extends Model {
 	
 	public String ville_slug;
 	@Column(columnDefinition="VARCHAR(45)")
+	@NotNull
 	public String ville_nom;
+	@NotNull
 	@Column(columnDefinition="VARCHAR(45)")
 	public String ville_nom_reel;
 	@Column(columnDefinition="VARCHAR(20)")
