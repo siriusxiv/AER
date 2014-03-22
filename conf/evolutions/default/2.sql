@@ -204,6 +204,77 @@ INSERT INTO `utms` (`utm`, `maille20x20`, `maille50x50`, `maille100x100`) VALUES
 ('XT56', 'XTCD', 'XTNE', 'XT'),
 ('XT60', 'XTDA', 'XTSE', 'XT');
 
+INSERT INTO `ordre` (`ordre_id`, `ordre_nom`) VALUES
+(1,'Odonata'),
+(2,'Phasmatodea'),
+(3,'Orthoptera'),
+(4,'Dictyoptera'),
+(5,'Dermaptera'),
+(6,'Coleoptera'),
+(7,'Lepidoptera'),
+(8,'Hymenoptera');
+
+INSERT INTO `groupe` (`groupe_id`, `groupe_nom`) VALUES
+(1,'Odonata'),
+(2,'Orthoptera, Mantodea & Phasmatodea'),
+(3,'Dermaptera'),
+(4,'Cicindelinae'),
+(5,'Carabinae'),
+(6,'Scarabaeoidea'),
+(7,'Cerambycidae'),
+(8,'Zygaenidae'),
+(9,'Hétérocères'),
+(10,'Rhopalocères'),
+(11,'Formicidae');
+
+INSERT INTO `sous_groupe` (`sous_groupe_id`, `sous_groupe_nom`,`sous_groupe_groupe_groupe_id`) VALUES
+(1,'Zygoptera',1),
+(2,'Anisoptera',1),
+(3,'Phasmatodea',2),
+(4,'Ensifera',2),
+(5,'Caelifera',2),
+(6,'Dictyoptera',2),
+(7,'Dermaptera',3),
+(8,'Cicindelinae',4),
+(9,'Calosomes',5),
+(10,'Carabes',5),
+(11,'Cychres',5),
+(12,'Lucanidae',6),
+(13,'Trogidae',6),
+(14,'Geotrupidae',6),
+(15,'Aegialiidae',6),
+(16,'Aphodiidae',6),
+(17,'Scarabaeidae',6),
+(18,'Melolonthidae',6),
+(19,'Rutelidae',6),
+(20,'Dynastidae',6),
+(21,'Cetoniidae',6),
+(22,'Prioninae',7),
+(23,'Lepturinae',7),
+(24,'Necydalinae',7),
+(25,'Spondylidinae',7),
+(26,'Cerambycinae',7),
+(27,'Lamiinae',7),
+(28,'Procridinae',8),
+(29,'Chalcosiinae',8),
+(30,'Zygaeninae',8),
+(31,'Lasiocampiidae',9),
+(32,'Bombycoidea',9),
+(33,'Hesperiidae',10),
+(34,'Papilionidae',10),
+(35,'Pieridae',10),
+(36,'Riodinidae',10),
+(37,'Lycaenidae',10),
+(38,'Nymphalidae',10),
+(39,'Drepanidae',9),
+(40,'Notodontidae',9),
+(41,'Lymantriinae',9),
+(42,'Arctiinae',9),
+(43,'Dolichoderinae',11),
+(44,'Formicinae',11),
+(45,'Mymicinae',11),
+(46,'Ponerinae',11);
+
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -212,7 +283,8 @@ DELETE FROM departement;
 DELETE FROM droits;
 DELETE FROM confidentialite;
 DELETE FROM utms;
-
+DELETE FROM ordre;
+DELETE	FROM groupe;
 SET FOREIGN_KEY_CHECKS=1;
 
 
