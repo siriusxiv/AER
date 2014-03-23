@@ -16,9 +16,23 @@
  *   
  ********************************************************************************@
 <!DOCTYPE HTML>
+<script>
+	function afficherMenuUtilisateur() {
+		if (document.getElementById("menuUtilisateur").style.display == "none") {
+			document.getElementById("menuUtilisateur").style.display = "block";
+			document.getElementById("menuAdmin").style.display = "none";
+		}
+	}
+	function afficherMenuAdmin() {
+		if (document.getElementById("menuAdmin").style.display == "none") {
+			document.getElementById("menuUtilisateur").style.display = "none";
+			document.getElementById("menuAdmin").style.display = "block";
+		}
+	}
+</script>
 <html>
 <head>
-<title>Menu Utilisateur</title>
+<title>Menu Admin</title>
 <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/options.png")">
 <link rel="icon" type="image/png" href="@routes.Assets.at("images/options.png")">
 <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/application.css")">
@@ -29,7 +43,12 @@
 		<a href="/">Retour</a>
 		</dl>
 	</header>
-	<h1> Page des options disponibles pour l'utilisateur </h1>
+	<h1> Page des options disponibles pour l'admin </h1>
+	<ul>
+		<li onClick="afficherMenuUtilisateur()">Options d'utilisateur</li>
+		<li onClick="afficherMenuAdmin()">Options d'admin</li>
+	</ul>
+	<div id="menuUtilisateur">
 	<dl>
 		<dt>
 		<a href="/ficheDeTemoignage">Témoignage</a>
@@ -47,6 +66,25 @@
 		<a href="/identification">Se Déconnecter</a>
 		</dt>
 	</dl>
-
+	</div>
+	<div id="menuAdmin" style="display:none">
+	<dl>
+		<dt>
+		<a href="/assignerExperts">Assigner des experts</a>
+		</dt>
+		<dt>
+		<a href="/demandesInscription">Demandes d'inscription</a>
+		</dt>
+		<dt>
+		<a href="/gererBaseDeDonneesInsectes">Gérer la base de données des Insectes</a>
+		</dt>
+		<dt>
+		<a href="/listeTemoignages">Liste des témoignages</a>
+		</dt>
+		<dt>
+		<a href="/listeMembres">Liste des membres</a>
+		</dt>
+	</dl>
+	</div>
 </body>
 </html>

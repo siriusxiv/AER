@@ -29,6 +29,20 @@
 		<a href="/">Retour</a>
 		</dl>
 	</header>
-	<h1> Page d'identification commune </h1>
+	<form action="/menuUtilisateur" method="GET">
+	<h1> Page d'identification commune </h1>	
+		<p>	
+			<input type="login"	name="login" placeholder="Identifiant">	
+		</p>	
+		<p>	
+ 			<input type="password"	name="passw" placeholder="Mot de Passe">
+ 			<a href="/retrouverMotDePasse">Mot de passe oublié ?</a>
+		</p>	
+		<form><input type="checkbox" name="memory" value="">Se souvenir des identifiants</form>
+		<p>	
+			<button type="submit">Se connecter</button>
+			<a href="/inscription">Pas encore inscrit ? Créez un compte ici !</a>
+	 	</p>	
+	</form>	
 </body>
 </html>

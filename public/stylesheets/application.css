@@ -24,6 +24,16 @@ td{border:1px solid green; color: forestgreen}
 th{background-color:yellowgreen; color:white;}
 body{color:black;
 background-color:white;
-
 }
-
+ul{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+li{
+	float:left;
+	display:block;
+	width:60px;
+	background-color:forestgreen;
+}

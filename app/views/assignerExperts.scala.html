@@ -16,9 +16,18 @@
  *   
  ********************************************************************************@
 <!DOCTYPE HTML>
+<script>
+	function afficheChangeExpert() {
+		if (document.getElementById("nouv_expert").style.display == "none") {
+			document.getElementById("nouv_expert").style.display = "block";
+		} else {
+			document.getElementById("nouv_expert").style.display = "none";
+		}
+	}
+</script>
 <html>
 <head>
-<title>Menu Utilisateur</title>
+<title>Assigner des Experts</title>
 <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/options.png")">
 <link rel="icon" type="image/png" href="@routes.Assets.at("images/options.png")">
 <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/application.css")">
@@ -29,24 +38,15 @@
 		<a href="/">Retour</a>
 		</dl>
 	</header>
-	<h1> Page des options disponibles pour l'utilisateur </h1>
-	<dl>
-		<dt>
-		<a href="/ficheDeTemoignage">Témoignage</a>
-		</dt>
-		<dt>
-		<a href="/historique">Historique</a>
-		</dt>
-		<dt>
-		<a href="/informationsPersonnelles">Informations personnelles</a>
-		</dt>
-		<dt>
-		<a href="/consulterDonnees">Consulter les données</a>
-		</dt>
-		<dt>
-		<a href="/identification">Se Déconnecter</a>
-		</dt>
-	</dl>
-
+	<h1>Page pour Assigner des experts chez l'admin </h1>
+	<select><option value="-1">Choix du Groupe</option><option value="groupe_id">Groupe 1</option></select> <strong>Expert actuel</strong>
+	<p>
+	<button onClick="afficheChangeExpert()">Modifier</button>
+	</p>
+	<div id="nouv_expert"style="display:none">
+	<h2>Changement d'expert</h2>
+	<select><option value="-1">Choix de l'expert</option><option value="expert_id">Expert 1</option></select>
+	<button type="submit">Valider</button>
+	</div>
 </body>
 </html>
