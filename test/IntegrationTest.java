@@ -16,30 +16,76 @@
  *   
  ********************************************************************************/
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.naming.NamingException;
+import javax.persistence.PersistenceException;
+
+import models.Espece;
+
 import org.junit.*;
 
 import play.mvc.*;
 import play.test.*;
 import play.libs.F.*;
-
 import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
-
 import static org.fluentlenium.core.filter.FilterConstructor.*;
 
 public class IntegrationTest {
+
+	Map<String, Object> databaseConfiguration = new HashMap<String, Object>();
 
     /**
      * add your integration test here
      */
     @Test
     public void test() {
-        running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
+    	databaseConfiguration.put("db.default.url", "jdbc:mysql://localhost:3306/aer");
+        running(testServer(3333, fakeApplication(databaseConfiguration)), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
             	//Teste que les bons départements sont trouvés par l'application
                 System.out.println(models.Departement.findDepartementsAER());
+                
+                ajouteEspece();
             }
         });
+    }
+    
+    private void ajouteEspece(){
+    	Espece e = new Espece("Rasgus pipus","Malik Olivier Boussejra, 2014",54,"GA!");
+    	System.out.println(e);
+    	try {
+			e.ajouterNouvelleEspece(true, "Sous-famille des Rasgus");
+		} catch (PersistenceException | NamingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	Espece es = new Espece("Rasgus pipus2","Malik Olivier Boussejra, 2014",54,"GA2!");
+    	System.out.println(es);
+    	try {
+			es.ajouterNouvelleEspece(true, "Lymantriinae");
+		} catch (PersistenceException | NamingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	Espece esp = new Espece("Rasgus pipus3","Malik Olivier Boussejra, 2014",54,"GA3!");
+    	System.out.println(esp);
+    	try {
+			esp.ajouterNouvelleEspece(false, "Lymantriinae");
+		} catch (PersistenceException | NamingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	Espece espe = new Espece("Rasgus pipus4","Malik Olivier Boussejra, 2014",54,"GA4!");
+    	System.out.println(espe);
+    	try {
+			espe.ajouterNouvelleEspece(false, "Calopterygidae");
+		} catch (PersistenceException | NamingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     }
 
 }

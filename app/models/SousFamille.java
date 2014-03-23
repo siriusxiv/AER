@@ -18,9 +18,11 @@
 
 package models;
 
+import javax.naming.NamingException;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceException;
 import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
@@ -47,7 +49,28 @@ public class SousFamille extends Model{
 	public Famille sous_famille_famille;
 	
 	public static Finder<Integer,SousFamille> find = new Finder<Integer,SousFamille>(Integer.class, SousFamille.class);
-
+	
+	/**
+	 * Crée une sous famille et lance une PersistenceException si plusieurs familles portent le même nom,
+	 * une NamingException si la famille en argument n'existe pas.
+	 * @param nom
+	 * @param existe
+	 * @param famille_nom
+	 * @throws PersistenceException
+	 * @throws NamingException
+	 */
+	public SousFamille(String nom, boolean existe, String famille_nom) throws PersistenceException, NamingException{
+		sous_famille_nom=nom;
+		sous_famille_existe=existe;
+		sous_famille_famille=Famille.find.where().eq("famille_nom", famille_nom).findUnique();
+		if(sous_famille_famille==null){
+			throw new NamingException("La famille "+famille_nom+" n'existe pas !");
+		}
+	}
+	
+	/**
+	 * Renvoie le nom de la sous-famille
+	 */
 	@Override
 	public String toString(){
 		if(sous_famille_existe)

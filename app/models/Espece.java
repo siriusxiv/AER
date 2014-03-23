@@ -18,10 +18,14 @@
 
 package models;
 
+import java.util.List;
+
+import javax.naming.NamingException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceException;
 import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
@@ -49,11 +53,57 @@ public class Espece extends Model {
 	public SousFamille espece_sousfamille;
 	@Column(columnDefinition="TEXT")
 	public String espece_commentaires;
-	
+
 	public static Finder<Integer,Espece> find = new Finder<Integer,Espece>(Integer.class, Espece.class);
-	
+
 	@Override
 	public String toString(){
 		return espece_systematique+". "+espece_nom+"-"+espece_auteur;
+	}
+
+	/**
+	 * Créé une nouvelle espèce. Attention, on ne peux pas enregistrer cette espèce dans la base
+	 * de données tout de suite avec la méthode save() ! Il faut utiliser ajouterNouvelleEspece().
+	 * @param nom
+	 * @param auteur
+	 * @param systematique
+	 * @param commentaires
+	 */
+	public Espece(String nom, String auteur, Integer systematique, String commentaires){
+		espece_nom=nom;
+		espece_auteur=auteur;
+		espece_systematique=systematique;
+		espece_commentaires=commentaires;
+		espece_sousfamille=null;
+	}
+
+	/**
+	 * Ajoute l'espèce en réordonnant toutes les espèces qui suivent.
+	 * @param avecSousFamille
+	 * @param sousFamilleOuFamille
+	 * @throws NamingException
+	 * @throws PersistenceException
+	 */
+	public void ajouterNouvelleEspece(boolean avecSousFamille, String sousFamilleOuFamille) throws NamingException, PersistenceException{
+		if(avecSousFamille){
+			this.espece_sousfamille=SousFamille.find.where().eq("sous_famille_nom", sousFamilleOuFamille).findUnique();
+			if(espece_sousfamille!=null){
+				this.save();
+			}else{
+				throw new NamingException("La sous-famille "+sousFamilleOuFamille+" n'existe pas !");
+			}
+		}
+		else{
+			this.espece_sousfamille=new SousFamille(this.espece_nom,false,sousFamilleOuFamille);
+			this.espece_sousfamille.save();
+			this.save();
+		}
+		List<Espece> especes = Espece.find.where().ge("espece_systematique",this.espece_systematique).findList();
+		for(Espece e : especes){
+			if(!e.espece_nom.equals(this.espece_nom)){
+				e.espece_systematique++;
+				e.save();
+			}
+		}
 	}
 }
