@@ -1,6 +1,6 @@
 package espece;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Membre {
 	String nom;
@@ -74,7 +74,7 @@ public class Membre {
 	}
 	
 	private final String elements="1234567890azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN<>,;:!?./§*%=+&'(-_)#{[|`\\^@]}";
-	private final Random rnd = new Random();
+	private final SecureRandom rnd = new SecureRandom();
 	private final int size_sel = 32;
 	
 	private String genererSel() {
