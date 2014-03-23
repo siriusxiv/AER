@@ -31,6 +31,7 @@ import play.db.ebean.Model;
 public class Membre extends Model {
 	@Id
 	public Integer membre_id;
+	public String membre_civilite;
 	@NotNull
 	public String membre_nom;
 	public String membre_adresse;
