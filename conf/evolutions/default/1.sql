@@ -154,6 +154,7 @@ create table informations_complementaires (
 
 create table membre (
   membre_id                 integer auto_increment not null,
+  membre_civilite           varchar(255),
   membre_nom                varchar(255) not null,
   membre_adresse            varchar(255),
   membre_adresse_complement varchar(255),

@@ -15,8 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-<!DOCTYPE HTML>
-<script>
+@main("Menu Admin"){<script>
 	function afficherMenuUtilisateur() {
 		if (document.getElementById("menuUtilisateur").style.display == "none") {
 			document.getElementById("menuUtilisateur").style.display = "block";
@@ -29,16 +28,7 @@
 			document.getElementById("menuAdmin").style.display = "block";
 		}
 	}
-</script>
-<html>
-<head>
-<title>Menu Admin</title>
-<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/options.png")">
-<link rel="icon" type="image/png" href="@routes.Assets.at("images/options.png")">
-<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/application.css")">
-</head>
-<body>
-	<header>
+</script>}{<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
@@ -86,5 +76,4 @@
 		</dt>
 	</dl>
 	</div>
-</body>
-</html>
+	}

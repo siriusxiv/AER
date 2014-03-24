@@ -15,15 +15,16 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(title: String)(content: Html)
+@(title: String)(content: Html)(javascript: Html)
 
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/application.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        @javascript
     </head>
     <body>
         @content
