@@ -15,8 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-<!DOCTYPE HTML>
-<script>
+@main("Assigner des Experts"){<script>
 	function afficheChangeExpert() {
 		if (document.getElementById("nouv_expert").style.display == "none") {
 			document.getElementById("nouv_expert").style.display = "block";
@@ -24,16 +23,7 @@
 			document.getElementById("nouv_expert").style.display = "none";
 		}
 	}
-</script>
-<html>
-<head>
-<title>Assigner des Experts</title>
-<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/options.png")">
-<link rel="icon" type="image/png" href="@routes.Assets.at("images/options.png")">
-<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/application.css")">
-</head>
-<body>
-	<header>
+</script>}{<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
@@ -47,6 +37,4 @@
 	<h2>Changement d'expert</h2>
 	<select><option value="-1">Choix de l'expert</option><option value="expert_id">Expert 1</option></select>
 	<button type="submit">Valider</button>
-	</div>
-</body>
-</html>
+	</div>}
