@@ -18,10 +18,12 @@
 
 package controllers;
 
+import play.*;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.*;
 import views.html.*;
+import models.*;
 
 public class Application extends Controller {
 
@@ -104,7 +106,7 @@ public class Application extends Controller {
     
     /*Fiche de Temoignage */
     public static Result ficheDeTemoignage() {
-    	return ok(ficheDeTemoignage.render());
+    	return ok(ficheDeTemoignage.render(Groupe.findAll(), Espece.findAll(), EspeceHasSousGroupe.findAll()));
     }
     
     

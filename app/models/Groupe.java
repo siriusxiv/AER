@@ -18,11 +18,15 @@
 
 package models;
 
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-
 import play.db.ebean.Model;
+import java.util.*;
+import play.data.format.*;
+import play.data.validation.*;
+import play.data.validation.Constraints.*;
 
 @SuppressWarnings("serial")
 @Entity
@@ -34,8 +38,14 @@ public class Groupe extends Model {
 	
 	public static Finder<Integer,Groupe> find = new Finder<Integer,Groupe>(Integer.class, Groupe.class);
 
+	public static List<Groupe> findAll(){
+		return find.all();
+	}
+	
 	@Override
 	public String toString(){
 		return groupe_nom;
 	}
+	
+	
 }

@@ -1,17 +1,17 @@
 
-#contenu { width:500 px; height:1000 px;
+#contenu { width:1000px; background-color:grey; border: 2px solid black;
 }
 
 #titre { text-align:center; 
 }
 
-#date { width:250 px; float:left;
+#date { width:500px; float:left; height: 300px;
 }
 
-#localisation {width: 250 px; float:left;
+#localisation {width:500px; height: 300px; float:left;
 }
 
-#especes {width:500 px;
+#especes {width:1000px;
 }
 
 #bas_de_page {
@@ -23,7 +23,7 @@ tr{background-color:white; color:forestgreen;}
 td{border:1px solid green; color: forestgreen}
 th{background-color:yellowgreen; color:white;}
 body{color:black;
-background-color:white;
+background-color: #C8C8C8 ;
 }
 ul{
 	list-style-type:none;

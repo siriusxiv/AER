@@ -27,6 +27,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceException;
 import javax.validation.constraints.NotNull;
+import java.util.*;
+import play.data.format.*;
+import play.data.validation.*;
+import play.data.validation.Constraints.*;
 
 import play.db.ebean.Model;
 
@@ -55,6 +59,10 @@ public class Espece extends Model {
 	public String espece_commentaires;
 
 	public static Finder<Integer,Espece> find = new Finder<Integer,Espece>(Integer.class, Espece.class);
+	
+	public static List<Espece> findAll(){
+		return find.all();
+	}
 
 	@Override
 	public String toString(){
