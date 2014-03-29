@@ -1,6 +1,7 @@
 package espece;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,26 +24,33 @@ public class MembreReader {
 	}
 	
 	public static void doIt() throws IOException{
-		FileReader fr = new FileReader("MEMBRES.csv");
-		BufferedReader br = new BufferedReader(fr);
-		String line;
-		br.readLine();
-		int c=1;
+		File[] files = new File(".").listFiles();
 		ArrayList<Membre> membres = new ArrayList<Membre>();
-		while((line=br.readLine())!=null){
-			c++;
-			Membre m;
-			try{
-				m = new Membre(line);
-				membres.add(m);
-			}catch(ArrayIndexOutOfBoundsException e){
-				System.out.println(c+". "+line);
-				e.printStackTrace();
+		for(int i = 0 ; i<files.length ; i++){
+			System.out.println(files[i].getName());
+			if(files[i].getName().startsWith("MEMBRES")){
+				FileReader fr = new FileReader(files[i].getName());
+				BufferedReader br = new BufferedReader(fr);
+				String line;
+				br.readLine();
+				int c=1;
+				while((line=br.readLine())!=null){
+					c++;
+					Membre m;
+					try{
+						m = new Membre(line);
+						if(m.isNotIn(membres))
+							membres.add(m);
+					}catch(ArrayIndexOutOfBoundsException e){
+						System.out.println(files[i].getName()+":"+c+". "+line);
+						e.printStackTrace();
+					}
+				}
+				br.close();
 			}
 		}
-		br.close();
 		FileWriter fw = new FileWriter("out.sql");
-		fw.append("INSERT INTO `membres` (`membre_nom`,`membre_adresse`,`membre_adresse_complement`,`membre_code_postal`,`membre_ville`,`membre_pays`,`membre_confidentialite_confidentialite_id`,`membre_abonne`,`membre_temoin_actif`,`membre_journais`,`membre_moisnais`,`membre_annenais`,`membre_jourdece`,`membre_moisdece`,`membre_annedece`,`membre_biographie`,`membre_email`,`membre_sel`,`membre_droits_droits_id`,`membre_inscription_acceptee`) VALUES\n");
+		fw.append("INSERT INTO `membre` (`membre_nom`,`membre_adresse`,`membre_adresse_complement`,`membre_code_postal`,`membre_ville`,`membre_pays`,`membre_confidentialite_confidentialite_id`,`membre_abonne`,`membre_temoin_actif`,`membre_journais`,`membre_moisnais`,`membre_annenais`,`membre_jourdece`,`membre_moisdece`,`membre_annedece`,`membre_biographie`,`membre_email`,`membre_sel`,`membre_droits_droits_id`,`membre_inscription_acceptee`) VALUES\n");
 		for(Membre m : membres){
 			fw.append(m.toString());
 		}

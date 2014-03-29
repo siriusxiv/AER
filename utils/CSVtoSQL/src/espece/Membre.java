@@ -1,6 +1,7 @@
 package espece;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 public class Membre {
 	String nom;
@@ -21,7 +22,7 @@ public class Membre {
 	String biographie;
 
 	public Membre(String line) throws ArrayIndexOutOfBoundsException{
-		String[] col = line.split(";");
+		String[] col = line.split("µ");
 		nom=col[0].replace("'", "''");
 		adresse=col[1].replace("'", "''");
 		complement=col[2].replace("'", "''");
@@ -73,7 +74,7 @@ public class Membre {
 		return "('"+nom+"','"+adresse+"','"+complement+"','"+cp+"','"+commune+"','"+pays+"',3,"+abonne1+","+temoin1+","+journais+","+moisnais+","+annenais+","+jourdece+","+moisdece+","+annedece+",'"+biographie+"','','"+genererSel()+"',1,0),\n";
 	}
 	
-	private final String elements="1234567890azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN<>,;:!?./§*%=+&'(-_)#{[|`\\^@]}";
+	private final String elements="1234567890azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN<>,;:!?./§*%=+&'(-_)#{[|`^@]}";
 	private final SecureRandom rnd = new SecureRandom();
 	private final int size_sel = 32;
 	
@@ -82,5 +83,14 @@ public class Membre {
 		for( int i = 0; i < size_sel; i++ ) 
 		      sb.append(elements.charAt(rnd.nextInt(elements.length())));
 		return sb.toString().replace("'", "''");
+	}
+	
+	public boolean isNotIn(ArrayList<Membre> membres){
+		for(Membre m : membres){
+			if(m.nom.equals(this.nom)){
+				return false;
+			}
+		}
+		return true;
 	}
 }

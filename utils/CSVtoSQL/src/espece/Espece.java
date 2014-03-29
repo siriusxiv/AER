@@ -20,7 +20,7 @@ public class Espece {
 	String commentaire;
 
 	Espece(String csvline){
-		String[] colonnes = csvline.split(";");
+		String[] colonnes = csvline.split("µ");
 		taxon=colonnes[0];
 		auteur=colonnes[1];
 		sous_famille=colonnes[8];

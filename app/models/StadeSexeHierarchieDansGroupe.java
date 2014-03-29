@@ -27,17 +27,17 @@ import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
 @Entity
-public class StadeSexeHierarchieDansSousGroupe extends Model {
+public class StadeSexeHierarchieDansGroupe extends Model {
 	@Id
-	public Integer StadeSexeHierarchieDansSousGroupe_id;
+	public Integer StadeSexeHierarchieDansGroupe_id;
 	@NotNull
 	@ManyToOne
 	public StadeSexe stade_sexe;
 	@NotNull
 	@ManyToOne
-	public SousGroupe sous_groupe;
+	public Groupe groupe;
 	@ManyToOne
 	public StadeSexe stade_sexe_pere;
 
-	public static Finder<Integer,StadeSexeHierarchieDansSousGroupe> find = new Finder<Integer,StadeSexeHierarchieDansSousGroupe>(Integer.class, StadeSexeHierarchieDansSousGroupe.class);
+	public static Finder<Integer,StadeSexeHierarchieDansGroupe> find = new Finder<Integer,StadeSexeHierarchieDansGroupe>(Integer.class, StadeSexeHierarchieDansGroupe.class);
 }

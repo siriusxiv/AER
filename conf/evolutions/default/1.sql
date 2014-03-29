@@ -248,12 +248,12 @@ create table stade_sexe (
   constraint pk_stade_sexe primary key (stade_sexe_id))
 ;
 
-create table stade_sexe_hierarchie_dans_sous_groupe (
-  stade_sexe_hierarchie_dans_sous_groupe_id integer auto_increment not null,
+create table stade_sexe_hierarchie_dans_groupe (
+  stade_sexe_hierarchie_dans_groupe_id integer auto_increment not null,
   stade_sexe_stade_sexe_id  integer not null,
-  sous_groupe_sous_groupe_id integer not null,
+  groupe_groupe_id          integer not null,
   stade_sexe_pere_stade_sexe_id integer,
-  constraint pk_stade_sexe_hierarchie_dans_sous_groupe primary key (stade_sexe_hierarchie_dans_sous_groupe_id))
+  constraint pk_stade_sexe_hierarchie_dans_groupe primary key (stade_sexe_hierarchie_dans_groupe_id))
 ;
 
 create table super_famille (
@@ -339,12 +339,12 @@ alter table sous_famille_has_sous_groupe add constraint fk_sous_famille_has_sous
 create index ix_sous_famille_has_sous_groupe_sous_groupe_29 on sous_famille_has_sous_groupe (sous_groupe_sous_groupe_id);
 alter table sous_groupe add constraint fk_sous_groupe_sous_groupe_groupe_30 foreign key (sous_groupe_groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
 create index ix_sous_groupe_sous_groupe_groupe_30 on sous_groupe (sous_groupe_groupe_groupe_id);
-alter table stade_sexe_hierarchie_dans_sous_groupe add constraint fk_stade_sexe_hierarchie_dans_sous_groupe_stade_sexe_31 foreign key (stade_sexe_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
-create index ix_stade_sexe_hierarchie_dans_sous_groupe_stade_sexe_31 on stade_sexe_hierarchie_dans_sous_groupe (stade_sexe_stade_sexe_id);
-alter table stade_sexe_hierarchie_dans_sous_groupe add constraint fk_stade_sexe_hierarchie_dans_sous_groupe_sous_groupe_32 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
-create index ix_stade_sexe_hierarchie_dans_sous_groupe_sous_groupe_32 on stade_sexe_hierarchie_dans_sous_groupe (sous_groupe_sous_groupe_id);
-alter table stade_sexe_hierarchie_dans_sous_groupe add constraint fk_stade_sexe_hierarchie_dans_sous_groupe_stade_sexe_pere_33 foreign key (stade_sexe_pere_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
-create index ix_stade_sexe_hierarchie_dans_sous_groupe_stade_sexe_pere_33 on stade_sexe_hierarchie_dans_sous_groupe (stade_sexe_pere_stade_sexe_id);
+alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_stade_sexe_31 foreign key (stade_sexe_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
+create index ix_stade_sexe_hierarchie_dans_groupe_stade_sexe_31 on stade_sexe_hierarchie_dans_groupe (stade_sexe_stade_sexe_id);
+alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_groupe_32 foreign key (groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
+create index ix_stade_sexe_hierarchie_dans_groupe_groupe_32 on stade_sexe_hierarchie_dans_groupe (groupe_groupe_id);
+alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_stade_sexe_pere_33 foreign key (stade_sexe_pere_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
+create index ix_stade_sexe_hierarchie_dans_groupe_stade_sexe_pere_33 on stade_sexe_hierarchie_dans_groupe (stade_sexe_pere_stade_sexe_id);
 alter table super_famille add constraint fk_super_famille_super_famille_ordre_34 foreign key (super_famille_ordre_ordre_id) references ordre (ordre_id) on delete restrict on update restrict;
 create index ix_super_famille_super_famille_ordre_34 on super_famille (super_famille_ordre_ordre_id);
 alter table super_famille_has_sous_groupe add constraint fk_super_famille_has_sous_groupe_super_famille_35 foreign key (super_famille_super_famille_id) references super_famille (super_famille_id) on delete restrict on update restrict;
@@ -410,7 +410,7 @@ drop table sous_groupe;
 
 drop table stade_sexe;
 
-drop table stade_sexe_hierarchie_dans_sous_groupe;
+drop table stade_sexe_hierarchie_dans_groupe;
 
 drop table super_famille;
 
