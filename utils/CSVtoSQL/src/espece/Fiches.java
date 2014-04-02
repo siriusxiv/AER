@@ -25,7 +25,7 @@ public class Fiches {
 		while((line=br.readLine())!=null){
 			line_compteur++;
 			try{
-				Fiche f = new Fiche(line);
+				Fiche f = new Fiche(line,line_compteur,filename);
 				fiches.add(f);
 			}catch(StringIndexOutOfBoundsException | ArrayIndexOutOfBoundsException e){
 				FicheReader.errorFile.write(filename+": "+line_compteur+". "+line);
@@ -105,7 +105,7 @@ public class Fiches {
 	}
 	
 	private int getMembreId(Fiche f, String temoin) throws IOException, SQLException {
-		if(temoin.equals("et al.") || temoin.equals("et alii"))
+		if(temoin.equals("et al.") || temoin.equals("et alii") || temoin.equals("et al"))
 			return 0;
 		int res = 0;
 		Statement statement = FicheReader.connect.createStatement();
@@ -117,6 +117,12 @@ public class Fiches {
 			res = getMembreId("Témoin anonyme");
 		else if(temoin.equals("Anonyme (MHNN)") || temoin.equals("anonyme (MHNN)"))
 			res = getMembreId("Témoin anonyme dont la collection est au Muséum d'Histoire Naturelle de Nantes");
+		else if(res==0 && temoin.equals("VINCENT"))
+			res = getMembreId("VINCENT Colonel");
+		else if(res==0 && temoin.equals("Fifi (pseudo)"))
+			res = getMembreId("LARUE Philippe");
+		else if(res==0 && temoin.equals("LE NEUTHIEC R."))
+			res = getMembreId("LE NEUTHIEC Robert");
 		else if(res==0 && temoin.equals("PROUTEAU E."))
 			res = getMembreId("PROUTEAU Emile");
 		else if(res==0 && temoin.equals("GODART"))
