@@ -17,6 +17,41 @@
  ********************************************************************************/
 package functions;
 
-public class Mail {
+import play.Play;
 
+import com.typesafe.plugin.MailerAPI;
+import com.typesafe.plugin.MailerPlugin;
+
+public class Mail {
+	private static String from = "AER <"+Play.application().configuration().getString("smtp.from")+">";
+	
+	private String sujet;
+	private String contenu;
+	private String to;
+	private String recipient;
+	
+	/**
+	 * Crée un mail
+	 * @param sujet		Sujet du mail
+	 * @param contenu	Contenu du mail
+	 * @param to		Adresse mail de la personne à qui on envoie le mail
+	 * @param recipient	Nom de la personne qui doit recevoir un mail
+	 */
+	public Mail(String sujet, String contenu, String to, String recipient){
+		this.sujet=sujet;
+		this.contenu=contenu;
+		this.to=to;
+		this.recipient=recipient;
+	}
+	
+	/**
+	 * Envoie le mail
+	 */
+	public void sendMail(){
+			MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+			mail.setSubject(sujet);
+			mail.addRecipient(recipient+" <"+to+">");
+			mail.addFrom(from);
+			mail.send(contenu);
+	}
 }

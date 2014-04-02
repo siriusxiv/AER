@@ -85,7 +85,7 @@ public class Credentials {
 	//Variables pour générer les mots de passe aléatoirement
 	private static final String elements = "23456789azertyuiopqsdfghjkmwxcvbn";
 	private static final SecureRandom rnd = new SecureRandom();
-	private static final int password_size = 32;
+	private static final int password_size = 8;
 	
 	/**
 	 * Génère un mot de passe de manière aléatoire sécurisée.
