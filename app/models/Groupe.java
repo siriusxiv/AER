@@ -38,4 +38,17 @@ public class Groupe extends Model {
 	public String toString(){
 		return groupe_nom;
 	}
+	
+	/**
+	 * Renvoie l'expert assigné à ce groupe.
+	 * S'il n'y a pas d'expert assigné à ce groupe, alors renvoie null.
+	 * @return
+	 */
+	public Membre getExpert(){
+		MembreIsExpertOnGroupe mieog = MembreIsExpertOnGroupe.find.where().eq("groupe", this).findUnique();
+		if(mieog!=null)
+			return mieog.membre;
+		else
+			return null;
+	}
 }

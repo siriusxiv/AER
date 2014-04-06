@@ -28,6 +28,7 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class MembreIsExpertOnGroupe extends Model {
+
 	@Id
 	public Integer MembreIsExpertOnGroupe_id;
 	@NotNull
@@ -39,4 +40,9 @@ public class MembreIsExpertOnGroupe extends Model {
 
 	public static Finder<Integer,MembreIsExpertOnGroupe> find = new Finder<Integer,MembreIsExpertOnGroupe>(Integer.class, MembreIsExpertOnGroupe.class);
 
+
+	public MembreIsExpertOnGroupe(Membre membre, Groupe groupe) {
+		this.membre=membre;
+		this.groupe=groupe;
+	}
 }

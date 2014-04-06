@@ -20,7 +20,7 @@ package controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.data.*;
+
 import views.html.*;
 
 public class Application extends Controller {
@@ -80,10 +80,6 @@ public class Application extends Controller {
     
     public static Result menuAdmin() {
     	return ok( menuAdmin.render());
-    }
-    
-    public static Result assignerExperts() {
-    	return ok( assignerExperts.render());
     }
     
     public static Result demandesInscription() {

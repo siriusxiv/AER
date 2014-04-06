@@ -16,6 +16,7 @@
  *   
  ********************************************************************************/
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -29,6 +30,7 @@ import models.Espece;
 
 import org.junit.*;
 
+import controllers.ajax.Listes;
 import functions.credentials.Credentials;
 import play.mvc.*;
 import play.test.*;
@@ -54,7 +56,11 @@ public class IntegrationTest {
                 
                 //ajouteEspece();
                 
-                Credentials.creeHashEtMotDePassePourToutLeMonde();
+                //Credentials.creeHashEtMotDePassePourToutLeMonde();
+            	FileWriter fw = new FileWriter("listeMembres.js");
+            	fw.append(Listes.listeMembres());
+            	fw.flush();
+            	fw.close();
             }
         });
     }

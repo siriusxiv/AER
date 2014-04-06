@@ -15,17 +15,39 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-import models.Droits;
-import play.Application;
-import play.GlobalSettings;
+package controllers.ajax;
 
+import java.util.List;
 
-public class Global extends GlobalSettings {
-	@Override
-	public void onStart(Application app) {
-		//On sette les variables globales de droit
-		Droits.TEMOIN=Droits.find.byId(1);
-		Droits.EXPERT=Droits.find.byId(2);
-		Droits.ADMIN=Droits.find.byId(3);
+import models.Membre;
+import play.mvc.Controller;
+import play.mvc.Result;
+
+import views.html.listeDesMembres;
+
+public class Listes extends Controller {
+	
+	public static Result membres(String string_id){
+		return ok(listeDesMembres.render(string_id));
+	}
+	
+	/**
+	 * Renvoie une chaîne de caractère exploitable par la fonction
+	 * d'autocomplétion
+	 * @return
+	 */
+	public static String listeMembres(){
+		List<Membre> membres = Membre.find.all();
+		if(membres.isEmpty()){
+			return "";
+		}else{
+			StringBuilder res = new StringBuilder();
+			for(Membre m : membres){
+				res.append("'"+m.toString().replaceAll("'","\\\\'")+"',");
+			}
+			res.deleteCharAt(res.length()-1);
+			return res.toString();
+
+		}
 	}
 }

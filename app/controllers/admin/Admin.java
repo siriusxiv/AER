@@ -15,17 +15,21 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-import models.Droits;
-import play.Application;
-import play.GlobalSettings;
+package controllers.admin;
 
+import play.mvc.Controller;
 
-public class Global extends GlobalSettings {
-	@Override
-	public void onStart(Application app) {
-		//On sette les variables globales de droit
-		Droits.TEMOIN=Droits.find.byId(1);
-		Droits.EXPERT=Droits.find.byId(2);
-		Droits.ADMIN=Droits.find.byId(3);
+/**
+ * Fonctions générales de gestions des admins
+ * @author malik
+ *
+ */
+public class Admin extends Controller{
+	/**
+	 * Si c'est un admin qui est connecté, renvoie true, sinon, renvoie false.
+	 * @return
+	 */
+	public boolean isAdminConnected(){
+		return session("admin").equals("true");
 	}
 }
