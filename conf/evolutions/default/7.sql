@@ -144,6 +144,82 @@ INSERT INTO `stade_sexe` (`stade_sexe_id`,`stade_sexe_intitule`,`stade_sexe_expl
 INSERT INTO `stade_sexe_hierarchie_dans_groupe` (`stade_sexe_hierarchie_dans_groupe_id`,`stade_sexe_stade_sexe_id`,`groupe_groupe_id`,`stade_sexe_pere_stade_sexe_id`) VALUES
 (1,1,1,null);
 
+INSERT INTO `ordre_has_sous_groupe` (`ordre_ordre_id`,`sous_groupe_sous_groupe_id`) VALUES
+(2,3),
+(4,6),
+(5,7);
+
+INSERT INTO `super_famille_has_sous_groupe` (`super_famille_super_famille_id`,`sous_groupe_sous_groupe_id`) VALUES
+(1,1),
+(2,1),
+(3,1),
+(4,2),
+(5,2),
+(6,2),
+(8,4),
+(9,4),
+(10,5),
+(11,5),
+(22,32);
+
+INSERT INTO `famille_has_sous_groupe` (`famille_famille_id`,`sous_groupe_sous_groupe_id`) VALUES
+(29,12),
+(30,13),
+(31,14),
+(32,15),
+(33,16),
+(34,17),
+(35,18),
+(36,19),
+(37,20),
+(38,21),
+(41,31),
+(46,33),
+(47,34),
+(48,35),
+(49,36),
+(50,37),
+(51,38),
+(52,39),
+(53,40);
+
+INSERT INTO `sous_famille_has_sous_groupe` (`sous_famille_sous_famille_id`,`sous_groupe_sous_groupe_id`) VALUES
+(163,8),
+(310,22),
+(311,23),
+(312,24),
+(313,25),
+(314,26),
+(315,27),
+(316,28),
+(317,29),
+(318,30),
+(684,41),
+(685,42),
+(686,43),
+(687,44),
+(688,45),
+(689,46);
+
+INSERT INTO `espece_has_sous_groupe` (`espece_espece_id`,`sous_groupe_sous_groupe_id`) VALUES
+(170,9),
+(171,9),
+(172,9),
+(173,10),
+(174,10),
+(175,10),
+(176,10),
+(177,10),
+(178,10),
+(179,10),
+(180,10),
+(181,10),
+(182,10),
+(183,10),
+(184,10),
+(185,11),
+(186,11);
+
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -151,5 +227,10 @@ SET FOREIGN_KEY_CHECKS=0;
 DELETE FROM espece_synonyme;
 DELETE FROM stade_sexe;
 DELETE FROM stade_sexe_hierarchie_dans_groupe;
+DELETE FROM ordre_has_sous_groupe;
+DELETE FROM super_famille_has_sous_groupe;
+DELETE FROM famille_has_sous_groupe;
+DELETE FROM sous_famille_has_sous_groupe;
+DELETE FROM espece_has_sous_groupe;
 
 SET FOREIGN_KEY_CHECKS=1;

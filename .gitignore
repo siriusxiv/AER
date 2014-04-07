@@ -21,3 +21,7 @@ dist
 
 /.target
 /bin
+
+#Les fichiers générés par les tests
+listeEspeces
+listeMembres.js

@@ -20,13 +20,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 
 import models.Espece;
+import models.SousGroupe;
 
 import org.junit.*;
 
@@ -57,10 +60,10 @@ public class IntegrationTest {
                 //ajouteEspece();
                 
                 //Credentials.creeHashEtMotDePassePourToutLeMonde();
-            	FileWriter fw = new FileWriter("listeMembres.js");
-            	fw.append(Listes.listeMembres());
-            	fw.flush();
-            	fw.close();
+            	
+            	//listeMembres();
+            	
+            	listeEspecesAvecSousGroupeEtGroupe();
             }
         });
     }
@@ -100,4 +103,23 @@ public class IntegrationTest {
 		}
     }
 
+    private void listeMembres() throws IOException{
+    	FileWriter fw = new FileWriter("listeMembres.js");
+    	fw.append(Listes.listeMembres());
+    	fw.flush();
+    	fw.close();
+    }
+    
+    private void listeEspecesAvecSousGroupeEtGroupe() throws IOException{
+    	FileWriter fw = new FileWriter("listeEspeces");
+    	long i = Calendar.getInstance().getTimeInMillis();
+    	List<Espece> especes = Espece.find.where().orderBy("espece_systematique").findList();
+    	for(Espece e : especes){
+    		fw.append(e+","+e.getSousGroupe()+","+e.getGroupe()+"\n");
+    	}
+    	long j = Calendar.getInstance().getTimeInMillis();
+    	System.out.println("Groupe et Sous-groupes de toutes les espèces calculé en "+(j-i)+" ms");
+    	fw.flush();
+    	fw.close();
+    }
 }

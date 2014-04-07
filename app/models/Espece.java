@@ -55,7 +55,7 @@ public class Espece extends Model {
 	public String espece_commentaires;
 
 	public static Finder<Integer,Espece> find = new Finder<Integer,Espece>(Integer.class, Espece.class);
-	
+
 	public static List<Espece> findAll(){
 		return find.all();
 	}
@@ -110,4 +110,99 @@ public class Espece extends Model {
 			}
 		}
 	}
+
+	/**
+	 * Renvoie le sous-groupe auquel appartient l'espèce.
+	 * Si aucun sous-groupe n'est défini, renvoie null.
+	 * Attention, si les sous-groupes ont été définis de telle
+	 * sorte qu'une espèce est dans plusieurs sous-groupes (ce
+	 * qui est une erreur), la fonction de renvoiera qu'un seul
+	 * sous-groupe
+	 * @return SousGroupe s'il existe, null sinon
+	 */
+	public SousGroupe getSousGroupe(){
+		SousGroupe resultat = null;
+		EspeceHasSousGroupe ehsg =
+				EspeceHasSousGroupe.find.where()
+				.eq("espece",this)
+				.findUnique();
+		if(ehsg==null){
+			SousFamilleHasSousGroupe sofhsg =
+					SousFamilleHasSousGroupe.find.where()
+					.eq("sous_famille",this.getSousFamille())
+					.findUnique();
+			if(sofhsg==null){
+				FamilleHasSousGroupe fhsg =
+						FamilleHasSousGroupe.find.where()
+						.eq("famille",this.getFamille())
+						.findUnique();
+				if(fhsg==null){
+					SuperFamilleHasSousGroupe sufhsg =
+							SuperFamilleHasSousGroupe.find.where()
+							.eq("super_famille",this.getSuperFamille())
+							.findUnique();
+					if(sufhsg==null){
+						OrdreHasSousGroupe ohsg =
+								OrdreHasSousGroupe.find.where()
+								.eq("ordre",this.getOrdre())
+								.findUnique();
+						if(ohsg!=null)
+							resultat = ohsg.sous_groupe;
+					}else
+						resultat = sufhsg.sous_groupe; 
+				}else
+					resultat = fhsg.sous_groupe;
+			}else
+				resultat = sofhsg.sous_groupe;
+		}else
+			resultat = ehsg.sous_groupe;
+		return resultat;
+	}
+
+	/**
+	 * Renvoie le groupe auquel appartient l'espèce.
+	 * Si aucun groupe n'est défini, renvoie null.
+	 * Attention, si les groupes ont été définis de telle
+	 * sorte qu'une espèce est dans plusieurs groupes (ce
+	 * qui est une erreur), la fonction de renvoiera qu'un seul
+	 * groupe
+	 * @return Groupe s'il existe, null sinon
+	 */
+	public Groupe getGroupe(){
+		SousGroupe sg = this.getSousGroupe();
+		if(sg!=null)
+			return sg.sous_groupe_groupe;
+		else
+			return null;
+	}
+
+	/**
+	 * Renvoie la sous-famille de l'espèce
+	 * @return
+	 */
+	public SousFamille getSousFamille(){
+		return this.espece_sousfamille;
+	}
+	/**
+	 * Renvoie la famille de l'espèce
+	 * @return
+	 */
+	public Famille getFamille(){
+		return this.espece_sousfamille.sous_famille_famille;
+	}
+	/**
+	 * Renvoie la super-famille de l'espèce
+	 * @return
+	 */
+	public SuperFamille getSuperFamille(){
+		return this.espece_sousfamille.sous_famille_famille.famille_super_famille;
+	}
+	/**
+	 * Renvoie l'ordre de l'espèce
+	 * @return
+	 */
+	public Ordre getOrdre(){
+		return this.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre;
+	}
+
 }
