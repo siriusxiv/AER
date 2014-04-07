@@ -23,9 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import play.data.format.*;
-import play.data.validation.*;
-import play.data.validation.Constraints.*;
+
 
 import play.db.ebean.Model;
 

@@ -24,9 +24,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import play.db.ebean.Model;
 import java.util.*;
-import play.data.format.*;
-import play.data.validation.*;
-import play.data.validation.Constraints.*;
 
 @SuppressWarnings("serial")
 @Entity
