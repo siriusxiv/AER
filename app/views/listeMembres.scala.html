@@ -15,10 +15,98 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Liste des Membres"){<script></script>}{<header>
+ @(listMembre :List[Membre], listDroits:List[Droits], listConfidentialite:List[Confidentialite])
+ @main("Liste des Membres"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
+		<h1> Page pour que l'admin puisse voir la liste des membres </h1>
 	</header>
-	<h1> Page pour que l'admin puisse voir la liste des membres </h1>
-}
+	<form action="@routes.Application.listeMembresTemoinActif()" method="GET"><select name="isTemoinActif" onchange="this.form.submit()" isTemoinActif="select" >
+						<option value="-1">Filtrer par Témoins Actifs ou non</option>
+						<option value="false">Liste des Témoins Passifs</option>
+						<option value="true">Liste des Témoins Actifs</option>
+					</select></form>
+					
+	<form action="@routes.Application.listeMembresAbonne()" method="GET"><select name="isAbonne" onchange="this.form.submit()" isAbonne="select" >
+						<option value="-1">Filtrer par Abonnés ou non</option>
+						<option value="false">Liste des Non-Abonnés</option>
+						<option value="true">Liste des Abonnés</option>
+					</select></form>
+					
+	<form action="@routes.Application.listeMembresConfidentialite()" method="GET"><select name="confidentialite" onchange="this.form.submit()" confidentialite="select" >
+						<option value="-1">Filtrer par niveau de confidentialite des données</option>
+						@for(confidentialite <-listConfidentialite) {
+						<option value="@confidentialite.confidentialite_id">@confidentialite.confidentialite_intitule</option>}
+					</select></form>
+	
+	<form action="@routes.Application.listeMembresDroits()" method="GET"><select name="droits" onchange="this.form.submit()" droits="select" >
+						<option value="-1">Filtrer par droits d'accès dans la Base</option>
+						@for(droits <-listDroits) {
+						<option value="@droits.droits_id">@droits.droits_intitule</option>}
+					</select></form>
+		
+	<form action="@routes.Application.listeMembresInscrit()" method="GET"><select name="isInscrit" onchange="this.form.submit()" isInscrit="select" >
+						<option value="-1">Filtrer selon que l'inscription soit validée ou non</option>
+						<option value="false">Liste des Membres à l'inscription Non Validée</option>
+						<option value="true">Liste des Membres Inscrits</option>
+					</select></form>
+					
+<form action="/listeMembresPrecis" method="GET"><input type="text" size="30" name="membre_nom" value="Recherche une personne en particulier">
+								<button type="submit">Recherche</button>
+</form>
+
+<form action="/listeMembres" method="GET"><button type="submit">Liste Complète</button></form>
+						
+	<table>
+		<tr>
+			<th>Nom</th>
+			<th>Civilité</th>
+			<th>Adresse</th>
+			<th>Adresse complément</th>
+			<th>Code postal</th>
+			<th>Ville</th>
+			<th>Pays</th>
+			<th>Confidentialité</th>
+			<th>Abonné</th>
+			<th>Témoin actif</th>
+			<th>Date de naissance</th>
+			<th>Biographie</th>
+			<th>Adresse mail</th>
+			<th>Droits</th>
+			<th>Inscription acceptée</th>
+		</tr>
+		@for(membre <- listMembre) {
+		<tr>
+			<td>@membre.membre_nom</td>
+			<td>@membre.membre_civilite</td>
+			<td>@membre.membre_adresse</td>
+			<td>@membre.membre_adresse_complement</td>
+			<td>@membre.membre_code_postal</td>
+			<td>@membre.membre_ville</td>
+			<td>@membre.membre_pays</td>
+			<td>@membre.membre_confidentialite.confidentialite_intitule</td>
+			<td>@if(membre.membre_abonne==false){Non Abonné}else{Abonné}</td>
+			<td>@if(membre.membre_temoin_actif==false){Passif}else{Actif}</td>
+			<td>@membre.membre_journais/@membre.membre_moisnais/@membre.membre_annenais</td>
+			<td>@membre.membre_biographie</td>
+			<td>@membre.membre_email</td>
+			<td>@membre.membre_droits.droits_intitule</td>
+			<td>@if(membre.membre_inscription_acceptee==false){Non Inscrit}else{Inscrit}</td>
+		</tr>
+		}
+	</table>
+}{ <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+ <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+<script> /*
+function assignerExpert(groupe_id){
+	$.ajax({
+		url : '/listeDesMembres/inputGroupe'+groupe_id,
+		success: function (res) {
+			$('#expertDuGroupe'+groupe_id).html(
+					'<form method="POST" action="/assignerExpert/ajouter/'+groupe_id+'">'+res+'<button>Ajouter</button></form>'
+			);
+		}
+	}); 
+}*/
+</script>}

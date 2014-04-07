@@ -55,6 +55,10 @@ public class Espece extends Model {
 	public String espece_commentaires;
 
 	public static Finder<Integer,Espece> find = new Finder<Integer,Espece>(Integer.class, Espece.class);
+	
+	public static List<Espece> findAll(){
+		return find.all();
+	}
 
 	@Override
 	public String toString(){

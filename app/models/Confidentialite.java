@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -45,6 +47,10 @@ public class Confidentialite extends Model {
 	public String confidentialite_explication;
 	
 	public static Finder<Integer,Confidentialite> find = new Finder<Integer,Confidentialite>(Integer.class, Confidentialite.class);
+
+	public static List<Confidentialite> findAll(){
+		return find.all();
+	}
 
 	@Override
 	public String toString(){

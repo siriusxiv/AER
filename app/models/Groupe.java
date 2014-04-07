@@ -18,11 +18,12 @@
 
 package models;
 
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-
 import play.db.ebean.Model;
+import java.util.*;
 
 @SuppressWarnings("serial")
 @Entity
@@ -34,11 +35,15 @@ public class Groupe extends Model {
 	
 	public static Finder<Integer,Groupe> find = new Finder<Integer,Groupe>(Integer.class, Groupe.class);
 
+	public static List<Groupe> findAll(){
+		return find.all();
+	}
+	
 	@Override
 	public String toString(){
 		return groupe_nom;
 	}
-	
+
 	/**
 	 * Renvoie l'expert assigné à ce groupe.
 	 * S'il n'y a pas d'expert assigné à ce groupe, alors renvoie null.
@@ -51,4 +56,5 @@ public class Groupe extends Model {
 		else
 			return null;
 	}
+
 }

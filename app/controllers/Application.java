@@ -18,10 +18,11 @@
 
 package controllers;
 
+
 import play.mvc.Controller;
 import play.mvc.Result;
-
 import views.html.*;
+import models.*;
 
 public class Application extends Controller {
 
@@ -83,24 +84,55 @@ public class Application extends Controller {
     }
     
     public static Result demandesInscription() {
-    	return ok( demandesInscription.render());
+    	return ok( demandesInscription.render(Membre.selectMembresInscrit(false)));
+    }
+    
+    public static Result valideInscription(Integer id){
+    	Membre.valideMembre(id);
+    	return redirect(routes.Application.demandesInscription());
     }
     
     public static Result gererBaseDeDonneesInsectes() {
     	return ok( gererBaseDeDonneesInsectes.render());
     }
     
-    public static Result listeMembres() {
-    	return ok(listeMembres.render());
+   /******* Results de la page liste de membres **********/
+    public static Result listeMembres(String orderBy, String sortDirection){
+    	return ok( listeMembres.render(Membre.findAll(orderBy, sortDirection), Droits.findAll(),Confidentialite.findAll()));
     }
     
+    public static Result listeMembresTemoinActif(Boolean isTemoinActif) {
+    	return ok( listeMembres.render(Membre.selectMembresTemoinActif(isTemoinActif), Droits.findAll(),Confidentialite.findAll()));
+    }
+    
+    public static Result listeMembresAbonne(Boolean isAbonne) {
+    	return ok( listeMembres.render(Membre.selectMembresAbonne(isAbonne), Droits.findAll(),Confidentialite.findAll()));
+    }
+    
+    public static Result listeMembresConfidentialite(Integer confidentialite) {
+    	return ok( listeMembres.render(Membre.selectMembresConfidentialite(confidentialite), Droits.findAll(),Confidentialite.findAll()));
+    }
+    
+    public static Result listeMembresDroits(Integer droits) {
+    	return ok( listeMembres.render(Membre.selectMembresDroits(droits), Droits.findAll(),Confidentialite.findAll()));
+    }
+    
+    public static Result listeMembresInscrit(Boolean isInscrit) {
+    	return ok( listeMembres.render(Membre.selectMembresInscrit(isInscrit), Droits.findAll(),Confidentialite.findAll()));
+    }
+    
+    public static Result listeMembresPrecis(String nom) {
+    	return ok( listeMembres.render(Membre.selectMembres(nom), Droits.findAll(),Confidentialite.findAll()));
+    }
+    
+    /*******************************************************************/
     public static Result listeTemoignages() {
     	return ok(listeTemoignages.render());
     }
     
     /*Fiche de Temoignage */
     public static Result ficheDeTemoignage() {
-    	return ok(ficheDeTemoignage.render());
+    	return ok(ficheDeTemoignage.render(Groupe.findAll(), Espece.findAll(), EspeceHasSousGroupe.findAll()));
     }
     
     

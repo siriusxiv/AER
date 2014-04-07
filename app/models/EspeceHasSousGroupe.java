@@ -22,6 +22,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.util.*;
+
 
 import play.db.ebean.Model;
 
@@ -38,4 +40,8 @@ public class EspeceHasSousGroupe extends Model {
 	public SousGroupe sous_groupe;
 	
 	public static Finder<Integer,EspeceHasSousGroupe> find = new Finder<Integer,EspeceHasSousGroupe>(Integer.class, EspeceHasSousGroupe.class);
+	
+	public static List<EspeceHasSousGroupe> findAll(){
+		return find.all();
+	}
 }

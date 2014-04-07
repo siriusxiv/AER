@@ -15,10 +15,65 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Fiche de Témoignage"){<script></script>}{<header>
+ @(listGroupe :List[Groupe], listEspece:List[Espece], listEspeceHasSousGroupe:List[EspeceHasSousGroupe])
+ @main("Fiche de Témoignage"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
+		<h1> la fameuse fiche pour poster des témoignages </h1>
 	</header>
-	<h1> la fameuse fiche pour poster des témoignages </h1>
-}
+	<div id="contenu">
+		<div id="titre">
+			<h1> Fiche de Témoignage </h1>
+		</div>
+		<div id="date">
+		<b>date</b>
+		</div>
+		<div id="localisation">
+			<p>localisation de l'observation:</p>
+			<p>Département <input type="text" size="40" name="departement" value=""> <br/>
+			   Commune <input type="text" size="40" name="commune" value=""> <br/>
+			   Lieu-dit <input type="text" size="40" name="lieu-dit" value=""> <br/>
+			   Coordonnées UTMS <input type="text" size="40" name="utms" value=""> <br/>
+			     </p>
+		</div>
+		<div id="especes">
+			<p>Commentaires</p> 
+			<textarea rows="20" cols="50"> 
+Description
+			</textarea> 
+			<p>Espèces observées: </p>
+				<select name="groupe_id" onChange="selectionEspece('selectgra','selectsa')" id="selectgra">
+					<option value="-1">Groupe</option>
+					@for(groupe <-listGroupe) {
+					<option value="@groupe.groupe_id">@groupe.groupe_nom</option>}
+				</select>
+				<select name="espece_id" id="selectesa">
+					<option value="-1">Espèce</option>
+					@for(espece <-listEspece) {
+					<option value="@espece.espece_id">@espece.espece_nom</option>}
+				</select>
+			
+		</div>
+		<div class="bas_de_page">
+		</div>
+	</div>
+}{<script>
+ // fonction permettant pour la selection d'espece correspondante de ne proposer que les especes du groupe sélectionné 
+ selectionEspece(gr,se){
+ gr_id = document.getElementById(gr).options[document.getElementById(gr).selectedIndex].value;
+ sel = document.getElementById(se);
+ var i=0;
+ var ides="";
+ sel.disabled=true;
+ 
+ @for(especeHasSousGroupe <-listEspeceHasSousGroupe) {
+ if (@especeHasSousGroupe.sous_groupe.sous_groupe_groupe.groupe_id== gr_id){
+ 	ides="@especeHasSousGroupe.espece.espece_id"; 
+ 	i=0;
+ 	while(sel.options[i].value!=ides || i<sel.length){i=i+1;}
+ 	sel.options[i].disabled=false;
+ 		}
+ 	} 
+ }
+ 	</script>}

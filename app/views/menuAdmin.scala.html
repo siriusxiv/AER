@@ -15,20 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Menu Admin"){<script>
-	function afficherMenuUtilisateur() {
-		if (document.getElementById("menuUtilisateur").style.display == "none") {
-			document.getElementById("menuUtilisateur").style.display = "block";
-			document.getElementById("menuAdmin").style.display = "none";
-		}
-	}
-	function afficherMenuAdmin() {
-		if (document.getElementById("menuAdmin").style.display == "none") {
-			document.getElementById("menuUtilisateur").style.display = "none";
-			document.getElementById("menuAdmin").style.display = "block";
-		}
-	}
-</script>}{<header>
+@main("Menu Admin"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
@@ -53,7 +40,7 @@
 		<a href="/consulterDonnees">Consulter les données</a>
 		</dt>
 		<dt>
-		<a href="/identification">Se Déconnecter</a>
+		<a href="http://www.aer-nantes.fr/">Se Déconnecter</a>
 		</dt>
 	</dl>
 	</div>
@@ -76,4 +63,17 @@
 		</dt>
 	</dl>
 	</div>
+	}{<script>
+	function afficherMenuUtilisateur() {
+		if (document.getElementById("menuUtilisateur").style.display == "none") {
+			document.getElementById("menuUtilisateur").style.display = "block";
+			document.getElementById("menuAdmin").style.display = "none";
+		}
 	}
+	function afficherMenuAdmin() {
+		if (document.getElementById("menuAdmin").style.display == "none") {
+			document.getElementById("menuUtilisateur").style.display = "none";
+			document.getElementById("menuAdmin").style.display = "block";
+		}
+	}
+</script>}
