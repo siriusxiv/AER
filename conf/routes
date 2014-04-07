@@ -29,7 +29,15 @@ POST 	/assignerExpert/ajouter/:groupe_id	controllers.admin.AssignerExpert.ajoute
 POST 	/assignerExpert/changer/:groupe_id	controllers.admin.AssignerExpert.changer(groupe_id: Integer)
 GET     /demandesInscription         controllers.Application.demandesInscription()
 GET     /gererBaseDeDonneesInsectes  controllers.Application.gererBaseDeDonneesInsectes()
-GET     /listeMembres                controllers.Application.listeMembres()
+
+#routes pour les listes de membres
+GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")
+GET     /listeMembresTemoinActif   controllers.Application.listeMembresTemoinActif(isTemoinActif:Boolean ?=true)
+GET     /listeMembresAbonne   controllers.Application.listeMembresAbonne(isAbonne:Boolean ?=true)
+GET     /listeMembresConfidentialite   controllers.Application.listeMembresConfidentialite(confidentialite:Integer ?=-1)
+GET     /listeMembresDroits   controllers.Application.listeMembresDroits(droits:Integer ?=-1)
+GET     /listeMembresInscrit   controllers.Application.listeMembresInscrit(isInscrit:Boolean ?=true)
+
 GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax

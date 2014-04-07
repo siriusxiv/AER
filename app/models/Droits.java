@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -46,6 +48,10 @@ public class Droits extends Model {
 	public String droits_intitule;
 	
 	public static Finder<Integer,Droits> find = new Finder<Integer,Droits>(Integer.class, Droits.class);
+	
+	public static List<Droits> findAll(){
+		return find.all();
+	}
 
 	@Override
 	public String toString(){

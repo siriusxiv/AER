@@ -23,7 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-
+import java.util.*;
 import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
@@ -65,8 +65,37 @@ public class Membre extends Model {
 	
 	public static Finder<Integer,Membre> find = new Finder<Integer,Membre>(Integer.class, Membre.class);
 
+	
+	public static List<Membre> findAll(String orderBy, String sortDirection){
+		return find.orderBy(orderBy+" "+sortDirection).findList();
+	}
+	
+	//Fonctions de tri de la liste des membres
+	/********************************************/
+	public static List<Membre> selectMembresTemoinActif(Boolean isTemoinActif){
+		return find.where().eq("membre_temoin_actif",isTemoinActif).orderBy("membre_nom").findList();
+	}
+	
+	public static List<Membre> selectMembresAbonne(Boolean isAbonne){
+		return find.where().eq("membre_abonne",isAbonne).orderBy("membre_nom").findList();
+	}
+	
+	public static List<Membre> selectMembresConfidentialite(Integer confidentialite){
+		return find.where().eq("membre_confidentialite.confidentialite_id",confidentialite).orderBy("membre_nom").findList();
+	}
+	
+	public static List<Membre> selectMembresDroits(Integer droits){
+		return find.where().eq("membre_droits.droits_id",droits).orderBy("membre_nom").findList();
+	}
+	
+	public static List<Membre> selectMembresInscrit(Boolean isInscrit){
+		return find.where().eq("membre_inscription_acceptee",isInscrit).orderBy("membre_nom").findList();
+	}
+	/************************************/
+	
 	@Override
 	public String toString(){
 		return membre_nom;
 	}
+
 }
