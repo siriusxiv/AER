@@ -97,6 +97,14 @@ public class Membre extends Model {
 	}
 	/************************************/
 	
+	/***** Valide un utilisateur ************/
+	
+	public static void valideMembre(Integer id){
+		Membre membre= Membre.find.ref(id);
+		membre.membre_inscription_acceptee=true;
+		membre.save();
+	}
+	
 	@Override
 	public String toString(){
 		return membre_nom;

@@ -84,7 +84,12 @@ public class Application extends Controller {
     }
     
     public static Result demandesInscription() {
-    	return ok( demandesInscription.render());
+    	return ok( demandesInscription.render(Membre.selectMembresInscrit(false)));
+    }
+    
+    public static Result valideInscription(Integer id){
+    	Membre.valideMembre(id);
+    	return redirect(routes.Application.demandesInscription());
     }
     
     public static Result gererBaseDeDonneesInsectes() {
