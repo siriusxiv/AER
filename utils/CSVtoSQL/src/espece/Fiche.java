@@ -24,8 +24,8 @@ public class Fiche {
 	Calendar date_max;
 	String memo;
 
-	public Fiche(String line) throws ArrayIndexOutOfBoundsException, StringIndexOutOfBoundsException{
-		line_origine=line;
+	public Fiche(String line, int compteur_line, String fichier) throws ArrayIndexOutOfBoundsException, StringIndexOutOfBoundsException{
+		line_origine=fichier+": line"+compteur_line+". "+line;
 		id_compteur++;
 		id=id_compteur;
 		String[] col = line.split("µ");
@@ -107,6 +107,20 @@ public class Fiche {
 				communeFormatee=communeFormatee.substring(3);
 			else if(communeFormatee.startsWith("L'") || communeFormatee.startsWith("l'"))
 				communeFormatee=communeFormatee.substring(2);
+			switch(communeFormatee){
+			case "Montfaucon":
+				communeFormatee="Montfaucon-Montigné";break;
+			case "Chapelle-Largeau":
+				communeFormatee="Mauléon";break;
+			case "Bonnoeuvre":
+				communeFormatee="Bonnœuvre";break;
+			case "Brétignolles":
+				communeFormatee="Bretignolles-sur-Mer";break;
+			case "Noirmoutier":
+				communeFormatee="Noirmoutier-en-l'Île";break;
+			case "Paimboeuf":
+				communeFormatee="Paimbœuf";break;
+			}
 			communeFormatee = communeFormatee.replaceAll("'", "''").replaceAll("St-", "Saint-").replaceAll("Ste-", "Sainte-");
 			int res = 0;
 			Statement statement = FicheReader.connect.createStatement();

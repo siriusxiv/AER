@@ -15,34 +15,39 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
+package controllers.ajax;
 
-package models;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+import models.Membre;
+import play.mvc.Controller;
+import play.mvc.Result;
 
-import play.db.ebean.Model;
+import views.html.listeDesMembres;
 
-@SuppressWarnings("serial")
-@Entity
-public class MembreIsExpertOnGroupe extends Model {
+public class Listes extends Controller {
+	
+	public static Result membres(String string_id){
+		return ok(listeDesMembres.render(string_id));
+	}
+	
+	/**
+	 * Renvoie une chaîne de caractère exploitable par la fonction
+	 * d'autocomplétion
+	 * @return
+	 */
+	public static String listeMembres(){
+		List<Membre> membres = Membre.find.all();
+		if(membres.isEmpty()){
+			return "";
+		}else{
+			StringBuilder res = new StringBuilder();
+			for(Membre m : membres){
+				res.append("'"+m.toString().replaceAll("'","\\\\'")+"',");
+			}
+			res.deleteCharAt(res.length()-1);
+			return res.toString();
 
-	@Id
-	public Integer MembreIsExpertOnGroupe_id;
-	@NotNull
-	@ManyToOne
-	public Membre membre;
-	@NotNull
-	@ManyToOne
-	public Groupe groupe;
-
-	public static Finder<Integer,MembreIsExpertOnGroupe> find = new Finder<Integer,MembreIsExpertOnGroupe>(Integer.class, MembreIsExpertOnGroupe.class);
-
-
-	public MembreIsExpertOnGroupe(Membre membre, Groupe groupe) {
-		this.membre=membre;
-		this.groupe=groupe;
+		}
 	}
 }

@@ -15,26 +15,57 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Assigner des Experts"){<script>
-	function afficheChangeExpert() {
-		if (document.getElementById("nouv_expert").style.display == "none") {
-			document.getElementById("nouv_expert").style.display = "block";
-		} else {
-			document.getElementById("nouv_expert").style.display = "none";
-		}
-	}
-</script>}{<header>
+@(groupes : List[Groupe])
+@main("Assigner des Experts"){
+	<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
 	</header>
 	<h1>Page pour Assigner des experts chez l'admin </h1>
-	<select><option value="-1">Choix du Groupe</option><option value="groupe_id">Groupe 1</option></select> <strong>Expert actuel</strong>
-	<p>
-	<button onClick="afficheChangeExpert()">Modifier</button>
-	</p>
-	<div id="nouv_expert"style="display:none">
-	<h2>Changement d'expert</h2>
-	<select><option value="-1">Choix de l'expert</option><option value="expert_id">Expert 1</option></select>
-	<button type="submit">Valider</button>
-	</div>}
+	<table>
+		<tr>
+			<th>Groupe</th>
+			<th>Expert assigné</th>
+		</tr>
+		@for(groupe <- groupes){
+		<tr>
+			<td>@groupe.groupe_nom</td>
+			<td>
+			@defining(groupe.getExpert()){ expert=>
+				@if(expert==null){
+					<span id="expertDuGroupe@groupe.groupe_id">Pas d'expert, <button onClick="assignerExpert(@groupe.groupe_id)">l'assigner</button></span>
+				}else{
+					<span id="expertDuGroupe@groupe.groupe_id">@expert.membre_nom <button onClick="changerExpert(@groupe.groupe_id)">Changer d'expert</button></span>
+				}
+			}
+			</td>
+		</tr>
+		}
+	</table>
+}{
+ <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+ <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+<script>
+function assignerExpert(groupe_id){
+	$.ajax({
+		url : '/listeDesMembres/inputGroupe'+groupe_id,
+		success: function (res) {
+			$('#expertDuGroupe'+groupe_id).html(
+					'<form method="POST" action="/assignerExpert/ajouter/'+groupe_id+'">'+res+'<button>Ajouter</button></form>'
+			);
+		}
+	});
+}
+function changerExpert(groupe_id){
+	$.ajax({
+		url : '/listeDesMembres/inputGroupe'+groupe_id,
+		success: function (res) {
+			$('#expertDuGroupe'+groupe_id).html(
+					'<form method="POST" action="/assignerExpert/changer/'+groupe_id+'">'+res+'<button>Changer</button></form><button onClick="location.reload()">Annuler</button>'
+			);
+		}
+	});
+}
+</script>
+}

@@ -15,34 +15,21 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
+package controllers.admin;
 
-package models;
+import play.mvc.Controller;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
-import play.db.ebean.Model;
-
-@SuppressWarnings("serial")
-@Entity
-public class MembreIsExpertOnGroupe extends Model {
-
-	@Id
-	public Integer MembreIsExpertOnGroupe_id;
-	@NotNull
-	@ManyToOne
-	public Membre membre;
-	@NotNull
-	@ManyToOne
-	public Groupe groupe;
-
-	public static Finder<Integer,MembreIsExpertOnGroupe> find = new Finder<Integer,MembreIsExpertOnGroupe>(Integer.class, MembreIsExpertOnGroupe.class);
-
-
-	public MembreIsExpertOnGroupe(Membre membre, Groupe groupe) {
-		this.membre=membre;
-		this.groupe=groupe;
+/**
+ * Fonctions générales de gestions des admins
+ * @author malik
+ *
+ */
+public class Admin extends Controller{
+	/**
+	 * Si c'est un admin qui est connecté, renvoie true, sinon, renvoie false.
+	 * @return
+	 */
+	public boolean isAdminConnected(){
+		return session("admin").equals("true");
 	}
 }

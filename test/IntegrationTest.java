@@ -16,6 +16,10 @@
  *   
  ********************************************************************************/
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +30,8 @@ import models.Espece;
 
 import org.junit.*;
 
+import controllers.ajax.Listes;
+import functions.credentials.Credentials;
 import play.mvc.*;
 import play.test.*;
 import play.libs.F.*;
@@ -44,11 +50,17 @@ public class IntegrationTest {
     public void test() {
     	databaseConfiguration.put("db.default.url", "jdbc:mysql://localhost:3306/aer");
         running(testServer(3333, fakeApplication(databaseConfiguration)), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+            public void invoke(TestBrowser browser) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
             	//Teste que les bons départements sont trouvés par l'application
-                System.out.println(models.Departement.findDepartementsAER());
+                //System.out.println(models.Departement.findDepartementsAER());
                 
-                ajouteEspece();
+                //ajouteEspece();
+                
+                //Credentials.creeHashEtMotDePassePourToutLeMonde();
+            	FileWriter fw = new FileWriter("listeMembres.js");
+            	fw.append(Listes.listeMembres());
+            	fw.flush();
+            	fw.close();
             }
         });
     }

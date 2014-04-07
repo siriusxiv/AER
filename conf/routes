@@ -24,11 +24,16 @@ GET     /temoignagesValides         controllers.Application.temoignagesValides()
 
 #routes pour les admins
 GET     /menuAdmin                   controllers.Application.menuAdmin()
-GET     /assignerExperts              controllers.Application.assignerExperts()
+GET     /assignerExperts             controllers.admin.AssignerExpert.main()
+POST 	/assignerExpert/ajouter/:groupe_id	controllers.admin.AssignerExpert.ajouter(groupe_id: Integer)
+POST 	/assignerExpert/changer/:groupe_id	controllers.admin.AssignerExpert.changer(groupe_id: Integer)
 GET     /demandesInscription         controllers.Application.demandesInscription()
 GET     /gererBaseDeDonneesInsectes  controllers.Application.gererBaseDeDonneesInsectes()
 GET     /listeMembres                controllers.Application.listeMembres()
 GET     /listeTemoignages            controllers.Application.listeTemoignages()
+
+#routes ajax
+GET		/listeDesMembres/:string_id	controllers.ajax.Listes.membres(string_id: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

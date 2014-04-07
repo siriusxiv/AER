@@ -35,6 +35,11 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class Droits extends Model {
+	//Déclaration des variables globles
+	public static Droits TEMOIN;
+	public static Droits EXPERT;
+	public static Droits ADMIN;
+	
 	@Id
 	public Integer droits_id;
 	@NotNull
