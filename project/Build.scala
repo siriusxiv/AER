@@ -11,6 +11,7 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     "mysql" % "mysql-connector-java" % "5.1.18",
     "com.typesafe" %% "play-plugins-mailer" % "2.1.0",
+    "org.apache.poi" % "poi" % "3.10-FINAL",
     javaCore,
     javaJdbc,
     javaEbean
