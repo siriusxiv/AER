@@ -115,6 +115,11 @@ public class Application extends Controller {
     public static Result listeMembresInscrit(Boolean isInscrit) {
     	return ok( listeMembres.render(Membre.selectMembresInscrit(isInscrit), Droits.findAll(),Confidentialite.findAll()));
     }
+    
+    public static Result listeMembresPrecis(String nom) {
+    	return ok( listeMembres.render(Membre.selectMembres(nom), Droits.findAll(),Confidentialite.findAll()));
+    }
+    
     /*******************************************************************/
     public static Result listeTemoignages() {
     	return ok(listeTemoignages.render());

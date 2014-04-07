@@ -91,6 +91,10 @@ public class Membre extends Model {
 	public static List<Membre> selectMembresInscrit(Boolean isInscrit){
 		return find.where().eq("membre_inscription_acceptee",isInscrit).orderBy("membre_nom").findList();
 	}
+	
+	public static List<Membre> selectMembres(String nom){
+		return find.where().eq("membre_nom",nom).orderBy("membre_nom").findList();
+	}
 	/************************************/
 	
 	@Override

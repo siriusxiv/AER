@@ -22,13 +22,13 @@
 		</dl>
 		<h1> Page pour que l'admin puisse voir la liste des membres </h1>
 	</header>
-	<form action="@routes.Application.listeMembresTemoinActif("isTemoinActif")" method="GET"><select name="isTemoinActif" onchange="this.form.submit()" isTemoinActif="select" >
+	<form action="@routes.Application.listeMembresTemoinActif()" method="GET"><select name="isTemoinActif" onchange="this.form.submit()" isTemoinActif="select" >
 						<option value="-1">Filtrer par Témoins Actifs ou non</option>
 						<option value="false">Liste des Témoins Passifs</option>
 						<option value="true">Liste des Témoins Actifs</option>
 					</select></form>
 					
-	<form action="@routes.Application.listeMembresAbonne("isAbonne")" method="GET"><select name="isAbonne" onchange="this.form.submit()" isAbonne="select" >
+	<form action="@routes.Application.listeMembresAbonne()" method="GET"><select name="isAbonne" onchange="this.form.submit()" isAbonne="select" >
 						<option value="-1">Filtrer par Abonnés ou non</option>
 						<option value="false">Liste des Non-Abonnés</option>
 						<option value="true">Liste des Abonnés</option>
@@ -46,13 +46,18 @@
 						<option value="@droits.droits_id">@droits.droits_intitule</option>}
 					</select></form>
 		
-	<form action="@routes.Application.listeMembresInscrit("isInscrit")" method="GET"><select name="isInscrit" onchange="this.form.submit()" isInscrit="select" >
+	<form action="@routes.Application.listeMembresInscrit()" method="GET"><select name="isInscrit" onchange="this.form.submit()" isInscrit="select" >
 						<option value="-1">Filtrer selon que l'inscription soit validée ou non</option>
 						<option value="false">Liste des Membres à l'inscription Non Validée</option>
 						<option value="true">Liste des Membres Inscrits</option>
 					</select></form>
+					
+<form action="/listeMembresPrecis" method="GET"><input type="text" size="30" name="membre_nom" value="Recherche une personne en particulier">
+								<button type="submit">Recherche</button>
+</form>
 
-	
+<form action="/listeMembres" method="GET"><button type="submit">Liste Complète</button></form>
+						
 	<table>
 		<tr>
 			<th>Nom</th>
@@ -91,4 +96,17 @@
 		</tr>
 		}
 	</table>
-}{<script></script>}
+}{ <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+ <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+<script> /*
+function assignerExpert(groupe_id){
+	$.ajax({
+		url : '/listeDesMembres/inputGroupe'+groupe_id,
+		success: function (res) {
+			$('#expertDuGroupe'+groupe_id).html(
+					'<form method="POST" action="/assignerExpert/ajouter/'+groupe_id+'">'+res+'<button>Ajouter</button></form>'
+			);
+		}
+	}); 
+}*/
+</script>}

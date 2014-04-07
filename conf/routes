@@ -37,7 +37,7 @@ GET     /listeMembresAbonne   controllers.Application.listeMembresAbonne(isAbonn
 GET     /listeMembresConfidentialite   controllers.Application.listeMembresConfidentialite(confidentialite:Integer ?=-1)
 GET     /listeMembresDroits   controllers.Application.listeMembresDroits(droits:Integer ?=-1)
 GET     /listeMembresInscrit   controllers.Application.listeMembresInscrit(isInscrit:Boolean ?=true)
-
+GET     /listeMembresPrecis  controllers.Application.listeMembresPrecis(membre_nom: String)
 GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax
