@@ -43,7 +43,10 @@ public class Credentials {
 	 */
 	public boolean connect(String password) throws NoSuchAlgorithmException, InvalidKeySpecException{
 		membre = Membre.find.where().eq("membre_email", email).findUnique();
-		return PasswordHash.validatePassword(password, membre.membre_mdp_hash);
+		if(membre==null)
+			return false;
+		else
+			return PasswordHash.validatePassword(password, membre.membre_mdp_hash);
 	}
 
 	/**

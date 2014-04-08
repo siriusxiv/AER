@@ -15,13 +15,15 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
+@(message: String)
 @main("Identification"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
 	</header>
-	<form action="/menuUtilisateur" method="GET">
-	<h1> Page d'identification commune </h1>	
+	<h1> Page d'identification commune </h1>
+	@Html(message)
+	<form action="/connexion" method="POST">
 		<p>	
 			<input type="login"	name="login" placeholder="Identifiant">	
 		</p>	
@@ -29,10 +31,10 @@
  			<input type="password"	name="passw" placeholder="Mot de Passe">
  			<a href="/retrouverMotDePasse">Mot de passe oublié ?</a>
 		</p>	
-		<form><input type="checkbox" name="memory" value="">Se souvenir des identifiants</form>
-		<p>	
-			<button type="submit">Se connecter</button>
-			<a href="/inscription">Pas encore inscrit ? Créez un compte ici !</a>
-	 	</p>	
+		<input type="checkbox" name="memory" value=""> Se souvenir de moi	
+		<button type="submit">Se connecter</button>
 	</form>	
+		<p>	
+			<a href="/inscription">Pas encore inscrit ? Créez un compte ici !</a>
+	 	</p>
 	}{<script></script>}

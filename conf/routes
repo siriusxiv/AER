@@ -5,6 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET     /identification             controllers.Identification.main()
+POST	/connexion					controllers.Identification.connexion()
 GET     /inscription                controllers.Application.inscription()
 GET     /retrouverMotDePasse        controllers.Application.retrouverMotDePasse()
 
