@@ -20,6 +20,8 @@ package controllers;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import models.Droits;
+import models.Membre;
 import functions.credentials.Credentials;
 import play.data.DynamicForm;
 import play.mvc.Controller;
@@ -35,6 +37,13 @@ public class Identification extends Controller {
     	return ok(identification.render("Votre combinaison nom d'utilisateur et mot de passe est incorrecte."));
     }
     
+    /**
+     * Se connecte si le membre rentre le bon identifiant et le bon mot de passe.
+     * Redirige ensuite vers la page correspondant aux droits du membre.
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     */
     public static Result connexion() throws NoSuchAlgorithmException, InvalidKeySpecException{
     	DynamicForm df = DynamicForm.form().bindFromRequest();
     	String username = df.get("login");
@@ -43,7 +52,15 @@ public class Identification extends Controller {
     		session("username",username);
     		if(df.get("memory")!=null)
     			session("memory","");
-    		return redirect("/menuUtilisateur");
+    		Membre membre = Membre.find.where().eq("membre_email", username).findUnique();
+    		if(membre.membre_droits.equals(Droits.TEMOIN))
+    			return redirect("/menuUtilisateur");
+    		else if(membre.membre_droits.equals(Droits.EXPERT))
+    			return redirect("/menuExpert");
+    		else if(membre.membre_droits.equals(Droits.ADMIN))
+    			return redirect("/menuAdmin");
+    		else
+    			return connexionEchouée();
     	}else
     		return connexionEchouée();
     }
