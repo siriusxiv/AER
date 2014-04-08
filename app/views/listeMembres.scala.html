@@ -52,9 +52,7 @@
 						<option value="true">Liste des Membres Inscrits</option>
 					</select></form>
 					
-<form action="/listeMembresPrecis" method="GET"><input type="text" size="30" name="membre_nom" value="Recherche une personne en particulier">
-								<button type="submit">Recherche</button>
-</form>
+<span id="recherchePrecise"> Chercher les informations d'une personne précise<button onClick="recherche()">Recherche</button></span>
 
 <form action="/listeMembres" method="GET"><button type="submit">Liste Complète</button></form>
 						
@@ -98,15 +96,16 @@
 	</table>
 }{ <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
  <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
-<script> /*
-function assignerExpert(groupe_id){
+<script> 
+function recherche(){
 	$.ajax({
-		url : '/listeDesMembres/inputGroupe'+groupe_id,
+		url : '/listeDesMembres/inputMembre',
 		success: function (res) {
-			$('#expertDuGroupe'+groupe_id).html(
-					'<form method="POST" action="/assignerExpert/ajouter/'+groupe_id+'">'+res+'<button>Ajouter</button></form>'
+			$('#recherchePrecise').html(
+					'<form action="/listeMembresPrecis" method="GET">'+res+'<button type="submit">Recherche</button></form>'
 			);
+			
 		}
 	}); 
-}*/
+}
 </script>}
