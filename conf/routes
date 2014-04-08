@@ -30,7 +30,9 @@ POST 	/assignerExpert/changer/:groupe_id	controllers.admin.AssignerExpert.change
 GET     /demandesInscription         controllers.Application.demandesInscription()
 POST    /demandesInscription/valider/:membre_id    controllers.Application.valideInscription(membre_id: Integer)
 
-GET     /gererBaseDeDonneesInsectes  controllers.Application.gererBaseDeDonneesInsectes()
+#route pour gérer la base des insectes (admin)
+GET     /gererBaseDeDonneesInsectes  controllers.admin.GererBaseDeDonneesInsectes.main()
+POST	/gererBaseDeDonneesInsectes/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvEspece()
 
 #routes pour les listes de membres*****************
 GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")
