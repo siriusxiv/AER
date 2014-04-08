@@ -32,10 +32,6 @@ public class Application extends Controller {
 
     /*Page de login ou d'inscription */
     
-    public static Result identification() {
-    	return ok( identification.render());
-    }
-    
     public static Result inscription() {
     	return ok( inscription.render());
     }
@@ -48,10 +44,6 @@ public class Application extends Controller {
     	
     public static Result menuUtilisateur() {
     	return ok( menuUtilisateur.render());
-    }
-    
-    public static Result informationsPersonnelles() {
-    	return ok( informationsPersonnelles.render());
     }
     
     public static Result consulterDonnees() {

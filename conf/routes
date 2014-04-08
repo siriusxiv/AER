@@ -4,13 +4,13 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET     /identification            controllers.Application.identification()
+GET     /identification             controllers.Identification.main()
 GET     /inscription                controllers.Application.inscription()
 GET     /retrouverMotDePasse        controllers.Application.retrouverMotDePasse()
 
 #routes pour l'utilisateur
 GET     /menuUtilisateur            controllers.Application.menuUtilisateur()
-GET     /informationsPersonnelles   controllers.Application.informationsPersonnelles()
+GET     /informationsPersonnelles   controllers.membre.InformationsPersonnelles.main()
 GET     /consulterDonnees           controllers.Application.consulterDonnees()
 GET     /historique                 controllers.Application.historique()
 
