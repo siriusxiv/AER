@@ -38,6 +38,11 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class Confidentialite extends Model {
+	//Déclaration des variables globles
+	public static Confidentialite OUVERTE;
+	public static Confidentialite CASPARCAS;
+	public static Confidentialite FERMEE;
+	
 	@Id
 	public Integer confidentialite_id;
 	@NotNull

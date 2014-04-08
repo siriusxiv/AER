@@ -49,7 +49,7 @@ public class Identification extends Controller {
      * @return
      */
     public static Result connexionEchouée() {
-    	return ok(identification.render("Votre combinaison nom d'utilisateur et mot de passe est incorrecte."));
+    	return ok(identification.render("Votre combinaison nom d'utilisateur et mot de passe est incorrecte, ou votre compte n'existe pas ou n'est pas activé."));
     }
     
     /**
@@ -68,7 +68,10 @@ public class Identification extends Controller {
     		if(df.get("memory")!=null)
     			session("memory","");
     		Membre membre = Membre.find.where().eq("membre_email", username).findUnique();
-    		return allerVers(membre);
+    		if(membre.adresseMailNonActivee())
+    			return connexionEchouée();
+    		else
+    			return allerVers(membre);
     	}else
     		return connexionEchouée();
     }

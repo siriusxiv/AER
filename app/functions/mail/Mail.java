@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-package functions;
+package functions.mail;
 
 import play.Play;
 
@@ -52,6 +52,6 @@ public class Mail {
 			mail.setSubject(sujet);
 			mail.addRecipient(recipient+" <"+to+">");
 			mail.addFrom(from);
-			mail.send(contenu);
+			mail.sendHtml(contenu);
 	}
 }

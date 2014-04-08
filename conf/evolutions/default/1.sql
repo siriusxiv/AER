@@ -176,6 +176,7 @@ create table membre (
   membre_sel                varchar(255),
   membre_droits_droits_id   integer not null,
   membre_inscription_acceptee tinyint(1) default 0 not null,
+  membre_lien_de_validation_de_mail varchar(255),
   constraint pk_membre primary key (membre_id))
 ;
 

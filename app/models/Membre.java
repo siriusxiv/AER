@@ -23,7 +23,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import functions.credentials.Credentials;
+import functions.credentials.PasswordHash;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.*;
+
 import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
@@ -62,10 +69,32 @@ public class Membre extends Model {
 	public Droits membre_droits;
 	@NotNull
 	public boolean membre_inscription_acceptee;
+	public String membre_lien_de_validation_de_mail;
 	
 	public static Finder<Integer,Membre> find = new Finder<Integer,Membre>(Integer.class, Membre.class);
 
-	
+	/**
+	 * Créé un membre standard sans droit particulier sans que celui-ci soit accepté par l'admin.
+	 * @param nom
+	 * @param civilite
+	 * @param email
+	 * @param passw
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 */
+	public Membre(String nom, String civilite, String email, String passw) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		membre_nom=nom;
+		membre_civilite=civilite;
+		membre_email=email;
+		membre_mdp_hash=PasswordHash.createHash(passw);
+		membre_confidentialite=Confidentialite.OUVERTE;
+		membre_abonne=false;
+		membre_temoin_actif=true;
+		membre_droits=Droits.TEMOIN;
+		membre_inscription_acceptee=false;
+		membre_lien_de_validation_de_mail=Credentials.genereLienAleatoire(10);
+	}
+
 	public static List<Membre> findAll(String orderBy, String sortDirection){
 		return find.orderBy(orderBy+" "+sortDirection).findList();
 	}
@@ -108,6 +137,14 @@ public class Membre extends Model {
 	@Override
 	public String toString(){
 		return membre_nom;
+	}
+
+	/**
+	 * Renvoie vrai si l'adresse mail n'est pas activée, faux sinon.
+	 * @return
+	 */
+	public boolean adresseMailNonActivee() {
+		return membre_lien_de_validation_de_mail!=null;
 	}
 
 }

@@ -100,4 +100,14 @@ public class Credentials {
 		      sb.append(elements.charAt(rnd.nextInt(elements.length())));
 		return sb.toString();
 	}
+	/**
+	 * Génère un mot de passe de manière aléatoire sécurisée.
+	 * @return
+	 */
+	public static String genereLienAleatoire(int size){
+		StringBuilder sb = new StringBuilder(size);
+		for( int i = 0; i < size; i++ ) 
+		      sb.append(elements.charAt(rnd.nextInt(elements.length())));
+		return sb.toString();
+	}
 }

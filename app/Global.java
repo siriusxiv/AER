@@ -15,6 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
+import models.Confidentialite;
 import models.Droits;
 import play.Application;
 import play.GlobalSettings;
@@ -27,5 +28,9 @@ public class Global extends GlobalSettings {
 		Droits.TEMOIN=Droits.find.byId(1);
 		Droits.EXPERT=Droits.find.byId(2);
 		Droits.ADMIN=Droits.find.byId(3);
+		//On sette les variables globales de confidentialité
+		Confidentialite.OUVERTE=Confidentialite.find.byId(1);
+		Confidentialite.CASPARCAS=Confidentialite.find.byId(2);
+		Confidentialite.FERMEE=Confidentialite.find.byId(3);
 	}
 }
