@@ -69,9 +69,6 @@ public class Application extends Controller {
     	return ok( menuExpert.render());
     }
     
-    public static Result temoignagesAValider() {
-    	return ok( temoignagesAValider.render());
-    }
     
     public static Result temoignagesValides() {
     	return ok( temoignagesValides.render());

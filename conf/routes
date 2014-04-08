@@ -19,7 +19,9 @@ GET     /ficheDeTemoignage          controllers.Application.ficheDeTemoignage()
 
 #routes pour les experts
 GET     /menuExpert                 controllers.Application.menuExpert()
-GET     /temoignagesAValider        controllers.Application.temoignagesAValider()
+GET     /temoignagesAValider      controllers.expert.ValiderObservations.temoignagesNonVus()
+GET     /temoignagesAValider/enSuspends     controllers.expert.ValiderObservations.temoignagesEnSuspends()
+
 GET     /temoignagesValides         controllers.Application.temoignagesValides()
 
 #routes pour les admins
