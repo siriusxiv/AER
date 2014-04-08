@@ -43,18 +43,18 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	 * @return
 	 */
 	public static Result main() {
-		return ok(gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findAll()));
+		return ok(gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamilleExistantes()));
 	}
 	
 	/**
-	 * Ajoute l'Espèce à la base de données.
+	 * Ajoute l'Espèce à la base de données. A écrire
 	 * @param groupe_id
 	 * @return
 	 */
-	 public static Result ajouterNouvEspece(){
-	if (Admin.isAdminConnected()){
-		ajouterNouvelleEspece(avecSousFamille, sousFamilleOuFamille);
-		}
-		return redirect("/gererBaseDeDonneesInsectes");
-	 }
+	/** public static Result ajouterNouvEspece(){
+	*if (Admin.isAdminConnected()){
+	*	ajouterNouvelleEspece(avecSousFamille, sousFamilleOuFamille);
+	*	}
+	*	return redirect("/gererBaseDeDonneesInsectes");
+	 }*/
 }
