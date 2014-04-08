@@ -199,7 +199,7 @@ create table observation (
   observation_fiche_fiche_id bigint not null,
   observation_determinateur varchar(255),
   observation_commentaires  TEXT,
-  obervation_vue_par_expert tinyint(1) default 0 not null,
+  observation_vue_par_expert tinyint(1) default 0 not null,
   observation_validee       TINYINT not null,
   observation_date_derniere_modification datetime not null,
   observation_date_validation datetime,

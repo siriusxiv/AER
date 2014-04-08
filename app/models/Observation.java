@@ -19,12 +19,14 @@
 package models;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
 
 import play.db.ebean.Model;
 
@@ -53,7 +55,7 @@ public class Observation extends Model {
 	@Column(columnDefinition="TEXT")
 	public String observation_commentaires;
 	@NotNull
-	public boolean obervation_vue_par_expert;
+	public boolean observation_vue_par_expert;
 	@NotNull
 	@Column(columnDefinition="TINYINT")
 	public Integer observation_validee;
@@ -62,6 +64,31 @@ public class Observation extends Model {
 	public Calendar observation_date_validation;
 	
 	public static Finder<Long,Observation> find = new Finder<Long,Observation>(Long.class, Observation.class);
+	
+	public static List<Observation> findAll(){
+		return find.all();
+	}
+	
+	/**
+	 * Sélectionne la liste des observations de l'état désiré (non validé, en suspend, validée)
+	 * 
+	 * @param validation (=0 non validé, =1en suspend)
+	 * @return
+	 */
+	public static List<Observation> observationsEtat(Integer validation){
+		return find.where().eq("observation_validee",validation).findList();
+	}
+	
+	public static List<Observation> nonVus(){
+		boolean nonvu= false;
+		return find.where().eq("observation_vue_par_expert",nonvu).findList();
+	}
+	
+	
+	public static List<Observation> enSuspend(){
+		Integer suspend=1;
+		return find.where().eq("observation_validee", suspend).findList();
+	}
 
 	@Override
 	public String toString(){

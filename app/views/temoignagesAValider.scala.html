@@ -15,10 +15,23 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Témoignages à valider"){<header>
+@(listObservation :List[Observation])
+ @main("Témoignages à valider"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
+		<h1> Page pour l'expert qui voit la liste des témoignages à valider </h1>
 	</header>
-	<h1> Page pour l'expert qui voit la liste des témoignages à valider </h1>
+	<h2>Sélectionner le type de témoignage voulus</h2>
+	<form action="/temoignagesAValider" method="GET"><button type="submit">Non Vus</button></form>
+	<form action="/temoignagesAValider/enSuspends" method="GET"><button type="submit">En Suspend</button></form>
+
+        
+        <table>
+        	<tr>
+        		<th>Observation</th>
+        		<th>Marquer comme Vu<th>
+        	</tr>
+        	
+
 }{<script></script>}
