@@ -15,25 +15,82 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
+@(message: String)
 @main("Inscription"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
 	</header>
 	<h1> Page pour s'inscrire </h1>
-	<form action="/inscription" method="GET">
-	<b>Nom </b><input type="text" size="20" name="Nom" value="">
-	<b>Prénom </b><input type="text" size="20" name="Prénom" value=""><br>
-	<form><b>Civilité </b><input type="radio" name="Civilité" value="homme">M  <input type="radio" name="Civilité" value="femme">Mme </form> 
-	<b>Adresse e-mail </b><input type="text" size="40" name="e-mail" value=""><br>
-	<b>Adresse postale </b><input type="text" size="40" name="postale" value=""><br>
-	<b>Code Postal </b><input type="text" size="10" name="CP" value=""><b> Commune </b><input type="text" size="20" name="commune" value=""><br>
-	<b>Pays </b><select><option value="-1">France</option><option value="pays_id">Autre</option></select><br>
-	<b>Téléphone </b><input type="text" size="10" name="tel" value=""><br>
-	<b>Tél.Portable </b><input type="text" size="10" name="telport" value=""><br>
-	<b>Date de naissance </b><input type="text" size="1" name="jour" value=""><input type="text" size="1" name="mois" value=""><input type="text" size="3" name="année" value="">
-	<p><b>Choix du Mot de Passe </b><input type="text" size="25" name="mdp" value=""><br>
-	<b>Confirmer Mot de Passe</b><input type="text" size="20" name="mdpconf" value=""></p>
+	<span class="message">@Html(message)</span>
+	<form action="/inscription" method="POST">
+	<table>
+	<tr>
+		<td>NOM et Prénom :</td>
+		<td><input type="text" name="nom" placeholder="NOM Prénom"></td>
+	</tr>
+	<tr>
+		<td>Civilité :</td>
+		<td><input type="radio" name="civilite" value="homme">M. 
+			<input type="radio" name="civilite" value="femme">Mme 
+			<input type="radio" name="civilite" value="autre">Autre 
+		</td>
+	</tr>
+	<tr>
+		<td>Adresse e-mail</td>
+		<td><input type="text" name="email" placeholder="Adresse e-mail"></td>
+	</tr>
+	<tr>
+		<td>Adresse postale</td>
+		<td><input type="text" name="adresse" placeholder="Adresse ligne 1"></td>
+	</tr>
+	<tr>
+		<td>Complément d'adresse</td>
+		<td><input type="text" name="adresse_complement" placeholder="Complément d'adresse"></td>
+	</tr>
+	<tr>
+		<td>Code Postal</td>
+		<td><input type="text" name="cp" placeholder="Code postal"></td>
+	</tr>
+	<tr>
+		<td>Commune</td>
+		<td><input type="text" name="commune" placeholder="Commune"></td>
+	</tr>
+	<tr>
+		<td>Pays</td>
+		<td><input type="text" name="pays" placeholder="Pays" value="France"></td>
+	</tr>
+	<tr>
+		<td>Date de naissance</td>
+		<td>
+			<select name="jour">
+			@for(i: Int <- 1 to 31){
+				<option value="@i">@i</option>
+			}
+			</select>
+			<select name="mois">
+			@for(i: Int <- 1 to 12){
+				<option value="@i">@i</option>
+			}
+			</select>
+			<select name="annee">
+			@for(i: Int <- 1900 to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
+				<option value="@i">@i</option>
+			}
+			</select>
+		</td>
+	<tr>
+		<td>Mot de Passe</td>
+		<td><input type="password" name="passw" placeholder="Mot de passe"></td>
+	</tr>
+	<tr>
+		<td>Confirmer Mot de Passe</td>
+		<td><input type="password" name="passw_conf" placeholder="Confirmation"></td>
+	</tr>
+	</table>
 	<button type="submit">Valider</button>
 	</form>
-	}{<script></script>}
+	}{
+	<script>
+	</script>
+	}

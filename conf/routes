@@ -6,7 +6,7 @@
 GET     /                           controllers.Application.index()
 GET     /identification             controllers.Identification.main()
 POST	/connexion					controllers.Identification.connexion()
-GET     /inscription                controllers.Application.inscription()
+GET     /inscription                controllers.Inscription.main()
 GET     /retrouverMotDePasse        controllers.Application.retrouverMotDePasse()
 
 #routes pour l'utilisateur

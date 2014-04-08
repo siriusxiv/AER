@@ -32,10 +32,6 @@ public class Application extends Controller {
 
     /*Page de login ou d'inscription */
     
-    public static Result inscription() {
-    	return ok( inscription.render());
-    }
-    
     public static Result retrouverMotDePasse() {
     	return ok( retrouverMotDePasse.render());
     }
