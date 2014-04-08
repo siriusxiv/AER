@@ -30,9 +30,24 @@ import views.html.identification;
 
 public class Identification extends Controller {
 
+	/**
+	 * Renvoie la page d'identification.
+	 * Si un membre est connecté, renvoie vers la page correspondant à ses droits.
+	 * @return
+	 */
     public static Result main() {
-    	return ok(identification.render(""));
+    	if(session("memory")!=null){
+    		Membre membre = Membre.find.where().eq("membre_email", session("username")).findUnique();
+    		return allerVers(membre);
+    	}else
+    		return ok(identification.render(""));
     }
+    
+    /**
+     * Si les identifiants sont faux, retourne à la page d'identification
+     * avec un petit message.
+     * @return
+     */
     public static Result connexionEchouée() {
     	return ok(identification.render("Votre combinaison nom d'utilisateur et mot de passe est incorrecte."));
     }
@@ -53,16 +68,30 @@ public class Identification extends Controller {
     		if(df.get("memory")!=null)
     			session("memory","");
     		Membre membre = Membre.find.where().eq("membre_email", username).findUnique();
-    		if(membre.membre_droits.equals(Droits.TEMOIN))
-    			return redirect("/menuUtilisateur");
-    		else if(membre.membre_droits.equals(Droits.EXPERT))
-    			return redirect("/menuExpert");
-    		else if(membre.membre_droits.equals(Droits.ADMIN))
-    			return redirect("/menuAdmin");
-    		else
-    			return connexionEchouée();
+    		return allerVers(membre);
     	}else
     		return connexionEchouée();
+    }
+    
+    /**
+     * Redirige vers la page correspondant aux droits du membre en argument.
+     * Si l'utilisateur n'est ni témoin, ni expert, ni admin (ce qui ne peut arriver
+     * que s'il est arrivé des choses atroces à la session), alors on remet à 0
+     * la session et on renvoie vers la page d'identification.
+     * @param membre
+     * @return
+     */
+    public static Result allerVers(Membre membre){
+		if(membre.membre_droits.equals(Droits.TEMOIN))
+			return redirect("/menuUtilisateur");
+		else if(membre.membre_droits.equals(Droits.EXPERT))
+			return redirect("/menuExpert");
+		else if(membre.membre_droits.equals(Droits.ADMIN))
+			return redirect("/menuAdmin");
+		else{
+			session().clear();
+			return main();
+		}
     }
     
 }
