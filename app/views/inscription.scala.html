@@ -22,12 +22,12 @@
 		</dl>
 	</header>
 	<h1> Page pour s'inscrire </h1>
-	<span class="message">@Html(message)</span>
-	<form action="/inscription" method="POST">
+	<span class="message" id="message">@Html(message)</span>
+	<form action="/inscription" method="POST" id="form">
 	<table>
 	<tr>
 		<td>NOM et Prénom :</td>
-		<td><input type="text" name="nom" placeholder="NOM Prénom"></td>
+		<td><input type="text" name="nom" placeholder="NOM Prénom" id="nom"></td>
 	</tr>
 	<tr>
 		<td>Civilité :</td>
@@ -38,8 +38,9 @@
 	</tr>
 	<tr>
 		<td>Adresse e-mail</td>
-		<td><input type="text" name="email" placeholder="Adresse e-mail"></td>
+		<td><input type="text" name="email" placeholder="Adresse e-mail" id="email"></td>
 	</tr>
+	@**********************************************************************************************
 	<tr>
 		<td>Adresse postale</td>
 		<td><input type="text" name="adresse" placeholder="Adresse ligne 1"></td>
@@ -79,18 +80,69 @@
 			}
 			</select>
 		</td>
+		*************************************************************************@
 	<tr>
 		<td>Mot de Passe</td>
-		<td><input type="password" name="passw" placeholder="Mot de passe"></td>
+		<td><input type="password" name="passw" placeholder="Mot de passe" id="passw"></td>
 	</tr>
 	<tr>
-		<td>Confirmer Mot de Passe</td>
-		<td><input type="password" name="passw_conf" placeholder="Confirmation"></td>
+		<td>Confirmer mot de Passe</td>
+		<td><input type="password" name="passw_conf" placeholder="Confirmation" id="passw_conf"></td>
 	</tr>
 	</table>
-	<button type="submit">Valider</button>
+	<input type="checkbox" id="conditions"> J'accepte les <a class="lien" onClick="window.open('http://aer-nantes.fr/mentions-legales');">mentions légales</a> de l'association.
+	<button onClick="poster();return false;">Valider</button>
 	</form>
 	}{
 	<script>
+	function poster(){
+		if(!$('#conditions').is(':checked'))
+			$('#message').html('Vous n\'avez pas accepté les mentions légales.');
+		else if($('#passw').val()!=$('#passw_conf').val())
+			$('#message').html('Vos mots de pass sont différents');
+		else if($('#passw').val().length<5)
+			$('#message').html('Votre mot de passe fait moins de 5 caractères. Faites un mot de passe plus long.');
+		else if($('#nom').val()=='')
+			$('#message').html('Le champ "NOM Prénom" a été laissé vide.');
+		else if(!isRFC822ValidEmail($('#email').val()))
+			$('#message').html('Votre adresse mail n\'est pas valide.');
+		else
+			$('#form').submit();
+	}
+	/**
+	 * JavaScript function to check an email address conforms to RFC822 (http://www.ietf.org/rfc/rfc0822.txt)
+	 *
+	 * Version: 0.2
+	 * Author: Ross Kendall
+	 * Created: 2006-12-16
+	 * Updated: 2007-03-22
+	 *
+	 * Based on the PHP code by Cal Henderson
+	 * http://iamcal.com/publish/articles/php/parsing_email/
+	 */
+	function isRFC822ValidEmail(sEmail) {
+
+		  var sQtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]';
+		  var sDtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]';
+		  var sAtom = '[^\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]+';
+		  var sQuotedPair = '\\x5c[\\x00-\\x7f]';
+		  var sDomainLiteral = '\\x5b(' + sDtext + '|' + sQuotedPair + ')*\\x5d';
+		  var sQuotedString = '\\x22(' + sQtext + '|' + sQuotedPair + ')*\\x22';
+		  var sDomain_ref = sAtom;
+		  var sSubDomain = '(' + sDomain_ref + '|' + sDomainLiteral + ')';
+		  var sWord = '(' + sAtom + '|' + sQuotedString + ')';
+		  var sDomain = sSubDomain + '(\\x2e' + sSubDomain + ')*';
+		  var sLocalPart = sWord + '(\\x2e' + sWord + ')*';
+		  var sAddrSpec = sLocalPart + '\\x40' + sDomain; // complete RFC822 email address spec
+		  var sValidEmail = '^' + sAddrSpec + '$'; // as whole string
+		  
+		  var reValidEmail = new RegExp(sValidEmail);
+		  
+		  if (reValidEmail.test(sEmail)) {
+		    return true;
+		  }
+		  
+		  return false;
+		}
 	</script>
 	}
