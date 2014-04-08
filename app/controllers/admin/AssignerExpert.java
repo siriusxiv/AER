@@ -34,14 +34,17 @@ import views.html.assignerExperts;
  *
  */
 public class AssignerExpert extends Controller {
-	
+
 	/**
 	 * Affiche la page principale
 	 * @return
 	 */
 	public static Result main() {
-		List<Groupe> groupes = Groupe.find.orderBy("groupe_nom").findList();
-		return ok(assignerExperts.render(groupes));
+		if(Admin.isAdminConnected()){
+			List<Groupe> groupes = Groupe.find.orderBy("groupe_nom").findList();
+			return ok(assignerExperts.render(groupes));
+		}else
+			return Admin.nonAutorise();
 	}
 
 	/**
@@ -52,16 +55,19 @@ public class AssignerExpert extends Controller {
 	 * @return
 	 */
 	public static Result ajouter(Integer groupe_id){
-		DynamicForm df = DynamicForm.form().bindFromRequest();
-		Groupe groupe = Groupe.find.byId(groupe_id);
-		Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nom")).findUnique();
-		if(expert!=null && groupe!=null){
-			MembreIsExpertOnGroupe mieog = new MembreIsExpertOnGroupe(expert,groupe);
-			mieog.save();
-			expert.membre_droits=Droits.EXPERT;
-			expert.save();
-		}
-		return redirect("/assignerExperts");
+		if(Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			Groupe groupe = Groupe.find.byId(groupe_id);
+			Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nom")).findUnique();
+			if(expert!=null && groupe!=null){
+				MembreIsExpertOnGroupe mieog = new MembreIsExpertOnGroupe(expert,groupe);
+				mieog.save();
+				expert.membre_droits=Droits.EXPERT;
+				expert.save();
+			}
+			return redirect("/assignerExperts");
+		}else
+			return Admin.nonAutorise();
 	}
 
 	/**
@@ -70,19 +76,22 @@ public class AssignerExpert extends Controller {
 	 * @return
 	 */
 	public static Result changer(Integer groupe_id){
-		DynamicForm df = DynamicForm.form().bindFromRequest();
-		MembreIsExpertOnGroupe mieog = MembreIsExpertOnGroupe.find.where().eq("groupe.groupe_id",groupe_id).findUnique();
-		Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nom")).findUnique();
-		if(mieog!=null && expert!=null){
-			if(!mieog.membre.membre_droits.equals(Droits.ADMIN)){
-				mieog.membre.membre_droits=Droits.TEMOIN;
-				mieog.membre.save();
+		if(Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			MembreIsExpertOnGroupe mieog = MembreIsExpertOnGroupe.find.where().eq("groupe.groupe_id",groupe_id).findUnique();
+			Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nom")).findUnique();
+			if(mieog!=null && expert!=null){
+				if(!mieog.membre.membre_droits.equals(Droits.ADMIN)){
+					mieog.membre.membre_droits=Droits.TEMOIN;
+					mieog.membre.save();
+				}
+				mieog.membre=expert;
+				mieog.save();
+				expert.membre_droits=Droits.EXPERT;
 			}
-			mieog.membre=expert;
-			mieog.save();
-			expert.membre_droits=Droits.EXPERT;
-		}
-		return redirect("/assignerExperts");
+			return redirect("/assignerExperts");
+		}else
+			return Admin.nonAutorise();
 	}
-	
+
 }

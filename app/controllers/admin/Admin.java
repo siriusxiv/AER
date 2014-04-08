@@ -18,6 +18,7 @@
 package controllers.admin;
 
 import play.mvc.Controller;
+import play.mvc.Result;
 
 /**
  * Fonctions générales de gestions des admins
@@ -29,7 +30,15 @@ public class Admin extends Controller{
 	 * Si c'est un admin qui est connecté, renvoie true, sinon, renvoie false.
 	 * @return
 	 */
-	public boolean isAdminConnected(){
+	public static boolean isAdminConnected(){
 		return session("admin").equals("true");
+	}
+
+	/**
+	 * Affiche la page d'erreur 401
+	 * @return
+	 */
+	public static Result nonAutorise() {
+		return unauthorized("You do not have the right to access this page.");
 	}
 }
