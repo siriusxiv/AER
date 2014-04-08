@@ -81,10 +81,6 @@ public class Application extends Controller {
     	return redirect(routes.Application.demandesInscription());
     }
     
-    public static Result gererBaseDeDonneesInsectes() {
-    	return ok( gererBaseDeDonneesInsectes.render());
-    }
-    
    /******* Results de la page liste de membres **********/
     public static Result listeMembres(String orderBy, String sortDirection){
     	return ok( listeMembres.render(Membre.findAll(orderBy, sortDirection), Droits.findAll(),Confidentialite.findAll()));

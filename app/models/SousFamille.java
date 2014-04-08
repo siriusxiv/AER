@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.naming.NamingException;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -50,6 +52,10 @@ public class SousFamille extends Model{
 	
 	public static Finder<Integer,SousFamille> find = new Finder<Integer,SousFamille>(Integer.class, SousFamille.class);
 	
+	public static List<SousFamille> findAll(){
+		return find.findList();
+	}
+	
 	/**
 	 * Crée une sous famille et lance une PersistenceException si plusieurs familles portent le même nom,
 	 * une NamingException si la famille en argument n'existe pas.
@@ -76,6 +82,14 @@ public class SousFamille extends Model{
 		if(sous_famille_existe)
 			return sous_famille_nom;
 		else
-			return Espece.find.where().eq("espece_sous_famille", this).findUnique().toString();
+			return Espece.find.where().eq("espece_sousfamille", this).findUnique().toString();
+	}
+
+	/**
+	* Renvoie la liste des sous-familles existantes.
+	* @return 
+	*/
+	public static List<SousFamille> findSousFamilleExistantes(){
+		return SousFamille.find.where().eq("sous_famille_existe", true).findList();
 	}
 }

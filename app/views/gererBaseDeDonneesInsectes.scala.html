@@ -15,10 +15,78 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
+@(especes : List[Espece])(sousFamilles : List[SousFamille])
 @main("Gérer la Base de Données des Insectes"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
 	</header>
 	<h1> Page pour que l'admin puisse modifier la base de données des insectes </h1>
-	}{<script></script>}
+	<h2> Liste des espèces </h2>
+	<table>
+		<tr>
+			<th>Systématique</th>
+			<th>Espece</th>
+			<th>Sous Famille</th>
+			<th>Famille</th>
+			<th>Super Famille</th>
+			<th>Ordre</th>
+			<th>Sous Groupe</th>
+			<th>Groupe</th>
+			<th>Action</th>
+		</tr>
+		@for(espece <- especes){
+		<tr>
+			<td>@espece.espece_systematique</td>
+			<td>@espece.espece_nom</td>
+			<td>@espece.getSousFamille()</td>
+			<td>@espece.getFamille()</td>
+			<td>@espece.getSuperFamille()</td>
+			<td>@espece.getOrdre()</td>
+			<td>@espece.getSousGroupe()</td>
+			<td>@espece.getGroupe()</td>
+			<td><button type="submit">Supprimer</button></td>
+		</tr>
+		}
+	</table>
+		<p>
+			<button onClick="visibleAjoutEspece()">Ajouter une espèce</button>
+		</p>
+		<div id="nouv_espece" style="display:none">
+		<h2>Ajouter une espèce</h2>
+			<table>
+				<tr>
+					<th>Nom</th>
+					<th>Auteur</th>
+					<th>Systématique</th>
+					<th>Photo</th>
+					<th>Sous Famille</th>
+					<th>Commentaires</th>
+				</tr>
+				<tr>
+					<td><input type="text" size="20" name="nom" value=""></td>
+					<td><input type="text" size="20" name="auteur" value=""></td>
+					<td><input type="text" size="5" name="systématique" value=""></td>
+					<td><input type="file" name="photo" value=""></td>
+					<td>
+						<select name="sous_famille">
+							<option value="-1">&nbsp;</option>
+							@for(sousFamille <- sousFamilles){
+							<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>}
+						</select>
+					</td>
+					<td><input type="text" size="30" name="commentaires" value=""></td>
+				</tr>
+				<tr>
+					<td><button type="submit">Ajouter l'espèce</button></td>
+				</tr>
+			</table>
+	}{<script>
+	function visibleAjoutEspece() {
+		if (document.getElementById("nouv_espece").style.display == "none") {
+			document.getElementById("nouv_espece").style.display = "block";
+		} else {
+			document.getElementById("nouv_espece").style.display = "none";
+		}
+	}
+	</script>}
