@@ -19,8 +19,10 @@
 package controllers;
 
 
+import controllers.membre.SecuredMembre;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import views.html.*;
 import models.*;
 
@@ -37,7 +39,7 @@ public class Application extends Controller {
     }
     
     /*Pages de l'utilisateur  */
-    	
+    @Security.Authenticated(SecuredMembre.class)
     public static Result menuUtilisateur() {
     	return ok( menuUtilisateur.render());
     }
