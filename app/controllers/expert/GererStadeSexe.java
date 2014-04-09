@@ -15,30 +15,20 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-package controllers.admin;
+package controllers.expert;
 
+import controllers.admin.Admin;
+import models.Groupe;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.gererStadeSexe;
 
-/**
- * Fonctions générales de gestions des admins
- * @author malik
- *
- */
-public class Admin extends Controller{
-	/**
-	 * Si c'est un admin qui est connecté, renvoie true, sinon, renvoie false.
-	 * @return
-	 */
-	public static boolean isAdminConnected(){
-		return session("admin")!=null;
-	}
-
-	/**
-	 * Affiche la page d'erreur 401
-	 * @return
-	 */
-	public static Result nonAutorise() {
-		return unauthorized("You do not have the right to access this page.");
+public class GererStadeSexe extends Controller{
+	public static Result main(Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe))
+			return ok(gererStadeSexe.render(groupe));
+		else
+			return Admin.nonAutorise();
 	}
 }

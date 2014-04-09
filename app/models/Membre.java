@@ -155,4 +155,12 @@ public class Membre extends Model {
 		return membre_inscription_acceptee;
 	}
 
+	/**
+	 * Renvoie la liste des groupes (sous forme de MembreIsExpertOnGroupe)
+	 * dont le membre est expert.
+	 * @return
+	 */
+	public List<MembreIsExpertOnGroupe> getGroupesDExpertise(){
+		return MembreIsExpertOnGroupe.find.where().eq("membre",this).findList(); 
+	}
 }

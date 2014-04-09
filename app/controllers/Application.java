@@ -55,10 +55,6 @@ public class Application extends Controller {
     
     /* Pages de l'expert  */
     
-    public static Result menuExpert() {
-    	return ok( menuExpert.render());
-    }
-    
     
     public static Result temoignagesValides() {
     	return ok( temoignagesValides.render());

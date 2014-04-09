@@ -15,6 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
+@(expert: Membre)
 @main("Menu Expert"){<header>
 		<dl>
 		<a href="/">Retour</a>
@@ -40,8 +41,13 @@
 		<dt>
 		<a href="/consulterDonnees">Consulter les données</a>
 		</dt>
+		@for(mieog <- expert.getGroupesDExpertise()){
 		<dt>
-		<a href="http://www.aer-nantes.fr/">Se Déconnecter</a>
+		<a href="/gererstadesexe/@mieog.groupe.groupe_id">Gérer les sexes et les stades du groupe @mieog.groupe</a>
+		</dt>
+		}
+		<dt>
+		<a href="/deconnexion">Se Déconnecter</a>
 		</dt>
 	</dl>
 }{<script></script>}
