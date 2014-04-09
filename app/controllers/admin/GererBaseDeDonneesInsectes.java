@@ -29,6 +29,8 @@ import models.Groupe;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
+import javax.naming.NamingException;
+import javax.persistence.PersistenceException; 
 import views.html.gererBaseDeDonneesInsectes;
 
 /**
@@ -43,18 +45,68 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	 * @return
 	 */
 	public static Result main() {
-		return ok(gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamilleExistantes()));
+		return ok(gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+	}
+	/******* mise en place des tris des insectes **********/
+	public static Result listeEspecesParSousFamille(){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Integer sousfam_id = Integer.parseInt(df.get("sous_famille_tri"));
+		SousFamille sousfam = SousFamille.find.byId(sousfam_id);
+		if (sousfam_id == 0) {
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {	
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesSousFamille(sousfam), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+		}
+	}
+	public static Result listeEspecesParFamille(){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Integer fam_id = Integer.parseInt(df.get("famille_tri"));
+		Famille fam = Famille.find.byId(fam_id);
+		if (fam_id == 0) {
+			return redirect ("/gererBaseDeDonneesInsectes");
+		} else {
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesFamille(fam), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+		}
+	}
+	public static Result listeEspecesParSuperFamille(){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Integer superfam_id = Integer.parseInt(df.get("super_famille_tri"));
+		SuperFamille superfam = SuperFamille.find.byId(superfam_id);
+		if (superfam_id == 0) {
+			return redirect ("/gererBaseDeDonneesInsectes");
+		} else {
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesSuperFamille(superfam), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+		}
+	}
+	public static Result listeEspecesParOrdre(){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Integer ordre_id = Integer.parseInt(df.get("ordre_tri"));
+		Ordre ordre = Ordre.find.byId(ordre_id);
+		if (ordre_id == 0) {
+			return redirect ("/gererBaseDeDonneesInsectes");
+		} else {
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesOrdre(ordre), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+		}
 	}
 	
 	/**
-	 * Ajoute l'Espèce à la base de données. A écrire
-	 * @param groupe_id
+	 * Ajoute l'Espèce à la base de données. Ne marche que sur les espèces au milieu ou début.
 	 * @return
 	 */
-	/** public static Result ajouterNouvEspece(){
-	*if (Admin.isAdminConnected()){
-	*	ajouterNouvelleEspece(avecSousFamille, sousFamilleOuFamille);
-	*	}
-	*	return redirect("/gererBaseDeDonneesInsectes");
-	 }*/
+	public static Result ajouterNouvEspece() throws NamingException, PersistenceException{
+	if (Admin.isAdminConnected()){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Integer numero_systematique = Integer.parseInt(df.get("systématique"));
+		Espece espece_avant = Espece.findBySystematique(numero_systematique);
+		String nomSousFamilleOuFamille = new String();
+		boolean avecSousFam = df.get("aUneSousFamille").equals("sousfam");
+		if (avecSousFam) {
+			nomSousFamilleOuFamille = df.get("sousfamille");
+		} else {
+			nomSousFamilleOuFamille = df.get("famille");
+		}
+		espece_avant.ajouterNouvelleEspece(avecSousFam, nomSousFamilleOuFamille);
+	}
+	return redirect("/gererBaseDeDonneesInsectes");
+}
 }

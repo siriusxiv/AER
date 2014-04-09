@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -38,6 +40,10 @@ public class Famille extends Model{
 	
 	public static Finder<Integer,Famille> find = new Finder<Integer,Famille>(Integer.class, Famille.class);
 
+	public static List<Famille> findAll(){
+		return find.findList();
+	}
+	
 	@Override
 	public String toString(){
 		return famille_nom;

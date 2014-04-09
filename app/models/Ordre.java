@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List; 
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -34,6 +36,10 @@ public class Ordre extends Model {
 	
 	public static Finder<Integer,Ordre> find = new Finder<Integer,Ordre>(Integer.class, Ordre.class);
 
+	public static List<Ordre> findAll(){
+		return find.findList();
+	}
+	
 	@Override
 	public String toString(){
 		return ordre_nom;

@@ -34,7 +34,12 @@ GET     /demandesInscription         controllers.Application.demandesInscription
 POST    /demandesInscription/valider/:membre_id    controllers.Application.valideInscription(membre_id: Integer)
 
 #route pour gérer la base des insectes (admin)
-GET     /gererBaseDeDonneesInsectes  controllers.admin.GererBaseDeDonneesInsectes.main()
+GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()
+POST	/gererBaseDeDonneesInsectes	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvEspece()
+GET     /especesParSousFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousFamille()
+GET     /especesParFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParFamille()
+GET     /especesParSuperFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSuperFamille()
+GET     /especesParOrdre   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParOrdre()
 
 #routes pour les listes de membres*****************
 GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")

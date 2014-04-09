@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -48,6 +50,10 @@ public class SuperFamille extends Model{
 	
 	public static Finder<Integer,SuperFamille> find = new Finder<Integer,SuperFamille>(Integer.class, SuperFamille.class);
 
+	public static List<SuperFamille> findAll(){
+		return find.findList();
+	}
+	
 	@Override
 	public String toString(){
 		return super_famille_nom;
