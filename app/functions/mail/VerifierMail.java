@@ -17,21 +17,18 @@
  ********************************************************************************/
 package functions.mail;
 
-import play.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
 import models.Membre;
 
 import views.html.verificationMail;
+import views.html.mails.*;
 
 public class VerifierMail extends Controller{
 	
 	public static void envoyerMailDeVerification(Membre membre){
-		String contenu = "Veuillez suivre le lien suivant pour valider la création de votre compte :<br>";
-		contenu+=Play.application().configuration().getString("domain.name")+"/verification/"+membre.membre_lien_de_validation_de_mail;
-		contenu+="<br>Ce sera au webmestre d'accepter ou non votre inscription.";
 		Mail mail = new Mail("Validation de la création de votre compte AER",
-				contenu,
+				mailDeVerification.render(membre.membre_lien_de_validation_de_mail).toString(),
 				membre.membre_email,
 				membre.membre_nom);
 		mail.sendMail();
@@ -42,6 +39,7 @@ public class VerifierMail extends Controller{
 		m.membre_lien_de_validation_de_mail=null;
 		m.save();
 		envoyerMailAcceptationAAdmin(m);
+		verificationMail.render().toString();
 		return ok(verificationMail.render());
 	}
 	
