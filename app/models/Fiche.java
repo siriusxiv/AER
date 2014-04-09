@@ -19,6 +19,7 @@
 package models;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,6 +58,14 @@ public class Fiche extends Model {
 	
 	public static Finder<Long,Fiche> find = new Finder<Long,Fiche>(Long.class, Fiche.class);
 	
+	/**
+	 * renvoie les fonctions FicheHasMembre rattachées à la liste sélectionnée.
+	 * @return
+	 */
+	public  List<FicheHasMembre> getFicheHasMembre(){
+		List<FicheHasMembre> fhm=FicheHasMembre.find.where().eq("fiche", this).findList();
+		return fhm;
+	}
 	@Override
 	public String toString(){
 		return fiche_id+"-"+fiche_utm;

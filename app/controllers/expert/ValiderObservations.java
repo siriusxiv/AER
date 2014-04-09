@@ -17,6 +17,7 @@
  ********************************************************************************/
 package controllers.expert;
 
+
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.temoignagesAValider;
@@ -58,4 +59,31 @@ public class ValiderObservations extends Controller {
     }
     
 	
+	/**
+	 * Permet de marquer comme vue l'obsertvation sélectionnée
+	 * @param id
+	 * @return
+	 */
+	public static Result marquerVu(Long id){
+		Observation observation = Observation.find.byId(id);
+		if (observation!=null){
+			observation.vu();
+		}
+		observation.save();
+		return redirect("/temoignagesAValider");
+	}
+	
+	/**
+	 * Permet de marquer comme validé l'observation sélectionnée
+	 * @param id
+	 * @return
+	 */
+	public static Result valide(Long id){
+		Observation observation = Observation.find.byId(id);
+		if (observation!=null){
+			observation.valider();
+		}
+		observation.save();
+		return redirect("/temoignagesAValider/enSuspens");
+	}
 }
