@@ -147,4 +147,12 @@ public class Membre extends Model {
 		return membre_lien_de_validation_de_mail!=null;
 	}
 
+	/**
+	 * Renvoie vrai si l'inscription a été acceptée par l'admin, faux sinon.
+	 * @return
+	 */
+	public boolean inscriptionValidee() {
+		return membre_inscription_acceptee;
+	}
+
 }

@@ -34,6 +34,15 @@ public class Inscription extends Controller {
 		return ok(inscription.render(""));
 	}
 
+	/**
+	 * Inscrit le nouveau membre dans la base de données, lui envoie
+	 * un mail pour vérifier son adresse et envoie un mail à l'admin.
+	 * Si son adresse mail est déjà dans la base, alors renvoie vers
+	 * la page d'identification.
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 */
 	public static Result inscrire() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		String nom = df.get("nom");
