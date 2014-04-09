@@ -68,10 +68,10 @@ public class Identification extends Controller {
     		if(df.get("memory")!=null)
     			session("memory","");
     		Membre membre = Membre.find.where().eq("membre_email", username).findUnique();
-    		if(membre.adresseMailNonActivee())
-    			return connexionEchouée();
-    		else
+    		if(membre.inscriptionValidee())
     			return allerVers(membre);
+    		else
+    			return connexionEchouée();
     	}else
     		return connexionEchouée();
     }
@@ -87,14 +87,25 @@ public class Identification extends Controller {
     public static Result allerVers(Membre membre){
 		if(membre.membre_droits.equals(Droits.TEMOIN))
 			return redirect("/menuUtilisateur");
-		else if(membre.membre_droits.equals(Droits.EXPERT))
+		else if(membre.membre_droits.equals(Droits.EXPERT)){
+			session("expert","true");
 			return redirect("/menuExpert");
-		else if(membre.membre_droits.equals(Droits.ADMIN))
+		}
+		else if(membre.membre_droits.equals(Droits.ADMIN)){
+			session("admin","true");
 			return redirect("/menuAdmin");
-		else{
+		}else{
 			session().clear();
 			return main();
 		}
     }
     
+    /**
+     * Déconnecte l'utilisateur
+     * @return
+     */
+    public static Result deconnexion(){
+    	session().clear();
+    	return redirect("/");
+    }
 }

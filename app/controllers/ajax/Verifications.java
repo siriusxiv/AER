@@ -15,30 +15,23 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-package controllers.admin;
+package controllers.ajax;
 
+import models.Membre;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-/**
- * Fonctions générales de gestions des admins
- * @author malik
- *
- */
-public class Admin extends Controller{
+public class Verifications extends Controller {
 	/**
-	 * Si c'est un admin qui est connecté, renvoie true, sinon, renvoie false.
+	 * Renvoie ok() si l'adresse mail en entrée n'est pas déjà utilisée.
+	 * Renvoie badRequest() si elle est déjà utilisée par un utilisateur.
+	 * @param mail
 	 * @return
 	 */
-	public static boolean isAdminConnected(){
-		return session("admin")!=null;
-	}
-
-	/**
-	 * Affiche la page d'erreur 401
-	 * @return
-	 */
-	public static Result nonAutorise() {
-		return unauthorized("You do not have the right to access this page.");
+	public static Result mailExisteOuPas(String mail){
+		if(Membre.find.where().eq("membre_email",mail).findList().isEmpty())
+			return ok();
+		else
+			return badRequest();
 	}
 }

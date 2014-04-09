@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index()
 GET     /identification             controllers.Identification.main()
 POST	/connexion					controllers.Identification.connexion()
+GET		/deconnexion				controllers.Identification.deconnexion()
 GET     /inscription                controllers.Inscription.main()
 POST	/inscription				controllers.Inscription.inscrire()
 GET     /retrouverMotDePasse        controllers.Application.retrouverMotDePasse()
@@ -26,7 +27,11 @@ GET     /temoignagesAValider  			    controllers.expert.ValiderObservations.temo
 GET     /temoignagesAValider/enSuspens	     controllers.expert.ValiderObservations.temoignagesEnSuspends()
 POST    /temoignagesAValider/vu 			controllers.expert.ValiderObservations.marquerVu(observation_id: Long)
 POST    /temoignagesAValider/valide			controllers.expert.ValiderObservations.valide(observation_id: Long)
+GET     /menuExpert                 controllers.expert.MenuExpert.main()
+GET     /temoignagesAValider      controllers.expert.ValiderObservations.temoignagesNonVus()
+GET     /temoignagesAValider/enSuspends     controllers.expert.ValiderObservations.temoignagesEnSuspends()
 GET     /temoignagesValides         controllers.Application.temoignagesValides()
+GET		/gererstadesexe/:groupe_id	controllers.expert.GererStadeSexe.main(groupe_id: Integer)
 
 #routes pour les admins
 GET     /menuAdmin                   controllers.Application.menuAdmin()
@@ -52,6 +57,7 @@ GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax
 GET		/listeDesMembres/:string_id	controllers.ajax.Listes.membres(string_id: String)
+GET		/emailExisteOuPas/:mail		controllers.ajax.Verifications.mailExisteOuPas(mail: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

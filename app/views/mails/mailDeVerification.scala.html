@@ -15,13 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Validation de votre adresse mail..."){
-	Votre adresse mail est validée !
-	Redirection vers la page principale...
-}{
-<script>
-setTimeout(function(){
-	location.href = '/';
-}, 2000);
-</script>
-}
+@(lien: String)
+Veuillez suivre le lien suivant pour valider la création de votre compte :<br>
+@{play.Play.application().configuration().getString("domain.name")+"/verification/"+lien}<br>
+Ce sera au webmestre d'accepter ou non votre inscription.

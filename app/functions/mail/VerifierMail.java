@@ -17,39 +17,49 @@
  ********************************************************************************/
 package functions.mail;
 
-import play.Play;
+import java.util.List;
+
 import play.mvc.Controller;
 import play.mvc.Result;
+import models.Droits;
 import models.Membre;
-
 import views.html.verificationMail;
+import views.html.mails.*;
 
 public class VerifierMail extends Controller{
-	
+
 	public static void envoyerMailDeVerification(Membre membre){
-		String contenu = "Veuillez suivre le lien suivant pour valider la création de votre compte :<br>";
-		contenu+=Play.application().configuration().getString("domain.name")+"/verification/"+membre.membre_lien_de_validation_de_mail;
-		contenu+="<br>Ce sera au webmestre d'accepter ou non votre inscription.";
 		Mail mail = new Mail("Validation de la création de votre compte AER",
-				contenu,
+				mailDeVerification.render(membre.membre_lien_de_validation_de_mail).toString(),
 				membre.membre_email,
 				membre.membre_nom);
 		mail.sendMail();
 	}
-	
+
 	public static Result verifier(String lien){
 		Membre m = Membre.find.where().eq("membre_lien_de_validation_de_mail", lien).findUnique();
-		m.membre_lien_de_validation_de_mail=null;
-		m.save();
-		envoyerMailAcceptationAAdmin(m);
-		return ok(verificationMail.render());
+		if(m!=null){
+			m.membre_lien_de_validation_de_mail=null;
+			m.save();
+			envoyerMailAcceptationAAdmin(m);
+			return ok(verificationMail.render());
+		}else{
+			return notFound("Ressource not found on server");
+		}
 	}
-	
+
 	/**
 	 * A écrire
 	 * @param membre
 	 */
 	public static void envoyerMailAcceptationAAdmin(Membre membre){
-		
+		List<Membre> admins = Membre.find.where().eq("membre_droits", Droits.ADMIN).findList();
+		for(Membre admin : admins){
+			Mail mail = new Mail(membre+" vient de s'inscrire sur le site de l'AER",
+					mailNouvelleInscriptionPourAdmin.render(membre).toString(),
+					admin.membre_email,
+					admin.membre_nom);
+			mail.sendMail();
+		}
 	}
 }

@@ -29,12 +29,14 @@ import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 
 import models.Espece;
+import models.Membre;
 import models.SousGroupe;
 
 import org.junit.*;
 
 import controllers.ajax.Listes;
 import functions.credentials.Credentials;
+import functions.mail.VerifierMail;
 import play.mvc.*;
 import play.test.*;
 import play.libs.F.*;
@@ -63,7 +65,9 @@ public class IntegrationTest {
             	
             	//listeMembres();
             	
-            	listeEspecesAvecSousGroupeEtGroupe();
+            	//listeEspecesAvecSousGroupeEtGroupe();
+            	
+            	VerifierMail.envoyerMailDeVerification(Membre.find.all().get(0));
             }
         });
     }

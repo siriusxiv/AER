@@ -1,4 +1,4 @@
-@*********************************************************************************
+/*********************************************************************************
  * 
  *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
  *
@@ -14,14 +14,21 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *   
- ********************************************************************************@
-@main("Validation de votre adresse mail..."){
-	Votre adresse mail est validée !
-	Redirection vers la page principale...
-}{
-<script>
-setTimeout(function(){
-	location.href = '/';
-}, 2000);
-</script>
+ ********************************************************************************/
+package controllers.expert;
+
+import controllers.admin.Admin;
+import models.Groupe;
+import play.mvc.Controller;
+import play.mvc.Result;
+import views.html.gererStadeSexe;
+
+public class GererStadeSexe extends Controller{
+	public static Result main(Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe))
+			return ok(gererStadeSexe.render(groupe));
+		else
+			return Admin.nonAutorise();
+	}
 }
