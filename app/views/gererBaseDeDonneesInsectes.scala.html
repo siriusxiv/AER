@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(especes : List[Espece])(sousFamilles : List[SousFamille])
+@(especes : List[Espece], sousFamilles : List[SousFamille], familles : List[Famille], superFamilles : List[SuperFamille], ordres : List[Ordre])
 @main("Gérer la Base de Données des Insectes"){<header>
 		<dl>
 		<a href="/">Retour</a>
@@ -27,10 +27,46 @@
 		<tr>
 			<th>Systématique</th>
 			<th>Espece</th>
-			<th>Sous Famille</th>
-			<th>Famille</th>
-			<th>Super Famille</th>
-			<th>Ordre</th>
+			<th>
+				<form action="/especesParSousFamille" method="GET">
+				<select name="sous_famille_tri" onchange="this.form.submit()">
+					<option value="-1">Sous-famille</options>
+					<option value="0">Toutes(retour)</option>
+					@for(sousFamille <- sousFamilles){
+					<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>}
+				</select>
+				</form>
+			</th>
+			<th>
+				<form action="/especesParFamille" method="GET">
+				<select name="famille_tri" onchange="this.form.submit()">
+					<option value="-1">Famille</options>
+					<option value="0">Toutes(retour)</option>
+					@for(famille <- familles){
+					<option value="@famille.famille_id">@famille.famille_nom</option>}
+				</select>
+				</form>
+			</th>
+			<th>
+				<form action="/especesParSuperFamille" method="GET">
+				<select name="super_famille_tri" onchange="this.form.submit()">
+					<option value="-1">Super-famille</options>
+					<option value="0">Toutes(retour)</option>
+					@for(superFamille <- superFamilles){
+					<option value="@superFamille.super_famille_id">@superFamille.super_famille_nom</option>}
+				</select>
+				</form>
+			</th>
+			<th>
+				<form action="/especesParOrdre" method="GET">
+				<select name="ordre_tri" onchange="this.form.submit()">
+					<option value="-1">Ordre</options>
+					<option value="0">Tous(retour)</option>
+					@for(ordre <- ordres){
+					<option value="@ordre.ordre_id">@ordre.ordre_nom</option>}
+				</select>
+				</form>
+			</th>
 			<th>Sous Groupe</th>
 			<th>Groupe</th>
 			<th>Action</th>
@@ -52,6 +88,7 @@
 		<p>
 			<button onClick="visibleAjoutEspece()">Ajouter une espèce</button>
 		</p>
+		<form action="/gererBaseDeDonneesInsectes" method="POST">
 		<div id="nouv_espece" style="display:none">
 		<h2>Ajouter une espèce</h2>
 			<table>
@@ -60,7 +97,8 @@
 					<th>Auteur</th>
 					<th>Systématique</th>
 					<th>Photo</th>
-					<th>Sous Famille</th>
+					<th>Avec ou sans sous-famille</th>
+					<th>Sous Famille ou Famille</th>
 					<th>Commentaires</th>
 				</tr>
 				<tr>
@@ -69,10 +107,19 @@
 					<td><input type="text" size="5" name="systématique" value=""></td>
 					<td><input type="file" name="photo" value=""></td>
 					<td>
-						<select name="sous_famille">
+						<input type="radio" name="aUneSousFamille" onClick="afficherBonneListe()" value="sousfam">A une sous-famille<br>
+						<input type="radio" name="aUneSousFamille" onClick="afficherBonneListe()" value="fam">Pas de sous-famille
+					</td>
+					<td>
+						<select id="sousfamille" name="sous_famille" style="display:none">
 							<option value="-1">&nbsp;</option>
 							@for(sousFamille <- sousFamilles){
 							<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>}
+						</select>
+						<select id="famille" name="famille" style="display:none">
+							<option value="-1">&nbsp;</option>
+							@for(famille <- familles){
+							<option value="@famille.famille_id">@famille.famille_nom</option>}
 						</select>
 					</td>
 					<td><input type="text" size="30" name="commentaires" value=""></td>
@@ -81,12 +128,23 @@
 					<td><button type="submit">Ajouter l'espèce</button></td>
 				</tr>
 			</table>
+		</div>
+		</form>
 	}{<script>
 	function visibleAjoutEspece() {
 		if (document.getElementById("nouv_espece").style.display == "none") {
 			document.getElementById("nouv_espece").style.display = "block";
 		} else {
 			document.getElementById("nouv_espece").style.display = "none";
+		}
+	}
+	function afficherBonneListe() {
+		if($('input[type=radio][name=aUneSousFamille]:checked').attr('value') == 'sousfam') {
+			document.getElementById("sousfamille").style.display = "block";
+			document.getElementById("famille").style.display = "none";
+		} else if ($('input[type=radio][name=aUneSousFamille]:checked').attr('value') == 'fam') {
+			document.getElementById("sousfamille").style.display = "none";
+			document.getElementById("famille").style.display = "block";
 		}
 	}
 	</script>}

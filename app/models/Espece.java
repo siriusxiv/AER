@@ -25,7 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceException;
+import javax.persistence.PersistenceException; 
 import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
@@ -50,8 +50,27 @@ public class Espece extends Model {
 
 	public static Finder<Integer,Espece> find = new Finder<Integer,Espece>(Integer.class, Espece.class);
 
+	public static Espece findBySystematique(Integer syst) {
+		return find.where().eq("espece_systemtique", syst).findUnique();
+	}
+	
 	public static List<Espece> findAll(){
 		return find.orderBy("espece_systematique").findList();
+	}
+	
+	//Fonctions de filtres de la liste des insectes
+	/*************************************************/
+	public static List<Espece> selectEspecesSousFamille(SousFamille sousfam){
+		return find.where().eq("espece_sousfamille", sousfam).orderBy("espece_systematique").findList();
+	}
+	public static List<Espece> selectEspecesFamille(Famille fam){
+		return find.where().eq("espece_sousfamille.sous_famille_famille", fam).orderBy("espece_systematique").findList();
+	}
+	public static List<Espece> selectEspecesSuperFamille(SuperFamille superfam){
+		return find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille", superfam).orderBy("espece_systematique").findList();
+	}
+	public static List<Espece> selectEspecesOrdre(Ordre ordre){
+		return find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre", ordre).orderBy("espece_systematique").findList();
 	}
 
 	@Override
@@ -77,6 +96,7 @@ public class Espece extends Model {
 
 	/**
 	 * Ajoute l'espèce en réordonnant toutes les espèces qui suivent.
+	 * Ajoute une espèce au milieu ou début. S'applique sur l'espèce juste avant.
 	 * @param avecSousFamille
 	 * @param sousFamilleOuFamille
 	 * @throws NamingException
