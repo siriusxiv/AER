@@ -30,12 +30,6 @@ import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
 
-/**
- * Source des données :
- * http://sql.sh/1879-base-donnees-departements-francais
- * @author malik
- *
- */
 @SuppressWarnings("serial")
 @Entity
 public class Espece extends Model {
