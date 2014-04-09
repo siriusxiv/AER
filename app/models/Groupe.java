@@ -22,7 +22,9 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+
 import play.db.ebean.Model;
+
 import java.util.*;
 
 @SuppressWarnings("serial")
@@ -55,6 +57,23 @@ public class Groupe extends Model {
 			return mieog.membre;
 		else
 			return null;
+	}
+	
+	/**
+	 * Renvoie tous les stades sexes pères (c'est-à-dire les premiers choix qui apparaissent)
+	 * pour le groupe donné.
+	 * @return
+	 */
+	public List<StadeSexe> getStadeSexePeres(){
+		List<StadeSexeHierarchieDansGroupe> sshdgs =
+				StadeSexeHierarchieDansGroupe.find.where()
+						.eq("stade_sexe_pere", null)
+						.eq("groupe",this).orderBy("position").findList();
+		List<StadeSexe> stadesexes = new ArrayList<StadeSexe>();
+		for(StadeSexeHierarchieDansGroupe sshdg : sshdgs){
+			stadesexes.add(sshdg.stade_sexe);
+		}
+		return stadesexes;
 	}
 
 }

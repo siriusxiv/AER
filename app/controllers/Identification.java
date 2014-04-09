@@ -60,6 +60,7 @@ public class Identification extends Controller {
      * @throws InvalidKeySpecException
      */
     public static Result connexion() throws NoSuchAlgorithmException, InvalidKeySpecException{
+    	session().clear();
     	DynamicForm df = DynamicForm.form().bindFromRequest();
     	String username = df.get("login");
     	Credentials credentials = new Credentials(username);

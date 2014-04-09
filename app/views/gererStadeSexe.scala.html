@@ -17,8 +17,49 @@
  ********************************************************************************@
 @(groupe: Groupe)
 @main("Gérer l'arborescence des stades et des sexes"){
-	
+	<table>
+	@for(stadeSexe1 <- groupe.getStadeSexePeres()){
+	<tr>
+		<td>@stadeSexe1</td><td><button id="nouveauStadeFils@stadeSexe1.stade_sexe_id" onClick="nouveauStadeFils(@stadeSexe1.stade_sexe_id,@{stadeSexe1.getStadeSexeFilsPourTelGroupe(groupe).size()+1})">Ajouter un stade/sexe subordonné à ce stade/sexe</button></td>
+	</tr>
+		@for(stadeSexe2 <- stadeSexe1.getStadeSexeFilsPourTelGroupe(groupe)){
+		<tr>
+			<td></td><td>@stadeSexe2</td>
+		</tr>
+		}
+	}
+	</table>
+	<button id="nouveauStadePere" onClick="nouveauStadePere()">Ajouter un stade/sexe père</button>
+<div style="display:none">
+	<select name="stade" id="selectStades">
+		@for(stade <- StadeSexe.findAll()){
+		<option value="@stade.stade_sexe_id">@stade</option>
+		}
+	</select>
+	<form id="form" method="POST" action="">
+		<input id="form_stade_sexe" name="stade_sexe" type="text">
+		<input id="position" name="position" type="text">
+	</form>
+</div>
 }{
 <script>
+function nouveauStadePere(){
+	$('#nouveauStadePere').replaceWith('<select id="selectPere">'+$('#selectStades').html()+'</select><button onClick="ajouterPere()">Ajouter</button>');
+}
+function ajouterPere(){
+	$('#form_stade_sexe').val($('#selectPere').val());
+	$('#position').val('@{groupe.getStadeSexePeres().size()+1}');
+	$('#form').attr('action','/nouveauStadeSexe/@groupe.groupe_id');
+	$('#form').submit();
+}
+function nouveauStadeFils(stade_pere_id,position){
+	$('#nouveauStadeFils'+stade_pere_id).replaceWith('<select id="selectFils'+stade_pere_id+'">'+$('#selectStades').html()+'</select><button onClick="ajouterFils('+stade_pere_id+','+position+')">Ajouter</button>');
+}
+function ajouterFils(stade_pere_id,size){
+	$('#form_stade_sexe').val($('#selectFils'+stade_pere_id).val());
+	$('#position').val(size);
+	$('#form').attr('action','/nouveauStadeSexe/@groupe.groupe_id/'+stade_pere_id);
+	$('#form').submit();
+}
 </script>
 }

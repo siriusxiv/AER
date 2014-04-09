@@ -18,6 +18,9 @@
 
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -37,8 +40,29 @@ public class StadeSexe extends Model{
 	
 	public static Finder<Integer,StadeSexe> find = new Finder<Integer,StadeSexe>(Integer.class, StadeSexe.class);
 
+	public static List<StadeSexe> findAll(){
+		return find.where().orderBy("stade_sexe_id").findList();
+	}
+	
 	@Override
 	public String toString(){
 		return stade_sexe_intitule;
+	}
+	
+	/**
+	 * Renvoie tous les fils du stade sexe pour le groupe donné.
+	 * @param groupe
+	 * @return
+	 */
+	public List<StadeSexe> getStadeSexeFilsPourTelGroupe(Groupe groupe){
+		List<StadeSexeHierarchieDansGroupe> sshdgs =
+				StadeSexeHierarchieDansGroupe.find.where()
+						.eq("stade_sexe_pere", this)
+						.eq("groupe",groupe).orderBy("position").findList();
+		List<StadeSexe> stadesexes = new ArrayList<StadeSexe>();
+		for(StadeSexeHierarchieDansGroupe sshdg : sshdgs){
+			stadesexes.add(sshdg.stade_sexe);
+		}
+		return stadesexes;
 	}
 }

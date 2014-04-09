@@ -254,6 +254,7 @@ create table stade_sexe_hierarchie_dans_groupe (
   stade_sexe_stade_sexe_id  integer not null,
   groupe_groupe_id          integer not null,
   stade_sexe_pere_stade_sexe_id integer,
+  position                  integer not null,
   constraint pk_stade_sexe_hierarchie_dans_groupe primary key (stade_sexe_hierarchie_dans_groupe_id))
 ;
 

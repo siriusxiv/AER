@@ -28,6 +28,7 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class StadeSexeHierarchieDansGroupe extends Model {
+
 	@Id
 	public Integer StadeSexeHierarchieDansGroupe_id;
 	@NotNull
@@ -38,6 +39,23 @@ public class StadeSexeHierarchieDansGroupe extends Model {
 	public Groupe groupe;
 	@ManyToOne
 	public StadeSexe stade_sexe_pere;
-
+	@NotNull
+	public Integer position;
+	
 	public static Finder<Integer,StadeSexeHierarchieDansGroupe> find = new Finder<Integer,StadeSexeHierarchieDansGroupe>(Integer.class, StadeSexeHierarchieDansGroupe.class);
+
+
+	public StadeSexeHierarchieDansGroupe(Groupe groupe, Integer stade_sexe_id, int position) {
+		this.groupe=groupe;
+		this.stade_sexe=StadeSexe.find.byId(stade_sexe_id);
+		this.stade_sexe_pere=null;
+		this.position=position;
+	}
+
+	public StadeSexeHierarchieDansGroupe(Groupe groupe, Integer stade_sexe_id, Integer stade_sexe_pere_id, int position) {
+		this.groupe=groupe;
+		this.stade_sexe=StadeSexe.find.byId(stade_sexe_id);
+		this.stade_sexe_pere=StadeSexe.find.byId(stade_sexe_pere_id);
+		this.position=position;
+	}
 }
