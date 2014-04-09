@@ -28,6 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 
+
 import play.db.ebean.Model;
 
 /**
@@ -79,17 +80,58 @@ public class Observation extends Model {
 		return find.where().eq("observation_validee",validation).findList();
 	}
 	
+	/**
+	 * liste des observations non vues
+	 * @return
+	 */
 	public static List<Observation> nonVus(){
 		boolean nonvu= false;
 		return find.where().eq("observation_vue_par_expert",nonvu).findList();
 	}
 	
-	
+	/**
+	 * liste des observations en suspend
+	 * @return
+	 */
 	public static List<Observation> enSuspend(){
 		Integer suspend=1;
 		return find.where().eq("observation_validee", suspend).findList();
 	}
 
+	/**
+	 * Renvoie la fiche associée à l'observation sélectionnée
+	 * @return
+	 */
+
+	public Fiche getFiche(){
+		Fiche fiche=this.observation_fiche;
+		return fiche;
+	}
+	
+	/**
+	 * renvoie les infos complémentaires associées à l'observation (le nombre, stade, sexe des espèces trouvées+ des commentaires éventuels).
+	 * @return
+	 */
+	public List<InformationsComplementaires> getInfos(){
+		List<InformationsComplementaires> infos= InformationsComplementaires.find.where().eq("informations_complementaires_observation", this).findList();
+		return infos;
+	}
+	
+	/**
+	 * Marque l'observation comme vue par l'expert
+	 */
+	public void vu(){
+		this.observation_vue_par_expert=true;
+		this.observation_validee=1;
+	}
+		
+	/**
+	 * L'observation est totalement validée.
+	 */
+public void valider(){
+	this.observation_validee=2;
+}
+	
 	@Override
 	public String toString(){
 		return observation_espece+" "+observation_fiche;
