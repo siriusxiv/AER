@@ -141,9 +141,6 @@ INSERT INTO `stade_sexe` (`stade_sexe_id`,`stade_sexe_intitule`,`stade_sexe_expl
 (27,'Oothèque',''),
 (28,'Nid','');
 
-INSERT INTO `stade_sexe_hierarchie_dans_groupe` (`stade_sexe_hierarchie_dans_groupe_id`,`stade_sexe_stade_sexe_id`,`groupe_groupe_id`,`stade_sexe_pere_stade_sexe_id`,`position`) VALUES
-(1,1,1,null,1);
-
 INSERT INTO `ordre_has_sous_groupe` (`ordre_ordre_id`,`sous_groupe_sous_groupe_id`) VALUES
 (2,3),
 (4,6),
