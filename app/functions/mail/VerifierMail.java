@@ -36,11 +36,14 @@ public class VerifierMail extends Controller{
 	
 	public static Result verifier(String lien){
 		Membre m = Membre.find.where().eq("membre_lien_de_validation_de_mail", lien).findUnique();
-		m.membre_lien_de_validation_de_mail=null;
-		m.save();
-		envoyerMailAcceptationAAdmin(m);
-		verificationMail.render().toString();
-		return ok(verificationMail.render());
+		if(m!=null){
+			m.membre_lien_de_validation_de_mail=null;
+			m.save();
+			envoyerMailAcceptationAAdmin(m);
+			return ok(verificationMail.render());
+		}else{
+			return notFound("Ressource not found on server");
+		}
 	}
 	
 	/**
