@@ -106,8 +106,17 @@
 			$('#message').html('Le champ "NOM Prénom" a été laissé vide.');
 		else if(!isRFC822ValidEmail($('#email').val()))
 			$('#message').html('Votre adresse mail n\'est pas valide.');
-		else
-			$('#form').submit();
+		else{
+			$.ajax({
+				url: '/emailExisteOuPas/'+$('#email').val(),
+				success: function (res) {
+					$('#form').submit();
+				},
+				error: function(){
+					$('#message').html('Votre adresse mail est déjà utilisée.');
+				}
+			});
+		}
 	}
 	/**
 	 * JavaScript function to check an email address conforms to RFC822 (http://www.ietf.org/rfc/rfc0822.txt)

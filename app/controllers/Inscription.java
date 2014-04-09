@@ -26,25 +26,26 @@ import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.inscription;
+import views.html.inscriptionTerminee;
 
 public class Inscription extends Controller {
 
-    public static Result main() {
-    	return ok(inscription.render(""));
-    }
-    
-    public static Result inscrire() throws NoSuchAlgorithmException, InvalidKeySpecException {
-    	DynamicForm df = DynamicForm.form().bindFromRequest();
-    	String nom = df.get("nom");
-    	String civilite = df.get("civilite");
-    	String email = df.get("email");
-    	String passw = df.get("passw");
-    	if(Membre.find.where().eq("membre_email",email).findList().isEmpty()){
-    	Membre m = new Membre(nom,civilite,email,passw);
-    	m.save();
-    	VerifierMail.envoyerMailDeVerification(m);
-    	return redirect("/");
-    	}else	//L'adresse mail existe déjà
-    		return redirect("/MailExisteDéjà");
-    }
+	public static Result main() {
+		return ok(inscription.render(""));
+	}
+
+	public static Result inscrire() throws NoSuchAlgorithmException, InvalidKeySpecException {
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		String nom = df.get("nom");
+		String civilite = df.get("civilite");
+		String email = df.get("email");
+		String passw = df.get("passw");
+		if(Membre.find.where().eq("membre_email",email).findList().isEmpty()){
+			Membre m = new Membre(nom,civilite,email,passw);
+			m.save();
+			VerifierMail.envoyerMailDeVerification(m);
+			return ok(inscriptionTerminee.render());
+		}else	//L'adresse mail existe déjà
+			return redirect("/identification");
+	}
 }

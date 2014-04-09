@@ -17,15 +17,17 @@
  ********************************************************************************/
 package functions.mail;
 
+import java.util.List;
+
 import play.mvc.Controller;
 import play.mvc.Result;
+import models.Droits;
 import models.Membre;
-
 import views.html.verificationMail;
 import views.html.mails.*;
 
 public class VerifierMail extends Controller{
-	
+
 	public static void envoyerMailDeVerification(Membre membre){
 		Mail mail = new Mail("Validation de la création de votre compte AER",
 				mailDeVerification.render(membre.membre_lien_de_validation_de_mail).toString(),
@@ -33,7 +35,7 @@ public class VerifierMail extends Controller{
 				membre.membre_nom);
 		mail.sendMail();
 	}
-	
+
 	public static Result verifier(String lien){
 		Membre m = Membre.find.where().eq("membre_lien_de_validation_de_mail", lien).findUnique();
 		if(m!=null){
@@ -45,12 +47,19 @@ public class VerifierMail extends Controller{
 			return notFound("Ressource not found on server");
 		}
 	}
-	
+
 	/**
 	 * A écrire
 	 * @param membre
 	 */
 	public static void envoyerMailAcceptationAAdmin(Membre membre){
-		
+		List<Membre> admins = Membre.find.where().eq("membre_droits", Droits.ADMIN).findList();
+		for(Membre admin : admins){
+			Mail mail = new Mail(membre+" vient de s'inscrire sur le site de l'AER",
+					mailNouvelleInscriptionPourAdmin.render(membre).toString(),
+					admin.membre_email,
+					admin.membre_nom);
+			mail.sendMail();
+		}
 	}
 }

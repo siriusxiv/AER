@@ -51,6 +51,7 @@ GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax
 GET		/listeDesMembres/:string_id	controllers.ajax.Listes.membres(string_id: String)
+GET		/emailExisteOuPas/:mail		controllers.ajax.Verifications.mailExisteOuPas(mail: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
