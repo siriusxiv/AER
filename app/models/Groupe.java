@@ -76,4 +76,13 @@ public class Groupe extends Model {
 		return stadesexes;
 	}
 
+	/**
+	 * Renvoie la liste des dates charnières du groupe triées par ordre
+	 * chronologiquement croissant.
+	 * @return
+	 */
+	public List<DateCharniereHasGroupe> getDatesCharnieres(){
+		return DateCharniereHasGroupe.find.where().eq("groupe", this)
+				.orderBy("date_charniere.date_charniere_date").findList();
+	}
 }

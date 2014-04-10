@@ -70,4 +70,12 @@ public class Fiche extends Model {
 	public String toString(){
 		return fiche_id+"-"+fiche_utm;
 	}
+	
+	/**
+	 * Renvoie la fiche contenant le plus vieux témoignage de la base de données.
+	 * @return
+	 */
+	public static Fiche getPlusVieuxTemoignage(){
+		return find.where().setMaxRows(1).orderBy("fiche_date").findUnique();
+	}
 }

@@ -18,7 +18,30 @@
 @(groupe: Groupe)
 @main("Gérer les dates charnières du groupe "+groupe){
 	<h1>Gérer les dates charnières du groupe @groupe</h1>
+	<ol>@for(dateCharniereHasGroupe <- groupe.getDatesCharnieres()){
+		<li><button onClick="supprimer(@dateCharniereHasGroupe.DateCharniereHasGroupe_id)">Supprimer</button>@dateCharniereHasGroupe.date_charniere</li>
+	}</ol>
+	<button onClick="ajouter()">Ajouter une date charnière</button>
+	<div id="nouvelleDateChaniere">
+		Date charnière :
+			<select name="jour">
+			@for(i: Int <- 1 to 31){
+				<option value="@i">@i</option>
+			}
+			</select>
+			<select name="mois">
+			@for(i: Int <- 1 to 12){
+				<option value="@i">@i</option>
+			}
+			</select>
+			<select name="annee">
+			@for(i: Int <- Integer.parseInt(Fiche.getPlusVieuxTemoignage().fiche_date.getTime().format("yyyy")) to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
+				<option value="@i">@i</option>
+			}
+			</select>
+	</div>
 }{
 <script>
+
 </script>
 }

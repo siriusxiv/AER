@@ -20,6 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 
 import models.Espece;
+import models.Fiche;
 import models.Membre;
 import models.SousGroupe;
 
@@ -65,9 +67,9 @@ public class IntegrationTest {
             	
             	//listeMembres();
             	
-            	//listeEspecesAvecSousGroupeEtGroupe();
+            	listeEspecesAvecSousGroupeEtGroupe();
             	
-            	VerifierMail.envoyerMailDeVerification(Membre.find.all().get(0));
+            	//VerifierMail.envoyerMailDeVerification(Membre.find.all().get(0));
             }
         });
     }
@@ -118,8 +120,16 @@ public class IntegrationTest {
     	FileWriter fw = new FileWriter("listeEspeces");
     	long i = Calendar.getInstance().getTimeInMillis();
     	List<Espece> especes = Espece.find.where().orderBy("espece_systematique").findList();
+    	SousGroupe sg = null;
+    	Fiche f = null;
+		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
     	for(Espece e : especes){
-    		fw.append(e+","+e.getSousGroupe()+","+e.getGroupe()+"\n");
+    		sg = e.getSousGroupe();
+    		f = e.getPlusVieuxTemoignage();
+    		if(f==null)
+        		fw.append(e+","+sg+","+sg.sous_groupe_groupe+","+null+"\n");
+    		else
+    			fw.append(e+","+sg+","+sg.sous_groupe_groupe+","+date_format.format(f.fiche_date.getTime())+"\n");
     	}
     	long j = Calendar.getInstance().getTimeInMillis();
     	System.out.println("Groupe et Sous-groupes de toutes les espèces calculé en "+(j-i)+" ms");

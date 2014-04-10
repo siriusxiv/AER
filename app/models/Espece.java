@@ -218,5 +218,18 @@ public class Espece extends Model {
 	public Ordre getOrdre(){
 		return this.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre;
 	}
-
+	
+	/**
+	 * Renvoie la plus vieille fiche contenant un témoignage de l'espèce en question
+	 * Renvoie null si l'espèce n'a jamais été observée.
+	 * @return
+	 */
+	public Fiche getPlusVieuxTemoignage(){
+		Observation o = Observation.find.where().eq("observation_espece",this).setMaxRows(1).orderBy("observation_fiche.fiche_date").findUnique();
+		if(o==null)
+			return null;
+		else
+			return o.getFiche();
+	}
+	
 }
