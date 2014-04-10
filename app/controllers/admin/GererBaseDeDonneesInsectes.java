@@ -17,21 +17,17 @@
  ********************************************************************************/
 package controllers.admin;
 
-import java.util.List;
-
 import models.Espece;
 import models.SousFamille;
 import models.Famille;
 import models.SuperFamille;
 import models.Ordre;
-import models.SousGroupe;
-import models.Groupe;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import javax.naming.NamingException;
 import javax.persistence.PersistenceException; 
-import views.html.gererBaseDeDonneesInsectes;
+import views.html.admin.gererBaseDeDonneesInsectes;
 
 /**
  * Gère les fonctions pour gérer la base de données des insectes

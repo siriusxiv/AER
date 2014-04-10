@@ -21,7 +21,7 @@ package controllers.expert;
 import controllers.admin.Admin;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.temoignagesAValider;
+import views.html.expert.temoignagesAValider;
 import models.Groupe;
 import models.Observation;
 

@@ -19,12 +19,20 @@
 package controllers;
 
 
+import models.Confidentialite;
+import models.Droits;
+import models.Espece;
+import models.EspeceHasSousGroupe;
+import models.Groupe;
+import models.Membre;
 import controllers.membre.SecuredMembre;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import views.html.*;
-import models.*;
+import views.html.membre.*;
+import views.html.expert.*;
+import views.html.admin.*;
 
 public class Application extends Controller {
 

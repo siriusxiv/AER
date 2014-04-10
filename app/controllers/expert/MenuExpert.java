@@ -25,7 +25,7 @@ import models.MembreIsExpertOnGroupe;
 import controllers.admin.Admin;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.menuExpert;
+import views.html.expert.menuExpert;
 
 public class MenuExpert extends Controller {
 

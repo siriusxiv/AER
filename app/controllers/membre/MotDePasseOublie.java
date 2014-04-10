@@ -20,8 +20,6 @@ package controllers.membre;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import controllers.admin.Admin;
-import functions.credentials.Credentials;
 import functions.credentials.PasswordHash;
 import functions.mail.Mail;
 import models.Membre;

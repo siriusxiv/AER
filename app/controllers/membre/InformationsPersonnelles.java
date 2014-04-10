@@ -22,7 +22,7 @@ import controllers.membre.SecuredMembre;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import views.html.informationsPersonnelles;
+import views.html.membre.informationsPersonnelles;
 
 public class InformationsPersonnelles extends Controller {
 	

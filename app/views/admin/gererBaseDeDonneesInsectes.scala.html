@@ -27,6 +27,7 @@
 		<tr>
 			<th>Systématique</th>
 			<th>Espece</th>
+			<th>Auteur</th>
 			<th>
 				<form action="/especesParSousFamille" method="GET">
 				<select name="sous_famille_tri" onchange="this.form.submit()">
@@ -75,12 +76,13 @@
 		<tr>
 			<td>@espece.espece_systematique</td>
 			<td>@espece.espece_nom</td>
-			<td>@espece.getSousFamille()</td>
+			<td>@espece.espece_auteur</td>
+			<td>@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</td>
 			<td>@espece.getFamille()</td>
-			<td>@espece.getSuperFamille()</td>
+			<td>@if(espece.getSuperFamille().super_famille_existe){@espece.getSuperFamille()}</td>
 			<td>@espece.getOrdre()</td>
 			<td>@espece.espece_sous_groupe</td>
-			<td>@espece.getGroupe()</td>
+			<td>@espece.espece_sous_groupe.sous_groupe_groupe</td>
 			<td><button type="submit">Supprimer</button></td>
 		</tr>
 		}

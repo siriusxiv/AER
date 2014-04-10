@@ -26,7 +26,7 @@ import models.MembreIsExpertOnGroupe;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.assignerExperts;
+import views.html.admin.assignerExperts;
 
 /**
  * Gère les fonctions pour assigner les experts
