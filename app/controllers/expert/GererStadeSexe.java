@@ -39,9 +39,10 @@ public class GererStadeSexe extends Controller{
 		else
 			return Admin.nonAutorise();
 	}
-	
+
 	/**
 	 * Ajoute un stade/sexe père au groupe donné.
+	 * Si le stade est déjà ajouté dans le groupe, ne fait rien.
 	 * @param groupe_id
 	 * @return
 	 */
@@ -51,15 +52,18 @@ public class GererStadeSexe extends Controller{
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			int stade_sexe_id = Integer.parseInt(df.get("stade_sexe"));
 			int position = Integer.parseInt(df.get("position"));
-			StadeSexeHierarchieDansGroupe sshdg = new StadeSexeHierarchieDansGroupe(groupe,stade_sexe_id,position);
-			sshdg.save();
+			if(StadeSexeHierarchieDansGroupe.nAPas(groupe,stade_sexe_id)){
+				StadeSexeHierarchieDansGroupe sshdg = new StadeSexeHierarchieDansGroupe(groupe,stade_sexe_id,position);
+				sshdg.save();
+			}
 			return redirect("/gererstadesexe/"+groupe_id);
 		}else
 			return Admin.nonAutorise();
 	}
-	
+
 	/**
 	 * Ajoute un stade/sexe fils au groupe donné.
+	 * Si le stade est déjà ajouté dans le groupe, ne fait rien.
 	 * @param groupe_id
 	 * @return
 	 */
@@ -69,8 +73,54 @@ public class GererStadeSexe extends Controller{
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			int stade_sexe_id = Integer.parseInt(df.get("stade_sexe"));
 			int position = Integer.parseInt(df.get("position"));
-			StadeSexeHierarchieDansGroupe sshdg = new StadeSexeHierarchieDansGroupe(groupe,stade_sexe_id,stade_sexe_pere_id,position);
-			sshdg.save();
+			if(StadeSexeHierarchieDansGroupe.nAPas(groupe,stade_sexe_id)){
+				StadeSexeHierarchieDansGroupe sshdg = new StadeSexeHierarchieDansGroupe(groupe,stade_sexe_id,stade_sexe_pere_id,position);
+				sshdg.save();
+			}
+			return redirect("/gererstadesexe/"+groupe_id);
+		}else
+			return Admin.nonAutorise();
+	}
+
+	/**
+	 * Supprime un stade père et tous ces stades fils
+	 * @param groupe_id
+	 * @param stade_sexe_id
+	 * @return
+	 */
+	public static Result supprimerStadePere(Integer groupe_id, Integer stade_sexe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+			StadeSexeHierarchieDansGroupe sshdg_pere = 
+					StadeSexeHierarchieDansGroupe.find.where()
+					.eq("groupe",groupe)
+					.eq("stade_sexe.stade_sexe_id",stade_sexe_id).findUnique();
+			for(StadeSexeHierarchieDansGroupe sshdg_fils :
+				StadeSexeHierarchieDansGroupe.find.where()
+				.eq("groupe", groupe)
+				.eq("stade_sexe_pere",sshdg_pere.stade_sexe).findList()){
+				sshdg_fils.delete();
+			}
+			sshdg_pere.delete();
+			return redirect("/gererstadesexe/"+groupe_id);
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Supprime un stade fils
+	 * @param groupe_id
+	 * @param stade_sexe_id
+	 * @return
+	 */
+	public static Result supprimerStadeFils(Integer groupe_id, Integer stade_sexe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+			StadeSexeHierarchieDansGroupe sshdg = 
+					StadeSexeHierarchieDansGroupe.find.where()
+					.eq("groupe",groupe)
+					.eq("stade_sexe.stade_sexe_id",stade_sexe_id).findUnique();
+			sshdg.delete();
 			return redirect("/gererstadesexe/"+groupe_id);
 		}else
 			return Admin.nonAutorise();

@@ -17,19 +17,25 @@
  ********************************************************************************@
 @(groupe: Groupe)
 @main("Gérer l'arborescence des stades et des sexes"){
+	<h1>Gérer les sexes et les stades du groupe @groupe</h1>
 	<table>
 	@for(stadeSexe1 <- groupe.getStadeSexePeres()){
 	<tr>
-		<td>@stadeSexe1</td><td><button id="nouveauStadeFils@stadeSexe1.stade_sexe_id" onClick="nouveauStadeFils(@stadeSexe1.stade_sexe_id,@{stadeSexe1.getStadeSexeFilsPourTelGroupe(groupe).size()+1})">Ajouter un stade/sexe subordonné à ce stade/sexe</button></td>
+		<td>@stadeSexe1</td>
+		<td>
+			<button id="nouveauStadeFils@stadeSexe1.stade_sexe_id" onClick="nouveauStadeFils(@stadeSexe1.stade_sexe_id,@{stadeSexe1.getStadeSexeFilsPourTelGroupe(groupe).size()+1})">Ajouter un stade/sexe subordonné à ce stade/sexe</button>
+			<button onclick="supprimerPere(@stadeSexe1.stade_sexe_id)">Supprimer ce stade</button>
+		</td>
 	</tr>
 		@for(stadeSexe2 <- stadeSexe1.getStadeSexeFilsPourTelGroupe(groupe)){
 		<tr>
-			<td></td><td>@stadeSexe2</td>
+			<td></td><td>@stadeSexe2<button onclick="supprimerFils(@stadeSexe2.stade_sexe_id)">Supprimer ce stade</button></td>
 		</tr>
 		}
 	}
 	</table>
 	<button id="nouveauStadePere" onClick="nouveauStadePere()">Ajouter un stade/sexe père</button>
+<a href="/menuExpert">Retour</a>
 <div style="display:none">
 	<select name="stade" id="selectStades">
 		@for(stade <- StadeSexe.findAll()){
@@ -60,6 +66,18 @@ function ajouterFils(stade_pere_id,size){
 	$('#position').val(size);
 	$('#form').attr('action','/nouveauStadeSexe/@groupe.groupe_id/'+stade_pere_id);
 	$('#form').submit();
+}
+function supprimerPere(stade_sexe_id){
+	if(confirm('Si vous supprimez ce stade, les stades fils seront aussi supprimés')){
+		$('#form').attr('action','/supprimerStadeSexePere/@groupe.groupe_id/'+stade_sexe_id);
+		$('#form').submit();
+	}
+}
+function supprimerFils(stade_sexe_id){
+	if(confirm('Si vous supprimez ce stade, les stades fils seront aussi supprimés')){
+		$('#form').attr('action','/supprimerStadeSexeFils/@groupe.groupe_id/'+stade_sexe_id);
+		$('#form').submit();
+	}
 }
 </script>
 }
