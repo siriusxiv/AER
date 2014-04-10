@@ -41,8 +41,8 @@ import play.db.ebean.Model;
  * observation_validee=0 -> Non validée (l'observation soit n'a pas encore été vue et dans ce cas,
  * 							on attend qu'un expert la voie, soit elle a déjà été vue et
  * 							dans ce cas l'expert l'a rejetée)
- * observation_validee=1 -> En suspend (il y a un truc qui cloche ou à vérifier avant de valider)
- * observation_validee=2 -> Validée
+ * observation_validee=1 -> Validée
+ * observation_validee=2 -> En suspend (il y a un truc qui cloche ou à vérifier avant de valider)
  * @author malik
  *
  */
