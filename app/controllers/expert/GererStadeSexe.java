@@ -23,7 +23,7 @@ import models.StadeSexeHierarchieDansGroupe;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.gererStadeSexe;
+import views.html.expert.gererStadeSexe;
 
 public class GererStadeSexe extends Controller{
 	/**
