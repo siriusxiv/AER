@@ -76,7 +76,12 @@ public class Fiche {
 		try {
 			c.setTime(f.parse(s));
 		} catch (ParseException e) {
-			c=null;
+			f = new SimpleDateFormat("d/M/yyyy H:mm");
+			try {
+				c.setTime(f.parse(s));
+			} catch (ParseException e1) {
+				c=null;
+			}
 		}
 		return c;
 	}

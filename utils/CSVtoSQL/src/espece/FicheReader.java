@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 public class FicheReader {
 
@@ -12,12 +13,15 @@ public class FicheReader {
 	static Connection connect = null;
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
+		long i = Calendar.getInstance().getTimeInMillis();
 		Class.forName("com.mysql.jdbc.Driver");
 		connect = DriverManager.getConnection("jdbc:mysql://localhost/aer?"+"user=root&password=");
 
 		doIt();
 
 		connect.close();
+		long j = Calendar.getInstance().getTimeInMillis();
+		System.out.println("Comput time : "+(j-i)+" ms");
 	}
 
 	public static void doIt() throws IOException, SQLException{
