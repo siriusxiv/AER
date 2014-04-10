@@ -26,16 +26,16 @@ import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
 @Entity
-public class DateCharniereHasSousGroupe extends Model {
+public class DateCharniereHasGroupe extends Model {
 	@Id
-	public Integer DateCharniereHasSousGroupe_id;
+	public Integer DateCharniereHasGroupe_id;
 	@NotNull
 	@ManyToOne
 	public DateCharniere date_charniere;
 	@NotNull
 	@ManyToOne
-	public SousGroupe sous_groupe;
+	public Groupe groupe;
 	
-	public static Finder<Integer,DateCharniereHasSousGroupe> find = new Finder<Integer,DateCharniereHasSousGroupe>(Integer.class, DateCharniereHasSousGroupe.class);
+	public static Finder<Integer,DateCharniereHasGroupe> find = new Finder<Integer,DateCharniereHasGroupe>(Integer.class, DateCharniereHasGroupe.class);
 
 }

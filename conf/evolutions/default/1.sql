@@ -49,11 +49,11 @@ create table date_charniere (
   constraint pk_date_charniere primary key (date_charniere_id))
 ;
 
-create table date_charniere_has_sous_groupe (
-  date_charniere_has_sous_groupe_id integer auto_increment not null,
+create table date_charniere_has_groupe (
+  date_charniere_has_groupe_id integer auto_increment not null,
   date_charniere_date_charniere_id integer not null,
-  sous_groupe_sous_groupe_id integer not null,
-  constraint pk_date_charniere_has_sous_groupe primary key (date_charniere_has_sous_groupe_id))
+  groupe_groupe_id          integer not null,
+  constraint pk_date_charniere_has_groupe primary key (date_charniere_has_groupe_id))
 ;
 
 create table departement (
@@ -283,10 +283,10 @@ create table utms (
 
 alter table commune add constraint fk_commune_ville_departement_1 foreign key (ville_departement_departement_code) references departement (departement_code) on delete restrict on update restrict;
 create index ix_commune_ville_departement_1 on commune (ville_departement_departement_code);
-alter table date_charniere_has_sous_groupe add constraint fk_date_charniere_has_sous_groupe_date_charniere_2 foreign key (date_charniere_date_charniere_id) references date_charniere (date_charniere_id) on delete restrict on update restrict;
-create index ix_date_charniere_has_sous_groupe_date_charniere_2 on date_charniere_has_sous_groupe (date_charniere_date_charniere_id);
-alter table date_charniere_has_sous_groupe add constraint fk_date_charniere_has_sous_groupe_sous_groupe_3 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
-create index ix_date_charniere_has_sous_groupe_sous_groupe_3 on date_charniere_has_sous_groupe (sous_groupe_sous_groupe_id);
+alter table date_charniere_has_groupe add constraint fk_date_charniere_has_groupe_date_charniere_2 foreign key (date_charniere_date_charniere_id) references date_charniere (date_charniere_id) on delete restrict on update restrict;
+create index ix_date_charniere_has_groupe_date_charniere_2 on date_charniere_has_groupe (date_charniere_date_charniere_id);
+alter table date_charniere_has_groupe add constraint fk_date_charniere_has_groupe_groupe_3 foreign key (groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
+create index ix_date_charniere_has_groupe_groupe_3 on date_charniere_has_groupe (groupe_groupe_id);
 alter table espece add constraint fk_espece_espece_sousfamille_4 foreign key (espece_sousfamille_sous_famille_id) references sous_famille (sous_famille_id) on delete restrict on update restrict;
 create index ix_espece_espece_sousfamille_4 on espece (espece_sousfamille_sous_famille_id);
 alter table espece_has_sous_groupe add constraint fk_espece_has_sous_groupe_espece_5 foreign key (espece_espece_id) references espece (espece_id) on delete restrict on update restrict;
@@ -366,7 +366,7 @@ drop table confidentialite;
 
 drop table date_charniere;
 
-drop table date_charniere_has_sous_groupe;
+drop table date_charniere_has_groupe;
 
 drop table departement;
 
