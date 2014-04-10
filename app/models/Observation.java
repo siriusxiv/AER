@@ -20,12 +20,17 @@ package models;
 
 import java.util.Calendar;
 import java.util.List;
-
+import models.Espece;
+import models.Groupe;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+
+
+
 
 
 
@@ -44,11 +49,11 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class Observation extends Model {
-	
+
 	public static int NON_VALIDEE = 0;
-	public static int EN_SUSPEND = 1;
-	public static int VALIDEE = 2;
-	
+	public static int VALIDEE = 1;
+	public static int EN_SUSPEND = 2;
+
 	@Id
 	public Long observation_id;
 	@NotNull
@@ -68,13 +73,13 @@ public class Observation extends Model {
 	@NotNull
 	public Calendar observation_date_derniere_modification;
 	public Calendar observation_date_validation;
-	
+
 	public static Finder<Long,Observation> find = new Finder<Long,Observation>(Long.class, Observation.class);
-	
+
 	public static List<Observation> findAll(){
 		return find.all();
 	}
-	
+
 	/**
 	 * Sélectionne la liste des observations de l'état désiré (non validé, en suspend, validée)
 	 * 
@@ -84,23 +89,25 @@ public class Observation extends Model {
 	public static List<Observation> observationsEtat(Integer validation){
 		return find.where().eq("observation_validee",validation).findList();
 	}
-	
+
 	/**
 	 * liste des observations non vues
 	 * @return
 	 */
-	public static List<Observation> nonVus(){
+	public static List<Observation> nonVus(Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
 		boolean nonvu= false;
-		return find.where().eq("observation_vue_par_expert",nonvu).findList();
+		return find.where().eq("observation_vue_par_expert",nonvu).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
 	}
-	
+
 	/**
 	 * liste des observations en suspend
 	 * @return
 	 */
-	public static List<Observation> enSuspend(){
+	public static List<Observation> enSuspend(Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
 		Integer suspend=1;
-		return find.where().eq("observation_validee", suspend).findList();
+		return find.where().eq("observation_validee", suspend).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
 	}
 
 	/**
@@ -112,7 +119,7 @@ public class Observation extends Model {
 		Fiche fiche=this.observation_fiche;
 		return fiche;
 	}
-	
+
 	/**
 	 * renvoie les infos complémentaires associées à l'observation (le nombre, stade, sexe des espèces trouvées+ des commentaires éventuels).
 	 * @return
@@ -121,21 +128,21 @@ public class Observation extends Model {
 		List<InformationsComplementaires> infos= InformationsComplementaires.find.where().eq("informations_complementaires_observation", this).findList();
 		return infos;
 	}
-	
+
 	/**
 	 * Marque l'observation comme vue par l'expert
 	 */
 	public void vu(){
 		this.observation_vue_par_expert=true;
-		this.observation_validee=1;
+		this.observation_validee=Observation.EN_SUSPEND;
 	}
-		
+
 	/**
 	 * L'observation est totalement validée.
 	 */
-public void valider(){
-	this.observation_validee=2;
-}
+	public void valider(){
+		this.observation_validee=Observation.VALIDEE;
+	}
 
 	/**
 	 * Renvoie true si l'observation est validée, false sinon.
@@ -144,7 +151,7 @@ public void valider(){
 	public boolean estValidee(){
 		return observation_validee==Observation.VALIDEE;
 	}
-	
+
 	@Override
 	public String toString(){
 		return observation_espece+" "+observation_fiche;

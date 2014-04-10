@@ -15,8 +15,12 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
+import java.util.List;
+
 import models.Confidentialite;
 import models.Droits;
+import models.Espece;
+import models.SousGroupe;
 import play.Application;
 import play.GlobalSettings;
 
@@ -32,5 +36,12 @@ public class Global extends GlobalSettings {
 		Confidentialite.OUVERTE=Confidentialite.find.byId(1);
 		Confidentialite.CASPARCAS=Confidentialite.find.byId(2);
 		Confidentialite.FERMEE=Confidentialite.find.byId(3);
+		//On duplique la base de données en remplissant les champs de espece_sousgroupe
+		List<Espece> especes = Espece.findAll();
+		for (Espece espece : especes) {
+			SousGroupe sg=espece.getSousGroupe();
+			espece.espece_sous_groupe= sg;
+			espece.save();
+		}
 	}
 }

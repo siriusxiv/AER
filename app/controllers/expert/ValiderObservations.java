@@ -18,9 +18,11 @@
 package controllers.expert;
 
 
+import controllers.admin.Admin;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.temoignagesAValider;
+import models.Groupe;
 import models.Observation;
 
 
@@ -37,25 +39,36 @@ public class ValiderObservations extends Controller {
   * Permet d'afficher la page liée au processus de validation des témoignages
   * @return
   */
-	
+	/*
 	public static Result temoignagesAValider(Integer validation) {
     	return ok( temoignagesAValider.render(Observation.observationsEtat(validation)));
     }
+	
+	
+	*/
 	
 	/**
 	 * renvoit les témoignages non vus
 	 * @return
 	 */
-	public static Result temoignagesNonVus() {
-    	return ok( temoignagesAValider.render(Observation.nonVus()));
+	public static Result temoignagesNonVus(Integer groupe_id) {
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe))
+    	return ok( temoignagesAValider.render(Observation.nonVus(groupe_id), groupe));
+		else
+			return Admin.nonAutorise();
     }
 	
 	/**
 	 * renvoit les témoignages en suspend
 	 * @return
 	 */
-	public static Result temoignagesEnSuspends() {
-    	return ok( temoignagesAValider.render(Observation.enSuspend()));
+	public static Result temoignagesEnSuspends(Integer groupe_id) {
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe))
+    	return ok( temoignagesAValider.render(Observation.enSuspend(groupe_id),groupe));
+		else
+			return Admin.nonAutorise();
     }
     
 	
@@ -64,13 +77,17 @@ public class ValiderObservations extends Controller {
 	 * @param id
 	 * @return
 	 */
-	public static Result marquerVu(Long id){
+	public static Result marquerVu(Long id, Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
 		Observation observation = Observation.find.byId(id);
 		if (observation!=null){
 			observation.vu();
 		}
 		observation.save();
-		return redirect("/temoignagesAValider");
+		return redirect("/temoignagesAValider/"+groupe_id);}
+		else
+			return Admin.nonAutorise();
 	}
 	
 	/**
@@ -78,12 +95,16 @@ public class ValiderObservations extends Controller {
 	 * @param id
 	 * @return
 	 */
-	public static Result valide(Long id){
+	public static Result valide(Long id, Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
 		Observation observation = Observation.find.byId(id);
 		if (observation!=null){
 			observation.valider();
 		}
 		observation.save();
-		return redirect("/temoignagesAValider/enSuspens");
+		return redirect("/temoignagesAValider/enSuspens/"+groupe_id);}
+		else
+			return Admin.nonAutorise();
 	}
 }
