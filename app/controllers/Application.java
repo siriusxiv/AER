@@ -31,12 +31,6 @@ public class Application extends Controller {
     public static Result index() {
         return ok(index.render());
     }
-
-    /*Page de login ou d'inscription */
-    
-    public static Result retrouverMotDePasse() {
-    	return ok( retrouverMotDePasse.render());
-    }
     
     /*Pages de l'utilisateur  */
     @Security.Authenticated(SecuredMembre.class)

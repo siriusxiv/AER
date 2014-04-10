@@ -9,7 +9,10 @@ POST	/connexion					controllers.Identification.connexion()
 GET		/deconnexion				controllers.Identification.deconnexion()
 GET     /inscription                controllers.Inscription.main()
 POST	/inscription				controllers.Inscription.inscrire()
-GET     /retrouverMotDePasse        controllers.Application.retrouverMotDePasse()
+GET     /retrouverMotDePasse        controllers.membre.MotDePasseOublie.main()
+POST	/nouveauMotDePasse			controllers.membre.MotDePasseOublie.nouveauMotDePasse()
+GET		/nouveauMotDePasse/:lien	controllers.membre.MotDePasseOublie.entrerNouveauMotDePasse(lien: String)
+POST	/reinitialiseMotDePasse/:membre_id/:lien	controllers.membre.MotDePasseOublie.reinitialiseMotDePasse(membre_id: Integer, lien: String)
 GET		/verification/:lien			functions.mail.VerifierMail.verifier(lien: String)
 
 #routes pour l'utilisateur

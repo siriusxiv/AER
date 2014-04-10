@@ -82,10 +82,15 @@ public class Identification extends Controller {
      * Si l'utilisateur n'est ni témoin, ni expert, ni admin (ce qui ne peut arriver
      * que s'il est arrivé des choses atroces à la session), alors on remet à 0
      * la session et on renvoie vers la page d'identification.
+     * De plus, on remet à zéro le lien de validation par mesure de sécurité. (Si
+     * quelqu'un de mal intentionné a forcer l'envoie d'un mail pour créer un nouveau
+     * mot de passe.
      * @param membre
      * @return
      */
     public static Result allerVers(Membre membre){
+		membre.membre_lien_de_validation_de_mail=null;;
+		membre.save();
 		if(membre.membre_droits.equals(Droits.TEMOIN))
 			return redirect("/menuUtilisateur");
 		else if(membre.membre_droits.equals(Droits.EXPERT)){

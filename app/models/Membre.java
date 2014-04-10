@@ -70,7 +70,7 @@ public class Membre extends Model {
 	@NotNull
 	public boolean membre_inscription_acceptee;
 	public String membre_lien_de_validation_de_mail;
-	
+
 	public static Finder<Integer,Membre> find = new Finder<Integer,Membre>(Integer.class, Membre.class);
 
 	/**
@@ -92,48 +92,48 @@ public class Membre extends Model {
 		membre_temoin_actif=true;
 		membre_droits=Droits.TEMOIN;
 		membre_inscription_acceptee=false;
-		membre_lien_de_validation_de_mail=Credentials.genereLienAleatoire(10);
+		this.genereLienDeValidation();
 	}
 
 	public static List<Membre> findAll(String orderBy, String sortDirection){
 		return find.orderBy(orderBy+" "+sortDirection).findList();
 	}
-	
+
 	//Fonctions de tri de la liste des membres
 	/********************************************/
 	public static List<Membre> selectMembresTemoinActif(Boolean isTemoinActif){
 		return find.where().eq("membre_temoin_actif",isTemoinActif).orderBy("membre_nom").findList();
 	}
-	
+
 	public static List<Membre> selectMembresAbonne(Boolean isAbonne){
 		return find.where().eq("membre_abonne",isAbonne).orderBy("membre_nom").findList();
 	}
-	
+
 	public static List<Membre> selectMembresConfidentialite(Integer confidentialite){
 		return find.where().eq("membre_confidentialite.confidentialite_id",confidentialite).orderBy("membre_nom").findList();
 	}
-	
+
 	public static List<Membre> selectMembresDroits(Integer droits){
 		return find.where().eq("membre_droits.droits_id",droits).orderBy("membre_nom").findList();
 	}
-	
+
 	public static List<Membre> selectMembresInscrit(Boolean isInscrit){
 		return find.where().eq("membre_inscription_acceptee",isInscrit).orderBy("membre_nom").findList();
 	}
-	
+
 	public static List<Membre> selectMembres(String nom){
 		return find.where().eq("membre_nom",nom).orderBy("membre_nom").findList();
 	}
 	/************************************/
-	
+
 	/***** Valide un utilisateur ************/
-	
+
 	public static void valideMembre(Integer id){
 		Membre membre= Membre.find.ref(id);
 		membre.membre_inscription_acceptee=true;
 		membre.save();
 	}
-	
+
 	@Override
 	public String toString(){
 		return membre_nom;
@@ -162,5 +162,19 @@ public class Membre extends Model {
 	 */
 	public List<MembreIsExpertOnGroupe> getGroupesDExpertise(){
 		return MembreIsExpertOnGroupe.find.where().eq("membre",this).findList(); 
+	}
+
+	/**
+	 * Génère un lien de validation pour le membre.
+	 * _NE_ l'écrit _PAS_ dans la base de données.
+	 * Si nécessaire, faire manuellement un .save() après.
+	 */
+	public void genereLienDeValidation(){
+		String lien = Credentials.genereLienAleatoire(10);
+		while(!Membre.find.where().eq("membre_lien_de_validation_de_mail", lien).findList().isEmpty()){
+			lien = Credentials.genereLienAleatoire(10);
+		}
+		membre_lien_de_validation_de_mail=lien;
+		this.save();
 	}
 }
