@@ -225,7 +225,10 @@ public class Espece extends Model {
 	 * @return
 	 */
 	public Fiche getPlusVieuxTemoignage(){
-		Observation o = Observation.find.where().eq("observation_espece",this).setMaxRows(1).orderBy("observation_fiche.fiche_date").findUnique();
+		Observation o = Observation.find.where()
+								.eq("observation_espece",this)
+								.eq("observation_validee",Observation.VALIDEE)
+							.setMaxRows(1).orderBy("observation_fiche.fiche_date").findUnique();
 		if(o==null)
 			return null;
 		else

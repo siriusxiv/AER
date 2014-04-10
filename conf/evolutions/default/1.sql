@@ -46,14 +46,8 @@ create table confidentialite (
 create table date_charniere (
   date_charniere_id         integer auto_increment not null,
   date_charniere_date       datetime not null,
+  date_charniere_groupe_groupe_id integer not null,
   constraint pk_date_charniere primary key (date_charniere_id))
-;
-
-create table date_charniere_has_groupe (
-  date_charniere_has_groupe_id integer auto_increment not null,
-  date_charniere_date_charniere_id integer not null,
-  groupe_groupe_id          integer not null,
-  constraint pk_date_charniere_has_groupe primary key (date_charniere_has_groupe_id))
 ;
 
 create table departement (
@@ -283,76 +277,74 @@ create table utms (
 
 alter table commune add constraint fk_commune_ville_departement_1 foreign key (ville_departement_departement_code) references departement (departement_code) on delete restrict on update restrict;
 create index ix_commune_ville_departement_1 on commune (ville_departement_departement_code);
-alter table date_charniere_has_groupe add constraint fk_date_charniere_has_groupe_date_charniere_2 foreign key (date_charniere_date_charniere_id) references date_charniere (date_charniere_id) on delete restrict on update restrict;
-create index ix_date_charniere_has_groupe_date_charniere_2 on date_charniere_has_groupe (date_charniere_date_charniere_id);
-alter table date_charniere_has_groupe add constraint fk_date_charniere_has_groupe_groupe_3 foreign key (groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
-create index ix_date_charniere_has_groupe_groupe_3 on date_charniere_has_groupe (groupe_groupe_id);
-alter table espece add constraint fk_espece_espece_sousfamille_4 foreign key (espece_sousfamille_sous_famille_id) references sous_famille (sous_famille_id) on delete restrict on update restrict;
-create index ix_espece_espece_sousfamille_4 on espece (espece_sousfamille_sous_famille_id);
-alter table espece_has_sous_groupe add constraint fk_espece_has_sous_groupe_espece_5 foreign key (espece_espece_id) references espece (espece_id) on delete restrict on update restrict;
-create index ix_espece_has_sous_groupe_espece_5 on espece_has_sous_groupe (espece_espece_id);
-alter table espece_has_sous_groupe add constraint fk_espece_has_sous_groupe_sous_groupe_6 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
-create index ix_espece_has_sous_groupe_sous_groupe_6 on espece_has_sous_groupe (sous_groupe_sous_groupe_id);
-alter table espece_synonyme add constraint fk_espece_synonyme_synonyme_espece_7 foreign key (synonyme_espece_espece_id) references espece (espece_id) on delete restrict on update restrict;
-create index ix_espece_synonyme_synonyme_espece_7 on espece_synonyme (synonyme_espece_espece_id);
-alter table famille add constraint fk_famille_famille_super_famille_8 foreign key (famille_super_famille_super_famille_id) references super_famille (super_famille_id) on delete restrict on update restrict;
-create index ix_famille_famille_super_famille_8 on famille (famille_super_famille_super_famille_id);
-alter table famille_has_sous_groupe add constraint fk_famille_has_sous_groupe_famille_9 foreign key (famille_famille_id) references famille (famille_id) on delete restrict on update restrict;
-create index ix_famille_has_sous_groupe_famille_9 on famille_has_sous_groupe (famille_famille_id);
-alter table famille_has_sous_groupe add constraint fk_famille_has_sous_groupe_sous_groupe_10 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
-create index ix_famille_has_sous_groupe_sous_groupe_10 on famille_has_sous_groupe (sous_groupe_sous_groupe_id);
-alter table fiche add constraint fk_fiche_fiche_utm_11 foreign key (fiche_utm_utm) references utms (utm) on delete restrict on update restrict;
-create index ix_fiche_fiche_utm_11 on fiche (fiche_utm_utm);
-alter table fiche add constraint fk_fiche_fiche_commune_12 foreign key (fiche_commune_ville_id) references commune (ville_id) on delete restrict on update restrict;
-create index ix_fiche_fiche_commune_12 on fiche (fiche_commune_ville_id);
-alter table fiche_has_membre add constraint fk_fiche_has_membre_membre_13 foreign key (membre_membre_id) references membre (membre_id) on delete restrict on update restrict;
-create index ix_fiche_has_membre_membre_13 on fiche_has_membre (membre_membre_id);
-alter table fiche_has_membre add constraint fk_fiche_has_membre_fiche_14 foreign key (fiche_fiche_id) references fiche (fiche_id) on delete restrict on update restrict;
-create index ix_fiche_has_membre_fiche_14 on fiche_has_membre (fiche_fiche_id);
-alter table informations_complementaires add constraint fk_informations_complementaires_informations_complementaires__15 foreign key (informations_complementaires_observation_observation_id) references observation (observation_id) on delete restrict on update restrict;
-create index ix_informations_complementaires_informations_complementaires__15 on informations_complementaires (informations_complementaires_observation_observation_id);
-alter table informations_complementaires add constraint fk_informations_complementaires_informations_complementaires__16 foreign key (informations_complementaires_stade_sexe_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
-create index ix_informations_complementaires_informations_complementaires__16 on informations_complementaires (informations_complementaires_stade_sexe_stade_sexe_id);
-alter table membre add constraint fk_membre_membre_confidentialite_17 foreign key (membre_confidentialite_confidentialite_id) references confidentialite (confidentialite_id) on delete restrict on update restrict;
-create index ix_membre_membre_confidentialite_17 on membre (membre_confidentialite_confidentialite_id);
-alter table membre add constraint fk_membre_membre_droits_18 foreign key (membre_droits_droits_id) references droits (droits_id) on delete restrict on update restrict;
-create index ix_membre_membre_droits_18 on membre (membre_droits_droits_id);
-alter table membre_has_groupe_de_membres add constraint fk_membre_has_groupe_de_membres_membre_19 foreign key (membre_membre_id) references membre (membre_id) on delete restrict on update restrict;
-create index ix_membre_has_groupe_de_membres_membre_19 on membre_has_groupe_de_membres (membre_membre_id);
-alter table membre_has_groupe_de_membres add constraint fk_membre_has_groupe_de_membres_groupe_de_membres_20 foreign key (groupe_de_membres_groupe_de_membres_id) references groupe_de_membres (groupe_de_membres_id) on delete restrict on update restrict;
-create index ix_membre_has_groupe_de_membres_groupe_de_membres_20 on membre_has_groupe_de_membres (groupe_de_membres_groupe_de_membres_id);
-alter table membre_is_expert_on_groupe add constraint fk_membre_is_expert_on_groupe_membre_21 foreign key (membre_membre_id) references membre (membre_id) on delete restrict on update restrict;
-create index ix_membre_is_expert_on_groupe_membre_21 on membre_is_expert_on_groupe (membre_membre_id);
-alter table membre_is_expert_on_groupe add constraint fk_membre_is_expert_on_groupe_groupe_22 foreign key (groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
-create index ix_membre_is_expert_on_groupe_groupe_22 on membre_is_expert_on_groupe (groupe_groupe_id);
-alter table observation add constraint fk_observation_observation_espece_23 foreign key (observation_espece_espece_id) references espece (espece_id) on delete restrict on update restrict;
-create index ix_observation_observation_espece_23 on observation (observation_espece_espece_id);
-alter table observation add constraint fk_observation_observation_fiche_24 foreign key (observation_fiche_fiche_id) references fiche (fiche_id) on delete restrict on update restrict;
-create index ix_observation_observation_fiche_24 on observation (observation_fiche_fiche_id);
-alter table ordre_has_sous_groupe add constraint fk_ordre_has_sous_groupe_ordre_25 foreign key (ordre_ordre_id) references ordre (ordre_id) on delete restrict on update restrict;
-create index ix_ordre_has_sous_groupe_ordre_25 on ordre_has_sous_groupe (ordre_ordre_id);
-alter table ordre_has_sous_groupe add constraint fk_ordre_has_sous_groupe_sous_groupe_26 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
-create index ix_ordre_has_sous_groupe_sous_groupe_26 on ordre_has_sous_groupe (sous_groupe_sous_groupe_id);
-alter table sous_famille add constraint fk_sous_famille_sous_famille_famille_27 foreign key (sous_famille_famille_famille_id) references famille (famille_id) on delete restrict on update restrict;
-create index ix_sous_famille_sous_famille_famille_27 on sous_famille (sous_famille_famille_famille_id);
-alter table sous_famille_has_sous_groupe add constraint fk_sous_famille_has_sous_groupe_sous_famille_28 foreign key (sous_famille_sous_famille_id) references sous_famille (sous_famille_id) on delete restrict on update restrict;
-create index ix_sous_famille_has_sous_groupe_sous_famille_28 on sous_famille_has_sous_groupe (sous_famille_sous_famille_id);
-alter table sous_famille_has_sous_groupe add constraint fk_sous_famille_has_sous_groupe_sous_groupe_29 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
-create index ix_sous_famille_has_sous_groupe_sous_groupe_29 on sous_famille_has_sous_groupe (sous_groupe_sous_groupe_id);
-alter table sous_groupe add constraint fk_sous_groupe_sous_groupe_groupe_30 foreign key (sous_groupe_groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
-create index ix_sous_groupe_sous_groupe_groupe_30 on sous_groupe (sous_groupe_groupe_groupe_id);
-alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_stade_sexe_31 foreign key (stade_sexe_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
-create index ix_stade_sexe_hierarchie_dans_groupe_stade_sexe_31 on stade_sexe_hierarchie_dans_groupe (stade_sexe_stade_sexe_id);
-alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_groupe_32 foreign key (groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
-create index ix_stade_sexe_hierarchie_dans_groupe_groupe_32 on stade_sexe_hierarchie_dans_groupe (groupe_groupe_id);
-alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_stade_sexe_pere_33 foreign key (stade_sexe_pere_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
-create index ix_stade_sexe_hierarchie_dans_groupe_stade_sexe_pere_33 on stade_sexe_hierarchie_dans_groupe (stade_sexe_pere_stade_sexe_id);
-alter table super_famille add constraint fk_super_famille_super_famille_ordre_34 foreign key (super_famille_ordre_ordre_id) references ordre (ordre_id) on delete restrict on update restrict;
-create index ix_super_famille_super_famille_ordre_34 on super_famille (super_famille_ordre_ordre_id);
-alter table super_famille_has_sous_groupe add constraint fk_super_famille_has_sous_groupe_super_famille_35 foreign key (super_famille_super_famille_id) references super_famille (super_famille_id) on delete restrict on update restrict;
-create index ix_super_famille_has_sous_groupe_super_famille_35 on super_famille_has_sous_groupe (super_famille_super_famille_id);
-alter table super_famille_has_sous_groupe add constraint fk_super_famille_has_sous_groupe_sous_groupe_36 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
-create index ix_super_famille_has_sous_groupe_sous_groupe_36 on super_famille_has_sous_groupe (sous_groupe_sous_groupe_id);
+alter table date_charniere add constraint fk_date_charniere_date_charniere_groupe_2 foreign key (date_charniere_groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
+create index ix_date_charniere_date_charniere_groupe_2 on date_charniere (date_charniere_groupe_groupe_id);
+alter table espece add constraint fk_espece_espece_sousfamille_3 foreign key (espece_sousfamille_sous_famille_id) references sous_famille (sous_famille_id) on delete restrict on update restrict;
+create index ix_espece_espece_sousfamille_3 on espece (espece_sousfamille_sous_famille_id);
+alter table espece_has_sous_groupe add constraint fk_espece_has_sous_groupe_espece_4 foreign key (espece_espece_id) references espece (espece_id) on delete restrict on update restrict;
+create index ix_espece_has_sous_groupe_espece_4 on espece_has_sous_groupe (espece_espece_id);
+alter table espece_has_sous_groupe add constraint fk_espece_has_sous_groupe_sous_groupe_5 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
+create index ix_espece_has_sous_groupe_sous_groupe_5 on espece_has_sous_groupe (sous_groupe_sous_groupe_id);
+alter table espece_synonyme add constraint fk_espece_synonyme_synonyme_espece_6 foreign key (synonyme_espece_espece_id) references espece (espece_id) on delete restrict on update restrict;
+create index ix_espece_synonyme_synonyme_espece_6 on espece_synonyme (synonyme_espece_espece_id);
+alter table famille add constraint fk_famille_famille_super_famille_7 foreign key (famille_super_famille_super_famille_id) references super_famille (super_famille_id) on delete restrict on update restrict;
+create index ix_famille_famille_super_famille_7 on famille (famille_super_famille_super_famille_id);
+alter table famille_has_sous_groupe add constraint fk_famille_has_sous_groupe_famille_8 foreign key (famille_famille_id) references famille (famille_id) on delete restrict on update restrict;
+create index ix_famille_has_sous_groupe_famille_8 on famille_has_sous_groupe (famille_famille_id);
+alter table famille_has_sous_groupe add constraint fk_famille_has_sous_groupe_sous_groupe_9 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
+create index ix_famille_has_sous_groupe_sous_groupe_9 on famille_has_sous_groupe (sous_groupe_sous_groupe_id);
+alter table fiche add constraint fk_fiche_fiche_utm_10 foreign key (fiche_utm_utm) references utms (utm) on delete restrict on update restrict;
+create index ix_fiche_fiche_utm_10 on fiche (fiche_utm_utm);
+alter table fiche add constraint fk_fiche_fiche_commune_11 foreign key (fiche_commune_ville_id) references commune (ville_id) on delete restrict on update restrict;
+create index ix_fiche_fiche_commune_11 on fiche (fiche_commune_ville_id);
+alter table fiche_has_membre add constraint fk_fiche_has_membre_membre_12 foreign key (membre_membre_id) references membre (membre_id) on delete restrict on update restrict;
+create index ix_fiche_has_membre_membre_12 on fiche_has_membre (membre_membre_id);
+alter table fiche_has_membre add constraint fk_fiche_has_membre_fiche_13 foreign key (fiche_fiche_id) references fiche (fiche_id) on delete restrict on update restrict;
+create index ix_fiche_has_membre_fiche_13 on fiche_has_membre (fiche_fiche_id);
+alter table informations_complementaires add constraint fk_informations_complementaires_informations_complementaires__14 foreign key (informations_complementaires_observation_observation_id) references observation (observation_id) on delete restrict on update restrict;
+create index ix_informations_complementaires_informations_complementaires__14 on informations_complementaires (informations_complementaires_observation_observation_id);
+alter table informations_complementaires add constraint fk_informations_complementaires_informations_complementaires__15 foreign key (informations_complementaires_stade_sexe_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
+create index ix_informations_complementaires_informations_complementaires__15 on informations_complementaires (informations_complementaires_stade_sexe_stade_sexe_id);
+alter table membre add constraint fk_membre_membre_confidentialite_16 foreign key (membre_confidentialite_confidentialite_id) references confidentialite (confidentialite_id) on delete restrict on update restrict;
+create index ix_membre_membre_confidentialite_16 on membre (membre_confidentialite_confidentialite_id);
+alter table membre add constraint fk_membre_membre_droits_17 foreign key (membre_droits_droits_id) references droits (droits_id) on delete restrict on update restrict;
+create index ix_membre_membre_droits_17 on membre (membre_droits_droits_id);
+alter table membre_has_groupe_de_membres add constraint fk_membre_has_groupe_de_membres_membre_18 foreign key (membre_membre_id) references membre (membre_id) on delete restrict on update restrict;
+create index ix_membre_has_groupe_de_membres_membre_18 on membre_has_groupe_de_membres (membre_membre_id);
+alter table membre_has_groupe_de_membres add constraint fk_membre_has_groupe_de_membres_groupe_de_membres_19 foreign key (groupe_de_membres_groupe_de_membres_id) references groupe_de_membres (groupe_de_membres_id) on delete restrict on update restrict;
+create index ix_membre_has_groupe_de_membres_groupe_de_membres_19 on membre_has_groupe_de_membres (groupe_de_membres_groupe_de_membres_id);
+alter table membre_is_expert_on_groupe add constraint fk_membre_is_expert_on_groupe_membre_20 foreign key (membre_membre_id) references membre (membre_id) on delete restrict on update restrict;
+create index ix_membre_is_expert_on_groupe_membre_20 on membre_is_expert_on_groupe (membre_membre_id);
+alter table membre_is_expert_on_groupe add constraint fk_membre_is_expert_on_groupe_groupe_21 foreign key (groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
+create index ix_membre_is_expert_on_groupe_groupe_21 on membre_is_expert_on_groupe (groupe_groupe_id);
+alter table observation add constraint fk_observation_observation_espece_22 foreign key (observation_espece_espece_id) references espece (espece_id) on delete restrict on update restrict;
+create index ix_observation_observation_espece_22 on observation (observation_espece_espece_id);
+alter table observation add constraint fk_observation_observation_fiche_23 foreign key (observation_fiche_fiche_id) references fiche (fiche_id) on delete restrict on update restrict;
+create index ix_observation_observation_fiche_23 on observation (observation_fiche_fiche_id);
+alter table ordre_has_sous_groupe add constraint fk_ordre_has_sous_groupe_ordre_24 foreign key (ordre_ordre_id) references ordre (ordre_id) on delete restrict on update restrict;
+create index ix_ordre_has_sous_groupe_ordre_24 on ordre_has_sous_groupe (ordre_ordre_id);
+alter table ordre_has_sous_groupe add constraint fk_ordre_has_sous_groupe_sous_groupe_25 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
+create index ix_ordre_has_sous_groupe_sous_groupe_25 on ordre_has_sous_groupe (sous_groupe_sous_groupe_id);
+alter table sous_famille add constraint fk_sous_famille_sous_famille_famille_26 foreign key (sous_famille_famille_famille_id) references famille (famille_id) on delete restrict on update restrict;
+create index ix_sous_famille_sous_famille_famille_26 on sous_famille (sous_famille_famille_famille_id);
+alter table sous_famille_has_sous_groupe add constraint fk_sous_famille_has_sous_groupe_sous_famille_27 foreign key (sous_famille_sous_famille_id) references sous_famille (sous_famille_id) on delete restrict on update restrict;
+create index ix_sous_famille_has_sous_groupe_sous_famille_27 on sous_famille_has_sous_groupe (sous_famille_sous_famille_id);
+alter table sous_famille_has_sous_groupe add constraint fk_sous_famille_has_sous_groupe_sous_groupe_28 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
+create index ix_sous_famille_has_sous_groupe_sous_groupe_28 on sous_famille_has_sous_groupe (sous_groupe_sous_groupe_id);
+alter table sous_groupe add constraint fk_sous_groupe_sous_groupe_groupe_29 foreign key (sous_groupe_groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
+create index ix_sous_groupe_sous_groupe_groupe_29 on sous_groupe (sous_groupe_groupe_groupe_id);
+alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_stade_sexe_30 foreign key (stade_sexe_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
+create index ix_stade_sexe_hierarchie_dans_groupe_stade_sexe_30 on stade_sexe_hierarchie_dans_groupe (stade_sexe_stade_sexe_id);
+alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_groupe_31 foreign key (groupe_groupe_id) references groupe (groupe_id) on delete restrict on update restrict;
+create index ix_stade_sexe_hierarchie_dans_groupe_groupe_31 on stade_sexe_hierarchie_dans_groupe (groupe_groupe_id);
+alter table stade_sexe_hierarchie_dans_groupe add constraint fk_stade_sexe_hierarchie_dans_groupe_stade_sexe_pere_32 foreign key (stade_sexe_pere_stade_sexe_id) references stade_sexe (stade_sexe_id) on delete restrict on update restrict;
+create index ix_stade_sexe_hierarchie_dans_groupe_stade_sexe_pere_32 on stade_sexe_hierarchie_dans_groupe (stade_sexe_pere_stade_sexe_id);
+alter table super_famille add constraint fk_super_famille_super_famille_ordre_33 foreign key (super_famille_ordre_ordre_id) references ordre (ordre_id) on delete restrict on update restrict;
+create index ix_super_famille_super_famille_ordre_33 on super_famille (super_famille_ordre_ordre_id);
+alter table super_famille_has_sous_groupe add constraint fk_super_famille_has_sous_groupe_super_famille_34 foreign key (super_famille_super_famille_id) references super_famille (super_famille_id) on delete restrict on update restrict;
+create index ix_super_famille_has_sous_groupe_super_famille_34 on super_famille_has_sous_groupe (super_famille_super_famille_id);
+alter table super_famille_has_sous_groupe add constraint fk_super_famille_has_sous_groupe_sous_groupe_35 foreign key (sous_groupe_sous_groupe_id) references sous_groupe (sous_groupe_id) on delete restrict on update restrict;
+create index ix_super_famille_has_sous_groupe_sous_groupe_35 on super_famille_has_sous_groupe (sous_groupe_sous_groupe_id);
 
 
 
@@ -365,8 +357,6 @@ drop table commune;
 drop table confidentialite;
 
 drop table date_charniere;
-
-drop table date_charniere_has_groupe;
 
 drop table departement;
 

@@ -18,6 +18,7 @@
 
 package models;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -76,6 +77,18 @@ public class Fiche extends Model {
 	 * @return
 	 */
 	public static Fiche getPlusVieuxTemoignage(){
-		return find.where().setMaxRows(1).orderBy("fiche_date").findUnique();
+		Observation o = Observation.find.where()
+				.eq("observation_validee",Observation.VALIDEE)
+			.setMaxRows(1).orderBy("observation_fiche.fiche_date").findUnique();
+		return o.getFiche();
+	}
+	
+	/**
+	 * Renvoie la date max de la fiche sous la forme "dd/MM/yyyy".
+	 * @return
+	 */
+	public String getDateInString(){
+		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
+		return date_format.format(fiche_date.getTime());
 	}
 }

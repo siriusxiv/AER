@@ -17,8 +17,14 @@
  ********************************************************************************/
 package controllers.expert;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import models.DateCharniere;
 import models.Groupe;
 import controllers.admin.Admin;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.gererDatesCharnieres;
@@ -34,6 +40,23 @@ public class GererDatesChanieres extends Controller{
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe))
 			return ok(gererDatesCharnieres.render(groupe));
+		else
+			return Admin.nonAutorise();
+	}
+
+	public static Result ajouter(Integer groupe_id) throws ParseException{
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			int jour = Integer.parseInt(df.get("jour"));
+			int mois = Integer.parseInt(df.get("mois"));
+			int annee = Integer.parseInt(df.get("annee"));
+			Calendar c = Calendar.getInstance();
+			SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
+			c.setTime(date_format.parse(jour+"/"+mois+"/"+annee));
+			new DateCharniere(groupe, c).save();
+			return redirect("/gererdatescharnieres/"+groupe_id);
+		}
 		else
 			return Admin.nonAutorise();
 	}

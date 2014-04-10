@@ -23,6 +23,7 @@ import java.util.Calendar;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
@@ -34,8 +35,16 @@ public class DateCharniere extends Model {
 	public Integer date_charniere_id;
 	@NotNull
 	public Calendar date_charniere_date;
+	@NotNull
+	@ManyToOne
+	public Groupe date_charniere_groupe;
 	
 	public static Finder<Integer,DateCharniere> find = new Finder<Integer,DateCharniere>(Integer.class, DateCharniere.class);
+
+	public DateCharniere(Groupe groupe, Calendar c) {
+		date_charniere_groupe=groupe;
+		date_charniere_date=c;
+	}
 
 	@Override
 	public String toString(){

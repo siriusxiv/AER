@@ -81,8 +81,8 @@ public class Groupe extends Model {
 	 * chronologiquement croissant.
 	 * @return
 	 */
-	public List<DateCharniereHasGroupe> getDatesCharnieres(){
-		return DateCharniereHasGroupe.find.where().eq("groupe", this)
-				.orderBy("date_charniere.date_charniere_date").findList();
+	public List<DateCharniere> getDatesCharnieres(){
+		return DateCharniere.find.where().eq("date_charniere_groupe", this)
+				.orderBy("date_charniere_date").findList();
 	}
 }

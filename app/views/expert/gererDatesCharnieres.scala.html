@@ -18,12 +18,13 @@
 @(groupe: Groupe)
 @main("Gérer les dates charnières du groupe "+groupe){
 	<h1>Gérer les dates charnières du groupe @groupe</h1>
-	<ol>@for(dateCharniereHasGroupe <- groupe.getDatesCharnieres()){
-		<li><button onClick="supprimer(@dateCharniereHasGroupe.DateCharniereHasGroupe_id)">Supprimer</button>@dateCharniereHasGroupe.date_charniere</li>
+	<ol>@for(dateCharniere <- groupe.getDatesCharnieres()){
+		<li><button onClick="supprimer(@dateCharniere.date_charniere_id)">Supprimer</button>@dateCharniere</li>
 	}</ol>
 	<button onClick="ajouter()">Ajouter une date charnière</button>
-	<div id="nouvelleDateChaniere">
+	<div id="nouvelleDateCharniere" style="display:none">
 		Date charnière :
+		<form method="POST" action="/ajouterDateCharniere/@groupe.groupe_id">
 			<select name="jour">
 			@for(i: Int <- 1 to 31){
 				<option value="@i">@i</option>
@@ -39,9 +40,13 @@
 				<option value="@i">@i</option>
 			}
 			</select>
+			<button>OK</button>
+		</form>
 	</div>
 }{
 <script>
-
+function ajouter(){
+	$('#nouvelleDateCharniere').attr('style','display:block');
+}
 </script>
 }

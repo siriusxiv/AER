@@ -44,6 +44,11 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class Observation extends Model {
+	
+	public static int NON_VALIDEE = 0;
+	public static int EN_SUSPEND = 1;
+	public static int VALIDEE = 2;
+	
 	@Id
 	public Long observation_id;
 	@NotNull
@@ -131,6 +136,14 @@ public class Observation extends Model {
 public void valider(){
 	this.observation_validee=2;
 }
+
+	/**
+	 * Renvoie true si l'observation est validée, false sinon.
+	 * @return
+	 */
+	public boolean estValidee(){
+		return observation_validee==Observation.VALIDEE;
+	}
 	
 	@Override
 	public String toString(){
