@@ -42,6 +42,8 @@ public class Espece extends Model {
 	@NotNull
 	public Integer espece_systematique;
 	public String espece_photo;
+	@ManyToOne
+	public SousGroupe espece_sous_groupe;
 	@NotNull
 	@ManyToOne
 	public SousFamille espece_sousfamille;

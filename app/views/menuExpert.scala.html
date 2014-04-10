@@ -27,9 +27,6 @@
 		<a href="/ficheDeTemoignage">Témoignage</a>
 		</dt>
 		<dt>
-		<a href="/temoignagesAValider">Témoignages à valider</a>
-		</dt>
-		<dt>
 		<a href="/temoignagesValides">Témoignages validés</a>
 		</dt>
 		<dt>
@@ -44,6 +41,9 @@
 		@for(mieog <- expert.getGroupesDExpertise()){
 		<dt>
 		<a href="/gererstadesexe/@mieog.groupe.groupe_id">Gérer les sexes et les stades du groupe @mieog.groupe</a>
+		</dt>
+		<dt>
+		<a href="/temoignagesAValider/@mieog.groupe.groupe_id">Témoignages à valider</a>
 		</dt>
 		}
 		<dt>

@@ -20,12 +20,17 @@ package models;
 
 import java.util.Calendar;
 import java.util.List;
-
+import models.Espece;
+import models.Groupe;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+
+
+
 
 
 
@@ -84,18 +89,20 @@ public class Observation extends Model {
 	 * liste des observations non vues
 	 * @return
 	 */
-	public static List<Observation> nonVus(){
+	public static List<Observation> nonVus(Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
 		boolean nonvu= false;
-		return find.where().eq("observation_vue_par_expert",nonvu).findList();
+		return find.where().eq("observation_vue_par_expert",nonvu).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
 	}
 	
 	/**
 	 * liste des observations en suspend
 	 * @return
 	 */
-	public static List<Observation> enSuspend(){
+	public static List<Observation> enSuspend(Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
 		Integer suspend=1;
-		return find.where().eq("observation_validee", suspend).findList();
+		return find.where().eq("observation_validee", suspend).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
 	}
 
 	/**
