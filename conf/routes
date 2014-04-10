@@ -35,6 +35,7 @@ POST	/supprimerStadeSexePere/:groupe_id/:stade_sexe_id	controllers.expert.GererS
 POST	/supprimerStadeSexeFils/:groupe_id/:stade_sexe_id	controllers.expert.GererStadeSexe.supprimerStadeFils(groupe_id: Integer, stade_sexe_id: Integer)
 GET		/gererdatescharnieres/:groupe_id					controllers.expert.GererDatesChanieres.main(groupe_id: Integer)
 POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres.ajouter(groupe_id: Integer)
+POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
 
 #routes pour les admins
 GET     /menuAdmin                   controllers.Application.menuAdmin()

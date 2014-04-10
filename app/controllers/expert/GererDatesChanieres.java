@@ -43,7 +43,14 @@ public class GererDatesChanieres extends Controller{
 		else
 			return Admin.nonAutorise();
 	}
-
+	
+	/**
+	 * Ajoute une date charnière et redirige vers la page de gestion
+	 * des dates charnières.
+	 * @param groupe_id
+	 * @return
+	 * @throws ParseException
+	 */
 	public static Result ajouter(Integer groupe_id) throws ParseException{
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
@@ -55,6 +62,26 @@ public class GererDatesChanieres extends Controller{
 			SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
 			c.setTime(date_format.parse(jour+"/"+mois+"/"+annee));
 			new DateCharniere(groupe, c).save();
+			return redirect("/gererdatescharnieres/"+groupe_id);
+		}
+		else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Supprime la date charnière en argument et redirige vers la page de gestion
+	 * des dates charnières
+	 * @param groupe_id
+	 * @param date_charniere_id
+	 * @return
+	 */
+	public static Result supprimer(Integer groupe_id, Integer date_charniere_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+			DateCharniere dc = DateCharniere.find.byId(date_charniere_id);
+			if(dc!=null){
+				dc.delete();
+			}
 			return redirect("/gererdatescharnieres/"+groupe_id);
 		}
 		else

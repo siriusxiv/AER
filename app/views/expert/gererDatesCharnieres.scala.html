@@ -19,7 +19,12 @@
 @main("Gérer les dates charnières du groupe "+groupe){
 	<h1>Gérer les dates charnières du groupe @groupe</h1>
 	<ol>@for(dateCharniere <- groupe.getDatesCharnieres()){
-		<li><button onClick="supprimer(@dateCharniere.date_charniere_id)">Supprimer</button>@dateCharniere</li>
+		<li>
+		<form method="POST" action="/supprimerDateCharniere/@groupe.groupe_id/@dateCharniere.date_charniere_id">
+			<button onClick="supprimer(@dateCharniere.date_charniere_id)">Supprimer</button>
+		</form>
+		@dateCharniere
+		</li>
 	}</ol>
 	<button onClick="ajouter()">Ajouter une date charnière</button>
 	<div id="nouvelleDateCharniere" style="display:none">
