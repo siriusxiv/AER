@@ -46,10 +46,9 @@
         		<th>Demander</th>
         	</tr>
         	@for(observation <- listObservation) {
-        	<tr>
+        	<tr id="editObservation@observation.observation_id">
         		<td>@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){ @ficheHasMembre.membre} 
         		</td>
-        		
         		<td>@observation.observation_espece.espece_nom</td>
         		<td>@observation.observation_determinateur</td>
         		<td>@observation.observation_commentaires</td>
@@ -73,6 +72,20 @@
         	</tr>}
         </table>
         		
-}{<script>
-		
+}{<link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+ <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+ <script>
+function edite(observation_id, ville_nom_reel, groupe_id){
+	var formdata= new FormData();
+	formdata.append('ville_nom_reel',ville_nom_reel)
+		$.ajax({
+			type : 'POST',
+			url : '/listeDesCommunes/editObservation'+observation_id,
+			data: formdata,
+			processData: false,
+			contentType: false,
+			success: function(res){
+			$('#observation'+observation_id).load('/temoignagesAValider/edite/'+groupe_id+'/'+observation_id')}
+	});
+}
 </script>}

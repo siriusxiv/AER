@@ -21,6 +21,7 @@ import java.util.List;
 
 import models.Commune;
 import models.Membre;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.listeDesMembres;
@@ -32,6 +33,8 @@ public class Listes extends Controller {
 	}
 	
 	public static Result communes(String string_id){
+		DynamicForm df= DynamicForm.form().bindFromRequest();
+		String ville_nom_reel= df.get("ville_nom_reel");
 		return ok(listeDesCommunes.render(string_id));
 	}
 	/**
@@ -54,6 +57,12 @@ public class Listes extends Controller {
 		}
 	}
 	
+	/**
+	 *  * Renvoie une chaîne de caractère exploitable par la fonction
+	 * d'autocomplétion
+	 * 
+	 * @return
+	 */
 	public static String listeCommunes(){
 		List<Commune> communes = Commune.find.all();
 		if(communes.isEmpty()){

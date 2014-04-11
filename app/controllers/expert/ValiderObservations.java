@@ -18,14 +18,16 @@
 package controllers.expert;
 
 
+import java.util.List;
+
 import controllers.admin.Admin;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.temoignagesAValider;
+import views.html.expert.editeTemoignagesAValider;
 import models.Commune;
 import models.Espece;
-import models.Fiche;
 import models.Groupe;
 import models.Observation;
 import models.UTMS;
@@ -40,17 +42,6 @@ import models.UTMS;
 
 public class ValiderObservations extends Controller {
 	
- /**
-  * Permet d'afficher la page liée au processus de validation des témoignages
-  * @return
-  */
-	/*
-	public static Result temoignagesAValider(Integer validation) {
-    	return ok( temoignagesAValider.render(Observation.observationsEtat(validation)));
-    }
-	
-	
-	*/
 	
 	/**
 	 * renvoit les témoignages non vus
@@ -75,7 +66,23 @@ public class ValiderObservations extends Controller {
 		else
 			return Admin.nonAutorise();
     }
-    
+	
+	/**
+	 * Permet de charger la page voulue lorsque l'on veut éditer une observation (editeTemoignageAValider)
+	 * @param groupe_id
+	 * @param observation_id
+	 * @return
+	 */
+     public static Result editeTemoignage( Long observation_id, Integer groupe_id){
+    			Groupe groupe = Groupe.find.byId(groupe_id);
+    			Observation observation= Observation.find.byId(observation_id);
+    			List<UTMS> utms= UTMS.find.all();
+    			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
+    			if(MenuExpert.isExpertOn(groupe))
+    				return ok( editeTemoignagesAValider.render(observation,utms,especes));
+    			else
+    				return Admin.nonAutorise();
+     }
 	
 	/**
 	 * Permet de marquer comme vue l'obsertvation sélectionnée
@@ -112,7 +119,12 @@ public class ValiderObservations extends Controller {
 		else
 			return Admin.nonAutorise();
 	}
-	
+	/**
+	 * Permet à un expert de changer les valeurs d'une observation 
+	 * @param observation_id
+	 * @param groupe_id
+	 * @return
+	 */
 	public static Result editer(Long observation_id, Integer groupe_id) {
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){

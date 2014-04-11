@@ -22,7 +22,7 @@
  *  <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
  *  <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
  **@
- <input type="text" name="ville_nom_reel" placeholder="Nom de la commune" id="@id">
+ <input type="text" name="ville_nom_reel" id="@id" placeholder="nom de la Commune">
  <script>
  var listeCommunes = [@Html(controllers.ajax.Listes.listeCommunes())];
  $('#@id').autocomplete({	source : listeCommunes,
