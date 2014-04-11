@@ -1,0 +1,101 @@
+@*********************************************************************************
+ * 
+ *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *   
+ ********************************************************************************@
+@(groupes : List[Groupe])
+@main("Gérer les groupes et les sous-groupes"){
+<button onClick="montrerTousSousGroupes()">▼</button>Montrer tous les sous-groupes
+	@for(groupe <- groupes){
+	<div id="groupe@groupe.groupe_id">
+		&nbsp;&nbsp;&nbsp;<button onClick="montrerSousGroupe(@groupe.groupe_id)">▼</button>
+		<span id="nomGroupe@groupe.groupe_id" onDblClick="renommerGroupe(@groupe.groupe_id)">@groupe</span>
+	</div>
+	<div id="sousGroupes@groupe.groupe_id" style="display:none">
+		@for(sousGroupe <- groupe.getSousGroupes()){
+			<div id="sousGroupe@sousGroupe.sous_groupe_id">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span id="nomSousGroupe@sousGroupe.sous_groupe_id" onDblClick="renommerSousGroupe(@sousGroupe.sous_groupe_id)">@sousGroupe</span>
+			</div>
+		}
+	</div>
+	}
+}{
+<script>["Saab","Volvo","BMW"];
+var groupes_id = [@for(groupe <- groupes.subList(0,groupes.size()-1)){@groupe.groupe_id,}@groupes.get(groupes.size()-1).groupe_id];
+function montrerSousGroupe(groupe_id){
+	var style = $('#sousGroupes'+groupe_id).attr('style');
+	if(style=='display:none')
+		$('#sousGroupes'+groupe_id).attr('style','display:block');
+	else
+		$('#sousGroupes'+groupe_id).attr('style','display:none');
+}
+function montrerTousSousGroupes(){
+	for(var i = 0 ; i<groupes_id.length ; i++)
+		montrerSousGroupe(groupes_id[i]);
+}
+function renommerGroupe(groupe_id){
+	var element = $('#nomGroupe'+groupe_id);
+	var groupe_nom = element.html();
+	element.replaceWith('<input type="text" value="'+groupe_nom+'" id="nouveauNomGroupe'+groupe_id+'">');
+	$('#nouveauNomGroupe'+groupe_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNom = $('#nouveauNomGroupe'+groupe_id).val();
+			if(nouveauNom=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauNom',nouveauNom);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/groupe/renommer/'+groupe_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauNomGroupe'+groupe_id).replaceWith('<span id="nomGroupe'+groupe_id+'" onDblClick="renommerGroupe('+groupe_id+')">'+nouveauNom+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+function renommerSousGroupe(sous_groupe_id){
+	var element = $('#nomSousGroupe'+sous_groupe_id);
+	var sous_groupe_nom = element.html();
+	element.replaceWith('<input type="text" value="'+sous_groupe_nom+'" id="nouveauNomSousGroupe'+sous_groupe_id+'">');
+	$('#nouveauNomSousGroupe'+sous_groupe_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNom = $('#nouveauNomSousGroupe'+sous_groupe_id).val();
+			if(nouveauNom=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauNom',nouveauNom);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/sous_groupe/renommer/'+sous_groupe_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauNomSousGroupe'+sous_groupe_id).replaceWith('<span id="nomSousGroupe'+sous_groupe_id+'" onDblClick="renommerSousGroupe('+sous_groupe_id+')">'+nouveauNom+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+</script>
+}

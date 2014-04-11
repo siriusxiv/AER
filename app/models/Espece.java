@@ -42,6 +42,7 @@ public class Espece extends Model {
 	@NotNull
 	public Integer espece_systematique;
 	public String espece_photo;
+	//Duplication des données de SousGroupe pour améliorer la vitesse de la base
 	@ManyToOne
 	public SousGroupe espece_sous_groupe;
 	@NotNull
@@ -235,6 +236,16 @@ public class Espece extends Model {
 			return null;
 		else
 			return o.getFiche();
+	}
+	
+	/**
+	 * Met a jour le sous-groupe de l'espèce en question.
+	 * (Duplication des données des sous-groupes pour améliorer la vitesse des requêtes.)
+	 */
+	public void metAJourSousGroupes(){
+		SousGroupe sg=this.getSousGroupe();
+		this.espece_sous_groupe= sg;
+		this.save();
 	}
 	
 }

@@ -85,4 +85,13 @@ public class Groupe extends Model {
 		return DateCharniere.find.where().eq("date_charniere_groupe", this)
 				.orderBy("date_charniere_date").findList();
 	}
+	
+	/**
+	 * Renvoie la liste des sous-groupes inclus dans ce groupe
+	 * @return
+	 */
+	public List<SousGroupe> getSousGroupes(){
+		return SousGroupe.find.where().eq("sous_groupe_groupe", this).findList();
+	}
+	
 }
