@@ -19,11 +19,16 @@ package controllers.expert;
 
 
 import controllers.admin.Admin;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.temoignagesAValider;
+import models.Commune;
+import models.Espece;
+import models.Fiche;
 import models.Groupe;
 import models.Observation;
+import models.UTMS;
 
 
 /**
@@ -104,6 +109,44 @@ public class ValiderObservations extends Controller {
 		}
 		observation.save();
 		return redirect("/temoignagesAValider/enSuspens/"+groupe_id);}
+		else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result editer(Long observation_id, Integer groupe_id) {
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Integer espece_id= Integer.parseInt(df.get("espece_id"));
+		String determinateur= df.get("determinateur");
+		String commentaire= df.get("commentaire");
+		String lieudit= df.get("lieudit");
+		String communenom= df.get("commune");
+		String utm = df.get("utm");
+		String memo = df.get("memo");
+		Observation observation= Observation.find.byId(observation_id);
+		if (observation!=null){
+			observation.observation_determinateur=determinateur;
+			observation.observation_commentaires=commentaire;
+			observation.observation_fiche.fiche_lieudit=lieudit;
+			Espece espece= Espece.find.byId(espece_id);
+			if (espece!=null){
+			observation.observation_espece=espece;
+			}
+			observation.observation_fiche.fiche_memo=memo;
+			Commune commune=Commune.find.where().eq("ville_nom_reel", communenom).findUnique();
+			if (commune!=null){
+			observation.observation_fiche.fiche_commune=commune;
+			}
+			UTMS utms=UTMS.find.byId(utm);
+			if (utms!=null){
+			observation.observation_fiche.fiche_utm=utms;
+			}
+			observation.observation_fiche.save();
+			observation.save();
+			}
+				return redirect("/temoignagesAValider/enSuspens/"+groupe_id);
+		}
 		else
 			return Admin.nonAutorise();
 	}

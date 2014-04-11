@@ -42,13 +42,14 @@
         		<th>date de soumission</th>
         		<th>informations supplémentaires</th>
         		<th>date de dernière modification</th>
-        		<th>Marquer comme Vu/Valider<th>
+        		<th>Marquer comme Vu/Valider</th>
         		<th>Demander</th>
         	</tr>
         	@for(observation <- listObservation) {
         	<tr>
         		<td>@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){ @ficheHasMembre.membre} 
         		</td>
+        		
         		<td>@observation.observation_espece.espece_nom</td>
         		<td>@observation.observation_determinateur</td>
         		<td>@observation.observation_commentaires</td>
@@ -67,10 +68,11 @@
         		<button type="submit">Marquer comme vu</button></form>
         		}else{@if(observation.observation_validee==1){<form action="/temoignagesAValider/valide/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
         		<button type="submit">Valider</button></form>}else{}}</td>
-        		<td>@observation.observation_id</td>
-        		<td></td>
+        		<td>
+        		@observation.observation_id</td>
         	</tr>}
         </table>
         		
 }{<script>
+		
 </script>}
