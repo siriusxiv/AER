@@ -23,6 +23,7 @@ import models.SousGroupe;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.admin.ajax.gererSousGroupe;
 
 public class AjaxGererGroupeEtSousGroupes extends Controller {
 	
@@ -54,6 +55,19 @@ public class AjaxGererGroupeEtSousGroupes extends Controller {
 			sous_groupe.sous_groupe_nom=df.get("nouveauNom");
 			sous_groupe.save();
 			return ok("Sous-groupe "+sous_groupe_id+" renommé avec succès");
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Permet de voir la page gererSousGroupe chargée par ajax
+	 * @param sous_groupe_id
+	 * @return
+	 */
+	public static Result voirPageEditerSousGroupe(Integer sous_groupe_id){
+		if(Admin.isAdminConnected()){
+			SousGroupe sous_groupe = SousGroupe.find.byId(sous_groupe_id);
+			return ok(gererSousGroupe.render(sous_groupe));
 		}else
 			return Admin.nonAutorise();
 	}

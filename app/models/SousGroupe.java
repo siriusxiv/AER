@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -50,5 +52,45 @@ public class SousGroupe extends Model {
 	@Override
 	public String toString(){
 		return sous_groupe_nom;
+	}
+	
+	/**
+	 * Renvoie les ordres contenus dans ce sous-groupe
+	 * @return
+	 */
+	public List<OrdreHasSousGroupe> getOrdres(){
+		return OrdreHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+	}
+	/**
+	 * Renvoie les super-familles (dont l'ordre n'est pas dans ce sous-groupe)
+	 * contenus dans ce sous-groupe
+	 * @return
+	 */
+	public List<SuperFamilleHasSousGroupe> getSuperFamilles(){
+		return SuperFamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+	}
+	/**
+	 * Renvoie les familles (dont la super-famille n'est pas dans ce sous-groupe)
+	 * contenus dans ce sous-groupe
+	 * @return
+	 */
+	public List<FamilleHasSousGroupe> getFamilles(){
+		return FamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+	}
+	/**
+	 * Renvoie les sous-familles (dont la famille n'est pas dans ce sous-groupe)
+	 * contenus dans ce sous-groupe
+	 * @return
+	 */
+	public List<SousFamilleHasSousGroupe> getSousFamilles(){
+		return SousFamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+	}
+	/**
+	 * Renvoie les espèces (dont la sous-famille n'est pas dans ce sous-groupe)
+	 * contenus dans ce sous-groupe
+	 * @return
+	 */
+	public List<EspeceHasSousGroupe> getEspeces(){
+		return EspeceHasSousGroupe.find.where().eq("sous_groupe", this).findList();
 	}
 }

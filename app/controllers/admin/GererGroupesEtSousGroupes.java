@@ -18,16 +18,38 @@
 package controllers.admin;
 
 import models.Groupe;
+import models.SousGroupe;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.admin.gererGroupesEtSousGroupes;
 
 public class GererGroupesEtSousGroupes extends Controller {
-	
+
 	public static Result main(){
 		if(Admin.isAdminConnected())
 			return ok(gererGroupesEtSousGroupes.render(Groupe.findAll()));
 		else
+			return Admin.nonAutorise();
+	}
+
+	/**
+	 * Déplace un sous-groupe dans un autre groupe
+	 * @param sous_groupe_id
+	 * @return
+	 */
+	public static Result deplacerSousGroupe(Integer sous_groupe_id){
+		if(Admin.isAdminConnected()){
+			SousGroupe sous_groupe = SousGroupe.find.byId(sous_groupe_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			Integer groupe_id = Integer.parseInt(df.get("groupeId"));
+			Groupe groupe = Groupe.find.byId(groupe_id);
+			if(sous_groupe!=null && groupe!=null){
+				sous_groupe.sous_groupe_groupe=groupe;
+				sous_groupe.save();
+			}
+			return redirect("/gererGroupesEtSousGroupes");
+		}else
 			return Admin.nonAutorise();
 	}
 }

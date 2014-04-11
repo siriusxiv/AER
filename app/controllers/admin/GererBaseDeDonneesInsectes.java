@@ -41,7 +41,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	 * @return
 	 */
 	public static Result main() {
-		return ok(gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+		return ok(gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findSuperFamillesExistantes(), Ordre.findAll()));
 	}
 	/******* mise en place des tris des insectes **********/
 	public static Result listeEspecesParSousFamille(){
@@ -51,7 +51,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		if (sousfam_id == 0) {
 			return redirect("/gererBaseDeDonneesInsectes");
 		} else {	
-			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesSousFamille(sousfam), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesSousFamille(sousfam), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
 		}
 	}
 	public static Result listeEspecesParFamille(){
@@ -61,7 +61,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		if (fam_id == 0) {
 			return redirect ("/gererBaseDeDonneesInsectes");
 		} else {
-			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesFamille(fam), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesFamille(fam), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
 		}
 	}
 	public static Result listeEspecesParSuperFamille(){
@@ -71,7 +71,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		if (superfam_id == 0) {
 			return redirect ("/gererBaseDeDonneesInsectes");
 		} else {
-			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesSuperFamille(superfam), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesSuperFamille(superfam), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
 		}
 	}
 	public static Result listeEspecesParOrdre(){
@@ -81,7 +81,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		if (ordre_id == 0) {
 			return redirect ("/gererBaseDeDonneesInsectes");
 		} else {
-			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesOrdre(ordre), SousFamille.findSousFamilleExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
+			return ok(gererBaseDeDonneesInsectes.render(Espece.selectEspecesOrdre(ordre), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findAll(), Ordre.findAll()));
 		}
 	}
 	

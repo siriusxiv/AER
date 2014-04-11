@@ -89,7 +89,7 @@ public class SousFamille extends Model{
 	* Renvoie la liste des sous-familles existantes.
 	* @return 
 	*/
-	public static List<SousFamille> findSousFamilleExistantes(){
+	public static List<SousFamille> findSousFamillesExistantes(){
 		return SousFamille.find.where().eq("sous_famille_existe", true).findList();
 	}
 }

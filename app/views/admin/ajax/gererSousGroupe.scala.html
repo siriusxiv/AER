@@ -1,0 +1,112 @@
+@****************************************************************************
+
+	ASCMII is a web application developped for the Ecole Centrale de Nantes
+	aiming to organize quizzes during courses or lectures.
+    Copyright (C) 2013  Malik Olivier Boussejra
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see http://www.gnu.org/licenses/.
+
+******************************************************************************@
+@(sous_groupe: SousGroupe)
+<h1>Gestion du sous_groupe : @sous_groupe</h1>
+<table>
+<tr>
+	<th>Ordres dans le sous-groupe</th>
+	<th>Super-familles dans le sous-groupe</th>
+	<th>Familles dans le sous-groupe</th>
+	<th>Sous-familles dans le sous-groupe</th>
+	<th>Espèces dans le sous-groupe</th>
+</tr>
+<tr>
+	<td>
+	@for(ohsg <- sous_groupe.getOrdres()){
+		@ohsg.ordre<button onClick="supprimerOrdre(@ohsg.OrdreHasSousGroupe_id)">Supprimer</button><br>
+	}
+	</td>
+	<td>
+	@for(sufhsg <- sous_groupe.getSuperFamilles()){
+		@sufhsg.super_famille<button onClick="supprimerSuperFamille(@sufhsg.SuperFamilleHasSousGroupe_id)">Supprimer</button><br>
+	}
+	</td>
+	<td>
+	@for(fhsg <- sous_groupe.getFamilles()){
+		@fhsg.famille<button onClick="supprimerFamille(@fhsg.FamilleHasSousGroupe_id)">Supprimer</button><br>
+	}
+	</td>
+	<td>
+	@for(sofhsg <- sous_groupe.getSousFamilles()){
+		@sofhsg.sous_famille<button onClick="supprimerSousFamille(@sofhsg.SousFamilleHasSousGroupe_id)">Supprimer</button><br>
+	}
+	</td>
+	<td>
+	@for(ehsg <- sous_groupe.getEspeces()){
+		@ehsg.espece.espece_nom<button onClick="supprimerEspece(@ehsg.EspeceHasSousGroupe_id)">Supprimer</button><br>
+	}
+	</td>
+</tr>
+<tr>
+	<td>
+		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterOrdre" method="POST">
+		<select name="ordre">
+		@for(ordre <- Ordre.findAll()){
+			<option value="@ordre.ordre_id">@ordre</option>
+		}
+		</select>
+		<br><button>Ajouter</button>
+		</form>
+	</td>
+	<td>
+		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterSuperFamille" method="POST">
+		<select name="super_famille">
+		@for(super_famille <- SuperFamille.findSuperFamillesExistantes()){
+			<option value="@super_famille.super_famille_id">@super_famille</option>
+		}
+		</select>
+		<br><button>Ajouter</button>
+		</form>
+	</td>
+	<td>
+		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterFamille" method="POST">
+		<select name="famille">
+		@for(famille <- Famille.findAll()){
+			<option value="@famille.famille_id">@famille</option>
+		}
+		</select>
+		<br><button>Ajouter</button>
+		</form>
+	</td>
+	<td>
+		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterSousFamille" method="POST">
+		<select name="sous_famille">
+		@for(sous_famille <- SousFamille.findSousFamillesExistantes()){
+			<option value="@sous_famille.sous_famille_id">@sous_famille</option>
+		}
+		</select>
+		<br><button>Ajouter</button>
+		</form>
+	</td>
+	<td>
+		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterEspece" method="POST">
+		<select name="espece">
+		@for(espece <- Espece.findAll()){
+			<option value="@espece.espece_id">@espece.espece_nom</option>
+		}
+		</select>
+		<br><button>Ajouter</button>
+		</form>
+	</td>
+</tr>
+</table>
+<script>
+</script>

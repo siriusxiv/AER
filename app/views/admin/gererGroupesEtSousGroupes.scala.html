@@ -17,7 +17,12 @@
  ********************************************************************************@
 @(groupes : List[Groupe])
 @main("Gérer les groupes et les sous-groupes"){
+<link rel="stylesheet" media="screen" href="/assets/stylesheets/gestionGroupesSousGroupes.css">
+<h1>Gérer les groupes et les sous-groupes</h1>
 <button onClick="montrerTousSousGroupes()">▼</button>Montrer tous les sous-groupes
+<table>
+<tr>
+<td class="gestionGroupesSousGroupes">
 	@for(groupe <- groupes){
 	<div id="groupe@groupe.groupe_id">
 		&nbsp;&nbsp;&nbsp;<button onClick="montrerSousGroupe(@groupe.groupe_id)">▼</button>
@@ -27,12 +32,18 @@
 		@for(sousGroupe <- groupe.getSousGroupes()){
 			<div id="sousGroupe@sousGroupe.sous_groupe_id">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span id="nomSousGroupe@sousGroupe.sous_groupe_id" onDblClick="renommerSousGroupe(@sousGroupe.sous_groupe_id)">@sousGroupe</span>
+			<button id="deplacerSousGroupe@sousGroupe.sous_groupe_id" onClick="deplacerSousGroupe(@sousGroupe.sous_groupe_id)">Déplacer</button>
+			<button onClick="editerSousGroupe(@sousGroupe.sous_groupe_id)">Détails</button>
 			</div>
 		}
 	</div>
 	}
+</td>
+<td id="editerSousGroupe"></td>
+</tr>
+</table>
 }{
-<script>["Saab","Volvo","BMW"];
+<script>
 var groupes_id = [@for(groupe <- groupes.subList(0,groupes.size()-1)){@groupe.groupe_id,}@groupes.get(groupes.size()-1).groupe_id];
 function montrerSousGroupe(groupe_id){
 	var style = $('#sousGroupes'+groupe_id).attr('style');
@@ -97,5 +108,18 @@ function renommerSousGroupe(sous_groupe_id){
 		}
 	});
 }
+function deplacerSousGroupe(sous_groupe_id){
+	var listeDesSousGroupe = $('#listeDesSousGroupe').html();
+	$('#deplacerSousGroupe'+sous_groupe_id).replaceWith('<form action="/deplacerSousGroupe/'+sous_groupe_id+'" method="POST">'+listeDesSousGroupe+'</form>');
+}
+function editerSousGroupe(sous_groupe_id){
+	$('#editerSousGroupe').load('/ajax/sous_groupe/editer/'+sous_groupe_id);
+}
 </script>
+<div id="listeDesSousGroupe" style="display:none">
+<select name="groupeId">
+@for(groupe <- groupes){<option value="@groupe.groupe_id">@groupe</option>}
+</select>
+<button>Changer</button><button onClick="location.reload();return false;">Annuler</button>
+</div>
 }

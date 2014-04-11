@@ -58,4 +58,8 @@ public class SuperFamille extends Model{
 	public String toString(){
 		return super_famille_nom;
 	}
+
+	public static List<SuperFamille> findSuperFamillesExistantes() {
+		return find.where().eq("super_famille_existe", true).findList();
+	}
 }
