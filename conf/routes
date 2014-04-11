@@ -56,6 +56,8 @@ GET     /especesParSousFamille   	controllers.admin.GererBaseDeDonneesInsectes.l
 GET     /especesParFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParFamille()
 GET     /especesParSuperFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSuperFamille()
 GET     /especesParOrdre   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParOrdre()
+GET	/especesParSousGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousGroupe()
+GET	/especesParGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParGroupe()
 
 #routes pour les listes de membres*****************
 GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")

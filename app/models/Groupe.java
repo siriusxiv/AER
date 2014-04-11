@@ -38,7 +38,7 @@ public class Groupe extends Model {
 	public static Finder<Integer,Groupe> find = new Finder<Integer,Groupe>(Integer.class, Groupe.class);
 
 	public static List<Groupe> findAll(){
-		return find.all();
+		return find.findList();
 	}
 	
 	@Override
