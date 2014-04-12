@@ -18,6 +18,7 @@
 
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -47,13 +48,13 @@ public class SuperFamille extends Model{
 	@ManyToOne
 	@NotNull
 	public Ordre super_famille_ordre;
-	
+
 	public static Finder<Integer,SuperFamille> find = new Finder<Integer,SuperFamille>(Integer.class, SuperFamille.class);
 
 	public static List<SuperFamille> findAll(){
 		return find.findList();
 	}
-	
+
 	@Override
 	public String toString(){
 		return super_famille_nom;
@@ -61,5 +62,27 @@ public class SuperFamille extends Model{
 
 	public static List<SuperFamille> findSuperFamillesExistantes() {
 		return find.where().eq("super_famille_existe", true).findList();
+	}
+
+	/**
+	 * Trouve les super-familles que l'on peut ajouter dans un sous-groupe
+	 * @return
+	 */
+	public static List<SuperFamille> findSuperFamillesAjoutablesDansSousGroupe(){
+		List<Espece> especesSansSousGroupe = Espece.findEspecesAjoutablesDansSousGroupe();
+		List<SuperFamille> super_familles = new ArrayList<SuperFamille>();
+		for(Espece espece : especesSansSousGroupe){
+			if(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_existe){
+				//On trouve toutes les espèces de cette la super-famille de l'espèce
+				List<Espece> especesDansSuperFamille = Espece.find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille", espece.espece_sousfamille.sous_famille_famille.famille_super_famille).findList();
+				//Si toutes les espèces de cette famille sont sans sous-groupes
+				//on ajoute la famille
+				if(especesSansSousGroupe.containsAll(especesDansSuperFamille)){
+					super_familles.add(espece.espece_sousfamille.sous_famille_famille.famille_super_famille);
+					especesSansSousGroupe.removeAll(especesDansSuperFamille);
+				}
+			}
+		}
+		return super_familles;
 	}
 }

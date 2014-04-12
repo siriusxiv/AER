@@ -262,4 +262,11 @@ public class Espece extends Model {
 		return find.where().eq("espece_sous_groupe", null).findList();
 	}
 	
+	/**
+	 * Trouve les espèces ajoutables dans un sous-groupe
+	 * @return
+	 */
+	public static List<Espece> findEspecesAjoutablesDansSousGroupe(){
+		return find.where().eq("espece_sous_groupe", null).findList();
+	}
 }

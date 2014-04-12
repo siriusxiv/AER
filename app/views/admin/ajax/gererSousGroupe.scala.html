@@ -59,7 +59,7 @@
 	<td>
 		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterOrdre" method="POST">
 		<select name="ordre">
-		@for(ordre <- Ordre.findAll()){
+		@for(ordre <- Ordre.findOrdresAjoutablesDansSousGroupe()){
 			<option value="@ordre.ordre_id">@ordre</option>
 		}
 		</select>
@@ -69,7 +69,7 @@
 	<td>
 		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterSuperFamille" method="POST">
 		<select name="super_famille">
-		@for(super_famille <- SuperFamille.findSuperFamillesExistantes()){
+		@for(super_famille <- SuperFamille.findSuperFamillesAjoutablesDansSousGroupe()){
 			<option value="@super_famille.super_famille_id">@super_famille</option>
 		}
 		</select>
@@ -79,7 +79,7 @@
 	<td>
 		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterFamille" method="POST">
 		<select name="famille">
-		@for(famille <- Famille.findAll()){
+		@for(famille <- Famille.findFamillesAjoutablesDansSousGroupe()){
 			<option value="@famille.famille_id">@famille</option>
 		}
 		</select>
@@ -89,7 +89,7 @@
 	<td>
 		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterSousFamille" method="POST">
 		<select name="sous_famille">
-		@for(sous_famille <- SousFamille.findSousFamillesExistantes()){
+		@for(sous_famille <- SousFamille.findSousFamillesAjoutablesDansSousGroupe()){
 			<option value="@sous_famille.sous_famille_id">@sous_famille</option>
 		}
 		</select>
@@ -99,7 +99,7 @@
 	<td>
 		<form action="gererSousGroupes/@sous_groupe.sous_groupe_id/ajouterEspece" method="POST">
 		<select name="espece">
-		@for(espece <- Espece.findAll()){
+		@for(espece <- Espece.findEspecesAjoutablesDansSousGroupe()){
 			<option value="@espece.espece_id">@espece.espece_nom</option>
 		}
 		</select>

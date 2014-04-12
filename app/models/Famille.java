@@ -18,6 +18,7 @@
 
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -37,15 +38,35 @@ public class Famille extends Model{
 	@NotNull
 	@ManyToOne
 	public SuperFamille famille_super_famille;
-	
+
 	public static Finder<Integer,Famille> find = new Finder<Integer,Famille>(Integer.class, Famille.class);
 
 	public static List<Famille> findAll(){
 		return find.findList();
 	}
-	
+
 	@Override
 	public String toString(){
 		return famille_nom;
+	}
+
+	/**
+	 * Trouve les familles que l'on peut ajouter dans un sous-groupe
+	 * @return
+	 */
+	public static List<Famille> findFamillesAjoutablesDansSousGroupe(){
+		List<Espece> especesSansSousGroupe = Espece.findEspecesAjoutablesDansSousGroupe();
+		List<Famille> familles = new ArrayList<Famille>();
+		for(Espece espece : especesSansSousGroupe){
+			//On trouve toutes les espèces de cette la famille de l'espèce
+			List<Espece> especesDansFamille = Espece.find.where().eq("espece_sousfamille.sous_famille_famille", espece.espece_sousfamille.sous_famille_famille).findList();
+			//Si toutes les espèces de cette famille sont sans sous-groupes
+			//on ajoute la famille
+			if(especesSansSousGroupe.containsAll(especesDansFamille)){
+				familles.add(espece.espece_sousfamille.sous_famille_famille);
+				especesSansSousGroupe.removeAll(especesDansFamille);
+			}
+		}
+		return familles;
 	}
 }

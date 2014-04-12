@@ -18,6 +18,7 @@
 
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -91,5 +92,27 @@ public class SousFamille extends Model{
 	*/
 	public static List<SousFamille> findSousFamillesExistantes(){
 		return SousFamille.find.where().eq("sous_famille_existe", true).findList();
+	}
+	
+	/**
+	 * Trouve les sous-familles que l'on peut ajouter dans un sous-groupe
+	 * @return
+	 */
+	public static List<SousFamille> findSousFamillesAjoutablesDansSousGroupe(){
+		List<Espece> especesSansSousGroupe = Espece.findEspecesAjoutablesDansSousGroupe();
+		List<SousFamille> sous_familles = new ArrayList<SousFamille>();
+		for(Espece espece : especesSansSousGroupe){
+			if(espece.espece_sousfamille.sous_famille_existe){
+				//On trouve toutes les espèces de cette sous-famille
+				List<Espece> especesDansSousFamille = Espece.find.where().eq("espece_sousfamille", espece.espece_sousfamille).findList();
+				//Si toutes les espèces de cette sous-famille sont sans sous-groupes
+				//on ajoute la sous-famille
+				if(especesSansSousGroupe.containsAll(especesDansSousFamille)){
+					sous_familles.add(espece.espece_sousfamille);
+					especesSansSousGroupe.removeAll(especesDansSousFamille);
+				}
+			}
+		}
+		return sous_familles;
 	}
 }
