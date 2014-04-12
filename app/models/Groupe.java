@@ -97,5 +97,25 @@ public class Groupe extends Model {
 	public List<SousGroupe> getSousGroupes(){
 		return SousGroupe.find.where().eq("sous_groupe_groupe", this).findList();
 	}
+
+	/**
+	 * Supprimer le groupe de la base de données et toutes ses références
+	 * dans les autres tables
+	 */
+	public void supprimer() {
+		List<SousGroupe> sous_groupes = SousGroupe.find.where().eq("sous_groupe_groupe", this).findList();
+		for(SousGroupe sous_groupe : sous_groupes){
+			sous_groupe.supprimer();
+		}
+		List<MembreIsExpertOnGroupe> mieogs = MembreIsExpertOnGroupe.find.where().eq("groupe", this).findList();
+		for(MembreIsExpertOnGroupe mieog : mieogs){
+			mieog.delete();
+		}
+		List<StadeSexeHierarchieDansGroupe> sshdsgs = StadeSexeHierarchieDansGroupe.find.where().eq("groupe", this).findList();
+		for(StadeSexeHierarchieDansGroupe sshdsg : sshdsgs){
+			sshdsg.delete();
+		}
+		this.delete();
+	}
 	
 }

@@ -58,13 +58,14 @@ public class Famille extends Model{
 		List<Espece> especesSansSousGroupe = Espece.findEspecesAjoutablesDansSousGroupe();
 		List<Famille> familles = new ArrayList<Famille>();
 		for(Espece espece : especesSansSousGroupe){
-			//On trouve toutes les espèces de cette la famille de l'espèce
-			List<Espece> especesDansFamille = Espece.find.where().eq("espece_sousfamille.sous_famille_famille", espece.espece_sousfamille.sous_famille_famille).findList();
-			//Si toutes les espèces de cette famille sont sans sous-groupes
-			//on ajoute la famille
-			if(especesSansSousGroupe.containsAll(especesDansFamille)){
-				familles.add(espece.espece_sousfamille.sous_famille_famille);
-				especesSansSousGroupe.removeAll(especesDansFamille);
+			if(!familles.contains(espece.espece_sousfamille.sous_famille_famille)){
+				//On trouve toutes les espèces de cette la famille de l'espèce
+				List<Espece> especesDansFamille = Espece.find.where().eq("espece_sousfamille.sous_famille_famille", espece.espece_sousfamille.sous_famille_famille).findList();
+				//Si toutes les espèces de cette famille sont sans sous-groupes
+				//on ajoute la famille
+				if(especesSansSousGroupe.containsAll(especesDansFamille)){
+					familles.add(espece.espece_sousfamille.sous_famille_famille);
+				}
 			}
 		}
 		return familles;

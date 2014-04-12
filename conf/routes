@@ -53,6 +53,8 @@ GET		/gererGroupesEtSousGroupes			controllers.admin.GererGroupesEtSousGroupes.ma
 POST	/deplacerSousGroupe/:sous_groupe_id	controllers.admin.GererGroupesEtSousGroupes.deplacerSousGroupe(sous_groupe_id: Integer)
 POST	/creerGroupe					controllers.admin.GererGroupesEtSousGroupes.creerGroupe()
 POST	/creerSousGroupe				controllers.admin.GererGroupesEtSousGroupes.creerSousGroupe()
+POST	/supprimerSousGroupe/:sous_groupe_id	controllers.admin.GererGroupesEtSousGroupes.supprimerSousGroupe(sous_groupe_id: Integer)
+POST	/supprimerGroupe/:groupe_id				controllers.admin.GererGroupesEtSousGroupes.supprimerGroupe(groupe_id: Integer)
 
 #route pour gérer la base des insectes (admin)
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()

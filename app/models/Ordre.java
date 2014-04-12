@@ -34,18 +34,18 @@ public class Ordre extends Model {
 	public Integer ordre_id;
 	@NotNull
 	public String ordre_nom;
-	
+
 	public static Finder<Integer,Ordre> find = new Finder<Integer,Ordre>(Integer.class, Ordre.class);
 
 	public static List<Ordre> findAll(){
 		return find.findList();
 	}
-	
+
 	@Override
 	public String toString(){
 		return ordre_nom;
 	}
-	
+
 	/**
 	 * Trouve les ordres que l'on peut ajouter dans un sous-groupe
 	 * @return
@@ -54,13 +54,14 @@ public class Ordre extends Model {
 		List<Espece> especesSansSousGroupe = Espece.findEspecesAjoutablesDansSousGroupe();
 		List<Ordre> ordres = new ArrayList<Ordre>();
 		for(Espece espece : especesSansSousGroupe){
-			//On trouve toutes les espèces de cette la famille de l'espèce
-			List<Espece> especesDansOrdre = Espece.find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre", espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre).findList();
-			//Si toutes les espèces de cette famille sont sans sous-groupes
-			//on ajoute la famille
-			if(especesSansSousGroupe.containsAll(especesDansOrdre)){
-				ordres.add(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre);
-				especesSansSousGroupe.removeAll(especesDansOrdre);
+			if(!ordres.contains(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre)){
+				//On trouve toutes les espèces de cette la famille de l'espèce
+				List<Espece> especesDansOrdre = Espece.find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre", espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre).findList();
+				//Si toutes les espèces de cette famille sont sans sous-groupes
+				//on ajoute l'ordre
+				if(especesSansSousGroupe.containsAll(especesDansOrdre)){
+					ordres.add(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre);
+				}
 			}
 		}
 		return ordres;

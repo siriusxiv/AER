@@ -253,6 +253,17 @@ public class Espece extends Model {
 		this.espece_sous_groupe= sg;
 		this.save();
 	}
+
+	/**
+	 * On duplique la base de données en remplissant les champs de espece_sousgroupe
+	 * Cela permet de gagner du temps dans beaucoup de requêtes
+	 */
+	public static void metAJourSousGroupesPourToutes() {
+		List<Espece> especes = Espece.findAll();
+		for (Espece espece : especes) {
+			espece.metAJourSousGroupes();
+		}
+	}
 	
 	/**
 	 * Renvoie la liste des espèces sans sous-groupe.
@@ -269,4 +280,5 @@ public class Espece extends Model {
 	public static List<Espece> findEspecesAjoutablesDansSousGroupe(){
 		return find.where().eq("espece_sous_groupe", null).findList();
 	}
+
 }

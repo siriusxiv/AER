@@ -110,4 +110,33 @@ public class SousGroupe extends Model {
 	public static List<SousGroupe> findSousGroupesSansSousGroupe(){
 		return find.where().eq("sous_groupe_groupe", null).findList();
 	}
+
+	/**
+	 * Supprimer le sous-groupe de la base de données et toutes ses références
+	 * dans les autres tables
+	 */
+	public void supprimer() {
+		List<EspeceHasSousGroupe> ehsgs = EspeceHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+		for(EspeceHasSousGroupe ehsg : ehsgs){
+			ehsg.delete();
+		}
+		List<SousFamilleHasSousGroupe> sofhsgs = SousFamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+		for(SousFamilleHasSousGroupe sofhsg : sofhsgs){
+			sofhsg.delete();
+		}
+		List<FamilleHasSousGroupe> fhsgs = FamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+		for(FamilleHasSousGroupe fhsg : fhsgs){
+			fhsg.delete();
+		}
+		List<SuperFamilleHasSousGroupe> sufhsgs = SuperFamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+		for(SuperFamilleHasSousGroupe sufhsg : sufhsgs){
+			sufhsg.delete();
+		}
+		List<OrdreHasSousGroupe> ohsgs = OrdreHasSousGroupe.find.where().eq("sous_groupe", this).findList();
+		for(OrdreHasSousGroupe ohsg : ohsgs){
+			ohsg.delete();
+		}
+		Espece.metAJourSousGroupesPourToutes();
+		this.delete();
+	}
 }

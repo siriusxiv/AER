@@ -52,7 +52,7 @@ public class GererGroupesEtSousGroupes extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
-	
+
 	/**
 	 * Crée un groupe et l'ajoute dans la base de données.
 	 * Il ne contient aucune espèce.
@@ -86,6 +86,36 @@ public class GererGroupesEtSousGroupes extends Controller {
 					&& groupe!=null){
 				new SousGroupe(nomSousGroupe, groupe).save();
 			}
+			return redirect("/gererGroupesEtSousGroupes");
+		}else
+			return Admin.nonAutorise();
+	}
+
+	/**
+	 * Supprime un groupe de la base de données DEFINITIVEMENT
+	 * @param sous_groupe_id
+	 * @return
+	 */
+	public static Result supprimerGroupe(Integer groupe_id){
+		if(Admin.isAdminConnected()){
+			Groupe groupe = Groupe.find.byId(groupe_id);
+			if(groupe!=null)
+				groupe.supprimer();
+			return redirect("/gererGroupesEtSousGroupes");
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Supprime un sous-groupe et toutes ses occurrences de la base de données DEFINITIVEMENT
+	 * @param sous_groupe_id
+	 * @return
+	 */
+	public static Result supprimerSousGroupe(Integer sous_groupe_id){
+		if(Admin.isAdminConnected()){
+			SousGroupe sous_groupe = SousGroupe.find.byId(sous_groupe_id);
+			if(sous_groupe!=null)
+				sous_groupe.supprimer();
 			return redirect("/gererGroupesEtSousGroupes");
 		}else
 			return Admin.nonAutorise();

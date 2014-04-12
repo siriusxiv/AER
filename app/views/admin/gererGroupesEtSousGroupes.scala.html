@@ -27,6 +27,7 @@
 	<div id="groupe@groupe.groupe_id">
 		&nbsp;&nbsp;&nbsp;<button onClick="montrerSousGroupe(@groupe.groupe_id)">▼</button>
 		<span id="nomGroupe@groupe.groupe_id" onDblClick="renommerGroupe(@groupe.groupe_id)">@groupe</span>
+		<form id="supprimerGroupe@groupe.groupe_id" action="supprimerGroupe/@groupe.groupe_id" method="POST" style="display:inline"><button onClick="supprimerGroupe(@groupe.groupe_id);return false;">Suppr</button></form>
 	</div>
 	<div id="sousGroupes@groupe.groupe_id" style="display:none">
 		@for(sousGroupe <- groupe.getSousGroupes()){
@@ -34,6 +35,7 @@
 			<span id="nomSousGroupe@sousGroupe.sous_groupe_id" onDblClick="renommerSousGroupe(@sousGroupe.sous_groupe_id)">@sousGroupe</span>
 			<button id="deplacerSousGroupe@sousGroupe.sous_groupe_id" onClick="deplacerSousGroupe(@sousGroupe.sous_groupe_id)">Déplacer</button>
 			<button onClick="editerSousGroupe(@sousGroupe.sous_groupe_id)">Détails</button>
+			<form id="supprimerSousGroupe@sousGroupe.sous_groupe_id" action="supprimerSousGroupe/@sousGroupe.sous_groupe_id" method="POST" style="display:inline"><button onClick="supprimerSousGroupe(@sousGroupe.sous_groupe_id);return false;">Suppr</button></form>
 			</div>
 		}
 	</div>
@@ -61,6 +63,11 @@
 		</select>
 		<button>OK</button>
 	</form>
+</div>
+<div>
+@for(espece <- Espece.findEspecesSansSousGroupe()){
+	L'espèce @espece.espece_nom n'a pas de sous-groupe assigné !<br>
+}
 </div>
 }{
 <script>
@@ -148,6 +155,16 @@ function creerSousGroupe(){
 		$('#creerSousGroupe').attr('style','display:block');
 	else
 		$('#creerSousGroupe').attr('style','display:none');
+}
+function supprimerSousGroupe(sous_groupe_id){
+	if(confirm('Vous demandez la suppression d\'un sous-groupe. Comprenez que cela est irréversible. Les espèces dans ce sous-groupe n\'auront plus de sous-groupe. Voulez-vous vraiment continuer ?')){
+		$('#supprimerSousGroupe'+sous_groupe_id).submit();
+	}
+}
+function supprimerGroupe(groupe_id){
+	if(confirm('Vous demandez la suppression d\'un groupe. Comprenez que cela est irréversible. Les éventuels sous-groupes de ce groupe seront supprimés et les espèces dans ce groupe n\'auront plus de sous-groupe. La hiérarchie des sexes et stades sera aussi supprimée. Voulez-vous vraiment continuer ?')){
+		$('#supprimerGroupe'+groupe_id).submit();
+	}
 }
 </script>
 <div id="listeDesGroupes" style="display:none">

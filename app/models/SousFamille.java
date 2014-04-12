@@ -50,13 +50,13 @@ public class SousFamille extends Model{
 	@NotNull
 	@ManyToOne
 	public Famille sous_famille_famille;
-	
+
 	public static Finder<Integer,SousFamille> find = new Finder<Integer,SousFamille>(Integer.class, SousFamille.class);
-	
+
 	public static List<SousFamille> findAll(){
 		return find.findList();
 	}
-	
+
 	/**
 	 * Crée une sous famille et lance une PersistenceException si plusieurs familles portent le même nom,
 	 * une NamingException si la famille en argument n'existe pas.
@@ -74,7 +74,7 @@ public class SousFamille extends Model{
 			throw new NamingException("La famille "+famille_nom+" n'existe pas !");
 		}
 	}
-	
+
 	/**
 	 * Renvoie le nom de la sous-famille
 	 */
@@ -87,13 +87,13 @@ public class SousFamille extends Model{
 	}
 
 	/**
-	* Renvoie la liste des sous-familles existantes.
-	* @return 
-	*/
+	 * Renvoie la liste des sous-familles existantes.
+	 * @return 
+	 */
 	public static List<SousFamille> findSousFamillesExistantes(){
 		return SousFamille.find.where().eq("sous_famille_existe", true).findList();
 	}
-	
+
 	/**
 	 * Trouve les sous-familles que l'on peut ajouter dans un sous-groupe
 	 * @return
@@ -103,13 +103,14 @@ public class SousFamille extends Model{
 		List<SousFamille> sous_familles = new ArrayList<SousFamille>();
 		for(Espece espece : especesSansSousGroupe){
 			if(espece.espece_sousfamille.sous_famille_existe){
-				//On trouve toutes les espèces de cette sous-famille
-				List<Espece> especesDansSousFamille = Espece.find.where().eq("espece_sousfamille", espece.espece_sousfamille).findList();
-				//Si toutes les espèces de cette sous-famille sont sans sous-groupes
-				//on ajoute la sous-famille
-				if(especesSansSousGroupe.containsAll(especesDansSousFamille)){
-					sous_familles.add(espece.espece_sousfamille);
-					especesSansSousGroupe.removeAll(especesDansSousFamille);
+				if(!sous_familles.contains(espece.espece_sousfamille)){
+					//On trouve toutes les espèces de cette sous-famille
+					List<Espece> especesDansSousFamille = Espece.find.where().eq("espece_sousfamille", espece.espece_sousfamille).findList();
+					//Si toutes les espèces de cette sous-famille sont sans sous-groupes
+					//on ajoute la sous-famille
+					if(especesSansSousGroupe.containsAll(especesDansSousFamille)){
+						sous_familles.add(espece.espece_sousfamille);
+					}
 				}
 			}
 		}

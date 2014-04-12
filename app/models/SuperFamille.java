@@ -72,14 +72,15 @@ public class SuperFamille extends Model{
 		List<Espece> especesSansSousGroupe = Espece.findEspecesAjoutablesDansSousGroupe();
 		List<SuperFamille> super_familles = new ArrayList<SuperFamille>();
 		for(Espece espece : especesSansSousGroupe){
-			if(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_existe){
-				//On trouve toutes les espèces de cette la super-famille de l'espèce
-				List<Espece> especesDansSuperFamille = Espece.find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille", espece.espece_sousfamille.sous_famille_famille.famille_super_famille).findList();
-				//Si toutes les espèces de cette famille sont sans sous-groupes
-				//on ajoute la famille
-				if(especesSansSousGroupe.containsAll(especesDansSuperFamille)){
-					super_familles.add(espece.espece_sousfamille.sous_famille_famille.famille_super_famille);
-					especesSansSousGroupe.removeAll(especesDansSuperFamille);
+			if(!super_familles.contains(espece.espece_sousfamille.sous_famille_famille.famille_super_famille)){
+				if(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_existe){
+					//On trouve toutes les espèces de cette la super-famille de l'espèce
+					List<Espece> especesDansSuperFamille = Espece.find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille", espece.espece_sousfamille.sous_famille_famille.famille_super_famille).findList();
+					//Si toutes les espèces de cette famille sont sans sous-groupes
+					//on ajoute la famille
+					if(especesSansSousGroupe.containsAll(especesDansSuperFamille)){
+						super_familles.add(espece.espece_sousfamille.sous_famille_famille.famille_super_famille);
+					}
 				}
 			}
 		}
