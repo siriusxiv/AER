@@ -1,0 +1,45 @@
+@*********************************************************************************
+ * 
+ *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *   
+ ********************************************************************************@
+@(observation: Observation, listUtms: List[UTMS], listEspece: List[Espece])
+ <form action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
+				<td>@observation.observation_espece.espece_nom <select name="espece_id">
+					@for(espece<-listEspece){
+					<option value="@espece.espece_id">@espece.espece_nom </option>
+					}
+				</td>
+				<td>@observation.observation_determinateur</td>
+				<td><input type="text" name="commentaire" value="@observation.observation_commentaires"></td>
+				<td>@observation.observation_fiche.fiche_date.getTime().format("dd/MM/yyyy")</td>
+				<td><input type="text" name="lieudit" value="@observation.observation_fiche.fiche_lieudit"></td>
+				<td>communes</td>
+				<td>@observation.observation_fiche.fiche_utm.utm<select name="utm">
+					@for(utms <- listUtms){
+					<option value="@utms.utm">@utms.utm</option>
+					}</td>
+				<td><input type="text" name="memo" value="@observation.observation_fiche.fiche_memo"></td>
+				<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
+				<td>@for(informationsComplementaires <-observation.getInfos()){
+					@informationsComplementaires.informations_complementaires_nombre_de_specimens
+					@informationsComplementaires.informations_complementaires_stade_sexe
+				} </td>
+        			<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
+        			<td></td>
+        			<td> <button type="submit">Valider Changements</button> 
+        				@observation.observation_id</td>
+</form>
+							

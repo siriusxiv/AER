@@ -18,12 +18,19 @@
 package controllers.expert;
 
 
+import java.util.List;
+
 import controllers.admin.Admin;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.temoignagesAValider;
+import views.html.expert.editeTemoignagesAValider;
+import models.Commune;
+import models.Espece;
 import models.Groupe;
 import models.Observation;
+import models.UTMS;
 
 
 /**
@@ -35,17 +42,6 @@ import models.Observation;
 
 public class ValiderObservations extends Controller {
 	
- /**
-  * Permet d'afficher la page liée au processus de validation des témoignages
-  * @return
-  */
-	/*
-	public static Result temoignagesAValider(Integer validation) {
-    	return ok( temoignagesAValider.render(Observation.observationsEtat(validation)));
-    }
-	
-	
-	*/
 	
 	/**
 	 * renvoit les témoignages non vus
@@ -70,7 +66,23 @@ public class ValiderObservations extends Controller {
 		else
 			return Admin.nonAutorise();
     }
-    
+	
+	/**
+	 * Permet de charger la page voulue lorsque l'on veut éditer une observation (editeTemoignageAValider)
+	 * @param groupe_id
+	 * @param observation_id
+	 * @return
+	 */
+     public static Result editeTemoignage( Long observation_id, Integer groupe_id){
+    			Groupe groupe = Groupe.find.byId(groupe_id);
+    			Observation observation= Observation.find.byId(observation_id);
+    			List<UTMS> utms= UTMS.find.all();
+    			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
+    			if(MenuExpert.isExpertOn(groupe))
+    				return ok( editeTemoignagesAValider.render(observation,utms,especes));
+    			else
+    				return Admin.nonAutorise();
+     }
 	
 	/**
 	 * Permet de marquer comme vue l'obsertvation sélectionnée
@@ -104,6 +116,49 @@ public class ValiderObservations extends Controller {
 		}
 		observation.save();
 		return redirect("/temoignagesAValider/enSuspens/"+groupe_id);}
+		else
+			return Admin.nonAutorise();
+	}
+	/**
+	 * Permet à un expert de changer les valeurs d'une observation 
+	 * @param observation_id
+	 * @param groupe_id
+	 * @return
+	 */
+	public static Result editer(Long observation_id, Integer groupe_id) {
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Integer espece_id= Integer.parseInt(df.get("espece_id"));
+		String determinateur= df.get("determinateur");
+		String commentaire= df.get("commentaire");
+		String lieudit= df.get("lieudit");
+		String communenom= df.get("commune");
+		String utm = df.get("utm");
+		String memo = df.get("memo");
+		Observation observation= Observation.find.byId(observation_id);
+		if (observation!=null){
+			observation.observation_determinateur=determinateur;
+			observation.observation_commentaires=commentaire;
+			observation.observation_fiche.fiche_lieudit=lieudit;
+			Espece espece= Espece.find.byId(espece_id);
+			if (espece!=null){
+			observation.observation_espece=espece;
+			}
+			observation.observation_fiche.fiche_memo=memo;
+			Commune commune=Commune.find.where().eq("ville_nom_reel", communenom).findUnique();
+			if (commune!=null){
+			observation.observation_fiche.fiche_commune=commune;
+			}
+			UTMS utms=UTMS.find.byId(utm);
+			if (utms!=null){
+			observation.observation_fiche.fiche_utm=utms;
+			}
+			observation.observation_fiche.save();
+			observation.save();
+			}
+				return redirect("/temoignagesAValider/enSuspens/"+groupe_id);
+		}
 		else
 			return Admin.nonAutorise();
 	}

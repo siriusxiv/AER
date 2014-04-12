@@ -30,6 +30,8 @@ GET     /temoignagesAValider/:groupe_id  			    controllers.expert.ValiderObserv
 GET     /temoignagesAValider/enSuspens/:groupe_id	     controllers.expert.ValiderObservations.temoignagesEnSuspends(groupe_id: Integer)
 POST    /temoignagesAValider/vu/:groupe_id/:observation_id	 			controllers.expert.ValiderObservations.marquerVu(observation_id: Long, groupe_id: Integer)
 POST    /temoignagesAValider/valide/:groupe_id/:observation_id			controllers.expert.ValiderObservations.valide(observation_id: Long, groupe_id: Integer)
+POST    /temoignagesAValider/editer/:groupe_id/:observation_id			controllers.expert.ValiderObservations.editer(observation_id: Long, groupe_id: Integer)
+GET		/temoignagesAValider/edite/:groupe_id/:observation_id			controllers.expert.ValiderObservations.editeTemoignage(observation_id: Long, groupe_id: Integer)
 GET     /temoignagesValides         controllers.Application.temoignagesValides()
 GET		/gererstadesexe/:groupe_id	controllers.expert.GererStadeSexe.main(groupe_id: Integer)
 POST	/nouveauStadeSexe/:groupe_id	controllers.expert.GererStadeSexe.ajouterStadePere(groupe_id: Integer)
@@ -72,11 +74,12 @@ GET     /listeMembresPrecis  controllers.Application.listeMembresPrecis(membre_n
 GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax
-GET		/listeDesMembres/:string_id	controllers.ajax.Listes.membres(string_id: String)
-GET		/emailExisteOuPas/:mail		controllers.ajax.Verifications.mailExisteOuPas(mail: String)
-POST	/ajax/groupe/renommer/:groupe_id	controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerGroupe(groupe_id: Integer)
-POST	/ajax/sous_groupe/renommer/:sous_groupe_id	controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerSousGroupe(sous_groupe_id: Integer)
-GET		/ajax/sous_groupe/editer/:sous_groupe_id	controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.voirPageEditerSousGroupe(sous_groupe_id: Integer)
+GET		/listeDesMembres/:string_id						controllers.ajax.Listes.membres(string_id: String)
+GET		/listeDesCommunes/:string_id					controllers.ajax.Listes.communes(string_id: String)
+GET		/emailExisteOuPas/:mail							controllers.ajax.Verifications.mailExisteOuPas(mail: String)
+POST	/ajax/groupe/renommer/:groupe_id				controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerGroupe(groupe_id: Integer)
+POST	/ajax/sous_groupe/renommer/:sous_groupe_id		controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerSousGroupe(sous_groupe_id: Integer)
+GET		/ajax/sous_groupe/editer/:sous_groupe_id		controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.voirPageEditerSousGroupe(sous_groupe_id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
