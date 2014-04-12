@@ -49,6 +49,10 @@ public class SousGroupe extends Model {
 	
 	public static Finder<Integer,SousGroupe> find = new Finder<Integer,SousGroupe>(Integer.class, SousGroupe.class);
 
+	public static List<SousGroupe> findAll(){
+		return find.findList();
+	}
+	
 	@Override
 	public String toString(){
 		return sous_groupe_nom;
