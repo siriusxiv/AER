@@ -49,6 +49,11 @@ public class SousGroupe extends Model {
 	
 	public static Finder<Integer,SousGroupe> find = new Finder<Integer,SousGroupe>(Integer.class, SousGroupe.class);
 
+	public SousGroupe(String sous_groupe_nom, Groupe groupe) {
+		this.sous_groupe_nom=sous_groupe_nom;
+		this.sous_groupe_groupe=groupe;
+	}
+
 	public static List<SousGroupe> findAll(){
 		return find.findList();
 	}

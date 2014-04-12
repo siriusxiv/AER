@@ -36,9 +36,9 @@ public class Global extends GlobalSettings {
 		Confidentialite.CASPARCAS=Confidentialite.find.byId(2);
 		Confidentialite.FERMEE=Confidentialite.find.byId(3);
 		//On duplique la base de données en remplissant les champs de espece_sousgroupe
-		/*List<Espece> especes = Espece.findAll();
+		List<Espece> especes = Espece.findAll();
 		for (Espece espece : especes) {
 			espece.metAJourSousGroupes();
-		}*/
+		}
 	}
 }

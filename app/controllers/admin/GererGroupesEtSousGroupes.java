@@ -52,4 +52,42 @@ public class GererGroupesEtSousGroupes extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
+	
+	/**
+	 * Crée un groupe et l'ajoute dans la base de données.
+	 * Il ne contient aucune espèce.
+	 * @return
+	 */
+	public static Result creerGroupe(){
+		if(Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String nomGroupe = df.get("nomGroupe");
+			if(!nomGroupe.equals("") && Groupe.find.where().eq("groupe_nom", nomGroupe).findList().isEmpty()){
+				new Groupe(nomGroupe).save();
+			}
+			return redirect("/gererGroupesEtSousGroupes");
+		}else
+			return Admin.nonAutorise();
+	}
+
+	/**
+	 * Crée un sous-groupe et l'ajoute dans la base de données.
+	 * Il ne contient aucune espèce.
+	 * @return
+	 */
+	public static Result creerSousGroupe(){
+		if(Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String nomSousGroupe = df.get("nomSousGroupe");
+			Integer groupe_id = Integer.parseInt(df.get("groupeId"));
+			Groupe groupe = Groupe.find.byId(groupe_id);
+			if(!nomSousGroupe.equals("") &&
+					SousGroupe.find.where().eq("sous_groupe_nom", nomSousGroupe).findList().isEmpty()
+					&& groupe!=null){
+				new SousGroupe(nomSousGroupe, groupe).save();
+			}
+			return redirect("/gererGroupesEtSousGroupes");
+		}else
+			return Admin.nonAutorise();
+	}
 }

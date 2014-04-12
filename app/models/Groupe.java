@@ -37,6 +37,10 @@ public class Groupe extends Model {
 	
 	public static Finder<Integer,Groupe> find = new Finder<Integer,Groupe>(Integer.class, Groupe.class);
 
+	public Groupe(String groupe_nom) {
+		this.groupe_nom=groupe_nom;
+	}
+
 	public static List<Groupe> findAll(){
 		return find.findList();
 	}

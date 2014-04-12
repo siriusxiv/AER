@@ -42,7 +42,26 @@
 <td id="editerSousGroupe"></td>
 </tr>
 </table>
-<button>Créer un nouveau sous-groupe</button>
+<button onClick="creerGroupe()">Créer un nouveau groupe</button>
+<div id="creerGroupe" style="display:none">
+	<form action="/creerGroupe" method="POST">
+		<input type="text" name="nomGroupe" placeholder="Nom du nouveau groupe">
+		<button>OK</button>
+	</form>
+</div>
+<button onClick="creerSousGroupe()">Créer un nouveau sous-groupe</button>
+<div id="creerSousGroupe" style="display:none">
+	<form action="/creerSousGroupe" method="POST">
+		<input type="text" name="nomSousGroupe" placeholder="Nom du nouveau sous-groupe">
+		Choisir un groupe pour ce sous-groupe:
+		<select name="groupeId">
+		@for(groupe <- groupes){
+			<option value="@groupe.groupe_id">@groupe</option>
+		}
+		</select>
+		<button>OK</button>
+	</form>
+</div>
 }{
 <script>
 var groupes_id = [@for(groupe <- groupes.subList(0,groupes.size()-1)){@groupe.groupe_id,}@groupes.get(groupes.size()-1).groupe_id];
@@ -115,6 +134,20 @@ function deplacerSousGroupe(sous_groupe_id){
 }
 function editerSousGroupe(sous_groupe_id){
 	$('#editerSousGroupe').load('/ajax/sous_groupe/editer/'+sous_groupe_id);
+}
+function creerGroupe(){
+	var style = $('#creerGroupe').attr('style');
+	if(style=='display:none')
+		$('#creerGroupe').attr('style','display:block');
+	else
+		$('#creerGroupe').attr('style','display:none');
+}
+function creerSousGroupe(){
+	var style = $('#creerSousGroupe').attr('style');
+	if(style=='display:none')
+		$('#creerSousGroupe').attr('style','display:block');
+	else
+		$('#creerSousGroupe').attr('style','display:none');
 }
 </script>
 <div id="listeDesGroupes" style="display:none">

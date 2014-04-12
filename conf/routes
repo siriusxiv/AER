@@ -51,6 +51,8 @@ GET     /demandesInscription         controllers.Application.demandesInscription
 POST    /demandesInscription/valider/:membre_id    controllers.Application.valideInscription(membre_id: Integer)
 GET		/gererGroupesEtSousGroupes			controllers.admin.GererGroupesEtSousGroupes.main()
 POST	/deplacerSousGroupe/:sous_groupe_id	controllers.admin.GererGroupesEtSousGroupes.deplacerSousGroupe(sous_groupe_id: Integer)
+POST	/creerGroupe					controllers.admin.GererGroupesEtSousGroupes.creerGroupe()
+POST	/creerSousGroupe				controllers.admin.GererGroupesEtSousGroupes.creerSousGroupe()
 
 #route pour gérer la base des insectes (admin)
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()
