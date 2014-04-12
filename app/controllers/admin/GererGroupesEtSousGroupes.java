@@ -52,41 +52,4 @@ public class GererGroupesEtSousGroupes extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
-	
-	/**
-	 * Enlève un sous-groupe d'un groupe
-	 * @param sous_groupe_id
-	 * @return
-	 */
-	public static Result enleveSousGroupe(Integer sous_groupe_id){
-		if(Admin.isAdminConnected()){
-			SousGroupe sous_groupe = SousGroupe.find.byId(sous_groupe_id);
-			if(sous_groupe!=null){
-				sous_groupe.sous_groupe_groupe=null;
-				sous_groupe.save();
-			}
-			return redirect("/gererGroupesEtSousGroupes");
-		}else
-			return Admin.nonAutorise();
-	}
-	
-	/**
-	 * Met un sous-groupe dans un groupe
-	 * @param groupe_id
-	 * @return
-	 */
-	public static Result metSousGroupe(Integer groupe_id){
-		if(Admin.isAdminConnected()){
-			Groupe groupe = Groupe.find.byId(groupe_id);
-			DynamicForm df = DynamicForm.form().bindFromRequest();
-			Integer sous_groupe_id = Integer.parseInt(df.get("sousGroupeId"));
-			SousGroupe sous_groupe = SousGroupe.find.byId(sous_groupe_id);
-			if(sous_groupe!=null && groupe!=null){
-				sous_groupe.sous_groupe_groupe=groupe;
-				sous_groupe.save();
-			}
-			return redirect("/gererGroupesEtSousGroupes");
-		}else
-			return Admin.nonAutorise();
-	}
 }
