@@ -19,6 +19,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List; 
 
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
 @Entity
-public class Ordre extends Model {
+public class Ordre extends Model implements Comparator<Ordre>{
 	@Id
 	public Integer ordre_id;
 	@NotNull
@@ -47,6 +48,16 @@ public class Ordre extends Model {
 	}
 
 	/**
+	 * Pour trier les listes d'ordres selon la systématique de la première espèce dedans.
+	 */
+	@Override
+	public int compare(Ordre ordre1, Ordre ordre2) {
+		int sys1 = ordre1.getSystematiquePremiereEspeceDansThis();
+		int sys2 = ordre2.getSystematiquePremiereEspeceDansThis();
+		return (sys1<sys2 ? -1 : (sys1==sys2 ? 0 : 1));
+	}
+	
+	/**
 	 * Trouve les ordres que l'on peut ajouter dans un sous-groupe
 	 * @return
 	 */
@@ -56,7 +67,7 @@ public class Ordre extends Model {
 		for(Espece espece : especesSansSousGroupe){
 			if(!ordres.contains(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre)){
 				//On trouve toutes les espèces de cette la famille de l'espèce
-				List<Espece> especesDansOrdre = Espece.find.where().eq("espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre", espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre).findList();
+				List<Espece> especesDansOrdre = espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre.getEspecesDansThis();
 				//Si toutes les espèces de cette famille sont sans sous-groupes
 				//on ajoute l'ordre
 				if(especesSansSousGroupe.containsAll(especesDansOrdre)){
@@ -66,4 +77,30 @@ public class Ordre extends Model {
 		}
 		return ordres;
 	}
+	
+	/**
+	 * Renvoie la liste des espèces dans cet ordre
+	 * @return
+	 */
+	public List<Espece> getEspecesDansThis(){
+		return Espece.find.where()
+				.eq("espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre", this)
+				.orderBy("espece_systematique").findList();
+	}
+	
+	/**
+	 * Renvoie le numéro systématique de la première espèce dans cet ordre.
+	 * Utile pour trier les ordres.
+	 * @return
+	 */
+	public int getSystematiquePremiereEspeceDansThis(){
+		Espece espece = Espece.find.where()
+				.eq("espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre", this)
+				.setMaxRows(1).orderBy("espece_systematique").findUnique();
+		if(espece==null)
+			return -1;
+		else
+			return espece.espece_systematique;
+	}
+	
 }

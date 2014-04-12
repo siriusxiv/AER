@@ -30,9 +30,13 @@ import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 
 import models.Espece;
+import models.Famille;
 import models.Fiche;
 import models.Membre;
+import models.Ordre;
+import models.SousFamille;
 import models.SousGroupe;
+import models.SuperFamille;
 
 import org.junit.*;
 
@@ -58,6 +62,9 @@ public class IntegrationTest {
     	databaseConfiguration.put("db.default.url", "jdbc:mysql://localhost:3306/aer");
         running(testServer(3333, fakeApplication(databaseConfiguration)), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+
+            	long i = Calendar.getInstance().getTimeInMillis();
+            	
             	//Teste que les bons départements sont trouvés par l'application
                 //System.out.println(models.Departement.findDepartementsAER());
                 
@@ -67,9 +74,14 @@ public class IntegrationTest {
             	
             	//listeMembres();
             	
-            	listeEspecesAvecSousGroupeEtGroupe();
+            	//listeEspecesAvecSousGroupeEtGroupe();
             	
             	//VerifierMail.envoyerMailDeVerification(Membre.find.all().get(0));
+            	
+            	affichePremieresSystematiques();
+            	
+            	long j = Calendar.getInstance().getTimeInMillis();
+            	System.out.println("Calculé en "+(j-i)+" ms");
             }
         });
     }
@@ -118,7 +130,6 @@ public class IntegrationTest {
     
     private void listeEspecesAvecSousGroupeEtGroupe() throws IOException{
     	FileWriter fw = new FileWriter("listeEspeces");
-    	long i = Calendar.getInstance().getTimeInMillis();
     	List<Espece> especes = Espece.find.where().orderBy("espece_systematique").findList();
     	SousGroupe sg = null;
     	Fiche f = null;
@@ -131,9 +142,22 @@ public class IntegrationTest {
     		else
     			fw.append(e+","+sg+","+sg.sous_groupe_groupe+","+date_format.format(f.fiche_date.getTime())+"\n");
     	}
-    	long j = Calendar.getInstance().getTimeInMillis();
-    	System.out.println("Groupe et Sous-groupes de toutes les espèces calculé en "+(j-i)+" ms");
     	fw.flush();
     	fw.close();
     }
+
+	private void affichePremieresSystematiques() {
+		for(Ordre ordre : Ordre.findAll()){
+    		System.out.println(ordre.getSystematiquePremiereEspeceDansThis());
+    	}
+    	for(SuperFamille superfam : SuperFamille.findAll()){
+    		System.out.println(superfam.getSystematiquePremiereEspeceDansThis());
+    	}
+    	for(Famille fam : Famille.findAll()){
+    		System.out.println(fam.getSystematiquePremiereEspeceDansThis());
+    	}
+    	for(SousFamille sousfam : SousFamille.findAll()){
+    		System.out.println(sousfam.getSystematiquePremiereEspeceDansThis());
+    	}
+	}
 }

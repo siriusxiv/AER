@@ -60,7 +60,7 @@ public class Famille extends Model{
 		for(Espece espece : especesSansSousGroupe){
 			if(!familles.contains(espece.espece_sousfamille.sous_famille_famille)){
 				//On trouve toutes les espèces de cette la famille de l'espèce
-				List<Espece> especesDansFamille = Espece.find.where().eq("espece_sousfamille.sous_famille_famille", espece.espece_sousfamille.sous_famille_famille).findList();
+				List<Espece> especesDansFamille = espece.espece_sousfamille.sous_famille_famille.getEspecesDansThis();
 				//Si toutes les espèces de cette famille sont sans sous-groupes
 				//on ajoute la famille
 				if(especesSansSousGroupe.containsAll(especesDansFamille)){
@@ -69,5 +69,30 @@ public class Famille extends Model{
 			}
 		}
 		return familles;
+	}
+	
+	/**
+	 * Renvoie la liste des espèces dans cette famille
+	 * @return
+	 */
+	public List<Espece> getEspecesDansThis(){
+		return Espece.find.where()
+				.eq("espece_sousfamille.sous_famille_famille", this)
+				.orderBy("espece_systematique").findList();
+	}
+	
+	/**
+	 * Renvoie le numéro systématique de la première espèce dans cet super-famille.
+	 * Utile pour trier les ordres.
+	 * @return
+	 */
+	public int getSystematiquePremiereEspeceDansThis(){
+		Espece espece = Espece.find.where()
+				.eq("espece_sousfamille.sous_famille_famille", this)
+				.setMaxRows(1).orderBy("espece_systematique").findUnique();
+		if(espece==null)
+			return -1;
+		else
+			return espece.espece_systematique;
 	}
 }
