@@ -118,25 +118,42 @@ public class SousGroupe extends Model {
 	public void supprimer() {
 		List<EspeceHasSousGroupe> ehsgs = EspeceHasSousGroupe.find.where().eq("sous_groupe", this).findList();
 		for(EspeceHasSousGroupe ehsg : ehsgs){
+			ehsg.espece.espece_sous_groupe=null;
+			ehsg.espece.save();
 			ehsg.delete();
 		}
 		List<SousFamilleHasSousGroupe> sofhsgs = SousFamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
 		for(SousFamilleHasSousGroupe sofhsg : sofhsgs){
+			for(Espece espece : sofhsg.sous_famille.getEspecesDansThis()){
+				espece.espece_sous_groupe=null;
+				espece.save();
+			}
 			sofhsg.delete();
 		}
 		List<FamilleHasSousGroupe> fhsgs = FamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
 		for(FamilleHasSousGroupe fhsg : fhsgs){
+			for(Espece espece : fhsg.famille.getEspecesDansThis()){
+				espece.espece_sous_groupe=null;
+				espece.save();
+			}
 			fhsg.delete();
 		}
 		List<SuperFamilleHasSousGroupe> sufhsgs = SuperFamilleHasSousGroupe.find.where().eq("sous_groupe", this).findList();
 		for(SuperFamilleHasSousGroupe sufhsg : sufhsgs){
+			for(Espece espece : sufhsg.super_famille.getEspecesDansThis()){
+				espece.espece_sous_groupe=null;
+				espece.save();
+			}
 			sufhsg.delete();
 		}
 		List<OrdreHasSousGroupe> ohsgs = OrdreHasSousGroupe.find.where().eq("sous_groupe", this).findList();
 		for(OrdreHasSousGroupe ohsg : ohsgs){
+			for(Espece espece : ohsg.ordre.getEspecesDansThis()){
+				espece.espece_sous_groupe=null;
+				espece.save();
+			}
 			ohsg.delete();
 		}
-		Espece.metAJourSousGroupesPourToutes();
 		this.delete();
 	}
 }
