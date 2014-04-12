@@ -82,7 +82,7 @@ public class Famille extends Model{
 	}
 	
 	/**
-	 * Renvoie le numéro systématique de la première espèce dans cet super-famille.
+	 * Renvoie le numéro systématique de la première espèce dans cette famille.
 	 * Utile pour trier les ordres.
 	 * @return
 	 */

@@ -118,7 +118,7 @@ public class SousFamille extends Model{
 	}
 	
 	/**
-	 * Renvoie la liste des espèces dans cette super-famille
+	 * Renvoie la liste des espèces dans cette sous-famille
 	 * @return
 	 */
 	public List<Espece> getEspecesDansThis(){
@@ -128,7 +128,7 @@ public class SousFamille extends Model{
 	}
 	
 	/**
-	 * Renvoie le numéro systématique de la première espèce dans cet super-famille.
+	 * Renvoie le numéro systématique de la première espèce dans cette sous-famille.
 	 * Utile pour trier les ordres.
 	 * @return
 	 */

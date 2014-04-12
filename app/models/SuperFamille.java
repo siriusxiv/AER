@@ -98,7 +98,7 @@ public class SuperFamille extends Model{
 	}
 	
 	/**
-	 * Renvoie le numéro systématique de la première espèce dans cet super-famille.
+	 * Renvoie le numéro systématique de la première espèce dans cette super-famille.
 	 * Utile pour trier les ordres.
 	 * @return
 	 */
