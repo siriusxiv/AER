@@ -93,4 +93,12 @@ public class SousGroupe extends Model {
 	public List<EspeceHasSousGroupe> getEspeces(){
 		return EspeceHasSousGroupe.find.where().eq("sous_groupe", this).findList();
 	}
+	
+	/**
+	 * Renvoie la liste des sous-groupes sans groupe.
+	 * @return
+	 */
+	public static List<SousGroupe> findSousGroupesSansSousGroupe(){
+		return find.where().eq("sous_groupe_groupe", null).findList();
+	}
 }

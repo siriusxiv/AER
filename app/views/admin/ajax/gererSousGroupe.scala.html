@@ -108,5 +108,8 @@
 	</td>
 </tr>
 </table>
+@for(espece <- Espece.findEspecesSansSousGroupe()){
+	L'espèce @espece.espece_nom n'a pas de sous-groupe assigné !
+}
 <script>
 </script>

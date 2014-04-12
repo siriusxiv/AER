@@ -34,14 +34,19 @@
 			<span id="nomSousGroupe@sousGroupe.sous_groupe_id" onDblClick="renommerSousGroupe(@sousGroupe.sous_groupe_id)">@sousGroupe</span>
 			<button id="deplacerSousGroupe@sousGroupe.sous_groupe_id" onClick="deplacerSousGroupe(@sousGroupe.sous_groupe_id)">Déplacer</button>
 			<button onClick="editerSousGroupe(@sousGroupe.sous_groupe_id)">Détails</button>
+			<form action="/supprimerSousGroupe/@sousGroupe.sous_groupe_id" method="POST" style="display:inline"><button onClick="supprimerSousGroupe(@sousGroupe.sous_groupe_id)">Suppr</button></form>
 			</div>
 		}
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="ajouterSousGroupe@groupe.groupe_id" onClick="ajouterSousGroupe(@groupe.groupe_id)">Ajouter un sous-groupe</button>
 	</div>
 	}
 </td>
 <td id="editerSousGroupe"></td>
 </tr>
 </table>
+@for(sous_groupe <- SousGroupe.findSousGroupesSansSousGroupe()){
+	Le sous-groupe @sous_groupe n'a pas de groupe assigné.
+}
 }{
 <script>
 var groupes_id = [@for(groupe <- groupes.subList(0,groupes.size()-1)){@groupe.groupe_id,}@groupes.get(groupes.size()-1).groupe_id];
@@ -109,16 +114,26 @@ function renommerSousGroupe(sous_groupe_id){
 	});
 }
 function deplacerSousGroupe(sous_groupe_id){
-	var listeDesSousGroupe = $('#listeDesSousGroupe').html();
-	$('#deplacerSousGroupe'+sous_groupe_id).replaceWith('<form action="/deplacerSousGroupe/'+sous_groupe_id+'" method="POST">'+listeDesSousGroupe+'</form>');
+	var listeDesGroupes = $('#listeDesGroupes').html();
+	$('#deplacerSousGroupe'+sous_groupe_id).replaceWith('<form action="/deplacerSousGroupe/'+sous_groupe_id+'" method="POST">'+listeDesGroupes+'</form>');
 }
 function editerSousGroupe(sous_groupe_id){
 	$('#editerSousGroupe').load('/ajax/sous_groupe/editer/'+sous_groupe_id);
 }
+function ajouterSousGroupe(groupe_id){
+	var listDesSousGroupesOrphelins = $('#listeDesSousGroupesOrphelins').html();
+	$('#ajouterSousGroupe'+groupe_id).replaceWith('<form action="/ajouterSousGroupe/'+groupe_id+'" method="POST">'+listDesSousGroupesOrphelins+'</form>');
+}
 </script>
-<div id="listeDesSousGroupe" style="display:none">
+<div id="listeDesGroupes" style="display:none">
 <select name="groupeId">
 @for(groupe <- groupes){<option value="@groupe.groupe_id">@groupe</option>}
+</select>
+<button>Changer</button><button onClick="location.reload();return false;">Annuler</button>
+</div>
+<div id="listeDesSousGroupesOrphelins" style="display:none">
+<select name="sousGroupeId"> 
+@for(sous_groupe <- SousGroupe.findSousGroupesSansSousGroupe()){<option value="@sous_groupe.sous_groupe_id">@sous_groupe</option>}
 </select>
 <button>Changer</button><button onClick="location.reload();return false;">Annuler</button>
 </div>

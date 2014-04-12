@@ -248,4 +248,12 @@ public class Espece extends Model {
 		this.save();
 	}
 	
+	/**
+	 * Renvoie la liste des espèces sans sous-groupe.
+	 * @return
+	 */
+	public static List<Espece> findEspecesSansSousGroupe(){
+		return find.where().eq("espece_sous_groupe", null).findList();
+	}
+	
 }
