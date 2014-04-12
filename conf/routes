@@ -61,6 +61,11 @@ POST	/gererSousGroupes/:sous_groupe_id/ajouterSousFamille	controllers.admin.grou
 POST	/gererSousGroupes/:sous_groupe_id/ajouterFamille		controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.ajouterFamille(sous_groupe_id: Integer)
 POST	/gererSousGroupes/:sous_groupe_id/ajouterSuperFamille	controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.ajouterSuperFamille(sous_groupe_id: Integer)
 POST	/gererSousGroupes/:sous_groupe_id/ajouterOrdre			controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.ajouterOrdre(sous_groupe_id: Integer)
+POST	/gererSousGroupes/enleverEspece/:ehsg_id				controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverEspece(ehsg_id: Integer)
+POST	/gererSousGroupes/enleverSousFamille/:sofhsg_id			controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverSousFamille(sofhsg_id: Integer)
+POST	/gererSousGroupes/enleverFamille/:fhsg_id				controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverFamille(fhsg_id: Integer)
+POST	/gererSousGroupes/enleverSuperFamille/:sufhsg_id		controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverSuperFamille(sufhsg_id: Integer)
+POST	/gererSousGroupes/enleverOrdre/:ohsg_id					controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverOrdre(ohsg_id: Integer)
 
 #route pour gérer la base des insectes (admin)
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()

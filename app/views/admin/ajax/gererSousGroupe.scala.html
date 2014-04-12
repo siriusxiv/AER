@@ -31,27 +31,27 @@
 <tr>
 	<td>
 	@for(ohsg <- sous_groupe.getOrdres()){
-		@ohsg.ordre<button onClick="supprimerOrdre(@ohsg.OrdreHasSousGroupe_id)">Supprimer</button><br>
+		<form action="/gererSousGroupes/enleverOrdre/@ohsg.OrdreHasSousGroupe_id" method="POST" id="enleverOrdre@ohsg.OrdreHasSousGroupe_id">@ohsg.ordre<button onClick="enleverOrdre(@ohsg.OrdreHasSousGroupe_id)">Supprimer</button></form><br>
 	}
 	</td>
 	<td>
 	@for(sufhsg <- sous_groupe.getSuperFamilles()){
-		@sufhsg.super_famille<button onClick="supprimerSuperFamille(@sufhsg.SuperFamilleHasSousGroupe_id)">Supprimer</button><br>
+		<form action="/gererSousGroupes/enleverSuperFamille/@sufhsg.SuperFamilleHasSousGroupe_id" method="POST" id="enleverSuperFamille@sufhsg.SuperFamilleHasSousGroupe_id">@sufhsg.super_famille<button onClick="enleverSuperFamille(@sufhsg.SuperFamilleHasSousGroupe_id)">Supprimer</button></form><br>
 	}
 	</td>
 	<td>
 	@for(fhsg <- sous_groupe.getFamilles()){
-		@fhsg.famille<button onClick="supprimerFamille(@fhsg.FamilleHasSousGroupe_id)">Supprimer</button><br>
+		<form action="/gererSousGroupes/enleverFamille/@fhsg.FamilleHasSousGroupe_id" method="POST" id="enleverFamille@fhsg.FamilleHasSousGroupe_id">@fhsg.famille<button onClick="enleverFamille(@fhsg.FamilleHasSousGroupe_id);return false;">Supprimer</button></form><br>
 	}
 	</td>
 	<td>
 	@for(sofhsg <- sous_groupe.getSousFamilles()){
-		@sofhsg.sous_famille<button onClick="supprimerSousFamille(@sofhsg.SousFamilleHasSousGroupe_id)">Supprimer</button><br>
+		<form action="/gererSousGroupes/enleverSousFamille/@sofhsg.SousFamilleHasSousGroupe_id" method="POST" id="enleverSousFamille@sofhsg.SousFamilleHasSousGroupe_id">@sofhsg.sous_famille<button onClick="enleverSousFamille(@sofhsg.SousFamilleHasSousGroupe_id);return false;">Supprimer</button></form><br>
 	}
 	</td>
 	<td>
 	@for(ehsg <- sous_groupe.getEspeces()){
-		@ehsg.espece.espece_nom<button onClick="supprimerEspece(@ehsg.EspeceHasSousGroupe_id)">Supprimer</button><br>
+		<form action="/gererSousGroupes/enleverEspece/@ehsg.EspeceHasSousGroupe_id" method="POST" id="enleverEspece@ehsg.EspeceHasSousGroupe_id">@ehsg.espece.espece_nom<button onClick="enleverEspece(@ehsg.EspeceHasSousGroupe_id);return false;">Supprimer</button></form><br>
 	}
 	</td>
 </tr>
@@ -109,4 +109,24 @@
 </tr>
 </table>
 <script>
+function enleverEspece(ehsg_id){
+	if(confirm('Vous allez enlever cette espèce de ce sous-groupe. Êtes-vous sûr ?'))
+		$('#enleverEspece'+ehsg_id).submit();
+}
+function enleverSousFamille(sofhsg_id){
+	if(confirm('Vous allez enlever cette sous-famille de ce sous-groupe. Êtes-vous sûr ?'))
+		$('#enleverSousFamille'+sofhsg_id).submit();
+}
+function enleverFamille(fhsg_id){
+	if(confirm('Vous allez enlever cette famille de ce sous-groupe. Êtes-vous sûr ?'))
+		$('#enleverFamille'+fhsg_id).submit();
+}
+function enleverSuperFamille(sufhsg_id){
+	if(confirm('Vous allez enlever cette super-famille de ce sous-groupe. Êtes-vous sûr ?'))
+		$('#enleverSuperFamille'+sufhsg_id).submit();
+}
+function enleverOrdre(ohsg_id){
+	if(confirm('Vous allez enlever cet ordre de ce sous-groupe. Êtes-vous sûr ?'))
+		$('#enleverOrdre'+ohsg_id).submit();
+}
 </script>
