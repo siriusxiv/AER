@@ -15,8 +15,9 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-package controllers.admin;
+package controllers.admin.groupesSousGroupes;
 
+import controllers.admin.Admin;
 import models.Groupe;
 import models.SousGroupe;
 import play.data.DynamicForm;
