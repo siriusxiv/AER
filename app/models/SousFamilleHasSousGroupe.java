@@ -28,6 +28,7 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class SousFamilleHasSousGroupe extends Model {
+
 	@Id
 	public Integer SousFamilleHasSousGroupe_id;
 	@NotNull
@@ -38,4 +39,9 @@ public class SousFamilleHasSousGroupe extends Model {
 	public SousGroupe sous_groupe;
 	
 	public static Finder<Integer,SousFamilleHasSousGroupe> find = new Finder<Integer,SousFamilleHasSousGroupe>(Integer.class, SousFamilleHasSousGroupe.class);
+
+	public SousFamilleHasSousGroupe(SousFamille sous_famille,SousGroupe sous_groupe) {
+		this.sous_famille=sous_famille;
+		this.sous_groupe=sous_groupe;
+	}
 }

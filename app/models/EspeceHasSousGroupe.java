@@ -41,6 +41,11 @@ public class EspeceHasSousGroupe extends Model {
 	
 	public static Finder<Integer,EspeceHasSousGroupe> find = new Finder<Integer,EspeceHasSousGroupe>(Integer.class, EspeceHasSousGroupe.class);
 	
+	public EspeceHasSousGroupe(Espece espece, SousGroupe sous_groupe) {
+		this.espece=espece;
+		this.sous_groupe=sous_groupe;
+	}
+
 	public static List<EspeceHasSousGroupe> findAll(){
 		return find.all();
 	}

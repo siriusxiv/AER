@@ -29,11 +29,11 @@ public class GererGroupesEtSousGroupes extends Controller {
 
 	public static Result main(){
 		if(Admin.isAdminConnected())
-			return ok(gererGroupesEtSousGroupes.render(Groupe.findAll()));
+			return ok(gererGroupesEtSousGroupes.render(Groupe.findAll(),null));
 		else
 			return Admin.nonAutorise();
 	}
-
+	
 	/**
 	 * Déplace un sous-groupe dans un autre groupe
 	 * @param sous_groupe_id

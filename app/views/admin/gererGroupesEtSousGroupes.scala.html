@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(groupes : List[Groupe])
+@(groupes : List[Groupe], sous_groupe_ouvert_id : Integer)
 @main("Gérer les groupes et les sous-groupes"){
 <link rel="stylesheet" media="screen" href="/assets/stylesheets/gestionGroupesSousGroupes.css">
 <h1>Gérer les groupes et les sous-groupes</h1>
@@ -141,6 +141,9 @@ function deplacerSousGroupe(sous_groupe_id){
 }
 function editerSousGroupe(sous_groupe_id){
 	$('#editerSousGroupe').load('/ajax/sous_groupe/editer/'+sous_groupe_id);
+}
+@if(sous_groupe_ouvert_id!=null){
+	editerSousGroupe(@sous_groupe_ouvert_id);
 }
 function creerGroupe(){
 	var style = $('#creerGroupe').attr('style');

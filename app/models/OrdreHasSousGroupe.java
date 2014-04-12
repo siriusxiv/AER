@@ -28,6 +28,7 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class OrdreHasSousGroupe extends Model {
+
 	@Id
 	public Integer OrdreHasSousGroupe_id;
 	@NotNull
@@ -38,4 +39,9 @@ public class OrdreHasSousGroupe extends Model {
 	public SousGroupe sous_groupe;
 	
 	public static Finder<Integer,OrdreHasSousGroupe> find = new Finder<Integer,OrdreHasSousGroupe>(Integer.class, OrdreHasSousGroupe.class);
+
+	public OrdreHasSousGroupe(Ordre ordre, SousGroupe sous_groupe) {
+		this.ordre=ordre;
+		this.sous_groupe=sous_groupe;
+	}
 }
