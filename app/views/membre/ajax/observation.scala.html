@@ -19,6 +19,9 @@
 @observation_position.
 <table>
 <tr>
+<td>
+<table>
+<tr>
 	<td>Groupe :</td>
 	<td>
 	<select id="groupes@observation_position" onChange="rafraichirListeDEspeces(@observation_position)">
@@ -31,6 +34,17 @@
 <tr>
 	<td>Espece : </td>
 	<td><select id="especes@observation_position" value="espece"></select></td>
+</tr>
+<tr>
+	<td>Déterminateur :</td>
+	<td><input type="text" name="determinateur" placeholder="Déterminateur"></td>
+</tr>
+</table>
+</td>
+<td>
+	<button onClick="ajouterComplement(@observation_position);return false;">Ajouter des informations complémentaires</button>
+	<span id="apresDernierComplement@observation_position"></span>
+</td>
 </tr>
 </table>
 <script>

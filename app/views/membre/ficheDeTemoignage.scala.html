@@ -82,14 +82,23 @@
 <script>
 var nombreObservations=1;
 $('#observation1').load('/deposerObservation/1');
+var nombresComplement = [0];
 function ajouterObservation(){
 	nombreObservations++;
+	nombresComplement.push(0);
 	$('#apresDerniereObservation').before('<div id="observation'+nombreObservations+'"></div>');
 	$('#observation'+nombreObservations).load('/deposerObservation/'+nombreObservations);
 }
 function rafraichirListeDEspeces(observation_position){
 	var groupe_id = $('#groupes'+observation_position).val();
 	$('#especes'+observation_position).load('/ajax/especes/dansGroupe/'+groupe_id);
+}
+function ajouterComplement(observation_position){
+	nombresComplement[observation_position-1]++;
+	var id = 'complement'+observation_position+'-'+nombresComplement[observation_position-1];
+	$('#apresDernierComplement'+observation_position).before('<div id="'+id+'"></div>');
+	var groupe_id = $('#groupes'+observation_position).val();
+	$('#'+id).load('/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+nombresComplement[observation_position-1]);
 }
 </script>
 }
