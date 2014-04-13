@@ -99,6 +99,21 @@ public class Groupe extends Model {
 	}
 
 	/**
+	 * Renvoie la liste des espèces dans ce groupe.
+	 * @return
+	 */
+	public List<Espece> getEspecesInThis(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Espece> especes = new ArrayList<Espece>();
+		for(SousGroupe sg : sgs){
+			List<Espece> especeDansSG = Espece.find.where().eq("espece_sous_groupe", sg).findList();
+			especes.addAll(especeDansSG);
+		}
+		Collections.sort(especes,new Espece());
+		return especes;
+	}
+	
+	/**
 	 * Supprimer le groupe de la base de données et toutes ses références
 	 * dans les autres tables
 	 */

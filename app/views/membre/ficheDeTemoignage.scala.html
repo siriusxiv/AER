@@ -15,8 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
- @(listGroupe :List[Groupe], listEspece:List[Espece], listEspeceHasSousGroupe:List[EspeceHasSousGroupe])
- @main("Fiche de Témoignage"){
+@main("Fiche de Témoignage"){
 <header>
 		<dl>
 		<a href="/">Retour</a>
@@ -27,6 +26,7 @@
 <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
 <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
 		<h1>Fiche de Témoignage </h1>
+		<form action="/deposerTemoignage" method="POST">
 			<table>
 			<tr>
 				<td>Commune :</td>
@@ -47,7 +47,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Date</td>
+				<td>Date :</td>
 				<td>
 				@defining(Calendar.getInstance().getTime()){ maintenant =>
 					<select name="jour">
@@ -74,8 +74,22 @@
 			</tr>
 			</table>
 			<p>Espèces observées: </p>
+			<div id="observation1"></div>
+			<button id="apresDerniereObservation" onClick="ajouterObservation();return false;">Ajouter une observation</button>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button>Valider témoignage</button>
+		</form>
 }{
 <script>
-
+var nombreObservations=1;
+$('#observation1').load('/deposerObservation/1');
+function ajouterObservation(){
+	nombreObservations++;
+	$('#apresDerniereObservation').before('<div id="observation'+nombreObservations+'"></div>');
+	$('#observation'+nombreObservations).load('/deposerObservation/'+nombreObservations);
+}
+function rafraichirListeDEspeces(observation_position){
+	var groupe_id = $('#groupes'+observation_position).val();
+	$('#especes'+observation_position).load('/ajax/especes/dansGroupe/'+groupe_id);
+}
 </script>
 }

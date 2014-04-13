@@ -23,9 +23,6 @@ import java.io.File;
 
 import models.Confidentialite;
 import models.Droits;
-import models.Espece;
-import models.EspeceHasSousGroupe;
-import models.Groupe;
 import models.Membre;
 import controllers.membre.SecuredMembre;
 import play.mvc.Controller;
@@ -122,11 +119,5 @@ public class Application extends Controller {
     public static Result listeTemoignages() {
     	return ok(listeTemoignages.render());
     }
-    
-    /*Fiche de Temoignage */
-    public static Result ficheDeTemoignage() {
-    	return ok(ficheDeTemoignage.render(Groupe.findAll(), Espece.findAll(), EspeceHasSousGroupe.findAll()));
-    }
-    
     
 }

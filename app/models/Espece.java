@@ -18,6 +18,7 @@
 
 package models;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -32,7 +33,7 @@ import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
 @Entity
-public class Espece extends Model {
+public class Espece extends Model implements Comparator<Espece>{
 	@Id
 	public Integer espece_id;
 	@NotNull
@@ -83,7 +84,16 @@ public class Espece extends Model {
 	public String toString(){
 		return espece_systematique+". "+espece_nom+"-"+espece_auteur;
 	}
-
+	/**
+	 * Pour trier les listes d'especes selon la systématique
+	 * Le constructeur vide est là pour utliser le comparateur.
+	 */
+	@Override
+	public int compare(Espece e1, Espece e2) {
+		return (e1.espece_systematique<e2.espece_systematique ? -1 : (e1.espece_systematique==e2.espece_systematique ? 0 : 1));
+	}
+	public Espece() {}
+	
 	/**
 	 * Créé une nouvelle espèce. Attention, on ne peux pas enregistrer cette espèce dans la base
 	 * de données tout de suite avec la méthode save() ! Il faut utiliser ajouterNouvelleEspece().

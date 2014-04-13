@@ -21,9 +21,6 @@ GET     /informationsPersonnelles   controllers.membre.InformationsPersonnelles.
 GET     /consulterDonnees           controllers.Application.consulterDonnees()
 GET     /historique                 controllers.Application.historique()
 
-#routes concernant la fiche de témoignage
-GET     /ficheDeTemoignage          controllers.Application.ficheDeTemoignage()
-
 #routes pour les experts
 GET     /menuExpert                 controllers.expert.MenuExpert.main()
 GET     /temoignagesAValider/:groupe_id  			    controllers.expert.ValiderObservations.temoignagesNonVus(groupe_id: Integer)
@@ -86,6 +83,7 @@ GET     /listeMembresDroits   controllers.Application.listeMembresDroits(droits:
 GET     /listeMembresInscrit   controllers.Application.listeMembresInscrit(isInscrit:Boolean ?=true)
 GET     /listeMembresPrecis  controllers.Application.listeMembresPrecis(membre_nom: String)
 #**********************************************
+GET     /ficheDeTemoignage			controllers.membre.DeposerTemoignage.main()
 GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax
@@ -95,6 +93,8 @@ GET		/emailExisteOuPas/:mail							controllers.ajax.Verifications.mailExisteOuPa
 POST	/ajax/groupe/renommer/:groupe_id				controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerGroupe(groupe_id: Integer)
 POST	/ajax/sous_groupe/renommer/:sous_groupe_id		controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerSousGroupe(sous_groupe_id: Integer)
 GET		/ajax/sous_groupe/editer/:sous_groupe_id		controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.voirPageEditerSousGroupe(sous_groupe_id: Integer)
+GET		/deposerObservation/:observation_ordre			controllers.ajax.membre.DeposerObservation.main(observation_ordre: Integer)
+GET		/ajax/especes/dansGroupe/:groupe_id				controllers.ajax.membre.DeposerObservation.getListeEspeces(groupe_id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
