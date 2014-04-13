@@ -36,6 +36,6 @@ public class Global extends GlobalSettings {
 		Confidentialite.FERMEE=Confidentialite.find.byId(3);
 		
 		//On duplique la base de données en remplissant les champs de espece_sousgroupe
-		//Espece.metAJourSousGroupesPourToutes();
+		Espece.metAJourSousGroupesPourToutes();
 	}
 }

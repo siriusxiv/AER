@@ -220,8 +220,8 @@
 			<td>@espece.getFamille()</td>
 			<td>@if(espece.getSuperFamille().super_famille_existe){@espece.getSuperFamille()}</td>
 			<td>@espece.getOrdre()</td>
-			<td>@espece.espece_sous_groupe</td>
-			<td>@espece.espece_sous_groupe.sous_groupe_groupe</td>
+			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe}</td>
+			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe.sous_groupe_groupe}</td>
 			<td><button type="submit">Supprimer</button></td>
 		</tr>
 		}
