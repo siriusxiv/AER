@@ -19,6 +19,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -38,7 +40,7 @@ import play.db.ebean.Model;
  */
 @SuppressWarnings("serial")
 @Entity
-public class SuperFamille extends Model{
+public class SuperFamille extends Model implements Comparator<SuperFamille>{
 	@Id
 	public Integer super_famille_id;
 	@NotNull
@@ -51,17 +53,32 @@ public class SuperFamille extends Model{
 
 	public static Finder<Integer,SuperFamille> find = new Finder<Integer,SuperFamille>(Integer.class, SuperFamille.class);
 
-	public static List<SuperFamille> findAll(){
-		return find.findList();
-	}
-
 	@Override
 	public String toString(){
 		return super_famille_nom;
 	}
 
+	/**
+	 * Pour trier les listes de super-familles selon la systématique de la première espèce dedans.
+	 */
+	@Override
+	public int compare(SuperFamille sf1, SuperFamille sf2) {
+		int sys1 = sf1.getSystematiquePremiereEspeceDansThis();
+		int sys2 = sf2.getSystematiquePremiereEspeceDansThis();
+		return (sys1<sys2 ? -1 : (sys1==sys2 ? 0 : 1));
+	}
+	
 	public static List<SuperFamille> findSuperFamillesExistantes() {
 		return find.where().eq("super_famille_existe", true).findList();
+	}
+	/**
+	 * Trie les super-familles
+	 * @return
+	 */
+	public static List<SuperFamille> findSuperFamillesExistantesTriees() {
+		List<SuperFamille> superfamilles = find.where().eq("super_famille_existe", true).findList();
+		Collections.sort(superfamilles, new SuperFamille());
+		return superfamilles;
 	}
 
 	/**

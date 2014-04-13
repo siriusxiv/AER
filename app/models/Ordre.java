@@ -19,6 +19,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List; 
 
@@ -39,9 +40,18 @@ public class Ordre extends Model implements Comparator<Ordre>{
 	public static Finder<Integer,Ordre> find = new Finder<Integer,Ordre>(Integer.class, Ordre.class);
 
 	public static List<Ordre> findAll(){
-		return find.findList();
+		return find.all();
 	}
-
+	/**
+	 * Trie les ordres
+	 * @return
+	 */
+	public static List<Ordre> findAllTries(){
+		List<Ordre> ordres = find.all();
+		Collections.sort(ordres,new Ordre());
+		return ordres;
+	}
+	
 	@Override
 	public String toString(){
 		return ordre_nom;
@@ -56,7 +66,7 @@ public class Ordre extends Model implements Comparator<Ordre>{
 		int sys2 = ordre2.getSystematiquePremiereEspeceDansThis();
 		return (sys1<sys2 ? -1 : (sys1==sys2 ? 0 : 1));
 	}
-	
+
 	/**
 	 * Trouve les ordres que l'on peut ajouter dans un sous-groupe
 	 * @return
@@ -77,7 +87,7 @@ public class Ordre extends Model implements Comparator<Ordre>{
 		}
 		return ordres;
 	}
-	
+
 	/**
 	 * Renvoie la liste des espèces dans cet ordre
 	 * @return
@@ -87,7 +97,7 @@ public class Ordre extends Model implements Comparator<Ordre>{
 				.eq("espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre", this)
 				.orderBy("espece_systematique").findList();
 	}
-	
+
 	/**
 	 * Renvoie le numéro systématique de la première espèce dans cet ordre.
 	 * Utile pour trier les ordres.
@@ -102,5 +112,5 @@ public class Ordre extends Model implements Comparator<Ordre>{
 		else
 			return espece.espece_systematique;
 	}
-	
+
 }

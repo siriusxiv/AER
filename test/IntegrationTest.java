@@ -32,6 +32,7 @@ import javax.persistence.PersistenceException;
 import models.Espece;
 import models.Famille;
 import models.Fiche;
+import models.Groupe;
 import models.Membre;
 import models.Ordre;
 import models.SousFamille;
@@ -46,6 +47,7 @@ import functions.mail.VerifierMail;
 import play.mvc.*;
 import play.test.*;
 import play.libs.F.*;
+import views.html.admin.gererBaseDeDonneesInsectes;
 import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
 import static org.fluentlenium.core.filter.FilterConstructor.*;
@@ -78,7 +80,10 @@ public class IntegrationTest {
             	
             	//VerifierMail.envoyerMailDeVerification(Membre.find.all().get(0));
             	
-            	affichePremieresSystematiques();
+            	//affichePremieresSystematiques();
+            	
+            	//gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findSuperFamillesExistantes(), Ordre.findAll(), SousGroupe.findAll(), Groupe.findAll());
+            	gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantesTriees(), Famille.findAllTriees(), SuperFamille.findSuperFamillesExistantesTriees(), Ordre.findAllTries(), SousGroupe.findAll(), Groupe.findAll());
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");
@@ -90,7 +95,7 @@ public class IntegrationTest {
     	Espece e = new Espece("Rasgus pipus","Malik Olivier Boussejra, 2014",54,"GA!");
     	System.out.println(e);
     	try {
-			e.ajouterNouvelleEspece(true, "Sous-famille des Rasgus");
+			e.ajouterNouvelleEspece(true, 1);
 		} catch (PersistenceException | NamingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -98,7 +103,7 @@ public class IntegrationTest {
     	Espece es = new Espece("Rasgus pipus2","Malik Olivier Boussejra, 2014",54,"GA2!");
     	System.out.println(es);
     	try {
-			es.ajouterNouvelleEspece(true, "Lymantriinae");
+			es.ajouterNouvelleEspece(true, 1);
 		} catch (PersistenceException | NamingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -106,7 +111,7 @@ public class IntegrationTest {
     	Espece esp = new Espece("Rasgus pipus3","Malik Olivier Boussejra, 2014",54,"GA3!");
     	System.out.println(esp);
     	try {
-			esp.ajouterNouvelleEspece(false, "Lymantriinae");
+			esp.ajouterNouvelleEspece(false, 1);
 		} catch (PersistenceException | NamingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -114,7 +119,7 @@ public class IntegrationTest {
     	Espece espe = new Espece("Rasgus pipus4","Malik Olivier Boussejra, 2014",54,"GA4!");
     	System.out.println(espe);
     	try {
-			espe.ajouterNouvelleEspece(false, "Calopterygidae");
+			espe.ajouterNouvelleEspece(false, 1);
 		} catch (PersistenceException | NamingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -150,13 +155,13 @@ public class IntegrationTest {
 		for(Ordre ordre : Ordre.findAll()){
     		System.out.println(ordre.getSystematiquePremiereEspeceDansThis());
     	}
-    	for(SuperFamille superfam : SuperFamille.findAll()){
+    	for(SuperFamille superfam : SuperFamille.findSuperFamillesExistantes()){
     		System.out.println(superfam.getSystematiquePremiereEspeceDansThis());
     	}
     	for(Famille fam : Famille.findAll()){
     		System.out.println(fam.getSystematiquePremiereEspeceDansThis());
     	}
-    	for(SousFamille sousfam : SousFamille.findAll()){
+    	for(SousFamille sousfam : SousFamille.findSousFamillesExistantes()){
     		System.out.println(sousfam.getSystematiquePremiereEspeceDansThis());
     	}
 	}

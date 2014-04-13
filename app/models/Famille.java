@@ -19,6 +19,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -30,7 +32,7 @@ import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
 @Entity
-public class Famille extends Model{
+public class Famille extends Model implements Comparator<Famille>{
 	@Id
 	public Integer famille_id;
 	@NotNull
@@ -44,7 +46,25 @@ public class Famille extends Model{
 	public static List<Famille> findAll(){
 		return find.findList();
 	}
-
+	/**
+	 * Trie les familles
+	 * @return
+	 */
+	public static List<Famille> findAllTriees() {
+		List<Famille> familles = find.all();
+		Collections.sort(familles, new Famille());
+		return familles;
+	}
+	/**
+	 * Pour trier les listes de familles selon la systématique de la première espèce dedans.
+	 */
+	@Override
+	public int compare(Famille f1, Famille f2) {
+		int sys1 = f1.getSystematiquePremiereEspeceDansThis();
+		int sys2 = f2.getSystematiquePremiereEspeceDansThis();
+		return (sys1<sys2 ? -1 : (sys1==sys2 ? 0 : 1));
+	}
+	
 	@Override
 	public String toString(){
 		return famille_nom;

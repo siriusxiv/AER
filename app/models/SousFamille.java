@@ -19,6 +19,8 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -40,7 +42,7 @@ import play.db.ebean.Model;
  */
 @SuppressWarnings("serial")
 @Entity
-public class SousFamille extends Model{
+public class SousFamille extends Model implements Comparator<SousFamille>{
 	@Id
 	public Integer sous_famille_id;
 	@NotNull
@@ -53,9 +55,16 @@ public class SousFamille extends Model{
 
 	public static Finder<Integer,SousFamille> find = new Finder<Integer,SousFamille>(Integer.class, SousFamille.class);
 
-	public static List<SousFamille> findAll(){
-		return find.findList();
+	/**
+	 * Trie les sous-familles
+	 * @return
+	 */
+	public static List<SousFamille> findSousFamillesExistantesTriees(){
+		List<SousFamille> sfs = find.where().eq("sous_famille_existe", true).findList();
+		Collections.sort(sfs,new SousFamille());
+		return sfs;
 	}
+	private SousFamille(){};
 
 	/**
 	 * Crée une sous famille et lance une PersistenceException si plusieurs familles portent le même nom,
@@ -84,6 +93,15 @@ public class SousFamille extends Model{
 			return sous_famille_nom;
 		else
 			return Espece.find.where().eq("espece_sousfamille", this).findUnique().toString();
+	}
+	/**
+	 * Pour trier les listes de sous-familles selon la systématique de la première espèce dedans.
+	 */
+	@Override
+	public int compare(SousFamille sf1, SousFamille sf2) {
+		int sys1 = sf1.getSystematiquePremiereEspeceDansThis();
+		int sys2 = sf2.getSystematiquePremiereEspeceDansThis();
+		return (sys1<sys2 ? -1 : (sys1==sys2 ? 0 : 1));
 	}
 
 	/**
