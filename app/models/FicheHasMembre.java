@@ -28,6 +28,7 @@ import play.db.ebean.Model;
 @SuppressWarnings("serial")
 @Entity
 public class FicheHasMembre extends Model {
+
 	@Id
 	public Integer FicheHasMembre_id;
 	@NotNull
@@ -38,4 +39,9 @@ public class FicheHasMembre extends Model {
 	public Fiche fiche;
 	
 	public static Finder<Integer,FicheHasMembre> find = new Finder<Integer,FicheHasMembre>(Integer.class, FicheHasMembre.class);
+
+	public FicheHasMembre(Membre membre, Fiche fiche) {
+		this.membre=membre;
+		this.fiche=fiche;
+	}
 }

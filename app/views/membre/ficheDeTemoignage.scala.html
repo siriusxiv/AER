@@ -171,6 +171,16 @@ function poster(){
 		$('#message').html('La ville spécifiée n\'est pas référencée.');
 		return false;
 	}
+	for(var membre_position = 1 ; membre_position<=nombreMembres ; membre_position++){
+		var membre_nom = $('#membre'+membre_position).val();
+		if($.inArray(membre_nom, listeMembres)<0){
+			if(membre_nom=='')
+				$('#message').html('Le champ membre est vide !');
+			else
+				$('#message').html(membre_nom+' n\'est pas référencé !');
+			return false;
+		}
+	}
 	$('#form').submit();
 }
 function isInt(value){

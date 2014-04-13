@@ -24,6 +24,7 @@ import java.util.Calendar;
 import models.Commune;
 import models.Espece;
 import models.Fiche;
+import models.FicheHasMembre;
 import models.InformationsComplementaires;
 import models.Membre;
 import models.Observation;
@@ -64,6 +65,20 @@ public class DeposerTemoignage extends Controller {
 		String memo = df.get("memo");
 		Fiche fiche = new Fiche(commune,lieu_dit,utm,date,memo);
 		fiche.save();
+
+		int membre_position=1;
+		String membre_nom;
+		while( (membre_nom=df.get("membre_nom"+membre_position)) != null ){
+			Membre membre = Membre.find.where().eq("membre_nom", membre_nom).findUnique();
+			if(membre!=null)
+				new FicheHasMembre(membre,fiche).save();
+			else if(membre_position==1){
+				fiche.delete();
+				return badRequest("Le membre "+membre+" n'est pas référencé.");
+			}
+			membre_position++;
+		}
+		
 		int observation_position=1;
 		String especeId;
 		while( (especeId = df.get("espece"+observation_position)) != null ){
