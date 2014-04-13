@@ -19,6 +19,8 @@
 package controllers;
 
 
+import java.io.File;
+
 import models.Confidentialite;
 import models.Droits;
 import models.Espece;
@@ -39,6 +41,16 @@ public class Application extends Controller {
     public static Result index() {
         return ok(index.render());
     }
+    
+    /**
+	 * Pour accéder aux images uploadées
+	 * @param filename
+	 * @return l'image
+	 */
+	public static Result view(String filename) {
+	    File file  = new File(play.Play.application().configuration().getString("image.path") + filename);
+	    return ok(file);
+	}
     
     /*Pages de l'utilisateur  */
     @Security.Authenticated(SecuredMembre.class)

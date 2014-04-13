@@ -4,7 +4,7 @@ import play.Project._
 
 object ApplicationBuild extends Build {
 
-  val appName         = "ASCMII"
+  val appName         = "AER"
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
@@ -12,6 +12,7 @@ object ApplicationBuild extends Build {
     "mysql" % "mysql-connector-java" % "5.1.18",
     "com.typesafe" %% "play-plugins-mailer" % "2.1.0",
     "org.apache.poi" % "poi" % "3.10-FINAL",
+    "commons-io" % "commons-io" % "2.3",
     javaCore,
     javaJdbc,
     javaEbean

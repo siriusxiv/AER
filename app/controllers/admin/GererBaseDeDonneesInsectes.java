@@ -17,7 +17,10 @@
  ********************************************************************************/
 package controllers.admin;
 
+import java.io.IOException;
+
 import models.Espece;
+import models.Image;
 import models.SousFamille;
 import models.Famille;
 import models.SuperFamille;
@@ -26,9 +29,14 @@ import models.SousGroupe;
 import models.Groupe;
 import play.data.DynamicForm;
 import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
+import play.mvc.Http.MultipartFormData;
+
 import javax.naming.NamingException;
 import javax.persistence.PersistenceException; 
+
+import functions.UploadImage;
 import views.html.admin.gererBaseDeDonneesInsectes;
 
 /**
@@ -108,23 +116,44 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	}
 
 	/**
-	 * Ajoute l'Espèce à la base de données. Ne marche que sur les espèces au milieu ou début.
+	 * Ajoute l'Espèce à la base de données.
 	 * @return
+	 * @throws NamingException
+	 * @throws PersistenceException
+	 * @throws IOException
 	 */
-	public static Result ajouterNouvEspece() throws NamingException, PersistenceException{
+	public static Result ajouterNouvEspece() throws NamingException, PersistenceException, IOException{
 		if (Admin.isAdminConnected()){
 			DynamicForm df = DynamicForm.form().bindFromRequest();
+			MultipartFormData body = request().body().asMultipartFormData();
+			String nom = df.get("nom");
+			String auteur = df.get("auteur");
 			Integer numero_systematique = Integer.parseInt(df.get("systématique"));
-			Espece espece_avant = Espece.findBySystematique(numero_systematique);
-			String nomSousFamilleOuFamille = new String();
-			boolean avecSousFam = df.get("aUneSousFamille").equals("sousfam");
-			if (avecSousFam) {
-				nomSousFamilleOuFamille = df.get("sousfamille");
-			} else {
-				nomSousFamilleOuFamille = df.get("famille");
-			}
-			espece_avant.ajouterNouvelleEspece(avecSousFam, nomSousFamilleOuFamille);
-		}
-		return redirect("/gererBaseDeDonneesInsectes");
+			Integer nomSousFamilleOuFamille = null;
+			String avecSousFamille = df.get("aUneSousFamille");
+			String commentaires = df.get("commentaires");
+			if(avecSousFamille!=null && !nom.equals("") && !auteur.equals("")){
+				boolean avecSousFam = avecSousFamille.equals("sousfam");
+				if (avecSousFam) {
+					nomSousFamilleOuFamille = Integer.parseInt(df.get("sous_famille"));
+				} else {
+					nomSousFamilleOuFamille = Integer.parseInt(df.get("famille"));
+				}
+				if(nomSousFamilleOuFamille!=null){
+					FilePart fp = body.getFile("photo");
+					Image photo = UploadImage.upload(fp);
+					Espece espece;
+					if(photo!=null)
+						espece = new Espece(nom,auteur,numero_systematique,commentaires,photo);
+					else
+						espece = new Espece(nom,auteur,numero_systematique,commentaires);
+					espece.ajouterNouvelleEspece(avecSousFam, nomSousFamilleOuFamille);
+				}else
+					System.out.println("Erreur lors de l'ajout:"+avecSousFamille+","+nom+","+auteur+","+nomSousFamilleOuFamille);
+			}else
+				System.out.println("Erreur lors de l'ajout:"+avecSousFamille+","+nom+","+auteur);
+			return redirect("/gererBaseDeDonneesInsectes");
+		}else
+			return Admin.nonAutorise();
 	}
 }

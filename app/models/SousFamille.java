@@ -62,16 +62,16 @@ public class SousFamille extends Model{
 	 * une NamingException si la famille en argument n'existe pas.
 	 * @param nom
 	 * @param existe
-	 * @param famille_nom
+	 * @param sousFamilleOuFamilleId
 	 * @throws PersistenceException
 	 * @throws NamingException
 	 */
-	public SousFamille(String nom, boolean existe, String famille_nom) throws PersistenceException, NamingException{
+	public SousFamille(String nom, boolean existe, Integer sousFamilleOuFamilleId) throws PersistenceException, NamingException{
 		sous_famille_nom=nom;
 		sous_famille_existe=existe;
-		sous_famille_famille=Famille.find.where().eq("famille_nom", famille_nom).findUnique();
+		sous_famille_famille=Famille.find.byId(sousFamilleOuFamilleId);
 		if(sous_famille_famille==null){
-			throw new NamingException("La famille "+famille_nom+" n'existe pas !");
+			throw new NamingException("La famille "+sousFamilleOuFamilleId+" n'existe pas !");
 		}
 	}
 

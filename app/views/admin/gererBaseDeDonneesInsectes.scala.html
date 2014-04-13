@@ -23,7 +23,7 @@
 	</header>
 	<h1> Page pour que l'admin puisse modifier la base de données des insectes </h1>
 	<button onClick="visibleAjoutEspece()">Ajouter une espèce</button>
-	<form action="/gererBaseDeDonneesInsectes" method="POST">
+	<form action="/gererBaseDeDonneesInsectes" method="POST" enctype="multipart/form-data">
 	<div id="nouv_espece" style="display:none">
 	<h2>Ajouter une espèce</h2>
 		<table>
@@ -37,22 +37,20 @@
 				<th>Commentaires</th>
 			</tr>
 			<tr>
-				<td><input type="text" size="15" name="nom" value=""></td>
-				<td><input type="text" size="15" name="auteur" value=""></td>
-				<td><input type="text" size="5" name="systématique" value=""></td>
-				<td><input type="file" name="photo" value=""></td>
+				<td><input type="text" size="15" name="nom"></td>
+				<td><input type="text" size="15" name="auteur"></td>
+				<td><input type="text" size="5" name="systématique"></td>
+				<td><input type="file" name="photo" accept="image/*"></td>
 				<td>
 					<input type="radio" name="aUneSousFamille" onClick="afficherBonneListe()" value="sousfam">A une sous-famille<br>
 					<input type="radio" name="aUneSousFamille" onClick="afficherBonneListe()" value="fam">Pas de sous-famille
 				</td>
 				<td>
 					<select id="sousfamille" name="sous_famille" style="display:none">
-						<option value="-1">&nbsp;</option>
 						@for(sousFamille <- sousFamilles){
 						<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>}
 					</select>
 					<select id="famille" name="famille" style="display:none">
-						<option value="-1">&nbsp;</option>
 						@for(famille <- familles){
 						<option value="@famille.famille_id">@famille.famille_nom</option>}
 					</select>
@@ -222,54 +220,61 @@
 			<td>@espece.getOrdre()</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe}</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe.sous_groupe_groupe}</td>
-			<td><button type="submit">Supprimer</button></td>
+			<td><button onClick="supprimerInsecte(@espece.espece_id)">Supprimer</button></td>
 		</tr>
 		}
 	</table>
 		
-	}{<script>
-	function visibleAjoutEspece() {
-		if (document.getElementById("nouv_espece").style.display == "none") {
-			document.getElementById("nouv_espece").style.display = "block";
-		} else {
-			document.getElementById("nouv_espece").style.display = "none";
-		}
+	}{
+<script>
+function visibleAjoutEspece() {
+	if (document.getElementById("nouv_espece").style.display == "none") {
+		document.getElementById("nouv_espece").style.display = "block";
+	} else {
+		document.getElementById("nouv_espece").style.display = "none";
 	}
-	function visibleAjoutSousFamille() {
-		if (document.getElementById("nouv_sousfam").style.display == "none") {
-			document.getElementById("nouv_sousfam").style.display = "block";
-		} else {
-			document.getElementById("nouv_sousfam").style.display = "none";
-		}
+}
+function visibleAjoutSousFamille() {
+	if (document.getElementById("nouv_sousfam").style.display == "none") {
+		document.getElementById("nouv_sousfam").style.display = "block";
+	} else {
+		document.getElementById("nouv_sousfam").style.display = "none";
 	}
-	function visibleAjoutFamille() {
-		if (document.getElementById("nouv_famille").style.display == "none") {
-			document.getElementById("nouv_famille").style.display = "block";
-		} else {
-			document.getElementById("nouv_famille").style.display = "none";
-		}
+}
+function visibleAjoutFamille() {
+	if (document.getElementById("nouv_famille").style.display == "none") {
+		document.getElementById("nouv_famille").style.display = "block";
+	} else {
+		document.getElementById("nouv_famille").style.display = "none";
 	}
-	function visibleAjoutSuperFamille() {
-		if (document.getElementById("nouv_superfam").style.display == "none") {
-			document.getElementById("nouv_superfam").style.display = "block";
-		} else {
-			document.getElementById("nouv_superfam").style.display = "none";
-		}
+}
+function visibleAjoutSuperFamille() {
+	if (document.getElementById("nouv_superfam").style.display == "none") {
+		document.getElementById("nouv_superfam").style.display = "block";
+	} else {
+		document.getElementById("nouv_superfam").style.display = "none";
 	}
-	function visibleAjoutOrdre() {
-		if (document.getElementById("nouv_ordre").style.display == "none") {
-			document.getElementById("nouv_ordre").style.display = "block";
-		} else {
-			document.getElementById("nouv_ordre").style.display = "none";
-		}
+}
+function visibleAjoutOrdre() {
+	if (document.getElementById("nouv_ordre").style.display == "none") {
+		document.getElementById("nouv_ordre").style.display = "block";
+	} else {
+		document.getElementById("nouv_ordre").style.display = "none";
 	}
-	function afficherBonneListe() {
-		if($('input[type=radio][name=aUneSousFamille]:checked').attr('value') == 'sousfam') {
-			document.getElementById("sousfamille").style.display = "block";
-			document.getElementById("famille").style.display = "none";
-		} else if ($('input[type=radio][name=aUneSousFamille]:checked').attr('value') == 'fam') {
-			document.getElementById("sousfamille").style.display = "none";
-			document.getElementById("famille").style.display = "block";
-		}
+}
+function afficherBonneListe() {
+	if($('input[type=radio][name=aUneSousFamille]:checked').attr('value') == 'sousfam') {
+		document.getElementById("sousfamille").style.display = "block";
+		document.getElementById("famille").style.display = "none";
+	} else if ($('input[type=radio][name=aUneSousFamille]:checked').attr('value') == 'fam') {
+		document.getElementById("sousfamille").style.display = "none";
+		document.getElementById("famille").style.display = "block";
 	}
-	</script>}
+}
+function supprimerInsecte(insecte_id){
+	if(confirm('Attention, si vous faites cela, toutes les observations se référant à cet insecte seront aussi supprimées ! Voulez-vous vraiment continuer ?')){
+		
+	}
+}
+</script>
+}

@@ -98,3 +98,6 @@ GET		/ajax/sous_groupe/editer/:sous_groupe_id		controllers.ajax.admin.AjaxGererG
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# Images
+GET		/image/:file_name								controllers.Application.view(file_name: String)

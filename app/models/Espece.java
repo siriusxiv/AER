@@ -41,7 +41,8 @@ public class Espece extends Model {
 	public String espece_auteur;
 	@NotNull
 	public Integer espece_systematique;
-	public String espece_photo;
+	@ManyToOne
+	public Image espece_photo;
 	//Duplication des données de SousGroupe pour améliorer la vitesse de la base
 	@ManyToOne
 	public SousGroupe espece_sous_groupe;
@@ -52,10 +53,6 @@ public class Espece extends Model {
 	public String espece_commentaires;
 
 	public static Finder<Integer,Espece> find = new Finder<Integer,Espece>(Integer.class, Espece.class);
-
-	public static Espece findBySystematique(Integer syst) {
-		return find.where().eq("espece_systemtique", syst).findUnique();
-	}
 	
 	public static List<Espece> findAll(){
 		return find.orderBy("espece_systematique").findList();
@@ -102,26 +99,42 @@ public class Espece extends Model {
 		espece_commentaires=commentaires;
 		espece_sousfamille=null;
 	}
+	/**
+	 * Idem que le constructeur normal, mais avec un photo en plus
+	 * @param nom
+	 * @param auteur
+	 * @param systematique
+	 * @param commentaires
+	 * @param photo
+	 */
+	public Espece(String nom, String auteur, Integer systematique, String commentaires, Image photo){
+		espece_nom=nom;
+		espece_auteur=auteur;
+		espece_systematique=systematique;
+		espece_commentaires=commentaires;
+		espece_photo=photo;
+		espece_sousfamille=null;
+	}
 
 	/**
 	 * Ajoute l'espèce en réordonnant toutes les espèces qui suivent.
-	 * Ajoute une espèce au milieu ou début. S'applique sur l'espèce juste avant.
+	 * Ajoute une espèce au milieu ou début. Instancier la nouvelle espèce avant.
 	 * @param avecSousFamille
 	 * @param sousFamilleOuFamille
 	 * @throws NamingException
 	 * @throws PersistenceException
 	 */
-	public void ajouterNouvelleEspece(boolean avecSousFamille, String sousFamilleOuFamille) throws NamingException, PersistenceException{
+	public void ajouterNouvelleEspece(boolean avecSousFamille, Integer sousFamilleOuFamilleId) throws NamingException, PersistenceException{
 		if(avecSousFamille){
-			this.espece_sousfamille=SousFamille.find.where().eq("sous_famille_nom", sousFamilleOuFamille).findUnique();
+			this.espece_sousfamille=SousFamille.find.byId(sousFamilleOuFamilleId);
 			if(espece_sousfamille!=null){
 				this.save();
 			}else{
-				throw new NamingException("La sous-famille "+sousFamilleOuFamille+" n'existe pas !");
+				throw new NamingException("La sous-famille "+sousFamilleOuFamilleId+" n'existe pas !");
 			}
 		}
 		else{
-			this.espece_sousfamille=new SousFamille(this.espece_nom,false,sousFamilleOuFamille);
+			this.espece_sousfamille=new SousFamille(this.espece_nom,false,sousFamilleOuFamilleId);
 			this.espece_sousfamille.save();
 			this.save();
 		}
@@ -132,6 +145,7 @@ public class Espece extends Model {
 				e.save();
 			}
 		}
+		this.metAJourSousGroupes();
 	}
 
 	/**
