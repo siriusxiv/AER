@@ -116,7 +116,7 @@ public class SuperFamille extends Model implements Comparator<SuperFamille>{
 	
 	/**
 	 * Renvoie le numéro systématique de la première espèce dans cette super-famille.
-	 * Utile pour trier les ordres.
+	 * Utile pour trier les super-familles.
 	 * @return
 	 */
 	public int getSystematiquePremiereEspeceDansThis(){

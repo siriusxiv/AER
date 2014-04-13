@@ -147,7 +147,7 @@ public class SousFamille extends Model implements Comparator<SousFamille>{
 	
 	/**
 	 * Renvoie le numéro systématique de la première espèce dans cette sous-famille.
-	 * Utile pour trier les ordres.
+	 * Utile pour trier les sous-familles.
 	 * @return
 	 */
 	public int getSystematiquePremiereEspeceDansThis(){

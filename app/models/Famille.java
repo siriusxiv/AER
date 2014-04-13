@@ -103,7 +103,7 @@ public class Famille extends Model implements Comparator<Famille>{
 	
 	/**
 	 * Renvoie le numéro systématique de la première espèce dans cette famille.
-	 * Utile pour trier les ordres.
+	 * Utile pour trier les familles.
 	 * @return
 	 */
 	public int getSystematiquePremiereEspeceDansThis(){
