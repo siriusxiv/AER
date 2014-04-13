@@ -17,6 +17,18 @@
  ********************************************************************************/
 package controllers.membre;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import models.Commune;
+import models.Espece;
+import models.Fiche;
+import models.InformationsComplementaires;
+import models.Observation;
+import models.StadeSexe;
+import models.UTMS;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -28,4 +40,55 @@ public class DeposerTemoignage extends Controller {
     public static Result main() {
     	return ok(ficheDeTemoignage.render());
     }
+	
+	@Security.Authenticated(SecuredMembre.class)
+	public static Result post() throws ParseException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		String commune_nom = df.get("ville_nom_reel");
+		Commune commune = Commune.find.where().eq("ville_nom_reel", commune_nom).findUnique();
+		if(commune==null && !commune_nom.equals(""))
+			return badRequest("La commune "+commune_nom+" n'est pas répertoriée !");
+		String lieu_dit = df.get("lieu-dit");
+		String utm_string = df.get("utm");
+		UTMS utm = UTMS.find.byId(utm_string);
+		if(utm==null)
+			return badRequest("La maille "+utm_string+" n'est pas répertoriée !");
+		String jour = df.get("jour");
+		String mois = df.get("mois");
+		String annee = df.get("annee");
+		Calendar date = Calendar.getInstance();
+		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
+		date.setTime(date_format.parse(jour+"/"+mois+"/"+annee));
+		String memo = df.get("memo");
+		Fiche fiche = new Fiche(commune,lieu_dit,utm,date,memo);
+		fiche.save();
+		int observation_position=1;
+		String especeId;
+		while( (especeId = df.get("espece"+observation_position)) != null ){
+			Espece espece = Espece.find.byId(Integer.parseInt(especeId));
+			if(espece!=null){
+				String determinateur = df.get("determinateur"+observation_position);
+				String commentaires = df.get("commentaires"+observation_position);
+				Observation observation = new Observation(fiche,espece,determinateur,commentaires);
+				observation.save();
+				int complement_position=1;
+				String nombreSpecimens_string;
+				while( (nombreSpecimens_string = df.get("nombreSpecimens"+observation_position+"-"+complement_position)) != null){
+					Integer nombreSpecimens = nombreSpecimens_string.isEmpty() ? null : Integer.parseInt(nombreSpecimens_string);
+					String stade_sexe_string = df.get("stadeSexePrecis"+observation_position+"-"+complement_position);
+					StadeSexe stade_sexe;
+					if(stade_sexe_string!=null){
+						stade_sexe=StadeSexe.find.byId(Integer.parseInt(stade_sexe_string));
+					}else{
+						stade_sexe_string = df.get("stadeSexe"+observation_position+"-"+complement_position);
+						stade_sexe=StadeSexe.find.byId(Integer.parseInt(stade_sexe_string));
+					}
+					new InformationsComplementaires(observation,nombreSpecimens,stade_sexe).save();
+					complement_position++;
+				}
+			}
+			observation_position++;
+		}
+		return redirect("/ficheDeTemoignage");
+	}
 }

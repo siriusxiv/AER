@@ -84,6 +84,7 @@ GET     /listeMembresInscrit   controllers.Application.listeMembresInscrit(isIns
 GET     /listeMembresPrecis  controllers.Application.listeMembresPrecis(membre_nom: String)
 #**********************************************
 GET     /ficheDeTemoignage			controllers.membre.DeposerTemoignage.main()
+POST	/deposerTemoignage			controllers.membre.DeposerTemoignage.post()
 GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax
