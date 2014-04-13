@@ -18,6 +18,7 @@
 package controllers.ajax.membre;
 
 import models.Groupe;
+import models.StadeSexe;
 import controllers.membre.SecuredMembre;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -25,6 +26,7 @@ import play.mvc.Security;
 import views.html.membre.ajax.observation;
 import views.html.membre.ajax.listeEspeces;
 import views.html.membre.ajax.informationsComplementaires;
+import views.html.membre.ajax.stadeSexePrecis;
 
 public class DeposerObservation extends Controller {
 	
@@ -43,5 +45,12 @@ public class DeposerObservation extends Controller {
 	public static Result getComplement(Integer observation_position, Integer groupe_id, Integer complement_position){
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		return ok(informationsComplementaires.render(observation_position,groupe,complement_position));
+	}
+	
+	@Security.Authenticated(SecuredMembre.class)
+	public static Result getStadeSexePrecis(Integer groupe_id, Integer stade_sexe_pere_id, Integer observation_position, Integer complement_position){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		StadeSexe stadesexe = StadeSexe.find.byId(stade_sexe_pere_id);
+		return ok(stadeSexePrecis.render(stadesexe,stadesexe.getStadeSexeFilsPourTelGroupe(groupe),observation_position,complement_position));
 	}
 }

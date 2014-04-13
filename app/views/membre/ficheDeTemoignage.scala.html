@@ -92,13 +92,41 @@ function ajouterObservation(){
 function rafraichirListeDEspeces(observation_position){
 	var groupe_id = $('#groupes'+observation_position).val();
 	$('#especes'+observation_position).load('/ajax/especes/dansGroupe/'+groupe_id);
+	rafraichirComplement(observation_position);
 }
 function ajouterComplement(observation_position){
 	nombresComplement[observation_position-1]++;
 	var id = 'complement'+observation_position+'-'+nombresComplement[observation_position-1];
 	$('#apresDernierComplement'+observation_position).before('<div id="'+id+'"></div>');
 	var groupe_id = $('#groupes'+observation_position).val();
-	$('#'+id).load('/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+nombresComplement[observation_position-1]);
+	$('#'+id).load('/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+nombresComplement[observation_position-1], function(){
+		chargerStadeSexePrecis(observation_position,nombresComplement[observation_position-1]);
+	});
+}
+function rafraichirComplement(observation_position){
+	var idMorceau = 'stadeSexe'+observation_position+'-';
+	var groupe_id = $('#groupes'+observation_position).val();
+	for(var complement_position = 1; complement_position<=nombresComplement[observation_position-1]-1 ; complement_position++){
+		var id='#'+idMorceau+complement_position;
+		var url = '/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+complement_position+' '+id;
+		$(id).load(url);
+	}
+	var complement_position=nombresComplement[observation_position-1];
+	var id='#'+idMorceau+complement_position;
+	var url = '/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+complement_position+' '+id;
+	$(id).load(url, function(){
+		for(var i = 1 ; i<=complement_position; i++){
+			chargerStadeSexePrecis(observation_position,i);
+		}
+	});
+}
+function chargerStadeSexePrecis(observation_position,complement_position){
+	var id = '#stadeSexePrecis'+observation_position+'-'+complement_position;
+	var groupe_id = $('#groupes'+observation_position).val();
+	var id_select_pere='#stadeSexeSelect'+observation_position+'-'+complement_position;
+	var stade_sexe_pere_id = $(id_select_pere).val();
+	var url = '/ajax/chargestadesexeprecis/'+groupe_id+'/'+stade_sexe_pere_id+'/'+observation_position+'/'+complement_position;
+	$(id).load(url);
 }
 </script>
 }
