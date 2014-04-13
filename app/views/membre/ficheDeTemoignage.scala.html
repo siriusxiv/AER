@@ -15,6 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
+@(membre: Membre)
 @main("Fiche de Témoignage"){
 <header>
 		<dl>
@@ -28,17 +29,12 @@
 		<h1>Fiche de Témoignage </h1>
 		<span id="message" class="message"></span>
 		<form id="form" action="/deposerTemoignage" method="POST">
+		<table>
+		<tr>
+		<td>
 			<table>
 			<tr>
-				<td>Commune :</td>
-				<td>@listeDesCommunes("commune")</td>
-			</tr>
-			<tr>
-			   <td>Lieu-dit :</td>
-			   <td><input type="text" name="lieu-dit" placeholder="Lieu-dit ou indication de lieu"></td>
-			</tr>
-			<tr>
-				<td>Coordonnées UTM :</td>
+				<td>Coordonnées UTM* :</td>
 				<td>
 				<select name="utm">
 				@for(utm <- UTMS.findAll()){
@@ -48,7 +44,15 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Date :</td>
+			   <td>Lieu-dit :</td>
+			   <td><input type="text" name="lieu-dit" placeholder="Lieu-dit ou indication de lieu"></td>
+			</tr>
+			<tr>
+				<td>Commune :</td>
+				<td>@listeDesCommunes("commune")</td>
+			</tr>
+			<tr>
+				<td>Date* :</td>
 				<td>
 				@defining(Calendar.getInstance().getTime()){ maintenant =>
 					<select name="jour">
@@ -74,13 +78,34 @@
 				<td><input name="memo" type="text"></td>
 			</tr>
 			</table>
+		</td>
+		<td>
+			Groupe en expédition :<br>
+			<button id="avantDernierMembre" onClick="ajouterUnMembre();return false;">Ajouter un membre</button>
+		</td>
+		</tr>
+		</table>
 			<p>Espèces observées: </p>
 			<div id="observation1"></div>
 			<button id="apresDerniereObservation" onClick="ajouterObservation();return false;">Ajouter une observation</button>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick="poster();return false;">Valider témoignage</button>
 		</form>
 }{
+<script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
 <script>
+var nombreMembres=0;
+var listeMembres = [@Html(controllers.ajax.Listes.listeMembres())];
+setTimeout(function(){ajouterUnMembre();},500);
+function ajouterUnMembre(){
+	nombreMembres++;
+	$('#avantDernierMembre').before('<input type="text" name="membre_nom'+nombreMembres+'" placeholder="Nom du membre" id="membre'+nombreMembres+'"><br>');
+	if(nombreMembres==1){
+		$('#membre'+nombreMembres).val('@membre.membre_nom');
+	}
+	$('#membre'+nombreMembres).autocomplete({	source : listeMembres,
+		minLength: 1
+	});
+}
 var nombreObservations=1;
 $('#observation1').load('/deposerObservation/1');
 var nombresComplement = [0];

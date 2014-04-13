@@ -58,7 +58,7 @@ public class AssignerExpert extends Controller {
 		if(Admin.isAdminConnected()){
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			Groupe groupe = Groupe.find.byId(groupe_id);
-			Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nom")).findUnique();
+			Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nominputGroupe"+groupe_id)).findUnique();
 			if(expert!=null && groupe!=null){
 				MembreIsExpertOnGroupe mieog = new MembreIsExpertOnGroupe(expert,groupe);
 				mieog.save();
@@ -79,7 +79,7 @@ public class AssignerExpert extends Controller {
 		if(Admin.isAdminConnected()){
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			MembreIsExpertOnGroupe mieog = MembreIsExpertOnGroupe.find.where().eq("groupe.groupe_id",groupe_id).findUnique();
-			Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nom")).findUnique();
+			Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nominputGroupe"+groupe_id)).findUnique();
 			if(mieog!=null && expert!=null){
 				if(!mieog.membre.membre_droits.equals(Droits.ADMIN)){
 					mieog.membre.membre_droits=Droits.TEMOIN;

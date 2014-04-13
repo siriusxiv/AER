@@ -22,7 +22,7 @@
  *  <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
  *  <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
  **@
- <input type="text" name="membre_nom" placeholder="Nom du membre" id="@id">
+ <input type="text" name="membre_nom@id" placeholder="Nom du membre" id="@id">
  <script>
  var listeMembres = [@Html(controllers.ajax.Listes.listeMembres())];
  $('#@id').autocomplete({	source : listeMembres,

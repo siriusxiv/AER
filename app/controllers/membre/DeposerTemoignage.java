@@ -25,6 +25,7 @@ import models.Commune;
 import models.Espece;
 import models.Fiche;
 import models.InformationsComplementaires;
+import models.Membre;
 import models.Observation;
 import models.StadeSexe;
 import models.UTMS;
@@ -38,7 +39,8 @@ public class DeposerTemoignage extends Controller {
 	
 	@Security.Authenticated(SecuredMembre.class)
     public static Result main() {
-    	return ok(ficheDeTemoignage.render());
+		Membre membre = Membre.find.where().eq("membre_email", session("username")).findUnique();
+    	return ok(ficheDeTemoignage.render(membre));
     }
 	
 	@Security.Authenticated(SecuredMembre.class)
