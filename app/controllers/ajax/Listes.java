@@ -28,6 +28,12 @@ import views.html.listeDesMembres;
 import views.html.listeDesCommunes;
 public class Listes extends Controller {
 	
+	/**
+	 * La string en argument est l'id du tag select renvoyé
+	 * par cette fonction
+	 * @param string_id
+	 * @return
+	 */
 	public static Result membres(String string_id){
 		return ok(listeDesMembres.render(string_id));
 	}
@@ -70,7 +76,7 @@ public class Listes extends Controller {
 		}else{
 			StringBuilder res = new StringBuilder();
 			for(Commune c : communes){
-				res.append("'"+c.toString().replaceAll("'","\\\\'")+"',");
+				res.append("'"+c.ville_nom_reel.replaceAll("'","\\\\'")+"',");
 			}
 			res.deleteCharAt(res.length()-1);
 			return res.toString();

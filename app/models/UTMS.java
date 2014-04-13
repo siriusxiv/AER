@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -42,6 +44,10 @@ public class UTMS extends Model {
 	
 	public static Finder<String,UTMS> find = new Finder<String,UTMS>(String.class, UTMS.class);
 
+	public static List<UTMS> findAll(){
+		return find.orderBy("utm").findList();
+	}
+	
 	@Override
 	public String toString(){
 		return utm;
