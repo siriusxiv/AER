@@ -27,6 +27,7 @@
 	<form action="/temoignagesAValider/enSuspens/@groupe.groupe_id" method="GET"><button type="submit">En Suspend</button></form>
 
         
+<span id="editObservation"></span>
         <table>
         	<tr>
         		
@@ -47,6 +48,7 @@
         	</tr>
         	@for(observation <- listObservation) {
         	<tr id="editObservation@observation.observation_id">
+        	
         		<td>@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){ @ficheHasMembre.membre} 
         		</td>
         		<td>@observation.observation_espece.espece_nom</td>
@@ -54,7 +56,7 @@
         		<td>@observation.observation_commentaires</td>
         		<td>@observation.observation_fiche.fiche_date.getTime().format("dd/MM/yyyy")</td>
         		<td>@observation.observation_fiche.fiche_lieudit</td>
-        		<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}<span id="commune@observation.observation_id"></span></td>
+        		<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}</td>
         		<td>@observation.observation_fiche.fiche_utm.utm</td>
         		<td>@observation.observation_fiche.fiche_memo</td>
         		<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
@@ -71,6 +73,7 @@
         		@observation.observation_id<button type="button" onclick="edite(@observation.observation_id, @groupe.groupe_id)">editer</button> </td>
         	</tr>}
         </table>
+    
         		
 }{<link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
  <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
@@ -79,8 +82,10 @@ function edite(observation_id, groupe_id){
 		$.ajax({
 			url : '/listeDesCommunes/observation'+observation_id,
 			success: function(res){
-			$('#editObservation'+observation_id).load('/temoignagesAValider/edite/'+groupe_id+'/'+observation_id);
-			$('#commune'+observation_id).html(res);}
+			$('#editObservation').load('/temoignagesAValider/edite/'+groupe_id+'/'+observation_id, function(){
+				$('#commune'+observation_id).html(res);
+			});
+			}
 	});
 }
 </script>}

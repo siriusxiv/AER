@@ -19,7 +19,7 @@ package controllers.expert;
 
 
 import java.util.List;
-
+import java.util.Calendar;
 import controllers.admin.Admin;
 import play.data.DynamicForm;
 import play.mvc.Controller;
@@ -133,7 +133,7 @@ public class ValiderObservations extends Controller {
 		String determinateur= df.get("determinateur");
 		String commentaire= df.get("commentaire");
 		String lieudit= df.get("lieudit");
-		String communenom= df.get("commune");
+		String communenom= df.get("ville_nom_reel");
 		String utm = df.get("utm");
 		String memo = df.get("memo");
 		Observation observation= Observation.find.byId(observation_id);
@@ -155,6 +155,7 @@ public class ValiderObservations extends Controller {
 			observation.observation_fiche.fiche_utm=utms;
 			}
 			observation.observation_fiche.save();
+			observation.observation_date_derniere_modification=Calendar.getInstance();
 			observation.save();
 			}
 				return redirect("/temoignagesAValider/enSuspens/"+groupe_id);
@@ -162,4 +163,5 @@ public class ValiderObservations extends Controller {
 		else
 			return Admin.nonAutorise();
 	}
+
 }

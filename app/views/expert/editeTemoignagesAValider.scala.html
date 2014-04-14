@@ -16,12 +16,31 @@
  *   
  ********************************************************************************@
 @(observation: Observation, listUtms: List[UTMS], listEspece: List[Espece])
- <form action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
- 				<td></td>
+ 		 <form action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
+ 		 <table>
+ 		 <tr>
+        		
+        		<th>témoins</th>
+        		<th>espèce</th>
+        		<th>déterminateur</th>
+        		<th>Commentaires</th>
+        		<th>date d'observation</th>
+        		<th>lieu-dit</th>
+        		<th>commune</th>
+        		<th>UTMS</th>
+        		<th>memo</th>
+        		<th>date de soumission</th>
+        		<th>informations supplémentaires</th>
+        		<th>date de dernière modification</th>
+        		<th>Marquer comme Vu/Valider</th>
+        		<th>Demander</th>
+        	</tr>
+ 		 <tr>
+ 				<td>@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){ @ficheHasMembre.membre} </td>
 				<td>@observation.observation_espece.espece_nom <select name="espece_id">
 					@for(espece<-listEspece){
 					<option value="@espece.espece_id">@espece.espece_nom </option>
-					}
+					}</select>
 				</td>
 				<td>@observation.observation_determinateur</td>
 				<td><input type="text" name="commentaire" value="@observation.observation_commentaires"></td>
@@ -31,7 +50,7 @@
 				<td>@observation.observation_fiche.fiche_utm.utm<select name="utm">
 					@for(utms <- listUtms){
 					<option value="@utms.utm">@utms.utm</option>
-					}</td>
+					}</select></td>
 				<td><input type="text" name="memo" value="@observation.observation_fiche.fiche_memo"></td>
 				<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
 				<td>@for(informationsComplementaires <-observation.getInfos()){
@@ -40,7 +59,8 @@
 				} </td>
         			<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
         			<td></td>
-        			<td> <input type="submit" value="Valider Changements">
-        				@observation.observation_id</td>
-</form>
-							
+        			<td><button>Valider les changements</button>
+        				@observation.observation_id </td>
+        				</tr>
+        				</table>
+    </form>
