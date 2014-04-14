@@ -20,13 +20,17 @@ package models;
 
 import java.util.Calendar;
 import java.util.List;
+
 import models.Espece;
 import models.Groupe;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+
 
 
 
@@ -75,6 +79,17 @@ public class Observation extends Model {
 	public Calendar observation_date_validation;
 
 	public static Finder<Long,Observation> find = new Finder<Long,Observation>(Long.class, Observation.class);
+
+	public Observation(Fiche fiche, Espece espece, String determinateur, String commentaires) {
+		observation_id=Observation.idSuivante();
+		observation_espece=espece;
+		observation_fiche=fiche;
+		observation_commentaires=commentaires;
+		observation_vue_par_expert=false;
+		observation_validee=Observation.NON_VALIDEE;
+		observation_date_derniere_modification=Calendar.getInstance();
+		observation_date_validation=null;
+	}
 
 	public static List<Observation> findAll(){
 		return find.all();
@@ -155,5 +170,17 @@ public class Observation extends Model {
 	@Override
 	public String toString(){
 		return observation_espece+" "+observation_fiche;
+	}
+	
+	/**
+	 * Renvoie l'id suivante qui sera allouée.
+	 * @return
+	 */
+	public static Long idSuivante(){
+		Observation o = find.where().setMaxRows(1).orderBy("observation_id desc").findUnique();
+		if(o==null)
+			return 1L;
+		else
+			return o.observation_id+1L;
 	}
 }

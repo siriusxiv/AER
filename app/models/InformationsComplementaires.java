@@ -41,6 +41,15 @@ public class InformationsComplementaires extends Model {
 	
 	public static Finder<Long,InformationsComplementaires> find = new Finder<Long,InformationsComplementaires>(Long.class, InformationsComplementaires.class);
 
+	public InformationsComplementaires(Observation observation, Integer nombreSpecimens, StadeSexe stade_sexe) {
+		informations_complementaires_observation=observation;
+		if(nombreSpecimens==null || nombreSpecimens<=0)
+			informations_complementaires_nombre_de_specimens = null;
+		else
+			informations_complementaires_nombre_de_specimens=nombreSpecimens;
+		informations_complementaires_stade_sexe=stade_sexe;
+	}
+
 	@Override
 	public String toString(){
 		return informations_complementaires_observation+", "

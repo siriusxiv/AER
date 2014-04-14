@@ -16,4 +16,23 @@
  *   
  ********************************************************************************@
  @(observation_position: Integer,groupe: Groupe,complement_position: Integer)
- @observation_position,@groupe,@complement_position
+ @complement_position.
+ <table>
+ <tr>
+ 	<td>Nombre de spécimens :</td>
+ 	<td><input type="text" id="nombreSpecimens@observation_position-@complement_position" name="nombreSpecimens@observation_position-@complement_position" placeholder="Entrez un nombre positif"></td>
+ </tr>
+ <tr>
+ 	<td>Stade et sexe :</td>
+ 	<td>
+ 	<span id="stadeSexe@observation_position-@complement_position">
+ 	<select id="stadeSexeSelect@observation_position-@complement_position" name="stadeSexe@observation_position-@complement_position" onChange="chargerStadeSexePrecis(@observation_position,@complement_position)">
+ 	@for(stade_sexe <- groupe.getStadeSexePeres()){
+ 		<option value="@stade_sexe.stade_sexe_id">@stade_sexe</option>
+ 	}
+ 	</select>
+ 	<span id="stadeSexePrecis@observation_position-@complement_position"></span>
+ 	</span>
+ 	</td>
+ </tr>
+ </table>

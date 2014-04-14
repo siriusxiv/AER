@@ -15,6 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
+@(membre: Membre)
 @main("Fiche de Témoignage"){
 <header>
 		<dl>
@@ -26,18 +27,14 @@
 <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
 <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
 		<h1>Fiche de Témoignage </h1>
-		<form action="/deposerTemoignage" method="POST">
+		<span id="message" class="message"></span>
+		<form id="form" action="/deposerTemoignage" method="POST">
+		<table>
+		<tr>
+		<td>
 			<table>
 			<tr>
-				<td>Commune :</td>
-				<td>@listeDesCommunes("commune")</td>
-			</tr>
-			<tr>
-			   <td>Lieu-dit :</td>
-			   <td><input type="text" name="lieu-dit" placeholder="Lieu-dit ou indication de lieu"></td>
-			</tr>
-			<tr>
-				<td>Coordonnées UTM :</td>
+				<td>Coordonnées UTM* :</td>
 				<td>
 				<select name="utm">
 				@for(utm <- UTMS.findAll()){
@@ -47,7 +44,15 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Date :</td>
+			   <td>Lieu-dit :</td>
+			   <td><input type="text" name="lieu-dit" placeholder="Lieu-dit ou indication de lieu"></td>
+			</tr>
+			<tr>
+				<td>Commune :</td>
+				<td>@listeDesCommunes("commune")</td>
+			</tr>
+			<tr>
+				<td>Date* :</td>
 				<td>
 				@defining(Calendar.getInstance().getTime()){ maintenant =>
 					<select name="jour">
@@ -73,32 +78,114 @@
 				<td><input name="memo" type="text"></td>
 			</tr>
 			</table>
+		</td>
+		<td>
+			Groupe en expédition :<br>
+			<button id="avantDernierMembre" onClick="ajouterUnMembre();return false;">Ajouter un membre</button>
+		</td>
+		</tr>
+		</table>
 			<p>Espèces observées: </p>
 			<div id="observation1"></div>
 			<button id="apresDerniereObservation" onClick="ajouterObservation();return false;">Ajouter une observation</button>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button>Valider témoignage</button>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick="poster();return false;">Valider témoignage</button>
 		</form>
 }{
+<script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
 <script>
+var nombreMembres=0;
+var listeMembres = [@Html(controllers.ajax.Listes.listeMembres())];
+setTimeout(function(){ajouterUnMembre();},500);
+function ajouterUnMembre(){
+	nombreMembres++;
+	$('#avantDernierMembre').before('<input type="text" name="membre_nom'+nombreMembres+'" placeholder="Nom du membre" id="membre'+nombreMembres+'"><br>');
+	if(nombreMembres==1){
+		$('#membre'+nombreMembres).val('@membre.membre_nom');
+	}
+	$('#membre'+nombreMembres).autocomplete({	source : listeMembres,
+		minLength: 1
+	});
+}
 var nombreObservations=1;
-$('#observation1').load('/deposerObservation/1');
+$('#observation1').load('/deposerObservation/1/1');
 var nombresComplement = [0];
 function ajouterObservation(){
 	nombreObservations++;
 	nombresComplement.push(0);
 	$('#apresDerniereObservation').before('<div id="observation'+nombreObservations+'"></div>');
-	$('#observation'+nombreObservations).load('/deposerObservation/'+nombreObservations);
+	var groupe_precedent_id = $('#groupes'+(nombreObservations-1)).val();
+	$('#observation'+nombreObservations).load('/deposerObservation/'+nombreObservations+'/'+groupe_precedent_id);
 }
 function rafraichirListeDEspeces(observation_position){
 	var groupe_id = $('#groupes'+observation_position).val();
 	$('#especes'+observation_position).load('/ajax/especes/dansGroupe/'+groupe_id);
+	rafraichirComplement(observation_position);
 }
 function ajouterComplement(observation_position){
 	nombresComplement[observation_position-1]++;
 	var id = 'complement'+observation_position+'-'+nombresComplement[observation_position-1];
 	$('#apresDernierComplement'+observation_position).before('<div id="'+id+'"></div>');
 	var groupe_id = $('#groupes'+observation_position).val();
-	$('#'+id).load('/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+nombresComplement[observation_position-1]);
+	$('#'+id).load('/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+nombresComplement[observation_position-1], function(){
+		chargerStadeSexePrecis(observation_position,nombresComplement[observation_position-1]);
+	});
+}
+function rafraichirComplement(observation_position){
+	var idMorceau = 'stadeSexe'+observation_position+'-';
+	var groupe_id = $('#groupes'+observation_position).val();
+	for(var complement_position = 1; complement_position<=nombresComplement[observation_position-1]-1 ; complement_position++){
+		var id='#'+idMorceau+complement_position;
+		var url = '/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+complement_position+' '+id;
+		$(id).load(url);
+	}
+	var complement_position=nombresComplement[observation_position-1];
+	var id='#'+idMorceau+complement_position;
+	var url = '/ajax/chargeinfoscomplementaires/'+observation_position+'/'+groupe_id+'/'+complement_position+' '+id;
+	$(id).load(url, function(){
+		for(var i = 1 ; i<=complement_position; i++){
+			chargerStadeSexePrecis(observation_position,i);
+		}
+	});
+}
+function chargerStadeSexePrecis(observation_position,complement_position){
+	var id = '#stadeSexePrecis'+observation_position+'-'+complement_position;
+	var groupe_id = $('#groupes'+observation_position).val();
+	var id_select_pere='#stadeSexeSelect'+observation_position+'-'+complement_position;
+	var stade_sexe_pere_id = $(id_select_pere).val();
+	var url = '/ajax/chargestadesexeprecis/'+groupe_id+'/'+stade_sexe_pere_id+'/'+observation_position+'/'+complement_position;
+	$(id).load(url);
+}
+function poster(){
+	var ville_nom_reel = $('#commune').val();
+	if(ville_nom_reel=='' || $.inArray(ville_nom_reel, listeCommunes)>0){
+		for(var observation_position = 1 ; observation_position<=nombreObservations ; observation_position++){
+			for(var complement_position = 1 ; complement_position<=nombresComplement[observation_position-1] ; complement_position++){
+				var nombreSpecimens_id = '#nombreSpecimens'+observation_position+'-'+complement_position;
+				var nombreSpecimens = $(nombreSpecimens_id).val();
+				if(!isInt(nombreSpecimens) && nombreSpecimens!=''){
+					$('#message').html('Observation '+observation_position+', information complémentaires '+complement_position+' : vous devez laisser le champ vide ou écrire un entier !');
+					return false;
+				}
+			}
+		}
+	}else{
+		$('#message').html('La ville spécifiée n\'est pas référencée.');
+		return false;
+	}
+	for(var membre_position = 1 ; membre_position<=nombreMembres ; membre_position++){
+		var membre_nom = $('#membre'+membre_position).val();
+		if($.inArray(membre_nom, listeMembres)<0){
+			if(membre_nom=='')
+				$('#message').html('Le champ membre est vide !');
+			else
+				$('#message').html(membre_nom+' n\'est pas référencé !');
+			return false;
+		}
+	}
+	$('#form').submit();
+}
+function isInt(value){
+	return !isNaN(value) && parseInt(value) == value;
 }
 </script>
 }

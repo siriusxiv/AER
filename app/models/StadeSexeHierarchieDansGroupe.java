@@ -59,6 +59,12 @@ public class StadeSexeHierarchieDansGroupe extends Model {
 		this.position=position;
 	}
 
+	/**
+	 * Verifie que le groupe et ce stade/sexe ne sont pas liés.
+	 * @param groupe
+	 * @param stade_sexe_id
+	 * @return
+	 */
 	public static boolean nAPas(Groupe groupe, int stade_sexe_id) {
 		return find.where().eq("groupe",groupe).eq("stade_sexe.stade_sexe_id", stade_sexe_id).findList().isEmpty();
 	}
