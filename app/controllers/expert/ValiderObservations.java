@@ -113,6 +113,7 @@ public class ValiderObservations extends Controller {
 		Observation observation = Observation.find.byId(id);
 		if (observation!=null){
 			observation.valider();
+			observation.observation_date_validation=Calendar.getInstance();
 		}
 		observation.save();
 		return redirect("/temoignagesAValider/enSuspens/"+groupe_id);}
@@ -130,7 +131,6 @@ public class ValiderObservations extends Controller {
 		if(MenuExpert.isExpertOn(groupe)){
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		Integer espece_id= Integer.parseInt(df.get("espece_id"));
-		String determinateur= df.get("determinateur");
 		String commentaire= df.get("commentaire");
 		String lieudit= df.get("lieudit");
 		String communenom= df.get("ville_nom_reel");
@@ -138,7 +138,6 @@ public class ValiderObservations extends Controller {
 		String memo = df.get("memo");
 		Observation observation= Observation.find.byId(observation_id);
 		if (observation!=null){
-			observation.observation_determinateur=determinateur;
 			observation.observation_commentaires=commentaire;
 			observation.observation_fiche.fiche_lieudit=lieudit;
 			Espece espece= Espece.find.byId(espece_id);
@@ -163,5 +162,19 @@ public class ValiderObservations extends Controller {
 		else
 			return Admin.nonAutorise();
 	}
+	
+/*public static Result demanderInfos(Long observation_id, Integer groupe_id){
+	Groupe groupe = Groupe.find.byId(groupe_id);
+	if(MenuExpert.isExpertOn(groupe)){
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Observation observation=Observation.find.byId(observation_id);
+		List<FicheHasMembre> fhm=observation.observation_fiche.getFicheHasMembre();
+		for (Membre m: fhm){
+			
+		return redirect("/temoignagesAValider/enSuspens/"+groupe_id);
+	}
+	else
+		return Admin.nonAutorise();
+}*/
 
 }
