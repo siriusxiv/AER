@@ -23,7 +23,7 @@
 	</header>
 	<h1> Page pour que l'admin puisse modifier la base de données des insectes </h1>
 	<button onClick="visibleAjoutEspece()">Ajouter une espèce</button>
-	<form action="/gererBaseDeDonneesInsectes" method="POST" enctype="multipart/form-data">
+	<form action="/gererBaseDeDonneesInsectes/ajoutEspece" method="POST" enctype="multipart/form-data">
 	<div id="nouv_espece" style="display:none">
 	<h2>Ajouter une espèce</h2>
 		<table>
@@ -64,6 +64,7 @@
 	</div>
 	</form>
 	<button onClick="visibleAjoutSousFamille()">Ajouter une sous-famille</button>
+	<form action="/gererBaseDeDonneesInsectes/ajoutSousFam" method="POST">
 	<div id="nouv_sousfam" style="display:none">
 	<h2>Ajouter une sous-famille</h2>
 		<table>
@@ -85,22 +86,34 @@
 				<td><button type="submit">Ajouter la sous-famille</button></td>
 			</tr>
 		</table>
-	</div><br>
+	</div>
+	</form>
 	<button onClick="visibleAjoutFamille()">Ajouter une famille</button>
+	<form action="/gererBaseDeDonneesInsectes/ajoutFam" method="POST">
 	<div id="nouv_famille" style="display:none">
 	<h2>Ajouter une famille</h2>
 		<table>
 			<tr>
 				<th>Nom</th>
-				<th>Super-famille</th>
+				<th>Avec ou sans super-famille</th>
+				<th>Super-famille ou Ordre</th>
 			</tr>
 			<tr>
 				<td><input type="text" size="15" name="nom" value=""></td>
 				<td>
-					<select id="famille_ajout">
+					<input type="radio" name="aUneSuperFamille" onClick="afficherBonneListeSuper()" value="superfam">A une super-famille<br>
+					<input type="radio" name="aUneSuperFamille" onClick="afficherBonneListeSuper()" value="ordre">Pas de super-famille
+				</td>
+				<td>
+					<select id="famille_ajout" style="display:none">
 						<option value="-1">&nbsp;</option>
 						@for(superFamille <- superFamilles){
 						<option value="@superFamille.super_famille_id">@superFamille.super_famille_nom</option>}
+					</select>
+					<select id="famille_ajout_ordre" style="display:none">
+						<option value="-1">&nbsp;</option>
+						@for(ordre <- ordres){
+						<option value="@ordre.ordre_id">@ordre.ordre_nom</option>}
 					</select>
 				</td>
 			</tr>
@@ -108,8 +121,10 @@
 				<td><button type="submit">Ajouter la famille</button></td>
 			</tr>
 		</table>
-	</div><br>
+	</div>
+	</form>
 	<button onClick="visibleAjoutSuperFamille()">Ajouter une super-famille</button>
+	<form action="/gererBaseDeDonneesInsectes/ajoutSuperFam" method="POST">
 	<div id="nouv_superfam" style="display:none">
 	<h2>Ajouter une super-famille</h2>
 		<table>
@@ -131,8 +146,10 @@
 				<td><button type="submit">Ajouter la super-famille</button></td>
 			</tr>
 		</table>
-	</div><br>
+	</div>
+	</form>
 	<button onClick="visibleAjoutOrdre()">Ajouter un ordre</button>
+	<form action="/gererBaseDeDonneesInsectes/ajoutOrdre" method="POST">
 	<div id="nouv_ordre" style="display:none">
 	<h2>Ajouter un ordre</h2>
 		<table>
@@ -141,6 +158,7 @@
 			<tr><td><button type="submit">Ajouter l'ordre</button></td></tr>
 		</table>
 	</div>
+	</form>
 	<h2> Liste des espèces </h2>
 	<table>
 		<tr>
@@ -269,6 +287,15 @@ function afficherBonneListe() {
 	} else if ($('input[type=radio][name=aUneSousFamille]:checked').attr('value') == 'fam') {
 		document.getElementById("sousfamille").style.display = "none";
 		document.getElementById("famille").style.display = "block";
+	}
+}
+function afficherBonneListeSuper() {
+	if($('input[type=radio][name=aUneSuperFamille]:checked').attr('value') == 'superfam') {
+		document.getElementById("famille_ajout").style.display = "block";
+		document.getElementById("famille_ajout_ordre").style.display = "none";
+	} else if ($('input[type=radio][name=aUneSuperFamille]:checked').attr('value') == 'ordre') {
+		document.getElementById("famille_ajout").style.display = "none";
+		document.getElementById("famille_ajout_ordre").style.display = "block";
 	}
 }
 function supprimerInsecte(insecte_id){

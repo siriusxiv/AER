@@ -51,8 +51,13 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	 * @return
 	 */
 	public static Result main() {
+		if (Admin.isAdminConnected()){
 		return ok(gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findSuperFamillesExistantes(), Ordre.findAll(), SousGroupe.findAll(), Groupe.findAll()));
+		} else {
+		return Admin.nonAutorise();
+		}
 	}
+	
 	/******* mise en place des tris des insectes **********/
 	public static Result listeEspecesParSousFamille(){
 		DynamicForm df = DynamicForm.form().bindFromRequest();
@@ -155,5 +160,86 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			return redirect("/gererBaseDeDonneesInsectes");
 		}else
 			return Admin.nonAutorise();
+	}
+	
+	/** Ajoute la sous-famille à la base de données
+	* @return
+	* @throws PersistenceException
+	 * @throws NamingException
+	 */
+	public static Result ajouterNouvSousFamille() throws NamingException, PersistenceException{
+		if (Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String nom = df.get("nom");
+			Integer fam_id = Integer.parseInt(df.get("sous_famille_ajout"));
+			SousFamille.ajouterSousFamille(nom, true, fam_id);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/**Ajoute la famille à la base de données
+	* @return
+	* @throws NamingException
+	 * @throws PersistenceException
+	 */
+	 public static Result ajouterNouvFamille() throws NamingException, PersistenceException{
+	 	 if(Admin.isAdminConnected()){
+	 	 	 DynamicForm df = DynamicForm.form().bindFromRequest();
+	 	 	 String nom = df.get("nom");
+	 	 	 Integer superFamilleOuOrdreId = null;
+	 	 	 String avecSuperFamille = df.get("aUneSuperFamille");
+	 	 	 if(avecSuperFamille!=null){
+	 	 	 	 boolean avecSuperFam = avecSuperFamille.equals("superfam");
+	 	 	 	 if(avecSuperFam){
+	 	 	 	 	 superFamilleOuOrdreId = Integer.parseInt(df.get("famille_ajout"));
+	 	 	 	 } else { 
+	 	 	 	 	 superFamilleOuOrdreId = Integer.parseInt(df.get("famille_ajout_ordre"));
+	 	 	 	 }
+	 	 	 	 if(superFamilleOuOrdreId!=null){
+	 	 	 	 	 Famille famille = new Famille(nom);
+	 	 	 	 	 famille.ajouterNouvelleFamille(avecSuperFam, superFamilleOuOrdreId);
+	 	 	 	 } else {
+	 	 	 	 	 System.out.println("Erreur lors de l'ajout : "+avecSuperFamille+", "+nom+", "+superFamilleOuOrdreId);
+	 	 	 	 }
+	 	 	 } else {
+	 	 	 	 System.out.println("Erreur lors de l'ajout : "+avecSuperFamille+", "+nom);
+	 	 	 }
+	 	 	 return redirect("/gererBaseDeDonneesInsectes");
+	 	 } else {
+	 	 	 return Admin.nonAutorise();
+	 	 }
+	 }
+	
+	/** Ajoute la super-famille à la base de données
+	* @return
+	 * @throws NamingException
+	 * @throws PersistenceException
+	 */ 
+	public static Result ajouterNouvSuperFamille() throws NamingException, PersistenceException{
+		if (Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String nom = df.get("nom");
+			Integer ordre_id = Integer.parseInt(df.get("super_famille_ajout"));
+			SuperFamille.ajouterSuperFamille(nom, true, ordre_id);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/** Ajotue l'ordre à la base de données
+	* @return
+	*/
+	public static Result ajouterNouvOrdre(){
+		if (Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String nom = df.get("nom");
+			Ordre.ajouterOrdre(nom);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
 	}
 }

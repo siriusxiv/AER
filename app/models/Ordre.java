@@ -42,6 +42,7 @@ public class Ordre extends Model implements Comparator<Ordre>{
 	public static List<Ordre> findAll(){
 		return find.all();
 	}
+	
 	/**
 	 * Trie les ordres
 	 * @return
@@ -51,6 +52,23 @@ public class Ordre extends Model implements Comparator<Ordre>{
 		Collections.sort(ordres,new Ordre());
 		return ordres;
 	}
+	private Ordre() {}
+	
+	/** Crée un ordre
+	* @param nom
+	 */
+	 public Ordre(String nom){
+	 	 ordre_nom=nom;
+	 }
+	 
+	/** Ajoute un ordre à la base de données
+	* @param nom
+	 */
+	 public static void ajouterOrdre(String nom){
+	 	 Ordre ordre = new Ordre(nom);
+	 	 ordre.save();
+	 }
+	
 	
 	@Override
 	public String toString(){
