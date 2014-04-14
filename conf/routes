@@ -105,6 +105,7 @@ GET		/ajax/chargestadesexeprecis/:groupe_id/:stade_sexe_pere_id/:observation_pos
 GET		/ajax/consulter/listeSousGroupes/:groupe_id				controllers.ajax.expert.requetes.Requetes.listeSousGroupes(groupe_id: Integer)
 GET		/ajax/consulter/listeEspeces/:groupe_id/:sous_groupe_id	controllers.ajax.expert.requetes.Requetes.listeEspeces(groupe_id: Integer,sous_groupe_id: Integer)
 GET		/ajax/consulter/listeStades/:groupe_id					controllers.ajax.expert.requetes.Requetes.listeStades(groupe_id: Integer)
+GET		/ajax/consulter/infoDates/:groupe_id					controllers.ajax.expert.requetes.Requetes.infoDates(groupe_id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
