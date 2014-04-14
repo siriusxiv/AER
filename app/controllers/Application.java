@@ -55,10 +55,6 @@ public class Application extends Controller {
     	return ok( menuUtilisateur.render());
     }
     
-    public static Result consulterDonnees() {
-    	return ok( consulterDonnees.render());
-    }
-    
     public static Result historique() {
     	return ok( historique.render());
     }

@@ -18,7 +18,6 @@ GET		/verification/:lien			functions.mail.VerifierMail.verifier(lien: String)
 #routes pour l'utilisateur
 GET     /menuUtilisateur            controllers.Application.menuUtilisateur()
 GET     /informationsPersonnelles   controllers.membre.InformationsPersonnelles.main()
-GET     /consulterDonnees           controllers.Application.consulterDonnees()
 GET     /historique                 controllers.Application.historique()
 
 #routes pour les experts
@@ -38,6 +37,9 @@ POST	/supprimerStadeSexeFils/:groupe_id/:stade_sexe_id	controllers.expert.GererS
 GET		/gererdatescharnieres/:groupe_id					controllers.expert.GererDatesChanieres.main(groupe_id: Integer)
 POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres.ajouter(groupe_id: Integer)
 POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
+
+#Routes pour faire des requêtes
+GET     /consulterDonnees           controllers.expert.requetes.ConsulterDonnees.main()
 
 #routes pour les admins
 GET     /menuAdmin                   controllers.Application.menuAdmin()
