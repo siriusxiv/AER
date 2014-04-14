@@ -79,6 +79,20 @@ public class Groupe extends Model {
 		}
 		return stadesexes;
 	}
+	/**
+	 * Renvoie tous les stades sexes pour le groupe donné.
+	 * @return
+	 */
+	public List<StadeSexe> getStadesSexes(){
+		List<StadeSexeHierarchieDansGroupe> sshdgs =
+				StadeSexeHierarchieDansGroupe.find.where()
+						.eq("groupe",this).orderBy("stade_sexe.stade_sexe_id").findList();
+		List<StadeSexe> stadesexes = new ArrayList<StadeSexe>();
+		for(StadeSexeHierarchieDansGroupe sshdg : sshdgs){
+			stadesexes.add(sshdg.stade_sexe);
+		}
+		return stadesexes;
+	}
 
 	/**
 	 * Renvoie la liste des dates charnières du groupe triées par ordre
