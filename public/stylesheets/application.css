@@ -34,6 +34,6 @@ ul{
 li{
 	float:left;
 	display:block;
-	width:60px;
+	width:inherit;
 	background-color:forestgreen;
 }
