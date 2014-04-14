@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(observation_position: Integer)
+@(observation_position: Integer, groupe_precedent_id: Integer)
 @observation_position.
 <table>
 <tr>
@@ -26,7 +26,7 @@
 	<td>
 	<select id="groupes@observation_position" onChange="rafraichirListeDEspeces(@observation_position)">
 	@for(groupe <- Groupe.findAll()){
-		<option value="@groupe.groupe_id">@groupe</option>
+		<option value="@groupe.groupe_id" @if(groupe_precedent_id==groupe.groupe_id){selected}>@groupe</option>
 	}
 	</select>
 	</td>

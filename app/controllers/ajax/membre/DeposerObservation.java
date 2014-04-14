@@ -32,11 +32,12 @@ public class DeposerObservation extends Controller {
 	/**
 	 * Affiche la page où on dépose une observation
 	 * @param observation_position
+	 * @param groupe_precedent_id : le groupe sélectionné précédemment
 	 * @return
 	 */
 	@Security.Authenticated(SecuredMembre.class)
-	public static Result main(Integer observation_position){
-		return ok(observation.render(observation_position));
+	public static Result main(Integer observation_position, Integer groupe_precedent_id){
+		return ok(observation.render(observation_position,groupe_precedent_id));
 	}
 	
 	/**
