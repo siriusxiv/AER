@@ -54,7 +54,7 @@
         		<td>@observation.observation_commentaires</td>
         		<td>@observation.observation_fiche.fiche_date.getTime().format("dd/MM/yyyy")</td>
         		<td>@observation.observation_fiche.fiche_lieudit</td>
-        		<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}</td>
+        		<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}<span id="commune@observation.observation_id"></span></td>
         		<td>@observation.observation_fiche.fiche_utm.utm</td>
         		<td>@observation.observation_fiche.fiche_memo</td>
         		<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
@@ -65,27 +65,22 @@
         		<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
         		<td>@if(!observation.observation_vue_par_expert){<form action="/temoignagesAValider/vu/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
         		<button type="submit">Marquer comme vu</button></form>
-        		}else{@if(observation.observation_validee==1){<form action="/temoignagesAValider/valide/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
+        		}else{@if(observation.observation_validee==2){<form action="/temoignagesAValider/valide/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
         		<button type="submit">Valider</button></form>}else{}}</td>
         		<td>
-        		@observation.observation_id</td>
+        		@observation.observation_id<button type="button" onclick="edite(@observation.observation_id, @groupe.groupe_id)">editer</button> </td>
         	</tr>}
         </table>
         		
 }{<link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
  <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
  <script>
-function edite(observation_id, ville_nom_reel, groupe_id){
-	var formdata= new FormData();
-	formdata.append('ville_nom_reel',ville_nom_reel)
+function edite(observation_id, groupe_id){
 		$.ajax({
-			type : 'POST',
-			url : '/listeDesCommunes/editObservation'+observation_id,
-			data: formdata,
-			processData: false,
-			contentType: false,
+			url : '/listeDesCommunes/observation'+observation_id,
 			success: function(res){
-			$('#observation'+observation_id).load('/temoignagesAValider/edite/'+groupe_id+'/'+observation_id')}
+			$('#editObservation'+observation_id).load('/temoignagesAValider/edite/'+groupe_id+'/'+observation_id);
+			$('#commune'+observation_id).html(res);}
 	});
 }
 </script>}
