@@ -25,7 +25,10 @@ import views.html.admin.demandesInscription;
 public class DemandesInscription extends Controller {
 
     public static Result main() {
+    	if(Admin.isAdminConnected()){
     	return ok( demandesInscription.render(Membre.selectMembresInscrit(false)));
+    	}else
+			return Admin.nonAutorise();
     }
     
     /**
@@ -34,7 +37,18 @@ public class DemandesInscription extends Controller {
      * @return
      */
     public static Result valideInscription(Integer membre_id){
+    	if(Admin.isAdminConnected()){
     	Membre.valideMembre(membre_id);
     	return redirect("/demandesInscription");
+    	}else
+			return Admin.nonAutorise();
+    }
+    
+    public static Result refuserInscription(Integer membre_id){
+    	if(Admin.isAdminConnected()){
+    		Membre.suprimmeMembre(membre_id);
+    		return redirect("/demandesInscription");
+    	}else
+			return Admin.nonAutorise();
     }
 }
