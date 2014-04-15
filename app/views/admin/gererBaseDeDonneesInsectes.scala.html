@@ -248,9 +248,18 @@
 								<span id="changerAuteur@espece.espece_id" onDblClick="changerAuteurEspece(@espece.espece_id)">@espece.espece_auteur</span>
 							</td>
 							<td>@espece.espece_systematique</td>
-							<td>@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</td>
 							<td>
-								Nom
+								<select id="changerSousFamille">
+								<option value="-1" selected="selected">@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</option>
+								@for(sousFamille <- sousFamilles) {
+								<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>
+								}
+								</select>
+								<button>Changer</button>
+							</td>
+							<td>
+								Nom<br>
+								<button>Ajouter</button>
 								@for(synonyme <- espece.getSynonymes()){
 									<td>@if(synonyme.synonyme_origineAER){<font color="red">@synonyme.synonyme_nom</font>}else{@synonyme.synonyme_nom}</td>
 									}
