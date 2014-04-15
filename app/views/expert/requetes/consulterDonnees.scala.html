@@ -57,7 +57,7 @@
 	<tr>
 		<td>Maille :</td>
 		<td>
-			<input type="text" name="maille" size="5">
+			<input type="text" id="maille" name="maille" size="5">
 		</td>
 	</tr>
 	</table>
@@ -87,6 +87,20 @@
 </td>
 </tr>
 </table>
+<table>
+<tr>
+	<td><button>Témoins par période</button></td>
+	<td><button>Espèces par maille</button></td>
+</tr>
+<tr>
+	<td><button>Chronologie d'un témoin</button></td>
+	<td><button>Mailles par espèce</button></td>
+</tr>
+<tr>
+	<td><button>Histogramme des imagos ou non</button></td>
+	<td><button>Mailles par période</button></td>
+</tr>
+</table>
 }{
 <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
 <script>
@@ -96,6 +110,7 @@ setTimeout(function(){
 		minLength: 1
 	});
 },500);
+var listUTMS = [@Html(controllers.ajax.Listes.listeUTMS())];
 rafraichirSousGroupe();
 rafraichirDates();
 function rafraichirSousGroupe(){

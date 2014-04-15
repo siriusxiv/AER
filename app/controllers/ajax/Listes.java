@@ -21,12 +21,13 @@ import java.util.List;
 
 import models.Commune;
 import models.Membre;
+import models.UTMS;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.listeDesMembres;
 import views.html.listeDesCommunes;
 public class Listes extends Controller {
-	
+
 	/**
 	 * La string en argument est l'id du tag select renvoyé
 	 * par cette fonction
@@ -36,7 +37,7 @@ public class Listes extends Controller {
 	public static Result membres(String string_id){
 		return ok(listeDesMembres.render(string_id));
 	}
-	
+
 	public static Result communes(String string_id){
 		return ok(listeDesCommunes.render(string_id));
 	}
@@ -59,7 +60,7 @@ public class Listes extends Controller {
 
 		}
 	}
-	
+
 	/**
 	 *  * Renvoie une chaîne de caractère exploitable par la fonction
 	 * d'autocomplétion
@@ -79,5 +80,22 @@ public class Listes extends Controller {
 			return res.toString();
 
 		}
+	}
+	/**
+	 * Renvoie une chaîne de caractère exploitable par la fonction
+	 * d'autocomplétion
+	 * @return
+	 */
+	public static String listeUTMS(){
+		List<UTMS> utms = UTMS.find.all();
+		StringBuilder res = new StringBuilder();
+		for(UTMS utm : utms){
+			res.append("'"+utm.utm+"',");
+			res.append("'"+utm.maille20x20+"',");
+			res.append("'"+utm.maille50x50+"',");
+			res.append("'"+utm.maille100x100+"',");
+		}
+		res.deleteCharAt(res.length()-1);
+		return res.toString();
 	}
 }
