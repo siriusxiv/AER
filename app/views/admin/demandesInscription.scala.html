@@ -52,7 +52,53 @@
 			<td>@membre.membre_email</td>
 			<td>
 				<form action="/demandesInscription/valider/@membre.membre_id" method="POST">
-				<button type="submit">Valider</button></td>
+				<button type="submit">Valider</button>
+			</td>
 		</tr>
 		}
-}{<script></script>}
+	</table>
+<h2>Permettre à un témoin dans la base de données de se connecter</h2>
+<span id="message"></span>
+<form id="premierAcces" action="/demandeInscription/donnerPremierAcces" method="POST">
+<table>
+<tr>
+	<td>Sélectionner le témoin :</td>
+	<td><input type="text" id="temoin" name="membre"></td>
+</tr>
+<tr>
+	<td>Adresse mail du témoin :</td>
+	<td><input type="text" id="email" name="email"></td>
+</td>
+</table>
+<button onClick="donnerPremierAcces();return false;">OK</button>
+</form>
+}{
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+<script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="/assets/javascripts/verify-mail.js" type="text/javascript"></script>
+<script>
+var listeMembres = [@Html(controllers.ajax.Listes.listeMembres())];
+setTimeout(function(){
+	$('#temoin').autocomplete({	source : listeMembres,
+		minLength: 1
+	});
+},500);
+function donnerPremierAcces(){
+	var email = $('#email').val();
+	if(isRFC822ValidEmail(email)){
+		var membre_nom = $('#temoin').val();
+		if($.inArray(membre_nom, listeMembres)<0){
+			if(membre_nom=='')
+				$('#message').html('Le champ membre est vide !');
+			else
+				$('#message').html(membre_nom+' n\'est pas référencé !');
+			return false;
+		}
+		$('#premierAcces').submit();
+	}else{
+		$('#message').html('Adresse mail entrée invalide.');
+		return false;
+	}
+}
+</script>
+}
