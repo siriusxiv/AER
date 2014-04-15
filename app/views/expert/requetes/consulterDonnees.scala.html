@@ -28,7 +28,7 @@
 	<tr>
 		<td>Groupe :</td>
 		<td>
-			<select id="groupe" name="groupe" onChange="rafraichirSousGroupe()">
+			<select id="groupe" name="groupe" onChange="rafraichirSousGroupe();rafraichirDates();">
 			<option value="0">*</option>
 			@for(groupe <- Groupe.findAll()){
 			<option value="@groupe.groupe_id">@groupe</option>
@@ -72,7 +72,13 @@
 	</tr>
 	<tr>
 		<td>Dates :</td>
-		<td></td>
+		<td>
+			<span id="datesPartieMouvante"></span>
+			<input type="radio" name="periode" value="autre"> Autre<br>
+			<input type="text" size="1" name="jour" placeholder="jj">
+			<input type="text" size="1" name="mois" placeholder="mm">
+			<input type="text" size="2" name="annee" placeholder="yyyy">
+		</td>
 	</tr>
 	</table>
 </td>
@@ -88,6 +94,7 @@ setTimeout(function(){
 	});
 },500);
 rafraichirSousGroupe();
+rafraichirDates();
 function rafraichirSousGroupe(){
 	var groupe_id = $('#groupe').val();
 	$('#sous-groupe').load('/ajax/consulter/listeSousGroupes/'+groupe_id, function(){
@@ -104,5 +111,13 @@ function rafraichirStades(){
 	var groupe_id = $('#groupe').val();
 	$('#stade').load('/ajax/consulter/listeStades/'+groupe_id);
 }
+function rafraichirDates(){
+	var groupe_id = $('#groupe').val();
+	$('#datesPartieMouvante').load('/ajax/consulter/infoDates/'+groupe_id);
+}
+$('input[type=radio][name=periode]').on('change', function(){
+    var periode = $(this).val();
+    alert(periode);
+});​
 </script>
 }
