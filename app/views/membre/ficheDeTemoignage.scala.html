@@ -107,14 +107,18 @@ function ajouterUnMembre(){
 	});
 }
 var nombreObservations=1;
-$('#observation1').load('/deposerObservation/1/1');
 var nombresComplement = [0];
+$('#observation1').load('/deposerObservation/1/1',function(){
+	ajouterComplement(1);
+});
 function ajouterObservation(){
 	nombreObservations++;
 	nombresComplement.push(0);
 	$('#apresDerniereObservation').before('<div id="observation'+nombreObservations+'"></div>');
 	var groupe_precedent_id = $('#groupes'+(nombreObservations-1)).val();
-	$('#observation'+nombreObservations).load('/deposerObservation/'+nombreObservations+'/'+groupe_precedent_id);
+	$('#observation'+nombreObservations).load('/deposerObservation/'+nombreObservations+'/'+groupe_precedent_id, function(){
+		ajouterComplement(nombreObservations);
+	});
 }
 function rafraichirListeDEspeces(observation_position){
 	var groupe_id = $('#groupes'+observation_position).val();
