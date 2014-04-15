@@ -17,5 +17,5 @@
  ********************************************************************************@
 @(periodes: List[functions.Periode])
 @for(i:Int <- 0 to (periodes.size()-1)){
-<input type="radio" name="periode" value="@periodes.get(i)"> Période @(i+1) : @periodes.get(i).getDate1().getTime().format("dd/MM/yyyy") à @periodes.get(i).getDate2().getTime().format("dd/MM/yyyy")<br>
+<input type="radio" name="periode" value="@periodes.get(i)" onChange="changerDate()"> Période @(i+1) : @periodes.get(i).getDate1().getTime().format("dd/MM/yyyy") à @periodes.get(i).getDate2().getTime().format("dd/MM/yyyy")<br>
 }

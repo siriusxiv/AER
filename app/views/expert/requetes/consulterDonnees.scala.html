@@ -75,9 +75,12 @@
 		<td>
 			<span id="datesPartieMouvante"></span>
 			<input type="radio" name="periode" value="autre"> Autre<br>
-			<input type="text" size="1" name="jour" placeholder="jj">
-			<input type="text" size="1" name="mois" placeholder="mm">
-			<input type="text" size="2" name="annee" placeholder="yyyy">
+			De <input type="text" size="1" id="jour1" name="jour1" placeholder="jj">
+			<input type="text" size="1" id="mois1" name="mois1" placeholder="mm">
+			<input type="text" size="2" id="annee1" name="annee1" placeholder="yyyy"><br>
+			à &nbsp;&nbsp;&nbsp;<input type="text" size="1" id="jour2" name="jour2" placeholder="jj">
+			<input type="text" size="1" id="mois2" name="mois2" placeholder="mm">
+			<input type="text" size="2" id="annee2" name="annee2" placeholder="yyyy">
 		</td>
 	</tr>
 	</table>
@@ -114,6 +117,18 @@ function rafraichirStades(){
 function rafraichirDates(){
 	var groupe_id = $('#groupe').val();
 	$('#datesPartieMouvante').load('/ajax/consulter/infoDates/'+groupe_id);
-}​
+}
+function changerDate(){
+	var periode = $('input[type=radio][name=periode]:checked').val();
+	var dates = periode.split(":");
+	var date1 = dates[0].split("/");
+	var date2 = dates[1].split("/");
+	$('#jour1').val(date1[0]);
+	$('#mois1').val(date1[1]);
+	$('#annee1').val(date1[2]);
+	$('#jour2').val(date2[0]);
+	$('#mois2').val(date2[1]);
+	$('#annee2').val(date2[2]);
+}
 </script>
 }
