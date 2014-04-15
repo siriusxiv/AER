@@ -69,7 +69,7 @@ function temoinsParPeriode(){
 			processData: false,
 			contentType: false,
 			success: function (res) {
-				
+				$('#resultats').html(res);
 			}
 		});
 	}else

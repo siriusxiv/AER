@@ -18,6 +18,7 @@
 
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -51,5 +52,36 @@ public class UTMS extends Model {
 	@Override
 	public String toString(){
 		return utm;
+	}
+
+	/**
+	 * Convertie une string en liste de mailles UTM.
+	 * Si la string en argument est vide, renvoit toutes les mailles.
+	 * Si la string est une maille, renvoit la liste des maills utms 10x10 dans
+	 * cette maille.
+	 * Si la string ne correspond à rien, renvoie null.
+	 * @param maille
+	 * @return
+	 */
+	public static List<UTMS> parseMaille(String maille) {
+		if(maille.equals(""))
+			return find.all();
+		List<UTMS> utms = new ArrayList<UTMS>();
+		UTMS utm = find.byId(maille);
+		if(utm!=null){
+			utms.add(utm);
+			return utms;
+		}
+		utms = find.where().eq("maille20x20", maille).findList();
+		if(!utms.isEmpty())
+			return utms;
+		utms = find.where().eq("maille50x50", maille).findList();
+		if(!utms.isEmpty())
+			return utms;
+		utms = find.where().eq("maille100x100", maille).findList();
+		if(!utms.isEmpty())
+			return utms;
+		else
+			return null;
 	}
 }

@@ -17,20 +17,27 @@
  ********************************************************************************/
 package controllers.ajax.expert.requetes;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import models.Observation;
+import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.expert.requetes.ajax.resultats.temoinsParPeriode;
 
 public class Calculs extends Controller {
 	
-	public static Result temoinsParPeriode(){
+	public static Result temoinsParPeriode() throws ParseException{
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		Map<String,String> info = getData(df);
-		
-		return ok();
+		List<TemoinsParPeriode> temoins = TemoinsParPeriode.calculeTemoinsParPeriode(info);
+		return ok(temoinsParPeriode.render(temoins));
 	}
 	
 	/**
@@ -39,19 +46,48 @@ public class Calculs extends Controller {
 	 * @return
 	 */
 	public static Map<String,String> getData(DynamicForm df){
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("groupe", df.get("groupe"));
-		map.put("sous_groupe", df.get("sous_groupe"));
-		map.put("espece", df.get("espece"));
-		map.put("stade", df.get("stade"));
-		map.put("maille", df.get("maille"));
-		map.put("temoin", df.get("temoin"));
-		map.put("jour1", df.get("jour1"));
-		map.put("mois1", df.get("mois1"));
-		map.put("annee1", df.get("annee1"));
-		map.put("jour2", df.get("jour2"));
-		map.put("mois2", df.get("mois2"));
-		map.put("annee2", df.get("annee2"));
-		return map;
+		Map<String,String> info = new HashMap<String,String>();
+		info.put("groupe", df.get("groupe"));
+		info.put("sous_groupe", df.get("sous_groupe"));
+		info.put("espece", df.get("espece"));
+		info.put("stade", df.get("stade"));
+		info.put("maille", df.get("maille"));
+		info.put("temoin", df.get("temoin"));
+		info.put("jour1", df.get("jour1"));
+		info.put("mois1", df.get("mois1"));
+		info.put("annee1", df.get("annee1"));
+		info.put("jour2", df.get("jour2"));
+		info.put("mois2", df.get("mois2"));
+		info.put("annee2", df.get("annee2"));
+		return info;
+	}
+	
+	/**
+	 * Renvoie la date 1 de le Map sous forme de Calendar
+	 * @param info
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Calendar getDataDate1(Map<String,String> info) throws ParseException{
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
+		c.setTime(date_format.parse(info.get("jour1")+"/"+info.get("mois1")+"/"+info.get("annee1")));
+		return c;
+	}
+	/**
+	 * Renvoie la date 2 de le Map sous forme de Calendar
+	 * @param info
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Calendar getDataDate2(Map<String,String> info) throws ParseException{
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
+		c.setTime(date_format.parse(info.get("jour2")+"/"+info.get("mois2")+"/"+info.get("annee2")));
+		return c;
+	}
+	
+	public static List<Observation> getObservations(Map<String,String> info){
+		return null;
 	}
 }
