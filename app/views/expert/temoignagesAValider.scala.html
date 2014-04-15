@@ -31,20 +31,20 @@
         <table>
         	<tr>
         		
-        		<th>témoins</th>
-        		<th>espèce</th>
-        		<th>déterminateur</th>
+        		<th>Témoins</th>
+        		<th>Espèce</th>
+        		<th>Déterminateur</th>
         		<th>Commentaires</th>
-        		<th>date d'observation</th>
-        		<th>lieu-dit</th>
-        		<th>commune</th>
+        		<th>Date d'observation</th>
+        		<th>Lieu-dit</th>
+        		<th>Commune</th>
         		<th>UTMS</th>
-        		<th>memo</th>
-        		<th>date de soumission</th>
-        		<th>informations supplémentaires</th>
-        		<th>date de dernière modification</th>
+        		<th>Memo</th>
+        		<th>Date de soumission</th>
+        		<th>Informations supplémentaires</th>
+        		<th>Date de dernière modification</th>
         		<th>Marquer comme Vu/Valider</th>
-        		<th>Demander</th>
+        		<th>Editer l'Observation</th>
         	</tr>
         	@for(observation <- listObservation) {
         	<tr id="editObservation@observation.observation_id">
@@ -67,8 +67,8 @@
         		<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
         		<td>@if(!observation.observation_vue_par_expert){<form action="/temoignagesAValider/vu/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
         		<button type="submit">Marquer comme vu</button></form>
-        		}else{@if(observation.observation_validee==2){<form action="/temoignagesAValider/valide/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
-        		<button type="submit">Valider</button></form>}else{}}</td>
+        		}else{@if(observation.observation_validee==2){<form id="valide@observation.observation_id" action="/temoignagesAValider/valide/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
+        		<input type="button" onclick="confirmValider(@observation.observation_id)" value="Valider"></form>}else{}}</td>
         		<td>
         		@observation.observation_id<button type="button" onclick="edite(@observation.observation_id, @groupe.groupe_id)">editer</button> </td>
         	</tr>}
@@ -90,6 +90,22 @@ function edite(observation_id, groupe_id){
 			}
 	});
 }
-
-
+function confirmValider(observation_id){
+	var r=confirm("Etes-vous sûr de valider cette observation?");
+	if(r==true)
+		{
+		document.getElementById("valide"+observation_id).submit();
+		}
+		else
+		{}
+	}
+function confirmEditer(observation_id){
+	var r=confirm("Etes-vous sûr des Changements effectués sur cette observation?");
+	if(r==true)
+		{
+		document.getElementById("edite"+observation_id).submit();
+		}
+		else
+		{}
+	}
 </script>}

@@ -16,7 +16,7 @@
  *   
  ********************************************************************************@
 @(observation: Observation, listUtms: List[UTMS], listEspece: List[Espece])
- 		 <form action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
+ 		 <form id="edite@observation.observation_id" action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
  		 <table>
  		 <tr>
         		
@@ -59,7 +59,7 @@
 				} </td>
         			<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
         			<td></td>
-        			<td><button>Valider les changements</button>
+        			<td><input type="button" value="Valider les changements" onclick="confirmEditer(@observation.observation_id)">
         				@observation.observation_id </td>
         				</tr>
         				</table>
