@@ -126,14 +126,26 @@ public class Membre extends Model {
 	}
 	/************************************/
 
-	/***** Valide un utilisateur ************/
+	/**
+	 * Valide l'inscription d'un utilisateur
+	 * @param id
+	 */
 
 	public static void valideMembre(Integer id){
-		Membre membre= Membre.find.ref(id);
+		Membre membre= Membre.find.byId(id);
 		membre.membre_inscription_acceptee=true;
 		membre.save();
 	}
 
+	/**
+	 * invalide une demande d'inscription en supprimant le membre concerné de la base de donnée.
+	 * @param id
+	 */
+	public static void supprimeMembre(Integer id){
+		Membre membre=Membre.find.byId(id);
+		membre.delete();
+	}
+	
 	@Override
 	public String toString(){
 		return membre_nom;

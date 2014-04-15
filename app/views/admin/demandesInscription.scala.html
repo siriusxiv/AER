@@ -36,6 +36,7 @@
 			<th>Date de naissance</th>
 			<th>Adresse mail</th>
 			<th>Valider cette Inscription</th>
+			<th>Refuser Inscription</th>
 		</tr>
 		@for(membre <- listMembre) {
 		<tr>
@@ -53,6 +54,9 @@
 			<td>
 				<form action="/demandesInscription/valider/@membre.membre_id" method="POST">
 				<button type="submit">Valider</button>
+			</td>
+			<td>
+				
 			</td>
 		</tr>
 		}

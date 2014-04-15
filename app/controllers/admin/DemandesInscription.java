@@ -80,4 +80,12 @@ public class DemandesInscription extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
+    
+    public static Result refuserInscription(Integer membre_id){
+    	if(Admin.isAdminConnected()){
+    		Membre.supprimeMembre(membre_id);
+    		return redirect("/demandesInscription");
+    	}else
+			return Admin.nonAutorise();
+    }
 }

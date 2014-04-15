@@ -121,7 +121,7 @@ public class Observation extends Model {
 	 */
 	public static List<Observation> enSuspend(Integer groupe_id){
 		Groupe groupe = Groupe.find.byId(groupe_id);
-		Integer suspend=1;
+		Integer suspend=2;
 		return find.where().eq("observation_validee", suspend).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
 	}
 
