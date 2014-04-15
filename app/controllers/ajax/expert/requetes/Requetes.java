@@ -17,15 +17,11 @@
  ********************************************************************************/
 package controllers.ajax.expert.requetes;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import controllers.admin.Admin;
 import controllers.expert.MenuExpert;
 import functions.Periode;
-import models.DateCharniere;
-import models.Fiche;
 import models.Groupe;
 import models.SousGroupe;
 import play.mvc.Controller;
@@ -62,20 +58,16 @@ public class Requetes extends Controller {
 			return Admin.nonAutorise();
 	}
 
+	/**
+	 * Renvoie la page de date avec les périodes correspondant au groupe
+	 * donné.
+	 * @param groupe_id
+	 * @return
+	 */
 	public static Result infoDates(Integer groupe_id){
 		if(MenuExpert.isExpertConnected()){
 			Groupe groupe = Groupe.find.byId(groupe_id);
-			List<Periode> periodes = new ArrayList<Periode>();
-			List<DateCharniere> dates_charnieres = DateCharniere.find.where().eq("date_charniere_groupe", groupe).findList();
-			Calendar date1 = Fiche.getPlusVieuxTemoignage().fiche_date;
-			Calendar date2;
-			for(DateCharniere date_charniere : dates_charnieres){
-				date2 = date_charniere.date_charniere_date;
-				periodes.add(new Periode((Calendar) date1.clone(),date2));
-				date1.setTime(date2.getTime());
-			}
-			date2=Calendar.getInstance();
-			periodes.add(new Periode(date1,date2));
+			List<Periode> periodes = Periode.getPeriodes(groupe);
 			return ok(infoDates.render(periodes));
 		}else
 			return Admin.nonAutorise();

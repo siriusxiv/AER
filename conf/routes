@@ -42,12 +42,12 @@ POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.
 GET     /consulterDonnees           controllers.expert.requetes.ConsulterDonnees.main()
 
 #routes pour les admins
-GET     /menuAdmin                   controllers.Application.menuAdmin()
+GET     /menuAdmin                   controllers.admin.Admin.menuAdmin()
 GET     /assignerExperts             controllers.admin.AssignerExpert.main()
 POST 	/assignerExpert/ajouter/:groupe_id	controllers.admin.AssignerExpert.ajouter(groupe_id: Integer)
 POST 	/assignerExpert/changer/:groupe_id	controllers.admin.AssignerExpert.changer(groupe_id: Integer)
-GET     /demandesInscription         controllers.Application.demandesInscription()
-POST    /demandesInscription/valider/:membre_id    controllers.Application.valideInscription(membre_id: Integer)
+GET     /demandesInscription         controllers.admin.DemandesInscription.main()
+POST    /demandesInscription/valider/:membre_id    controllers.admin.DemandesInscription.valideInscription(membre_id: Integer)
 GET		/gererGroupesEtSousGroupes				controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.main()
 POST	/deplacerSousGroupe/:sous_groupe_id		controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.deplacerSousGroupe(sous_groupe_id: Integer)
 POST	/creerGroupe							controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.creerGroupe()

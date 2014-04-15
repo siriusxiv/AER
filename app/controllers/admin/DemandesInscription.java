@@ -17,37 +17,24 @@
  ********************************************************************************/
 package controllers.admin;
 
+import models.Membre;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.admin.menuAdmin;
+import views.html.admin.demandesInscription;
 
-/**
- * Fonctions générales de gestions des admins
- * @author malik
- *
- */
-public class Admin extends Controller{
-	/**
-	 * Si c'est un admin qui est connecté, renvoie true, sinon, renvoie false.
-	 * @return
-	 */
-	public static boolean isAdminConnected(){
-		return session("admin")!=null;
-	}
+public class DemandesInscription extends Controller {
 
-	/**
-	 * Affiche la page d'erreur 401
-	 * @return
-	 */
-	public static Result nonAutorise() {
-		return unauthorized("You do not have the right to access this page.");
-	}
-
-	/**
-	 * Affiche la page de menu admin.
-	 * @return
-	 */
-    public static Result menuAdmin() {
-    	return ok( menuAdmin.render());
+    public static Result main() {
+    	return ok( demandesInscription.render(Membre.selectMembresInscrit(false)));
+    }
+    
+    /**
+     * Valide l'inscription du membre en paramètre
+     * @param membre_id
+     * @return
+     */
+    public static Result valideInscription(Integer membre_id){
+    	Membre.valideMembre(membre_id);
+    	return redirect("/demandesInscription");
     }
 }

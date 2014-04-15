@@ -51,7 +51,7 @@
 			<td>@membre.membre_journais/@membre.membre_moisnais/@membre.membre_annenais</td>
 			<td>@membre.membre_email</td>
 			<td>
-				<form action="@routes.Application.valideInscription(membre.membre_id)" method="POST">
+				<form action="/demandesInscription/valider/@membre.membre_id" method="POST">
 				<button type="submit">Valider</button></td>
 		</tr>
 		}
