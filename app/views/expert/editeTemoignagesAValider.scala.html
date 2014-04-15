@@ -16,24 +16,23 @@
  *   
  ********************************************************************************@
 @(observation: Observation, listUtms: List[UTMS], listEspece: List[Espece])
- 		 <form action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
+ 		 <form id="edite@observation.observation_id" action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
  		 <table>
  		 <tr>
         		
-        		<th>témoins</th>
-        		<th>espèce</th>
-        		<th>déterminateur</th>
+        		<th>Témoins</th>
+        		<th>Espèce</th>
+        		<th>Déterminateur</th>
         		<th>Commentaires</th>
-        		<th>date d'observation</th>
-        		<th>lieu-dit</th>
-        		<th>commune</th>
+        		<th>Date d'observation</th>
+        		<th>Lieu-dit</th>
+        		<th>Commune</th>
         		<th>UTMS</th>
-        		<th>memo</th>
-        		<th>date de soumission</th>
-        		<th>informations supplémentaires</th>
-        		<th>date de dernière modification</th>
-        		<th>Marquer comme Vu/Valider</th>
-        		<th>Demander</th>
+        		<th>Memo</th>
+        		<th>Date de soumission</th>
+        		<th>Informations supplémentaires</th>
+        		<th>Date de dernière modification</th>
+        		<th>Editer l'Observation</th>
         	</tr>
  		 <tr>
  				<td>@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){ @ficheHasMembre.membre} </td>
@@ -58,8 +57,7 @@
 					@informationsComplementaires.informations_complementaires_stade_sexe
 				} </td>
         			<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
-        			<td></td>
-        			<td><button>Valider les changements</button>
+        			<td><input type="button" value="Valider les changements" onclick="confirmEditer(@observation.observation_id)">
         				@observation.observation_id </td>
         				</tr>
         				</table>
