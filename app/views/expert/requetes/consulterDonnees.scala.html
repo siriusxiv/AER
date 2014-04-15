@@ -89,7 +89,7 @@
 </table>
 <table>
 <tr>
-	<td><button>Témoins par période</button></td>
+	<td><button onClick="temoinsParPeriode()">Témoins par période</button></td>
 	<td><button>Espèces par maille</button></td>
 </tr>
 <tr>
@@ -110,7 +110,7 @@ setTimeout(function(){
 		minLength: 1
 	});
 },500);
-var listUTMS = [@Html(controllers.ajax.Listes.listeUTMS())];
+var listeUTMS = [@Html(controllers.ajax.Listes.listeUTMS())];
 rafraichirSousGroupe();
 rafraichirDates();
 function rafraichirSousGroupe(){
@@ -146,4 +146,5 @@ function changerDate(){
 	$('#annee2').val(date2[2]);
 }
 </script>
+<script type="text/javascript" src="/assets/javascripts/requetes.js"></script>
 }
