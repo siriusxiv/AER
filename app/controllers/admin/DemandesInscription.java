@@ -18,7 +18,6 @@
 package controllers.admin;
 
 import functions.mail.Mail;
-import functions.mail.VerifierMail;
 import models.Membre;
 import play.data.DynamicForm;
 import play.mvc.Controller;

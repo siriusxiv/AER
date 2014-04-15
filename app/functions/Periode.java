@@ -17,6 +17,7 @@
  ********************************************************************************/
 package functions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -59,5 +60,14 @@ public class Periode {
 		date2=Calendar.getInstance();
 		periodes.add(new Periode(date1,date2));
 		return periodes;
+	}
+	
+	/**
+	 * Renvoie la concaténation date1+":"+date2 au fromat dd/MM/yyyy
+	 */
+	@Override
+	public String toString(){
+		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
+		return date_format.format(date1.getTime())+":"+date_format.format(date2.getTime());
 	}
 }
