@@ -15,14 +15,22 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
- @(listObservation: List[Observation], page: Integer)
+ @(listObservation: List[Observation], page: Integer, nbpages: Integer, groupe : Groupe, listEspeces: List[Espece] )
  @main("Témoignages validés"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
 		<h1> Pages des témoignages validés </h1>
 	</header>
-	
+	<p>Trier par espece:<select name="selespesce" onchange="triEspece(@groupe.groupe_id, this.options[this.selectedIndex].value)">
+				<option value="-1">&nbsp </option>
+				<option value="toutes"> Toutes les espèces </option>
+				@for(espece <- listEspeces){
+					<option value="@espece.espece_id">@espece.espece_nom</option>
+					}
+				</select><span id="tri"></span></p>
+		@for( pg:Int <- 1 to nbpages){<a href="/temoignagesValides/@groupe.groupe_id/@pg">p.@pg</a>
+		}
 	 <table>
         	<tr>
         		
@@ -59,10 +67,16 @@
         			@informationsComplementaires.informations_complementaires_stade_sexe
         			} </td>
         		<td>@observation.observation_date_validation.getTime().format("dd/MM/yyyy")</td>
-        		<td><button>Remettre en suspens</button><td>
+        		<td><button>Remettre en suspens</button></td>
         		
         	</tr>}
         </table>
-	}{<script></script>
+	}{<script>
+	function triEspece(groupe_id, espece_id){
+	if (espece_id=="toutes"){document.getElementById("tri").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1"><button>Trier</button></a>';
+	}else{
+	document.getElementById("tri").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/'+espece_id+'/1"><button>Trier</button></a>';}
+	}
+	</script>
 }
 
