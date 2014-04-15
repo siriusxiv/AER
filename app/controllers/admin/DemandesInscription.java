@@ -17,24 +17,67 @@
  ********************************************************************************/
 package controllers.admin;
 
+import functions.mail.Mail;
+import functions.mail.VerifierMail;
 import models.Membre;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.admin.demandesInscription;
+import views.html.mails.mailNouveauMotDePasse;
 
 public class DemandesInscription extends Controller {
 
-    public static Result main() {
-    	return ok( demandesInscription.render(Membre.selectMembresInscrit(false)));
-    }
-    
-    /**
-     * Valide l'inscription du membre en paramètre
-     * @param membre_id
-     * @return
-     */
-    public static Result valideInscription(Integer membre_id){
-    	Membre.valideMembre(membre_id);
-    	return redirect("/demandesInscription");
-    }
+	public static Result main() {
+		if(Admin.isAdminConnected()){
+			return ok(demandesInscription.render(Membre.selectMembresInscrit(false)));
+		}else
+			return Admin.nonAutorise();
+	}
+
+	/**
+	 * Valide l'inscription du membre en paramètre
+	 * @param membre_id
+	 * @return
+	 */
+	public static Result valideInscription(Integer membre_id){
+		if(Admin.isAdminConnected()){
+			Membre.valideMembre(membre_id);
+			return redirect("/demandesInscription");
+		}else
+			return Admin.nonAutorise();
+	}
+
+	/**
+	 * Permet via l'admin de donner l'acces à un témoin.
+	 * Le témoin reçoit alors un mail de validation de son adresse mail.
+	 * @return
+	 */
+	public static Result donnerPremierAccess(){
+		if(Admin.isAdminConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String membre_nom = df.get("membre");
+			Membre membre = Membre.find.where().eq("membre_nom", membre_nom).findUnique();
+			if(membre==null)
+				return badRequest("Le membre "+membre_nom+" n'est pas référencé.");
+			String email = df.get("email");
+			Membre membreAvecMemeEmail = Membre.find.where().eq("membre_email", email).setMaxRows(1).findUnique();
+			if(membreAvecMemeEmail==null){
+				membre.membre_email=email;
+				membre.genereLienDeValidation();
+				Mail mail = new Mail(
+						"AER - Votre compte a été créé. Choisissez un mot de passe",
+						"Votre compte AER a été créé ! Vous devez maintenant choisir un mot de passe pour vous connecter. L'identifiant est votre adresse e-mail.<br>"+mailNouveauMotDePasse.render(membre.membre_lien_de_validation_de_mail).toString(),
+						email,
+						membre.membre_nom
+						);
+				mail.sendMail();
+				membre.save();
+				return redirect("/demandesInscription");
+			}else{
+				return badRequest("Le membre "+membreAvecMemeEmail+" a la même adresse e-mail !");
+			}
+		}else
+			return Admin.nonAutorise();
+	}
 }

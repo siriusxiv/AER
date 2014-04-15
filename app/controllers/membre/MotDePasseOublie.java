@@ -48,7 +48,6 @@ public class MotDePasseOublie extends Controller {
 		String email = df.get("email");
 		Membre membre = Membre.find.where().eq("membre_email",email).setMaxRows(1).findUnique();
 		if(membre!=null){
-			//Mail(String sujet, String contenu, String to, String recipient)
 			membre.genereLienDeValidation();
 			Mail mail = new Mail(
 					"AER - Choisir un nouveau mot de passe",
