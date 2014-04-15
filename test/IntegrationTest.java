@@ -43,6 +43,7 @@ import org.junit.*;
 
 import controllers.ajax.Listes;
 import functions.credentials.Credentials;
+import functions.excels.TemoinsParPeriodeExcel;
 import functions.mail.VerifierMail;
 import play.mvc.*;
 import play.test.*;
@@ -83,7 +84,9 @@ public class IntegrationTest {
             	//affichePremieresSystematiques();
             	
             	//gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findSuperFamillesExistantes(), Ordre.findAll(), SousGroupe.findAll(), Groupe.findAll());
-            	gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantesTriees(), Famille.findAllTriees(), SuperFamille.findSuperFamillesExistantesTriees(), Ordre.findAllTries(), SousGroupe.findAll(), Groupe.findAll());
+            	//gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantesTriees(), Famille.findAllTriees(), SuperFamille.findSuperFamillesExistantesTriees(), Ordre.findAllTries(), SousGroupe.findAll(), Groupe.findAll());
+            	
+            	excelTests();
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");
@@ -164,5 +167,9 @@ public class IntegrationTest {
     	for(SousFamille sousfam : SousFamille.findSousFamillesExistantes()){
     		System.out.println(sousfam.getSystematiquePremiereEspeceDansThis());
     	}
+	}
+	
+	private void excelTests() throws IOException{
+		new TemoinsParPeriodeExcel(null,null).writeToDisk();
 	}
 }

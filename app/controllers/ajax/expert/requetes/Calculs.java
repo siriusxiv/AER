@@ -17,6 +17,7 @@
  ********************************************************************************/
 package controllers.ajax.expert.requetes;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import models.SousGroupe;
 import models.StadeSexe;
 import models.UTMS;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.TemoinsParPeriodeExcel;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -40,11 +42,12 @@ import views.html.expert.requetes.ajax.resultats.temoinsParPeriode;
 
 public class Calculs extends Controller {
 	
-	public static Result temoinsParPeriode() throws ParseException{
+	public static Result temoinsParPeriode() throws ParseException, IOException{
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		Map<String,String> info = getData(df);
 		List<TemoinsParPeriode> temoins = TemoinsParPeriode.calculeTemoinsParPeriode(info);
-		return ok(temoinsParPeriode.render(temoins));
+		new TemoinsParPeriodeExcel(info,temoins).writeToDisk();
+		return ok(temoinsParPeriode.render(temoins,info));
 	}
 	
 	/**
