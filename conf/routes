@@ -48,6 +48,7 @@ POST 	/assignerExpert/ajouter/:groupe_id		controllers.admin.AssignerExpert.ajout
 POST 	/assignerExpert/changer/:groupe_id		controllers.admin.AssignerExpert.changer(groupe_id: Integer)
 GET     /demandesInscription         			controllers.admin.DemandesInscription.main()
 POST    /demandesInscription/valider/:membre_id	controllers.admin.DemandesInscription.valideInscription(membre_id: Integer)
+POST    /demandesInscription/refuser/:membre_id	controllers.admin.DemandesInscription.refuserInscription(membre_id: Integer)
 POST	/demandeInscription/donnerPremierAcces	controllers.admin.DemandesInscription.donnerPremierAccess()
 GET		/gererGroupesEtSousGroupes				controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.main()
 POST	/deplacerSousGroupe/:sous_groupe_id		controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.deplacerSousGroupe(sous_groupe_id: Integer)
