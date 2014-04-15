@@ -28,7 +28,7 @@
 	<tr>
 		<td>Groupe :</td>
 		<td>
-			<select id="groupe" name="groupe" onChange="rafraichirSousGroupe();rafraichirDates();">
+			<select id="groupe" name="groupe" onChange="rafraichirSousGroupe();;rafraichirDates();">
 			<option value="0">*</option>
 			@for(groupe <- Groupe.findAll()){
 			<option value="@groupe.groupe_id">@groupe</option>
@@ -114,10 +114,6 @@ function rafraichirStades(){
 function rafraichirDates(){
 	var groupe_id = $('#groupe').val();
 	$('#datesPartieMouvante').load('/ajax/consulter/infoDates/'+groupe_id);
-}
-$('input[type=radio][name=periode]').on('change', function(){
-    var periode = $(this).val();
-    alert(periode);
-});​
+}​
 </script>
 }
