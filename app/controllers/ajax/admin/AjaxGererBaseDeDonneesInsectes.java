@@ -19,16 +19,9 @@ package controllers.ajax.admin;
 
 import controllers.admin.Admin;
 import models.Espece;
-import models.SousFamille;
-import models.Famille;
-import models.SuperFamille;
-import models.Ordre;
-import models.Groupe;
-import models.SousGroupe;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.admin.gererBaseDeDonneesInsectes;
 
 public class AjaxGererBaseDeDonneesInsectes extends Controller {
 	
