@@ -46,8 +46,9 @@ public class Calculs extends Controller {
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		Map<String,String> info = getData(df);
 		List<TemoinsParPeriode> temoins = TemoinsParPeriode.calculeTemoinsParPeriode(info);
-		new TemoinsParPeriodeExcel(info,temoins).writeToDisk();
-		return ok(temoinsParPeriode.render(temoins,info));
+		TemoinsParPeriodeExcel tppe = new TemoinsParPeriodeExcel(info,temoins);
+		tppe.writeToDisk();
+		return ok(temoinsParPeriode.render(temoins,info,tppe.getFileName()));
 	}
 	
 	/**
@@ -110,30 +111,25 @@ public class Calculs extends Controller {
 			observations = Observation.find.where()
 								.eq("observation_espece",espece)
 								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
 		}else if(sous_groupe!=null){
 			observations = Observation.find.where()
 								.eq("observation_espece.espece_sous_groupe",sous_groupe)
 								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
 		}else if(groupe!=null){
 			observations = Observation.find.where()
 								.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
 								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
 		}else{
-			observations = Observation.find.all();
-		}
-		//On enlève les mailles non concernées
-		if(!mailles.containsAll(UTMS.find.all())){
-			List<Observation> observationsAvecMailles = new ArrayList<Observation>();
-			if(mailles!=null){
-				for(Observation observation : observations){
-					if(mailles.contains(observation.observation_fiche.fiche_utm))
-							observationsAvecMailles.add(observation);
-				}
-				observations = observationsAvecMailles;
-			}
+			observations = Observation.find.where()
+					.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+					.in("observation_fiche.fiche_utm", mailles)
+					.findList();
 		}
 		//On enlève les stades/sexes non concernés
 		List<Observation> observationsAvecStadeSexe = new ArrayList<Observation>();

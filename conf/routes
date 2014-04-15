@@ -41,7 +41,8 @@ POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres
 POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
 
 #Routes pour faire des requêtes
-GET     /consulterDonnees           controllers.expert.requetes.ConsulterDonnees.main()
+GET     /consulterDonnees           	controllers.expert.requetes.ConsulterDonnees.main()
+GET		/telechargerRapport/:filename	controllers.expert.requetes.ConsulterDonnees.telechargerFichier(filename: String)
 
 #routes pour les admins
 GET     /menuAdmin                   controllers.admin.Admin.menuAdmin()
