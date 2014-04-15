@@ -67,11 +67,20 @@
         			@informationsComplementaires.informations_complementaires_stade_sexe
         			} </td>
         		<td>@observation.observation_date_validation.getTime().format("dd/MM/yyyy")</td>
-        		<td><button>Remettre en suspens</button></td>
+        		<td><form id="suspens@observation.observation_id" method="POST" action="/temoignagesValides/suspens/@groupe.groupe_id/@page/@observation.observation_id"><input type="button" onclick="confirmSuspens(@observation.observation_id)" value="Remettre en Suspens"></form></td>
         		
         	</tr>}
         </table>
 	}{<script>
+	function confirmSuspens(observation_id){
+	var r=confirm("Etes-vous sûr de remettre cette observation en suspens?");
+	if(r==true)
+		{
+		document.getElementById("suspens"+observation_id).submit();
+		}
+		else
+		{}
+	}
 	function triEspece(groupe_id, espece_id){
 	if (espece_id=="toutes"){document.getElementById("tri").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1"><button>Trier</button></a>';
 	}else{

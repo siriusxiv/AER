@@ -54,4 +54,17 @@ public class TemoignagesValidees extends Controller {
 			return Admin.nonAutorise();
 	}
 	
+	public static Result remettreEnSuspens(Integer groupe_id, Long observation_id, Integer page){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+			Observation observation = Observation.find.byId(observation_id);
+			if (observation!=null){
+				observation.enSuspens();
+			}
+			observation.save();
+			return redirect("/temoignagesValides/"+groupe_id+"/"+page);
+		}else
+			return Admin.nonAutorise();
+	}
+	
 }
