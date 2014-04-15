@@ -19,23 +19,15 @@ package controllers.ajax.expert.requetes.calculs;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import controllers.ajax.expert.requetes.Calculs;
-import models.Espece;
-import models.Fiche;
 import models.FicheHasMembre;
-import models.Groupe;
-import models.InformationsComplementaires;
 import models.Membre;
 import models.Observation;
-import models.SousGroupe;
-import models.StadeSexe;
-import models.UTMS;
 
 public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 	public Membre temoin;
@@ -63,70 +55,7 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 
 	public static List<TemoinsParPeriode> calculeTemoinsParPeriode(Map<String,String> info) throws ParseException {
 		List<TemoinsParPeriode> temoins = new ArrayList<TemoinsParPeriode>();
-		Espece espece = Espece.find.byId(Integer.parseInt(info.get("espece")));
-		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
-		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
-		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
-		List<UTMS> mailles = UTMS.parseMaille(info.get("maille"));
-		Calendar date1 = Calculs.getDataDate1(info);
-		Calendar date2 = Calculs.getDataDate1(info);
-		Calendar now = Calendar.getInstance();
-		now.add(Calendar.DAY_OF_YEAR, -1);
-		boolean faireLesDates = date1.after(Fiche.getPlusVieuxTemoignage().fiche_date) && date2.before(now);
-		System.out.println(faireLesDates);
-		List<Observation> observations;
-		if(espece!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece",espece)
-								.findList();
-		}else if(sous_groupe!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece.espece_sous_groupe",sous_groupe)
-								.findList();
-		}else if(groupe!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
-								.findList();
-		}else{
-			observations = Observation.find.all();
-		}
-		//On enlève les mailles non concernées
-		if(!mailles.containsAll(UTMS.find.all())){
-			List<Observation> observationsAvecMailles = new ArrayList<Observation>();
-			if(mailles!=null){
-				for(Observation observation : observations){
-					if(mailles.contains(observation.observation_fiche.fiche_utm))
-							observationsAvecMailles.add(observation);
-				}
-				observations = observationsAvecMailles;
-			}
-		}
-		//On enlève les périodes non concernées
-		if(faireLesDates){
-			List<Observation> observationsAvecPeriodes = new ArrayList<Observation>();
-			if(mailles!=null){
-				for(Observation observation : observations){
-					Calendar temps = observation.observation_fiche.fiche_date;
-					if(temps.after(date1) && temps.before(date2))
-						observationsAvecPeriodes.add(observation);
-				}
-				observations = observationsAvecPeriodes;
-			}
-		}
-		//On enlève les stades/sexes non concernés
-		List<Observation> observationsAvecStadeSexe = new ArrayList<Observation>();
-		if(stade_sexe!=null){
-			for(Observation observation : observations){
-				List<InformationsComplementaires> complements = InformationsComplementaires.find.where().eq("informations_complementaires_observation", observation).findList();
-				for(InformationsComplementaires complement : complements){
-					if(stade_sexe.equals(complement.informations_complementaires_stade_sexe)
-							&& !observationsAvecStadeSexe.contains(observation)){
-						observationsAvecStadeSexe.add(observation);
-					}
-				}
-			}
-			observations = observationsAvecStadeSexe;
-		}
+		List<Observation> observations = Calculs.getObservations(info);
 		//On commence la génération des témoins par période.
 		int i=0;
 		for(Observation observation : observations){
