@@ -28,7 +28,7 @@
 				@for(espece <- listEspeces){
 					<option value="@espece.espece_id">@espece.espece_nom</option>
 					}
-				</select><span id="tri"></span></p>
+				</select><span id="triespece"></span></p>
 		@for( pg:Int <- 1 to nbpages){<a href="/temoignagesValides/@groupe.groupe_id/@pg">p.@pg</a>
 		}
 	 <table>
@@ -71,7 +71,9 @@
         		
         	</tr>}
         </table>
-	}{<script>
+	}{ <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+ <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+ <script>
 	function confirmSuspens(observation_id){
 	var r=confirm("Etes-vous sûr de remettre cette observation en suspens?");
 	if(r==true)
@@ -82,10 +84,20 @@
 		{}
 	}
 	function triEspece(groupe_id, espece_id){
-	if (espece_id=="toutes"){document.getElementById("tri").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1"><button>Trier</button></a>';
+	if (espece_id=="toutes"){document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1"><button>Trier</button></a>';
 	}else{
-	document.getElementById("tri").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/'+espece_id+'/1"><button>Trier</button></a>';}
+	document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/'+espece_id+'/1"><button>Trier</button></a>';}
 	}
+	function triMembre(){
+		$.ajax({
+		url : '/listeDesMembres/triMembre'+membre_nom,
+		success: function (res) {
+			$('trimembre').html(
+					'<form method="GET" action="/temoignagesValides/'+groupe_id+'/'+espece_id+'/1">'+res+'<button>Trier</button></form>'
+			);
+		}
+	});
+}
 	</script>
 }
 
