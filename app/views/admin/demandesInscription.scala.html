@@ -52,11 +52,14 @@
 			<td>@membre.membre_journais/@membre.membre_moisnais/@membre.membre_annenais</td>
 			<td>@membre.membre_email</td>
 			<td>
-				<form action="/demandesInscription/valider/@membre.membre_id" method="POST">
-				<button type="submit">Valider</button>
+				<form id="valide@membre.membre_id" action="/demandesInscription/valider/@membre.membre_id" method="POST">
+				<input type="button" onclick="confirmValider(@membre.membre_id)" value="Valider">
+				</form>
 			</td>
 			<td>
-				
+			<form id="refuse@membre.membre_id" action="/demandesInscription/refuser/@membre.membre_id" method="POST">
+				<input type="button" onclick="confirmRefuser(@membre.membre_id)" value="Refuser">
+				</form>
 			</td>
 		</tr>
 		}
@@ -104,5 +107,23 @@ function donnerPremierAcces(){
 		return false;
 	}
 }
+function confirmRefuser(membre_id){
+	var r=confirm("Etes-vous sûr de refuser cette demande?");
+	if(r==true)
+		{
+		document.getElementById("refuse"+membre_id).submit();
+		}
+		else
+		{}
+	}
+function confirmValider(membre_id){
+	var r=confirm("Etes-vous sûr de valider cette inscription?");
+	if(r==true)
+		{
+		document.getElementById("valide"+membre_id).submit();
+		}
+		else
+		{}
+	}
 </script>
 }

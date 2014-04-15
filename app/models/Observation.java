@@ -121,7 +121,7 @@ public class Observation extends Model {
 	 */
 	public static List<Observation> enSuspend(Integer groupe_id){
 		Groupe groupe = Groupe.find.byId(groupe_id);
-		Integer suspend=2;
+		Integer suspend=Observation.EN_SUSPEND;
 		return find.where().eq("observation_validee", suspend).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
 	}
 
@@ -166,7 +166,20 @@ public class Observation extends Model {
 	public boolean estValidee(){
 		return observation_validee==Observation.VALIDEE;
 	}
-
+	
+	/**
+	 * Renvoie true si l'observation est en suspend, false sinon.
+	 * @return
+	 */
+	public boolean estEnSuspend(){
+		return observation_validee==Observation.EN_SUSPEND;
+	}
+	/**
+	 * Remet l'observation en suspens pour recorriger des erreurs
+	 */
+	public void enSuspens(){
+		this.observation_validee=Observation.EN_SUSPEND;
+	}
 	@Override
 	public String toString(){
 		return observation_espece+" "+observation_fiche;

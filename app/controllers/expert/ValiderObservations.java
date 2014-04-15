@@ -20,6 +20,7 @@ package controllers.expert;
 
 import java.util.List;
 import java.util.Calendar;
+
 import controllers.admin.Admin;
 import play.data.DynamicForm;
 import play.mvc.Controller;
@@ -163,18 +164,5 @@ public class ValiderObservations extends Controller {
 			return Admin.nonAutorise();
 	}
 	
-/*public static Result demanderInfos(Long observation_id, Integer groupe_id){
-	Groupe groupe = Groupe.find.byId(groupe_id);
-	if(MenuExpert.isExpertOn(groupe)){
-		DynamicForm df = DynamicForm.form().bindFromRequest();
-		Observation observation=Observation.find.byId(observation_id);
-		List<FicheHasMembre> fhm=observation.observation_fiche.getFicheHasMembre();
-		for (Membre m: fhm){
-			
-		return redirect("/temoignagesAValider/enSuspens/"+groupe_id);
-	}
-	else
-		return Admin.nonAutorise();
-}*/
 
 }
