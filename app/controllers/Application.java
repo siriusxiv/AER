@@ -30,7 +30,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import views.html.*;
 import views.html.membre.*;
-import views.html.expert.*;
 import views.html.admin.*;
 
 public class Application extends Controller {
@@ -63,9 +62,7 @@ public class Application extends Controller {
     /* Pages de l'expert  */
     
     
-    public static Result temoignagesValides() {
-    	return ok( temoignagesValides.render());
-    }
+
     
    /******* Results de la page liste de membres **********/
     public static Result listeMembres(String orderBy, String sortDirection){
