@@ -253,6 +253,14 @@ public class Espece extends Model implements Comparator<Espece>{
 	}
 	
 	/**
+	* Renvoie la liste des synonymes d'une espèce
+	 *@return
+	 */
+	 public List<EspeceSynonyme> getSynonymes(){
+	 	 return EspeceSynonyme.find.where().eq("synonyme_espece.espece_id", this.espece_id).findList();
+	 }
+	
+	/**
 	 * Renvoie la plus vieille fiche contenant un témoignage de l'espèce en question
 	 * Renvoie null si l'espèce n'a jamais été observée.
 	 * @return

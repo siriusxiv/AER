@@ -164,7 +164,6 @@
 		<tr>
 			<th>Systématique</th>
 			<th>Espece</th>
-			<th>Auteur</th>
 			<th>
 				<form action="/especesParSousFamille" method="GET">
 				<select name="sous_famille_tri" onchange="this.form.submit()">
@@ -230,15 +229,58 @@
 		@for(espece <- especes){
 		<tr>
 			<td>@espece.espece_systematique</td>
-			<td>@espece.espece_nom</td>
-			<td>@espece.espece_auteur</td>
+			<td>
+				<span id="afficherInfo@espece.espece_id" onClick="afficherInfoEspece(@espece.espece_id)">@espece.espece_nom</span>
+				<div id="info_espece@espece.espece_id" style="display:none">
+					<table>
+						<tr>
+							<th>Nom</th>
+							<th>Auteur</th>
+							<th>Systématique</th>
+							<th>Sous-famille</th>
+							<th>Synonymes</th>
+						</tr>
+						<tr>
+							<td>
+								<span id="changerNom@espece.espece_id" onDblClick="renommerEspece(@espece.espece_id)">@espece.espece_nom</span>
+							</td>
+							<td>
+								<span id="changerAuteur@espece.espece_id" onDblClick="changerAuteurEspece(@espece.espece_id)">@espece.espece_auteur</span>
+							</td>
+							<td>@espece.espece_systematique</td>
+							<td>
+								<form action="/gererBaseDeDonneesInsectes/changerSousFamille/@espece.espece_id" method="POST">
+								<select id="changerSousFamille" name="changerSousFamille">
+								<option value="-1" selected="selected">@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</option>
+								@for(sousFamille <- sousFamilles) {
+								<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>
+								}
+								</select>
+								<button type="submit">Changer</button>
+								</form>
+							</td>
+							<td>
+								Nom<br>
+								<button onClick="afficherAjoutSynonyme()">Ajouter</button>
+								<div id="ajouterSynonyme" style="display:none">
+									<tr><th>Nom</th></tr>
+								</div>
+								@for(synonyme <- espece.getSynonymes()){
+									<td>@if(synonyme.synonyme_origineAER){<font color="red">@synonyme.synonyme_nom</font>}else{@synonyme.synonyme_nom}</td>
+									}
+							</td>
+							
+						</tr>
+					</table>
+				</div>
+			</td>
 			<td>@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</td>
 			<td>@espece.getFamille()</td>
 			<td>@if(espece.getSuperFamille().super_famille_existe){@espece.getSuperFamille()}</td>
 			<td>@espece.getOrdre()</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe}</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe.sous_groupe_groupe}</td>
-			<td><button onClick="supprimerInsecte(@espece.espece_id)">Supprimer</button></td>
+			<td><button>Modifier</button></td>
 		</tr>
 		}
 	</table>
@@ -298,10 +340,64 @@ function afficherBonneListeSuper() {
 		document.getElementById("famille_ajout_ordre").style.display = "block";
 	}
 }
-function supprimerInsecte(insecte_id){
-	if(confirm('Attention, si vous faites cela, toutes les observations se référant à cet insecte seront aussi supprimées ! Voulez-vous vraiment continuer ?')){
-		
-	}
+function afficherInfoEspece(espece_id) {
+	var style = $('#info_espece'+espece_id).attr('style');
+	if(style=='display:none')
+		$('#info_espece'+espece_id).attr('style','display:block');
+	else
+		$('#info_espece'+espece_id).attr('style','display:none');
+}
+function renommerEspece(espece_id) {
+	var element = $('#changerNom'+espece_id);
+	var espece_nom = element.html();
+	element.replaceWith('<input type="text" value="'+espece_nom+'" id="nouveauNomEspece'+espece_id+'">');
+	$('#nouveauNomEspece'+espece_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNom = $('#nouveauNomEspece'+espece_id).val();
+			if(nouveauNom=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauNom',nouveauNom);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/renommerEspece/'+espece_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauNomEspece'+espece_id).replaceWith('<span id="changerNom'+espece_id+'" onDblClick="renommerEspece('+espece_id+')">'+nouveauNom+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+function changerAuteurEspece(espece_id) {
+	var element = $('#changerAuteur'+espece_id);
+	var espece_auteur = element.html();
+	element.replaceWith('<input type="text" value="'+espece_auteur+'" id="nouvelAuteurEspece'+espece_id+'">');
+	$('#nouvelAuteurEspece'+espece_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouvelAuteur = $('#nouvelAuteurEspece'+espece_id).val();
+			if(nouvelAuteur=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouvelAuteur',nouvelAuteur);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/changerAuteurEspece/'+espece_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouvelAuteurEspece'+espece_id).replaceWith('<span id="changerAuteur'+espece_id+'" onDblClick="changerAuteurEspece('+espece_id+')">'+nouvelAuteur+'</span>');
+					}
+				});
+			}
+		}
+	});
 }
 </script>
 }
