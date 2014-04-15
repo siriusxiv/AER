@@ -83,6 +83,23 @@ public class SousFamille extends Model implements Comparator<SousFamille>{
 			throw new NamingException("La famille "+sousFamilleOuFamilleId+" n'existe pas !");
 		}
 	}
+	
+	/** Ajoute la sous-famille à la base de données
+	* @param nom
+	 * @param existe
+	 * @param sousFamilleOuFamilleId
+	 * @throws PersistenceException
+	 * @throws NamingException
+	 */
+	public static void ajouterSousFamille(String nom, boolean existe, Integer famId) throws NamingException, PersistenceException{
+		SousFamille sousfam = new SousFamille(nom, existe, famId);
+		Famille fam = Famille.find.byId(famId);
+		if(fam==null){
+			throw new NamingException("La famille "+famId+" n'existe pas!");
+		} else {
+		sousfam.save();
+		}
+	}
 
 	/**
 	 * Renvoie le nom de la sous-famille
