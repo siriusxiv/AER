@@ -171,8 +171,13 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		if (Admin.isAdminConnected()){
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			String nom = df.get("nom");
-			Integer fam_id = Integer.parseInt(df.get("sous_famille_ajout"));
-			SousFamille.ajouterSousFamille(nom, true, fam_id);
+			String fam = df.get("sous_famille_ajout");
+			if (fam!=null){
+				Integer fam_id = Integer.parseInt(fam);
+				SousFamille.ajouterSousFamille(nom, true, fam_id);
+			} else {
+				System.out.println("Erreur lors de l'ajout:"+fam+", "+nom);
+			}
 			return redirect("/gererBaseDeDonneesInsectes");
 		} else {
 			return Admin.nonAutorise();

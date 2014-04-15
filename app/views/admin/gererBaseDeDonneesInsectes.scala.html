@@ -75,7 +75,7 @@
 			<tr>
 				<td><input type="text" size="15" name="nom" value=""></td>
 				<td>
-					<select id="sous_famille_ajout">
+					<select id="sous_famille_ajout" name="sous_famille_ajout">
 						<option value="-1">&nbsp;</option>
 						@for(famille <- familles){
 						<option value="@famille.famille_id">@famille.famille_nom</option>}
@@ -105,12 +105,12 @@
 					<input type="radio" name="aUneSuperFamille" onClick="afficherBonneListeSuper()" value="ordre">Pas de super-famille
 				</td>
 				<td>
-					<select id="famille_ajout" style="display:none">
+					<select id="famille_ajout" name="famille_ajout" style="display:none">
 						<option value="-1">&nbsp;</option>
 						@for(superFamille <- superFamilles){
 						<option value="@superFamille.super_famille_id">@superFamille.super_famille_nom</option>}
 					</select>
-					<select id="famille_ajout_ordre" style="display:none">
+					<select id="famille_ajout_ordre" name="famille_ajout_ordre" style="display:none">
 						<option value="-1">&nbsp;</option>
 						@for(ordre <- ordres){
 						<option value="@ordre.ordre_id">@ordre.ordre_nom</option>}
@@ -135,7 +135,7 @@
 			<tr>
 				<td><input type="text" size="15" name="nom" value=""></td>
 				<td>
-					<select id="super_famille_ajout">
+					<select id="super_famille_ajout" name="super_famille_ajout">
 						<option value="-1">&nbsp;</option>
 						@for(ordre <- ordres){
 						<option value="@ordre.ordre_id">@ordre.ordre_nom</option>}

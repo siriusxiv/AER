@@ -70,7 +70,7 @@ POST	/gererSousGroupes/enleverOrdre/:ohsg_id					controllers.admin.groupesSousGr
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()
 POST	/gererBaseDeDonneesInsectes/ajoutEspece		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvEspece()
 POST	/gererBaseDeDonneesInsectes/ajoutSousFam	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvSousFamille()
-POST	/gererBaseDeDonnéesInsectes/ajoutFam		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvFamille()
+POST	/gererBaseDeDonneesInsectes/ajoutFam		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvFamille()
 POST	/gererBaseDeDonneesInsectes/ajoutSuperFam	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvSuperFamille()
 POST	/gererBaseDeDonneesInsectes/ajoutOrdre		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvOrdre()
 GET     /especesParSousFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousFamille()
