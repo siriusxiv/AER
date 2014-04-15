@@ -110,6 +110,14 @@ public class SousGroupe extends Model {
 	public static List<SousGroupe> findSousGroupesSansSousGroupe(){
 		return find.where().eq("sous_groupe_groupe", null).findList();
 	}
+	
+	/**
+	 * Trouve les espèces dans ce sous-groupe
+	 * @return
+	 */
+	public List<Espece> getEspecesInThis(){
+		return Espece.find.where().eq("espece_sous_groupe", this).orderBy("espece_systematique").findList();
+	}
 
 	/**
 	 * Supprimer le sous-groupe de la base de données et toutes ses références

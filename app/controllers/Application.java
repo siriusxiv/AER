@@ -55,10 +55,6 @@ public class Application extends Controller {
     	return ok( menuUtilisateur.render());
     }
     
-    public static Result consulterDonnees() {
-    	return ok( consulterDonnees.render());
-    }
-    
     public static Result historique() {
     	return ok( historique.render());
     }
@@ -69,21 +65,6 @@ public class Application extends Controller {
     
     public static Result temoignagesValides() {
     	return ok( temoignagesValides.render());
-    }
-    
-    /*Pages de l'admin */
-    
-    public static Result menuAdmin() {
-    	return ok( menuAdmin.render());
-    }
-    
-    public static Result demandesInscription() {
-    	return ok( demandesInscription.render(Membre.selectMembresInscrit(false)));
-    }
-    
-    public static Result valideInscription(Integer id){
-    	Membre.valideMembre(id);
-    	return redirect(routes.Application.demandesInscription());
     }
     
    /******* Results de la page liste de membres **********/

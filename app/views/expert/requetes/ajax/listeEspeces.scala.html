@@ -15,10 +15,20 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Consulter les Données"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1>Page pour pouvoir consulter les données à l'aide de tris de filtres etc... </h1>
-}{<script></script>}
+@(groupe: Groupe, sous_groupe: SousGroupe)
+	<option value="0">*</option>
+@if(sous_groupe!=null){
+	@for(espece <- sous_groupe.getEspecesInThis()){
+	<option value="@espece.espece_id">@espece.espece_nom</option>
+	}
+}else{
+	@if(groupe!=null){
+		@for(espece <- groupe.getEspecesInThis()){
+		<option value="@espece.espece_id">@espece.espece_nom</option>
+		}
+	}else{
+		@for(espece <- Espece.findAll()){
+		<option value="@espece.espece_id">@espece.espece_nom</option>
+		}
+	}
+}

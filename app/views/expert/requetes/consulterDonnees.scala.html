@@ -1,0 +1,108 @@
+@*********************************************************************************
+ * 
+ *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ *   
+ ********************************************************************************@
+@main("Consulter les Données"){
+	<header>
+		<a href="/">Retour</a>
+	</header>
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+	<h1>Consultation des données</h1>
+<table>
+<tr>
+<td>
+	<table>
+	<tr>
+		<td>Groupe :</td>
+		<td>
+			<select id="groupe" name="groupe" onChange="rafraichirSousGroupe()">
+			<option value="0">*</option>
+			@for(groupe <- Groupe.findAll()){
+			<option value="@groupe.groupe_id">@groupe</option>
+			}
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Sous-groupe :</td>
+		<td>
+			<select id="sous-groupe" onChange="rafraichirEspeces()"></select>
+		</td>
+	</tr>
+	<tr>
+		<td>Espece :</td>
+		<td>
+			<select id="espece"></select>
+		</td>
+	</tr>
+	<tr>
+		<td>Stade</td>
+		<td>
+			<select id="stade"></select>
+		</td>
+	</tr>
+	<tr>
+		<td>Maille :</td>
+		<td>
+			<input type="text" name="maille" size="5">
+		</td>
+	</tr>
+	</table>
+</td>
+<td>
+	<table>
+	<tr>
+		<td>Témoin :</td>
+		<td>
+			<input type="text" id="temoin" name="membre">
+		</td>
+	</tr>
+	<tr>
+		<td>Dates :</td>
+		<td></td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+}{
+<script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+<script>
+var listeMembres = [@Html(controllers.ajax.Listes.listeMembres())];
+setTimeout(function(){
+	$('#temoin').autocomplete({	source : listeMembres,
+		minLength: 1
+	});
+},500);
+rafraichirSousGroupe();
+function rafraichirSousGroupe(){
+	var groupe_id = $('#groupe').val();
+	$('#sous-groupe').load('/ajax/consulter/listeSousGroupes/'+groupe_id, function(){
+		rafraichirEspeces();
+		rafraichirStades();
+	});
+}
+function rafraichirEspeces(){
+	var groupe_id = $('#groupe').val();
+	var sous_groupe_id = $('#sous-groupe').val();
+	$('#espece').load('/ajax/consulter/listeEspeces/'+groupe_id+'/'+sous_groupe_id);
+}
+function rafraichirStades(){
+	var groupe_id = $('#groupe').val();
+	$('#stade').load('/ajax/consulter/listeStades/'+groupe_id);
+}
+</script>
+}

@@ -18,7 +18,6 @@ GET		/verification/:lien			functions.mail.VerifierMail.verifier(lien: String)
 #routes pour l'utilisateur
 GET     /menuUtilisateur            controllers.Application.menuUtilisateur()
 GET     /informationsPersonnelles   controllers.membre.InformationsPersonnelles.main()
-GET     /consulterDonnees           controllers.Application.consulterDonnees()
 GET     /historique                 controllers.Application.historique()
 
 #routes pour les experts
@@ -39,13 +38,16 @@ GET		/gererdatescharnieres/:groupe_id					controllers.expert.GererDatesChanieres
 POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres.ajouter(groupe_id: Integer)
 POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
 
+#Routes pour faire des requêtes
+GET     /consulterDonnees           controllers.expert.requetes.ConsulterDonnees.main()
+
 #routes pour les admins
-GET     /menuAdmin                   controllers.Application.menuAdmin()
+GET     /menuAdmin                   controllers.admin.Admin.menuAdmin()
 GET     /assignerExperts             controllers.admin.AssignerExpert.main()
 POST 	/assignerExpert/ajouter/:groupe_id	controllers.admin.AssignerExpert.ajouter(groupe_id: Integer)
 POST 	/assignerExpert/changer/:groupe_id	controllers.admin.AssignerExpert.changer(groupe_id: Integer)
-GET     /demandesInscription         controllers.Application.demandesInscription()
-POST    /demandesInscription/valider/:membre_id    controllers.Application.valideInscription(membre_id: Integer)
+GET     /demandesInscription         controllers.admin.DemandesInscription.main()
+POST    /demandesInscription/valider/:membre_id    controllers.admin.DemandesInscription.valideInscription(membre_id: Integer)
 GET		/gererGroupesEtSousGroupes				controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.main()
 POST	/deplacerSousGroupe/:sous_groupe_id		controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.deplacerSousGroupe(sous_groupe_id: Integer)
 POST	/creerGroupe							controllers.admin.groupesSousGroupes.GererGroupesEtSousGroupes.creerGroupe()
@@ -66,7 +68,11 @@ POST	/gererSousGroupes/enleverOrdre/:ohsg_id					controllers.admin.groupesSousGr
 
 #route pour gérer la base des insectes (admin)
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()
-POST	/gererBaseDeDonneesInsectes	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvEspece()
+POST	/gererBaseDeDonneesInsectes/ajoutEspece		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvEspece()
+POST	/gererBaseDeDonneesInsectes/ajoutSousFam	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvSousFamille()
+POST	/gererBaseDeDonneesInsectes/ajoutFam		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvFamille()
+POST	/gererBaseDeDonneesInsectes/ajoutSuperFam	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvSuperFamille()
+POST	/gererBaseDeDonneesInsectes/ajoutOrdre		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvOrdre()
 GET     /especesParSousFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousFamille()
 GET     /especesParFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParFamille()
 GET     /especesParSuperFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSuperFamille()
@@ -94,10 +100,16 @@ GET		/emailExisteOuPas/:mail							controllers.ajax.Verifications.mailExisteOuPa
 POST	/ajax/groupe/renommer/:groupe_id				controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerGroupe(groupe_id: Integer)
 POST	/ajax/sous_groupe/renommer/:sous_groupe_id		controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.renommerSousGroupe(sous_groupe_id: Integer)
 GET		/ajax/sous_groupe/editer/:sous_groupe_id		controllers.ajax.admin.AjaxGererGroupeEtSousGroupes.voirPageEditerSousGroupe(sous_groupe_id: Integer)
+#Routes AJAX pour déposer un témoignage
 GET		/deposerObservation/:observation_ordre/:groupe_precedent_id	controllers.ajax.membre.DeposerObservation.main(observation_ordre: Integer,groupe_precedent_id: Integer)
 GET		/ajax/especes/dansGroupe/:groupe_id				controllers.ajax.membre.DeposerObservation.getListeEspeces(groupe_id: Integer)
 GET		/ajax/chargeinfoscomplementaires/:observation_position/:groupe_id/:complement_position	controllers.ajax.membre.DeposerObservation.getComplement(observation_position: Integer,groupe_id: Integer,complement_position: Integer)
 GET		/ajax/chargestadesexeprecis/:groupe_id/:stade_sexe_pere_id/:observation_position/:complement_position	controllers.ajax.membre.DeposerObservation.getStadeSexePrecis(groupe_id: Integer, stade_sexe_pere_id: Integer, observation_position: Integer, complement_position: Integer)
+#Routes AJAX pour consulter les données
+GET		/ajax/consulter/listeSousGroupes/:groupe_id				controllers.ajax.expert.requetes.Requetes.listeSousGroupes(groupe_id: Integer)
+GET		/ajax/consulter/listeEspeces/:groupe_id/:sous_groupe_id	controllers.ajax.expert.requetes.Requetes.listeEspeces(groupe_id: Integer,sous_groupe_id: Integer)
+GET		/ajax/consulter/listeStades/:groupe_id					controllers.ajax.expert.requetes.Requetes.listeStades(groupe_id: Integer)
+GET		/ajax/consulter/infoDates/:groupe_id					controllers.ajax.expert.requetes.Requetes.infoDates(groupe_id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -41,13 +41,14 @@
 			}
 			</select>
 			<select name="annee">
-			@for(i: Int <- Integer.parseInt(Fiche.getPlusVieuxTemoignage().fiche_date.getTime().format("yyyy")) to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
+			@for(i: Int <- (Integer.parseInt(Fiche.getPlusVieuxTemoignage().fiche_date.getTime().format("yyyy"))-1) to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
 				<option value="@i">@i</option>
 			}
 			</select>
 			<button>OK</button>
 		</form>
 	</div>
+	<a href="/menuExpert">Retour</a>
 }{
 <script>
 function ajouter(){

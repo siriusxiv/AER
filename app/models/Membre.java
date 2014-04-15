@@ -177,4 +177,13 @@ public class Membre extends Model {
 		membre_lien_de_validation_de_mail=lien;
 		this.save();
 	}
+	
+	/**
+	 * Renvoie l'adresse mail d'un admin.
+	 * @return
+	 */
+	public static String getAdminMail(){
+		return find.where().eq("membre_droits", Droits.ADMIN).setMaxRows(1).findUnique().membre_email;
+	}
+	
 }
