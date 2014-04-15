@@ -23,9 +23,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.naming.NamingException;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceException;
 import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
@@ -46,6 +48,36 @@ public class Famille extends Model implements Comparator<Famille>{
 	public static List<Famille> findAll(){
 		return find.findList();
 	}
+	
+	/** Crée une sous famille
+	* @param nom
+	 */
+	 public Famille(String nom){
+	 	 famille_nom=nom;
+	 	 famille_super_famille=null;
+	 }
+	 
+	 /** Ajoute une famille dans la base de données
+	 * @param avecSuperFamille
+	 * @param superFamilleOuOrdreId
+	 * @throws NamingException
+	 * @throws PersistenceException
+	 */
+	 public void ajouterNouvelleFamille(boolean avecSuperFamille, Integer superFamilleOuOrdreId) throws NamingException, PersistenceException{
+	 	 if(avecSuperFamille){
+	 	 	 this.famille_super_famille=SuperFamille.find.byId(superFamilleOuOrdreId);
+	 	 	 if(famille_super_famille!=null){
+	 	 	 	 this.save();
+	 	 	 } else {
+	 	 	 	 throw new NamingException("La super-famille "+superFamilleOuOrdreId+" n'existe pas");
+	 	 	 }
+	 	 } else {
+	 	 	 this.famille_super_famille = new SuperFamille(this.famille_nom, false, superFamilleOuOrdreId);
+	 	 	 this.famille_super_famille.save();
+	 	 	 this.save();
+	 	 }
+	 }
+	 	 	 
 	/**
 	 * Trie les familles
 	 * @return
@@ -55,6 +87,8 @@ public class Famille extends Model implements Comparator<Famille>{
 		Collections.sort(familles, new Famille());
 		return familles;
 	}
+	private Famille() {}
+	
 	/**
 	 * Pour trier les listes de familles selon la systématique de la première espèce dedans.
 	 */

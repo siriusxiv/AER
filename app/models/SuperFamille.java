@@ -23,9 +23,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.naming.NamingException;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PersistenceException;
 import javax.validation.constraints.NotNull;
 
 import play.db.ebean.Model;
@@ -71,6 +73,42 @@ public class SuperFamille extends Model implements Comparator<SuperFamille>{
 	public static List<SuperFamille> findSuperFamillesExistantes() {
 		return find.where().eq("super_famille_existe", true).findList();
 	}
+	
+	/**
+	 * Crée une super-famille et lance une PersistenceException si plusieurs ordres portent le même nom,
+	 * une NamingException si l'ordre en argument n'existe pas.
+	 * @param nom
+	 * @param existe
+	 * @param superFamilleOuOrdreId
+	 * @throws PersistenceException
+	 * @throws NamingException
+	 */
+	public SuperFamille(String nom, boolean existe, Integer superFamilleOuOrdreId) throws PersistenceException, NamingException{
+		super_famille_nom=nom;
+		super_famille_existe=existe;
+		super_famille_ordre=Ordre.find.byId(superFamilleOuOrdreId);
+		if(super_famille_ordre==null){
+			throw new NamingException("L'ordre "+superFamilleOuOrdreId+" n'existe pas !");
+		}
+	}
+	
+	/** Ajoute la sous-famille à la base de données
+	* @param nom
+	 * @param existe
+	 * @param sousFamilleOuFamilleId
+	 * @throws PersistenceException
+	 * @throws NamingException
+	 */
+	public static void ajouterSuperFamille(String nom, boolean existe, Integer ordreId) throws NamingException, PersistenceException{
+		SuperFamille superfam = new SuperFamille(nom, existe, ordreId);
+		Ordre ordre = Ordre.find.byId(ordreId);
+		if(ordre==null){
+			throw new NamingException("L'ordre "+ordreId+" n'exsite pas!");
+		} else {
+		superfam.save();
+		}
+	}
+	
 	/**
 	 * Trie les super-familles
 	 * @return
@@ -80,6 +118,7 @@ public class SuperFamille extends Model implements Comparator<SuperFamille>{
 		Collections.sort(superfamilles, new SuperFamille());
 		return superfamilles;
 	}
+	private SuperFamille() {}
 
 	/**
 	 * Trouve les super-familles que l'on peut ajouter dans un sous-groupe

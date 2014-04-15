@@ -68,7 +68,11 @@ POST	/gererSousGroupes/enleverOrdre/:ohsg_id					controllers.admin.groupesSousGr
 
 #route pour gérer la base des insectes (admin)
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()
-POST	/gererBaseDeDonneesInsectes	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvEspece()
+POST	/gererBaseDeDonneesInsectes/ajoutEspece		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvEspece()
+POST	/gererBaseDeDonneesInsectes/ajoutSousFam	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvSousFamille()
+POST	/gererBaseDeDonneesInsectes/ajoutFam		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvFamille()
+POST	/gererBaseDeDonneesInsectes/ajoutSuperFam	controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvSuperFamille()
+POST	/gererBaseDeDonneesInsectes/ajoutOrdre		controllers.admin.GererBaseDeDonneesInsectes.ajouterNouvOrdre()
 GET     /especesParSousFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousFamille()
 GET     /especesParFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParFamille()
 GET     /especesParSuperFamille   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSuperFamille()
