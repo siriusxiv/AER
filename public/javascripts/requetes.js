@@ -62,6 +62,7 @@ function temoinsParPeriode(){
 	var donnees = new Donnees();
 	if(isValide(donnees)){
 		$('#message').html('');
+		patientez();
 		$.ajax({
 			type : 'POST',
 			url : '/ajax/temoinsParPeriode',
@@ -70,6 +71,9 @@ function temoinsParPeriode(){
 			contentType: false,
 			success: function (res) {
 				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
 			}
 		});
 	}
@@ -78,6 +82,7 @@ function histogrammeDesImagos(){
 	var donnees = new Donnees();
 	if(isValide(donnees)){
 		$('#message').html('');
+		patientez();
 		$.ajax({
 			type : 'POST',
 			url : '/ajax/histogrammeDesImagos',
@@ -86,6 +91,9 @@ function histogrammeDesImagos(){
 			contentType: false,
 			success: function (res) {
 				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
 			}
 		});
 	}
@@ -105,4 +113,11 @@ function isValide(donnees){
 		return false;
 	}
 	return true;
+}
+
+function patientez(){
+	$('#resultats').html('Calcul en cours... Veuillez patientiez');
+}
+function rapportDErreur(){
+	$('#resultats').html('Un problème est survenu lors du calcul côté serveur...');
 }

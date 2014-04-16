@@ -26,6 +26,7 @@ import java.util.Map;
 import models.Espece;
 import models.Groupe;
 import models.InformationsComplementaires;
+import models.Observation;
 import models.SousGroupe;
 import models.StadeSexe;
 import models.UTMS;
@@ -202,6 +203,7 @@ public class HistogrammeDesImagos {
 		if(espece!=null){
 			complements = InformationsComplementaires.find.where()
 								.eq("informations_complementaires_observation.observation_espece",espece)
+								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 								.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
 								.in("informations_complementaires_stade_sexe", stades_sexes)
@@ -209,6 +211,7 @@ public class HistogrammeDesImagos {
 		}else if(sous_groupe!=null){
 			complements = InformationsComplementaires.find.where()
 								.eq("informations_complementaires_observation.observation_espece.espece_sous_groupe",sous_groupe)
+								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 								.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
 								.in("informations_complementaires_stade_sexe", stades_sexes)
@@ -216,12 +219,14 @@ public class HistogrammeDesImagos {
 		}else if(groupe!=null){
 			complements = InformationsComplementaires.find.where()
 								.eq("informations_complementaires_observation.observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
+								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 								.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
 								.in("informations_complementaires_stade_sexe", stades_sexes)
 								.findList();
 		}else{
 			complements = InformationsComplementaires.find.where()
+					.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 					.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 					.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
 					.in("informations_complementaires_stade_sexe", stades_sexes)
