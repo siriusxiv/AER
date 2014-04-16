@@ -22,7 +22,11 @@ import java.util.Date;
 
 import models.Commune;
 import models.Espece;
+import models.Fiche;
+import models.FicheHasMembre;
+import models.InformationsComplementaires;
 import models.Membre;
+import models.Observation;
 import models.StadeSexe;
 import models.UTMS;
 
@@ -36,43 +40,55 @@ public class RowCheck {
 	private Row row;
 	private int rowNumber;
 	private String espece_nom;
-	public Espece espece;
+	private Espece espece;
 	private String sexe;
-	public StadeSexe stade_sexe = null;
+	private StadeSexe stade_sexe = null;
 	private double nombre_dbl;
-	public Integer nombre = null;
+	private Integer nombre = null;
 	@SuppressWarnings("unused")
 	private String departement;
 	private String commune_nom;
-	public Commune commune = null;
-	public String lieu_dit;
+	private Commune commune = null;
+	private String lieu_dit;
 	private String utm_str;
-	public UTMS utm;
+	private UTMS utm;
 	private Date date_date;
-	public Calendar date = Calendar.getInstance();
+	private Calendar date = Calendar.getInstance();
 	private String[] temoins;
-	public Membre[] membres;
-	public String determinateur;
+	private Membre[] membres;
+	private String determinateur;
 	private String methodeCapture;
 	private String milieu;
 	private String essence;
 	private String remarque;
 	private String collection;
-	public String memo = null;
+	private String memo = null;
 
+	/**
+	 * Instancie la classe pour charger les informations dans une Row
+	 * @param row
+	 * @param rowNumber
+	 * @param errorReport
+	 */
 	public RowCheck(Row row, int rowNumber, StringBuilder errorReport){
 		this.row = row;
 		this.rowNumber=rowNumber;
 		this.errorReport=errorReport;
 	}
 
-	public void checkRow(int rowNumber){
+	/**
+	 * Vérifie que la ligne donnée est juste.
+	 * @param rowNumber
+	 */
+	public void checkRow(){
 		Cell cell = row.getCell(0);
 		if(cell==null)
 			addError("Pas d'espèce.");
-		espece_nom = cell.getStringCellValue();
-		if((espece=Espece.find.where().eq("espece_nom", espece_nom).findUnique())==null)
-			addError("L'espèce "+espece_nom+" n'existe pas.");
+		else{
+			espece_nom = cell.getStringCellValue();
+			if((espece=Espece.find.where().eq("espece_nom", espece_nom).findUnique())==null)
+				addError("L'espèce "+espece_nom+" n'existe pas.");
+		}
 		cell = row.getCell(1);
 		if(cell!=null){
 			sexe = cell.getStringCellValue();
@@ -211,6 +227,10 @@ public class RowCheck {
 		memo = memo_sb.toString();
 	}
 
+	/**
+	 * Ajoute une erreur dans la liste des erreurs
+	 * @param s
+	 */
 	public void addError(String s){
 		noError=false;
 		errorReport.append("Ligne "+(rowNumber+1)+": ");
@@ -222,5 +242,22 @@ public class RowCheck {
 	}
 	public String getErrors(){
 		return errorReport.toString();
+	}
+
+	/**
+	 * Sauvegarde la Row dans la base de données.
+	 */
+	public void saveToDatabase() {
+		Fiche fiche = new Fiche(commune,lieu_dit,utm,date,memo);
+		fiche.save();
+		Observation observation = new Observation(fiche,espece,determinateur,null);
+		observation.observation_date_validation=Calendar.getInstance();
+		observation.observation_vue_par_expert=true;
+		observation.observation_validee=Observation.VALIDEE;
+		observation.save();
+		new InformationsComplementaires(observation,nombre,stade_sexe).save();
+		for(Membre membre : membres){
+			new FicheHasMembre(membre,fiche).save();
+		}
 	}
 }

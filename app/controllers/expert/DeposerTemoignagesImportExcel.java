@@ -48,6 +48,7 @@ public class DeposerTemoignagesImportExcel extends Controller {
 					ImportExcel ie = new ImportExcel(fis);
 					ie.checkRows();
 					if(ie.noError()){
+						ie.saveToDatabase();
 						return ok(deposerTemoignagesImportExcel.render("L'import s'est déroulé avec succès."));
 					}else{
 						return ok(deposerTemoignagesImportExcel.render(ie.getErrorReport()));
