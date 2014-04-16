@@ -18,9 +18,12 @@
 package controllers.expert;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import controllers.admin.Admin;
+import functions.excels.ImportExcel;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
@@ -34,16 +37,26 @@ public class DeposerTemoignagesImportExcel extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
-	
-	public static Result post() throws FileNotFoundException{
+
+	public static Result post() throws IOException{
 		if(MenuExpert.isExpertConnected()){
 			MultipartFormData body = request().body().asMultipartFormData();
 			FilePart fp = body.getFile("xls");
-			if(fp!=null){
-				FileInputStream fis = new FileInputStream(fp.getFile());
-				
+			try {
+				if(fp!=null){
+					FileInputStream fis = new FileInputStream(fp.getFile());
+					ImportExcel ie = new ImportExcel(fis);
+					ie.checkRows();
+					if(ie.noError()){
+						return ok(deposerTemoignagesImportExcel.render("L'import s'est déroulé avec succès."));
+					}else{
+						return ok(deposerTemoignagesImportExcel.render(ie.getErrorReport()));
+					}
+				}else
+					return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas valide."));
+			} catch (InvalidFormatException e) {
+				return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas un fichier Excel .xls conforme."));
 			}
-			return ok(deposerTemoignagesImportExcel.render("L'import s'est déroulé avec succès."));
 		}else
 			return Admin.nonAutorise();
 	}

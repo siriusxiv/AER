@@ -29,7 +29,6 @@ import models.UTMS;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 
 public class RowCheck {
 	public StringBuilder errorReport;
@@ -62,8 +61,8 @@ public class RowCheck {
 	private String collection;
 	public String memo = null;
 
-	public RowCheck(Sheet sheet, int rowNumber, StringBuilder errorReport){
-		row = sheet.getRow(rowNumber);
+	public RowCheck(Row row, int rowNumber, StringBuilder errorReport){
+		this.row = row;
 		this.rowNumber=rowNumber;
 		this.errorReport=errorReport;
 	}

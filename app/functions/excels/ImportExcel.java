@@ -27,17 +27,31 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 
 public class ImportExcel extends Excel{
-	Sheet sheet;
+	private Sheet sheet;
+	private StringBuilder errorReport;
+	private boolean noError = true;
 	
 	public ImportExcel(FileInputStream fis) throws InvalidFormatException, IOException{
+		errorReport=new StringBuilder();
 		wb = WorkbookFactory.create(fis);
 		sheet = wb.getSheetAt(0);
 	}
 	
-	public StringBuilder checkRow(int rowNumber){
-		Row row = sheet.getRow(rowNumber);
-		StringBuilder errorReport = new StringBuilder();
-		String espece = row.getCell(0).getStringCellValue();
-		return errorReport;
+	public void checkRows(){
+		int i = 1;
+		Row row;
+		while((row=sheet.getRow(i))!=null){
+			RowCheck rc = new RowCheck(row,i,errorReport);
+			rc.checkRow(i);
+			noError=(noError && rc.noError()) ? true : false;
+			i++;
+		}
+	}
+	
+	public String getErrorReport(){
+		return errorReport.toString();
+	}
+	public boolean noError(){
+		return noError;
 	}
 }
