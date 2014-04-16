@@ -37,3 +37,16 @@ li{
 	width:inherit;
 	background-color:forestgreen;
 }
+
+table.gestionDesTemoinsPassifs{
+	font-size:0.6em;
+}
+input.nouveauTemoinInput{
+	width:90px;
+}
+input.nouveauTemoinCours{
+	width:60px;
+}
+input.nouveauTemoinCivilite{
+	width:20px;
+}
