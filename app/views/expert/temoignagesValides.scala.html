@@ -22,6 +22,7 @@
 		</dl>
 		<h1> Pages des témoignages validés </h1>
 	</header>
+	<span id="trimembre"><button onclick="triMembre(@groupe.groupe_id)">Voir les observations d'un membre: </button></span>
 	<p>Trier par espece:<select name="selespesce" onchange="triEspece(@groupe.groupe_id, this.options[this.selectedIndex].value)">
 				<option value="-1">&nbsp </option>
 				<option value="toutes"> Toutes les espèces </option>
@@ -86,18 +87,21 @@
 	function triEspece(groupe_id, espece_id){
 	if (espece_id=="toutes"){document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1"><button>Trier</button></a>';
 	}else{
-	document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/'+espece_id+'/1"><button>Trier</button></a>';}
+	document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/espece/'+groupe_id+'/'+espece_id+'/1"><button>Trier</button></a>';}
 	}
-	function triMembre(){
+	
+	function triMembre(groupe_id){
 		$.ajax({
-		url : '/listeDesMembres/triMembre'+membre_nom,
+		url : '/listeDesMembres/triMembres',
 		success: function (res) {
-			$('trimembre').html(
-					'<form method="GET" action="/temoignagesValides/'+groupe_id+'/'+espece_id+'/1">'+res+'<button>Trier</button></form>'
-			);
+			$('#trimembre').html('<button onclick="launchTriMembre('+groupe_id+')">Trier</button>'+res);
 		}
 	});
 }
+	function launchTriMembre(groupe_id){
+	var membre_nom=document.getElementById('triMembres').value
+	document.getElementById('trimembre').innerHTML='<a href="/temoignagesValides/membre/'+groupe_id+'/'+membre_nom+'/1"><button>Valider le tri</button></a>';
+	}
 	</script>
 }
 
