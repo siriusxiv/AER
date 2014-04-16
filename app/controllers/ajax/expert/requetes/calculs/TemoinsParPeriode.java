@@ -123,6 +123,7 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 			observations = Observation.find.where()
 								.eq("observation_espece",espece)
 								.eq("observation_validee", Observation.VALIDEE)
+								.isNull("observation_fiche.fiche_date_min")
 								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
@@ -130,6 +131,7 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 			observations = Observation.find.where()
 								.eq("observation_espece.espece_sous_groupe",sous_groupe)
 								.eq("observation_validee", Observation.VALIDEE)
+								.isNull("observation_fiche.fiche_date_min")
 								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
@@ -137,12 +139,14 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 			observations = Observation.find.where()
 								.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
 								.eq("observation_validee", Observation.VALIDEE)
+								.isNull("observation_fiche.fiche_date_min")
 								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
 		}else{
 			observations = Observation.find.where()
 					.eq("observation_validee", Observation.VALIDEE)
+					.isNull("observation_fiche.fiche_date_min")
 					.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 					.in("observation_fiche.fiche_utm", mailles)
 					.findList();

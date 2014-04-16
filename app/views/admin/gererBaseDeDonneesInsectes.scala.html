@@ -261,12 +261,17 @@
 							</td>
 							<td>
 								Nom<br>
-								<button onClick="afficherAjoutSynonyme()">Ajouter</button>
+								<button onClick="afficherAjouterSynonyme()">Ajouter un synonyme</button>
 								<div id="ajouterSynonyme" style="display:none">
-									<tr><th>Nom</th></tr>
+									<form action="/gererBaseDeDonneesInsectes/ajouterSynonyme/@espece.espece_id" method="POST">
+									<input type="text" size="10" name="nomSyn" value="Nom du synonyme"></input>
+									<input type="checkbox" name="origineAER" value="oui">Erreur d'Origine AER ?</input>
+									<button type="submit">Ajouter</button>
+									</form>
 								</div>
 								@for(synonyme <- espece.getSynonymes()){
-									<td>@if(synonyme.synonyme_origineAER){<font color="red">@synonyme.synonyme_nom</font>}else{@synonyme.synonyme_nom}</td>
+									<td><span id="changerSynonyme@synonyme.synonyme_id" @if(synonyme.synonyme_origineAER){style="color:red;"} onDblClick="changerSynonyme(@synonyme.synonyme_id, @synonyme.synonyme_origineAER)">@synonyme.synonyme_nom</span>
+									<form action="/gererBaseDeDonneesInsectes/supprimerSynonyme/@synonyme.synonyme_id" method="POST"><button type="submit" style="color:red;">X</button></form></td>
 									}
 							</td>
 							
@@ -393,6 +398,43 @@ function changerAuteurEspece(espece_id) {
 					contentType: false,
 					success: function (res) {
 						$('#nouvelAuteurEspece'+espece_id).replaceWith('<span id="changerAuteur'+espece_id+'" onDblClick="changerAuteurEspece('+espece_id+')">'+nouvelAuteur+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+function afficherAjouterSynonyme() {
+	if (document.getElementById("ajouterSynonyme").style.display == "none") {
+		document.getElementById("ajouterSynonyme").style.display = "block";
+	} else {
+		document.getElementById("ajouterSynonyme").style.display = "none";
+	}
+}
+function changerSynonyme(synonyme_id, synonyme_origineAER) {
+	var element = $('#changerSynonyme'+synonyme_id);
+	var espece_synonyme = element.html();
+	element.replaceWith('<input type="text" value="'+espece_synonyme+'" id="nouveauSynonyme'+synonyme_id+'">');
+	$('#nouveauSynonyme'+synonyme_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauSyn = $('#nouveauSynonyme'+synonyme_id).val();
+			if(nouveauSyn=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauSyn',nouveauSyn);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/changerSynonyme/'+synonyme_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						if(synonyme_origineAER){
+							$('#nouveauSynonyme'+synonyme_id).replaceWith('<span id="changerSynonyme'+synonyme_id+'" style="color:red;" onDblClick="changerSynonyme('+synonyme_id+')">'+nouveauSyn+'</span>');
+						} else {
+							$('#nouveauSynonyme'+synonyme_id).replaceWith('<span id="changerSynonyme'+synonyme_id+'" onDblClick="changerSynonyme('+synonyme_id+')">'+nouveauSyn+'</span>');
+						}
 					}
 				});
 			}

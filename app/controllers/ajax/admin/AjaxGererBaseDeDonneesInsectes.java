@@ -19,6 +19,7 @@ package controllers.ajax.admin;
 
 import controllers.admin.Admin;
 import models.Espece;
+import models.EspeceSynonyme;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -55,5 +56,21 @@ public class AjaxGererBaseDeDonneesInsectes extends Controller {
 			return redirect("/gererBaseDeDonneesInsectes");
 		}else
 			return Admin.nonAutorise();
+	}
+	
+	/**
+	* Change le synonyme dans la base de données
+	* @param espece_id
+	 * @return
+	 */
+	 public static Result changerSynonyme(Integer synonyme_id) {
+	 	if(Admin.isAdminConnected()){
+	 		EspeceSynonyme synonyme = EspeceSynonyme.find.byId(synonyme_id);
+	 		DynamicForm df = DynamicForm.form().bindFromRequest();
+	 		synonyme.synonyme_nom=df.get("nouveauSyn");
+	 		synonyme.save();
+	 		return redirect("/gererBaseDeDonneesInsectes");
+	 	} else
+	 		return Admin.nonAutorise();
 	}
 }
