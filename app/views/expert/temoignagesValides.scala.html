@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
- @(listObservation: List[Observation], page: Integer, nbpages: Integer, groupe : Groupe, listEspeces: List[Espece] )
+ @(listObservation: List[Observation], page: Integer, nbpages: Integer, groupe : Groupe, listEspeces: List[Espece], filtre: Integer, especeselectid: Integer, membreselectnom: String )
  @main("Témoignages validés"){<header>
 		<dl>
 		<a href="/">Retour</a>
@@ -30,7 +30,8 @@
 					<option value="@espece.espece_id">@espece.espece_nom</option>
 					}
 				</select><span id="triespece"></span></p>
-		@for( pg:Int <- 1 to nbpages){<a href="/temoignagesValides/@groupe.groupe_id/@pg">p.@pg</a>
+		@for( pg:Int <- 1 to nbpages){@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@pg">p.@pg</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@pg">p.@pg</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@pg">p.@pg</a>}
+		}
 		}
 	 <table>
         	<tr>
@@ -68,7 +69,7 @@
         			@informationsComplementaires.informations_complementaires_stade_sexe
         			} </td>
         		<td>@observation.observation_date_validation.getTime().format("dd/MM/yyyy")</td>
-        		<td><form id="suspens@observation.observation_id" method="POST" action="/temoignagesValides/suspens/@groupe.groupe_id/@page/@observation.observation_id"><input type="button" onclick="confirmSuspens(@observation.observation_id)" value="Remettre en Suspens"></form></td>
+        		<td>@observation.observation_id<form id="suspens@observation.observation_id" method="POST" action="/temoignagesValides/suspens/@groupe.groupe_id/@page/@observation.observation_id"><input type="button" onclick="confirmSuspens(@observation.observation_id)" value="Remettre en Suspens"></form></td>
         		
         	</tr>}
         </table>
