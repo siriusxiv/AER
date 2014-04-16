@@ -15,39 +15,51 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
- @(listObservation: List[Observation], page: Integer, nbpages: Integer, groupe : Groupe, listEspeces: List[Espece], filtre: Integer, especeselectid: Integer, membreselectnom: String )
+ @(listObservation: List[Observation], page: Integer, nbpages: Integer, groupe : Groupe, listEspeces: List[Espece], filtre: Integer, especeselectid: Integer, membreselectnom: String, orderBy: String, dir: String )
  @main("Témoignages validés"){<header>
 		<dl>
 		<a href="/">Retour</a>
 		</dl>
 		<h1> Pages des témoignages validés </h1>
 	</header>
-	<span id="trimembre"><button onclick="triMembre(@groupe.groupe_id)">Voir les observations d'un membre: </button></span>
-	<p>Trier par espece:<select name="selespesce" onchange="triEspece(@groupe.groupe_id, this.options[this.selectedIndex].value)">
+	<span id="trimembre"><button onclick="triMembre(@groupe.groupe_id, @orderBy, @dir)">Voir les observations d'un membre: </button></span>
+	<p>Trier par espece:<select name="selespesce" onchange="triEspece(@groupe.groupe_id, this.options[this.selectedIndex].value, @orderBy, @dir)">
 				<option value="-1">&nbsp </option>
 				<option value="toutes"> Toutes les espèces </option>
 				@for(espece <- listEspeces){
 					<option value="@espece.espece_id">@espece.espece_nom</option>
 					}
 				</select><span id="triespece"></span></p>
-		@for( pg:Int <- 1 to nbpages){@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@pg">p.@pg</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@pg">p.@pg</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@pg">p.@pg</a>}
+		@for( pg:Int <- 1 to nbpages){@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@pg/@orderBy/@dir">p.@pg</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@pg/@orderBy/@dir">p.@pg</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@pg/@orderBy/@dir">p.@pg</a>}
 		}
 		}
 	 <table>
         	<tr>
         		
         		<th>Témoins</th>
-        		<th>Espèce</th>
+        		<th>@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_espece.espece_id/desc">▼</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_espece.espece_id/desc">▼</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_espece.espece_id/desc">▼</a>}
+        			}Espèce
+        			@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_espece.espece_id/asc">▲</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_espece.espece_id/asc">▲</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_espece.espece_id/asc">▲</a>}
+        		}</th>
         		<th>Déterminateur</th>
         		<th>Commentaires</th>
-        		<th>Date d'observation</th>
+        		<th>@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_fiche.fiche_date/desc">▼</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_fiche.fiche_date/desc">▼</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_fiche.fiche_date/desc">▼</a>}
+        			}Date d'observation
+        			@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_fiche.fiche_date/asc">▲</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_fiche.fiche_date/asc">▲</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_fiche.fiche_date/asc">▲</a>}
+        		}</th>
         		<th>Lieu-dit</th>
         		<th>Commune</th>
         		<th>UTMS</th>
         		<th>Memo</th>
-        		<th>Date de soumission</th>
+        		<th>@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_fiche.fiche_date_soumission/desc">▼</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_fiche.fiche_date_soumission/desc">▼</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_fiche.fiche_date_soumission/desc">▼</a>}
+        			}Date de soumission
+        			@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_fiche.fiche_date_soumission/asc">▲</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_fiche.fiche_date_soumission/asc">▲</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_fiche.fiche_date_soumission/asc">▲</a>}
+        		}</th>
         		<th>Informations supplémentaires</th>
-        		<th>Date de validation</th>
+        		<th>@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_date_validation/desc">▼</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_date_validation/desc">▼</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_date_validation/desc">▼</a>}
+        			}Date de validation
+        			@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_date_validation/asc">▲</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_date_validation/asc">▲</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_date_validation/asc">▲</a>}
+        		}</th>
         		<th>Remettre en suspens</th>
         	</tr>
         	@for(observation <- listObservation) {
@@ -85,23 +97,23 @@
 		else
 		{}
 	}
-	function triEspece(groupe_id, espece_id){
-	if (espece_id=="toutes"){document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1"><button>Trier</button></a>';
+	function triEspece(groupe_id, espece_id, order, dir){
+	if (espece_id=="toutes"){document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1/'+order+'/'+dir"><button>Trier</button></a>';
 	}else{
-	document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/espece/'+groupe_id+'/'+espece_id+'/1"><button>Trier</button></a>';}
+	document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/espece/'+groupe_id+'/'+espece_id+'/1/'+order+'/'+dir"><button>Trier</button></a>';}
 	}
 	
-	function triMembre(groupe_id){
+	function triMembre(groupe_id, order, dir){
 		$.ajax({
 		url : '/listeDesMembres/triMembres',
 		success: function (res) {
-			$('#trimembre').html('<button onclick="launchTriMembre('+groupe_id+')">Trier</button>'+res);
+			$('#trimembre').html('<button onclick="launchTriMembre('+groupe_id+','+order+','+dir)">Trier</button>'+res);
 		}
 	});
 }
-	function launchTriMembre(groupe_id){
+	function launchTriMembre(groupe_id, order, dir){
 	var membre_nom=document.getElementById('triMembres').value
-	document.getElementById('trimembre').innerHTML='<a href="/temoignagesValides/membre/'+groupe_id+'/'+membre_nom+'/1"><button>Valider le tri</button></a>';
+	document.getElementById('trimembre').innerHTML='<a href="/temoignagesValides/membre/'+groupe_id+'/'+membre_nom+'/1/'+order+'/'+dir"><button>Valider le tri</button></a>';
 	}
 	</script>
 }

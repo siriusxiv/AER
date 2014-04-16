@@ -20,18 +20,18 @@ public class TemoignagesValidees extends Controller {
 	 * @param page
 	 * @return
 	 */
-	public static Result observationsValidees (Integer groupe_id, Integer page){
+	public static Result observationsValidees (Integer groupe_id, Integer page, String orderBy, String dir){
 		Integer filtre=0;
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
 			Integer valide=Observation.VALIDEE;
-			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy("observation_date_validation desc").findList();
+			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy(orderBy+" "+dir).findList();
 			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
 			Integer premierObservation=Math.min(((page-1)*50),observation.size() );
 			Integer dernierObservation=Math.min((page*50-1), observation.size());
 			Integer nbpages = observation.size()/50+1;
 			List<Observation> observationsvues = observation.subList(premierObservation, dernierObservation);
-			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,0,""));
+			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,0,"", orderBy, dir));
 		}else
 			return Admin.nonAutorise();
 	}
@@ -43,7 +43,7 @@ public class TemoignagesValidees extends Controller {
 	 * @param espece_id
 	 * @return
 	 */
-	public static Result observationsValideesEspece (Integer groupe_id, Integer page, Integer espece_id){
+	public static Result observationsValideesEspece (Integer groupe_id, Integer page, Integer espece_id, String orderBy, String dir){
 		Integer filtre=1;
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
@@ -52,14 +52,14 @@ public class TemoignagesValidees extends Controller {
 											.eq("observation_validee",valide)
 											.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
 											.eq("observation_espece.espece_id", espece_id)
-											.orderBy("observation_date_validation desc")
+											.orderBy(orderBy+" "+dir)
 											.findList();
 			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
 			Integer premierObservation=Math.min(((page-1)*50),observation.size() );
 			Integer dernierObservation=Math.min((page*50-1), observation.size());
 			Integer nbpages = observation.size()/50+1;
 			List<Observation> observationsvues = observation.subList(premierObservation, dernierObservation);
-			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,espece_id,""));
+			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,espece_id,"", orderBy, dir));
 		}else
 			return Admin.nonAutorise();
 	}
@@ -72,14 +72,13 @@ public class TemoignagesValidees extends Controller {
 	 * @param membre_nom
 	 * @return
 	 */
-	public static Result observationsValideesMembre (Integer groupe_id, Integer page, String membre_nom){
+	public static Result observationsValideesMembre (Integer groupe_id, Integer page, String membre_nom, String orderBy, String dir){
 		Integer filtre=2;
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
 			Integer valide=Observation.VALIDEE;
-			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy("observation_date_validation desc").findList();
-			List<Observation> observations= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy("observation_date_validation desc").findList();
-			observations.clear();
+			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy(orderBy+" "+dir).findList();
+			List<Observation> observations= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
  			for (Observation o : observation){
 				List<FicheHasMembre> fhms =o.observation_fiche.getFicheHasMembre();
 				for (FicheHasMembre fhm : fhms){
@@ -93,7 +92,7 @@ public class TemoignagesValidees extends Controller {
 			Integer dernierObservation=Math.min((page*50-1), observations.size());
 			Integer nbpages = observations.size()/50+1;
 			List<Observation> observationsvues = observations.subList(premierObservation, dernierObservation);
-			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,0,membre_nom));
+			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,0,membre_nom, orderBy, dir));
 
 		}else
 			return Admin.nonAutorise();
