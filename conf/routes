@@ -84,6 +84,8 @@ GET     /especesParOrdre   	controllers.admin.GererBaseDeDonneesInsectes.listeEs
 GET	/especesParSousGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousGroupe()
 GET	/especesParGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParGroupe()
 POST	/gererBaseDeDonneesInsectes/changerSousFamille/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.changerSousFamille(espece_id:Integer)
+POST	/gererBaseDeDonneesInsectes/ajouterSynonyme/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.ajouterSynonyme(espece_id:Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerSynonyme/:synonyme_id	controllers.admin.GererBaseDeDonneesInsectes.supprimerSynonyme(synonyme_id: Integer)
 
 #routes pour les listes de membres*****************
 GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")
@@ -119,7 +121,7 @@ POST	/ajax/temoinsParPeriode						controllers.ajax.expert.requetes.Calculs.temoi
 #Routes AJAX pour gérer la Base De Données des Insectes
 POST	/ajax/gererBaseDeDonneesInsectes/renommerEspece/:espece_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerEspece(espece_id: Integer)		
 POST	/ajax/gererBaseDeDonneesInsectes/changerAuteurEspece/:espece_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.changerAuteurEspece(espece_id: Integer)
-
+POST	/ajax/gererBaseDeDonneesInsectes/changerSynonyme/:synonyme_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.changerSynonyme(synonyme_id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

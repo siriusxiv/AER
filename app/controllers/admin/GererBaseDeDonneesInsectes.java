@@ -20,6 +20,7 @@ package controllers.admin;
 import java.io.IOException;
 
 import models.Espece;
+import models.EspeceSynonyme;
 import models.Image;
 import models.SousFamille;
 import models.Famille;
@@ -267,4 +268,38 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			return Admin.nonAutorise();
 		}
 	}
+	
+	/**Ajoute un synonyme à la base de données
+	* @return
+	* @throws NamingException
+	 * @throws PersistenceException
+	 */
+	 public static Result ajouterSynonyme(Integer espece_id) throws NamingException, PersistenceException {
+	 	 if(Admin.isAdminConnected()){
+	 	 	 DynamicForm df = DynamicForm.form().bindFromRequest();
+	 	 	 String nomSyn = df.get("nomSyn");
+	 	 	 String erreurOrigineAER = df.get("origineAER");
+	 	 	 if(erreurOrigineAER!=null){
+	 	 	 	 boolean origineAER = erreurOrigineAER.equals("oui");
+	 	 	 	 EspeceSynonyme.ajouterSynonyme(nomSyn, origineAER, espece_id);
+	 	 	 } else { 
+	 	 	 	EspeceSynonyme.ajouterSynonyme(nomSyn, false, espece_id);
+	 	 	}
+	 	 	return redirect("/gererBaseDeDonneesInsectes");
+	 	 } else {
+	 	 	 return Admin.nonAutorise();
+	 	 }
+	 }
+	 
+	 /** Supprime le synonyme de la base de données
+	 * @return
+	 */
+	 public static Result supprimerSynonyme(Integer synonyme_id){
+	 	 if(Admin.isAdminConnected()){
+	 	 	 EspeceSynonyme.supprimerSynonyme(synonyme_id);
+	 	 	 return redirect("/gererBaseDeDonneesInsectes");
+	 	 } else
+	 	 	return Admin.nonAutorise();
+	 }
+	 
 }
