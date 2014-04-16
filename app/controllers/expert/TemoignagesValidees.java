@@ -79,6 +79,7 @@ public class TemoignagesValidees extends Controller {
 			Integer valide=Observation.VALIDEE;
 			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy(orderBy+" "+dir).findList();
 			List<Observation> observations= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
+			observations.clear();
  			for (Observation o : observation){
 				List<FicheHasMembre> fhms =o.observation_fiche.getFicheHasMembre();
 				for (FicheHasMembre fhm : fhms){
@@ -112,7 +113,7 @@ public class TemoignagesValidees extends Controller {
 				observation.enSuspens();
 			}
 			observation.save();
-			return redirect("/temoignagesValides/"+groupe_id+"/"+page);
+			return redirect("/temoignagesValides/"+groupe_id+"/1/observation_date_validation/desc");
 		}else
 			return Admin.nonAutorise();
 	}
