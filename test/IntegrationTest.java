@@ -89,7 +89,9 @@ public class IntegrationTest {
             	
             	//excelTests();
             	
-            	System.out.println(StadeSexe.getStadesImagos());
+            	//System.out.println(StadeSexe.getStadesImagos());
+            	
+            	testDoublonTemoin();
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");
@@ -174,5 +176,16 @@ public class IntegrationTest {
 	
 	private void excelTests() throws IOException{
 		new TemoinsParPeriodeExcel(null,null).writeToDisk();
+	}
+	
+	private void testDoublonTemoin(){
+		List<Membre> membres = Membre.find.all();
+		for(Membre m : membres){
+			try{
+				Membre.find.where().eq("membre_nom", m.membre_nom).findUnique();
+			}catch(PersistenceException e){
+				System.out.println(m.membre_nom);
+			}
+		}
 	}
 }

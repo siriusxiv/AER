@@ -17,9 +17,8 @@
  ********************************************************************************/
 package functions.excels;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import models.Commune;
 import models.Espece;
@@ -40,7 +39,7 @@ public class RowCheck {
 	public Espece espece;
 	private String sexe;
 	public StadeSexe stade_sexe = null;
-	private String nombre_str;
+	private double nombre_dbl;
 	public Integer nombre = null;
 	@SuppressWarnings("unused")
 	private String departement;
@@ -49,8 +48,8 @@ public class RowCheck {
 	public String lieu_dit;
 	private String utm_str;
 	public UTMS utm;
-	private String date_str;
-	public Calendar date;
+	private Date date_date;
+	public Calendar date = Calendar.getInstance();
 	private String[] temoins;
 	public Membre[] membres;
 	public String determinateur;
@@ -82,13 +81,13 @@ public class RowCheck {
 		}
 		cell = row.getCell(2);
 		if(cell!=null){
-			nombre_str = cell.getStringCellValue();
-			if(nombre_str!=null && !nombre_str.equals("")){
-				try{
-					nombre = Integer.parseInt(nombre_str);
-				}catch(NumberFormatException e){
-					addError(nombre+" n'est pas un entier.");
+			try{
+				nombre_dbl = cell.getNumericCellValue();
+				if(nombre_dbl!=0){
+					nombre = (int) nombre_dbl;
 				}
+			}catch(IllegalStateException | NumberFormatException e){
+				addError(nombre_dbl+" n'est pas un entier.");
 			}
 		}
 		cell = row.getCell(3);//Département, on s'en fout.
@@ -116,12 +115,13 @@ public class RowCheck {
 		if(cell==null)
 			addError("Date non spécifiée.");
 		else{
-			date_str=cell.getStringCellValue();
-			SimpleDateFormat date_format = new SimpleDateFormat("M/d/yyyy");
-			try {
-				date.setTime(date_format.parse(date_str));
-			} catch (ParseException e) {
-				addError("Format de date M/d/yyyy attendu.");
+			try{
+				date_date=cell.getDateCellValue();
+				date.setTime(date_date);
+				if(date_date==null)
+					addError("La date n'est pas spécifiée.");
+			} catch (IllegalStateException e) {
+				addError("Date invalide.");
 			}
 		}
 		cell = row.getCell(8);
@@ -213,8 +213,8 @@ public class RowCheck {
 
 	public void addError(String s){
 		noError=false;
-		errorReport.append("Ligne "+rowNumber+": ");
-		errorReport.append(s+"\n");
+		errorReport.append("Ligne "+(rowNumber+1)+": ");
+		errorReport.append(s+"<br>");
 	}
 
 	public boolean noError(){

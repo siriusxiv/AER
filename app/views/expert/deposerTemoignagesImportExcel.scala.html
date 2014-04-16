@@ -18,7 +18,7 @@
 @(erreur: String)
 @main("Déposer des témoignages via fichier .xls"){
 <h1>Import de témoignages via fichier Excel</h1>
-<span class="message">@erreur</span>
+<span class="message">@Html(erreur)</span>
 <form action="/deposerTemoignages/excel" method="POST" enctype="multipart/form-data">
 	<input type="file" name="xls" accept="*.xls">
 	<button>OK</button>
