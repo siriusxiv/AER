@@ -27,7 +27,7 @@ import java.util.Map;
 
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
-import functions.excels.TemoinsParPeriodeExcel;
+import functions.excels.exports.TemoinsParPeriodeExcel;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;

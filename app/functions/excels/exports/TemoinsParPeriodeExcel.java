@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-package functions.excels;
+package functions.excels.exports;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,8 +28,10 @@ import models.StadeSexe;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.Excel;
 
 public class TemoinsParPeriodeExcel extends Excel{
 	
@@ -55,7 +57,14 @@ public class TemoinsParPeriodeExcel extends Excel{
 		if(!maille.equals(""))
 			titre+=" dans la maille "+maille;
 		titre+=" du "+date1+" au "+date2;
+		titre+=" ("+TemoinsParPeriode.getSomme(temoins)+" témoignages)";
 		sheet.createRow(0).createCell(0).setCellValue(titre);
+		sheet.addMergedRegion(new CellRangeAddress(
+	            0, //first row (0-based)
+	            0, //last row  (0-based)
+	            0, //first column (0-based)
+	            9  //last column  (0-based)
+	    ));
 		int i = 1;
 		for(TemoinsParPeriode temoin : temoins){
 			Row row = sheet.createRow(i);

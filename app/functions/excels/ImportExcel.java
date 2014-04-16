@@ -17,37 +17,41 @@
  ********************************************************************************/
 package functions.excels;
 
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import play.Play;
 
-/**
- * Une classe pour gérer les fichiers excels.
- * @author malik
- *
- */
-public class Excel {
-	public Workbook wb = new HSSFWorkbook();
-	private String file_name; 
+public class ImportExcel extends Excel{
+	private Sheet sheet;
+	private StringBuilder errorReport;
+	private boolean noError = true;
 	
-	public Excel(){
-		SimpleDateFormat date_format = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
-		file_name=date_format.format(Calendar.getInstance().getTime())+".xls";
+	public ImportExcel(FileInputStream fis) throws InvalidFormatException, IOException{
+		errorReport=new StringBuilder();
+		wb = WorkbookFactory.create(fis);
+		sheet = wb.getSheetAt(0);
 	}
 	
-	public void writeToDisk() throws IOException{
-		FileOutputStream fileOut = new FileOutputStream(Play.application().configuration().getString("xls_generes.path")+file_name);
-		wb.write(fileOut);
-		fileOut.close();
+	public void checkRows(){
+		int i = 1;
+		Row row;
+		while((row=sheet.getRow(i))!=null){
+			RowCheck rc = new RowCheck(row,i,errorReport);
+			rc.checkRow(i);
+			noError=(noError && rc.noError()) ? true : false;
+			i++;
+		}
 	}
 	
-	public String getFileName(){
-		return file_name;
+	public String getErrorReport(){
+		return errorReport.toString();
+	}
+	public boolean noError(){
+		return noError;
 	}
 }

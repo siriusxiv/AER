@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 
 import controllers.admin.Admin;
 import controllers.expert.MenuExpert;
+import play.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.requetes.consulterDonnees;
@@ -43,7 +44,7 @@ public class ConsulterDonnees extends Controller {
      */
     public static Result telechargerFichier(String filename) throws FileNotFoundException{
         	if(MenuExpert.isExpertConnected()){
-        		FileInputStream fis = new FileInputStream(new File(filename));
+        		FileInputStream fis = new FileInputStream(new File(Play.application().configuration().getString("xls_generes.path")+filename));
         		response().setHeader("Content-Disposition", "attachment; filename="+filename);
         		return ok(fis);
         	}else
