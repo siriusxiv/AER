@@ -229,4 +229,16 @@ public class HistogrammeDesImagos {
 		}
 		return complements;
 	}
+	
+	/**
+	 * Calcule le nombre d'observation en tout sur l'année
+	 * @return
+	 */
+	public int getSomme(){
+		int somme = 0;
+		for(int i = 0 ; i<36 ; i++){
+			somme+=this.histogramme[i];
+		}
+		return somme;
+	}
 }
