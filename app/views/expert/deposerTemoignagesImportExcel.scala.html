@@ -19,11 +19,14 @@
 @main("Déposer des témoignages via fichier .xls"){
 <h1>Import de témoignages via fichier Excel</h1>
 <span class="message">@Html(erreur)</span>
+Vous pouvez ici déposer un fichier Excel contenant des témoignages qui sera ajouter dans la base de données à condition que sa syntaxe soit strictement correcte.
 <form action="/deposerTemoignages/excel" method="POST" enctype="multipart/form-data">
 	<input type="file" name="xls" accept="*.xls">
 	<button>OK</button>
 </form>
 <a href="/menuExpert">Retour</a>
+<br><br>
+<a href="/gererTemoinsPassifs">Cliquez ici pour gérer les témoins passifs et éventuellement en rajouter.</a>
 }{
 <script>
 </script>

@@ -15,11 +15,13 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
+@(message: String)
 @main("Gérer les témoins passifs"){
 <button onClick="ajouter()">Ajouter un témoin passif</button>
 <div style="display:none" id="ajouter">
 <h2>Ajouter un témoin passif dans la base de données.</h2>
-<form action="/ajouterTemoinPassif" method="POST">
+<form action="/ajouterTemoinPassif" method="POST" id="form">
+<span id="message">@Html(message)</span>
 	<table class="gestionDesTemoinsPassifs">
 	<tr>
 		<th>Civilité</th>
@@ -36,7 +38,7 @@
 	</tr>
 	<tr>
 		<td><input class="nouveauTemoinCivilite" type="text" name="civilite"></td>
-		<td><input class="nouveauTemoinInput" type="text" id="membre" name="membre"></td>
+		<td><input class="nouveauTemoinInput" type="text" id="nom" name="nom"></td>
 		<td><input class="nouveauTemoinInput" type="text" name="adresse"></td>
 		<td><input class="nouveauTemoinInput" type="text" name="complement"></td>
 		<td><input class="nouveauTemoinCours" type="text" name="cp"></td>
@@ -55,7 +57,7 @@
 				<option value="@i">@i</option>
 			}
 			</select>
-			<select name="anneenais">
+			<select name="annenais">
 				<option value="">&nbsp;</option>
 			@for(i: Int <- 1700 to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
 				<option value="@i">@i</option>
@@ -75,18 +77,18 @@
 				<option value="@i">@i</option>
 			}
 			</select>
-			<select name="anneedece">
+			<select name="annedece">
 				<option value="">&nbsp;</option>
 			@for(i: Int <- 1700 to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
 				<option value="@i">@i</option>
 			}
 			</select>
 		</td>
-		<td><input class="nouveauTemoinInput" type="text" name="email"></td>
+		<td><input class="nouveauTemoinInput" id="email" type="text" name="email"></td>
 		<td><input type="text" name="biographie"></td>
 	</tr>
 	</table>
-	<button>Ajouter</button>
+	<button onClick="post();return false;">Ajouter</button>
 </form>
 </div>
 <br>
@@ -127,9 +129,32 @@
 }
 </table>
 }{
+<script src="/assets/javascripts/verify-mail.js" type="text/javascript"></script>
 <script>
 function ajouter(){
 	$('#ajouter').attr('style','display:block');
+}
+function post(){
+	var mail = $('#email').val();
+	if($('#nom').val()==''){
+		$('#message').html('Le champ "Nom" a été laissé vide.');
+	}else if(mail!='' && !isRFC822ValidEmail(mail)){
+		$('#message').html('L\'adresse mail n\'est pas valide.');
+		return false;
+	}else if(mail==''){
+		$('#form').submit();
+	}else{
+		$.ajax({
+			url: '/emailExisteOuPas/'+mail,
+			success: function (res) {
+				$('#form').submit();
+			},
+			error: function(){
+				$('#message').html('L\'adresse mail est déjà utilisée.');
+				return false;
+			}
+		});
+	}
 }
 </script>
 }

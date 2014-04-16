@@ -95,6 +95,47 @@ public class Membre extends Model {
 		this.genereLienDeValidation();
 	}
 
+	/**
+	 * Ajoute un témoin passif.
+	 */
+	public Membre(String civilite, String nom, String email, String adresse,
+			String complement, String cp, String ville, String pays,
+			String journais, String moisnais, String annenais, String jourdece,
+			String moisdece, String annedece, String biographie) {
+		this.membre_civilite=civilite;
+		this.membre_nom=nom;
+		this.membre_email=email;
+		this.membre_adresse=adresse;
+		this.membre_adresse_complement=complement;
+		this.membre_code_postal=cp;
+		this.membre_ville=ville;
+		this.membre_pays=pays;
+		this.membre_biographie=biographie;
+		this.membre_abonne=false;
+		this.membre_confidentialite=Confidentialite.CASPARCAS;
+		this.membre_droits=Droits.TEMOIN;
+		this.membre_temoin_actif=false;
+		this.membre_inscription_acceptee=true;
+		if(!annenais.equals("")){
+			this.membre_annenais=Integer.parseInt(annenais);
+			if(!moisnais.equals("")){
+				this.membre_moisnais=Integer.parseInt(moisnais);
+				if(!journais.equals("")){
+					this.membre_journais=Integer.parseInt(journais);
+				}
+			}
+		}
+		if(!annedece.equals("")){
+			this.membre_annedece=Integer.parseInt(annedece);
+			if(!moisdece.equals("")){
+				this.membre_moisdece=Integer.parseInt(moisdece);
+				if(!jourdece.equals("")){
+					this.membre_jourdece=Integer.parseInt(jourdece);
+				}
+			}
+		}
+	}
+
 	public static List<Membre> findAll(String orderBy, String sortDirection){
 		return find.orderBy(orderBy+" "+sortDirection).findList();
 	}
