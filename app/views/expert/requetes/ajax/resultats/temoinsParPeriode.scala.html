@@ -22,7 +22,7 @@ Groupe : @info.get("groupe")<br>
 Stade : @info.get("stade")<br>
 Maille : @info.get("maille")<br>*@
 <a href="/telechargerRapport/@file_name">Télécharger le fichier Excel</a>
-Du @info.get("jour1")/@info.get("mois1")/@info.get("annee1") au @info.get("jour2")/@info.get("mois2")/@info.get("annee2")
+@controllers.ajax.expert.requetes.calculs.TemoinsParPeriode.getSomme(temoins) témoignages du @info.get("jour1")/@info.get("mois1")/@info.get("annee1") au @info.get("jour2")/@info.get("mois2")/@info.get("annee2")
 <br><br>
 @for(temoin <- temoins){
 @temoin<br>

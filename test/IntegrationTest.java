@@ -44,7 +44,7 @@ import org.junit.*;
 
 import controllers.ajax.Listes;
 import functions.credentials.Credentials;
-import functions.excels.TemoinsParPeriodeExcel;
+import functions.excels.exports.TemoinsParPeriodeExcel;
 import functions.mail.VerifierMail;
 import play.mvc.*;
 import play.test.*;

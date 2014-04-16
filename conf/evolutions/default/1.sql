@@ -247,6 +247,7 @@ create table sous_groupe (
 create table stade_sexe (
   stade_sexe_id             integer auto_increment not null,
   stade_sexe_intitule       varchar(255) not null,
+  stade_sexe_abreviation    varchar(255) not null,
   stade_sexe_explication    TEXT,
   constraint pk_stade_sexe primary key (stade_sexe_id))
 ;

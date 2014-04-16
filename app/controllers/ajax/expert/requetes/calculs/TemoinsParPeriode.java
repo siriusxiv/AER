@@ -109,6 +109,12 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
 		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
 		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
+		List<StadeSexe> stades_sexes = null;
+		if(stade_sexe!=null){
+			stades_sexes=new ArrayList<StadeSexe>();
+			stades_sexes.add(stade_sexe);
+			stades_sexes.addAll(stade_sexe.getStadeSexeFilsPourTelGroupe(groupe));
+		}
 		List<UTMS> mailles = UTMS.parseMaille(info.get("maille"));
 		Calendar date1 = Calculs.getDataDate1(info);
 		Calendar date2 = Calculs.getDataDate2(info);
@@ -143,7 +149,7 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 			for(Observation observation : observations){
 				List<InformationsComplementaires> complements = InformationsComplementaires.find.where().eq("informations_complementaires_observation", observation).findList();
 				for(InformationsComplementaires complement : complements){
-					if(stade_sexe.equals(complement.informations_complementaires_stade_sexe)
+					if(stades_sexes.contains(complement.informations_complementaires_stade_sexe)
 							&& !observationsAvecStadeSexe.contains(observation)){
 						observationsAvecStadeSexe.add(observation);
 					}
@@ -152,5 +158,18 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 			observations = observationsAvecStadeSexe;
 		}
 		return observations;
+	}
+	
+	/**
+	 * Renvoie le nombre total de témoignage
+	 * @param tpps
+	 * @return
+	 */
+	public static int getSomme(List<TemoinsParPeriode> tpps){
+		int somme = 0;
+		for(TemoinsParPeriode tpp : tpps){
+			somme+=tpp.nombreDeTemoignages;
+		}
+		return somme;
 	}
 }

@@ -35,37 +35,64 @@ public class StadeSexe extends Model{
 	public Integer stade_sexe_id;
 	@NotNull
 	public String stade_sexe_intitule;
+	@NotNull
+	public String stade_sexe_abreviation;
 	@Column(columnDefinition="TEXT")
 	public String stade_sexe_explication;
-	
+
 	public static Finder<Integer,StadeSexe> find = new Finder<Integer,StadeSexe>(Integer.class, StadeSexe.class);
 
 	public static List<StadeSexe> findAll(){
 		return find.where().orderBy("stade_sexe_id").findList();
 	}
-	
+
 	@Override
 	public String toString(){
 		return stade_sexe_intitule;
 	}
-	
+
 	/**
 	 * Renvoie tous les fils du stade sexe pour le groupe donné.
+	 * Si le groupe est null, alors renvoie tous les fils possibles (en faisant l'union des groupes)
 	 * @param groupe
 	 * @return
 	 */
 	public List<StadeSexe> getStadeSexeFilsPourTelGroupe(Groupe groupe){
-		List<StadeSexeHierarchieDansGroupe> sshdgs =
-				StadeSexeHierarchieDansGroupe.find.where()
-						.eq("stade_sexe_pere", this)
-						.eq("groupe",groupe).orderBy("position").findList();
-		List<StadeSexe> stadesexes = new ArrayList<StadeSexe>();
-		for(StadeSexeHierarchieDansGroupe sshdg : sshdgs){
-			stadesexes.add(sshdg.stade_sexe);
+		if(groupe!=null){
+			List<StadeSexeHierarchieDansGroupe> sshdgs =
+					StadeSexeHierarchieDansGroupe.find.where()
+					.eq("stade_sexe_pere", this)
+					.eq("groupe",groupe).orderBy("position").findList();
+			List<StadeSexe> stadesexes = new ArrayList<StadeSexe>();
+			for(StadeSexeHierarchieDansGroupe sshdg : sshdgs){
+				stadesexes.add(sshdg.stade_sexe);
+			}
+			return stadesexes;
+		}else{
+			if(this.stade_sexe_intitule.equals("Adulte vivant")){
+				List<Integer> stades_ids = new ArrayList<Integer>();
+				stades_ids.add(10);
+				stades_ids.add(11);
+				stades_ids.add(12);
+				stades_ids.add(13);
+				return find.where().in("stade_sexe_id", stades_ids).findList();
+			}else if(this.stade_sexe_intitule.equals("Traces")){
+				List<Integer> stades_ids = new ArrayList<Integer>();
+				stades_ids.add(20);
+				stades_ids.add(21);
+				stades_ids.add(22);
+				stades_ids.add(23);
+				stades_ids.add(24);
+				stades_ids.add(25);
+				stades_ids.add(26);
+				stades_ids.add(27);
+				stades_ids.add(28);
+				return find.where().in("stade_sexe_id", stades_ids).findList();
+			}else
+				return new ArrayList<StadeSexe>();
 		}
-		return stadesexes;
 	}
-	
+
 	/**
 	 * Renvoie la liste des stades imagos.
 	 * @return
