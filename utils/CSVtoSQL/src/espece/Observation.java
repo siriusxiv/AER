@@ -30,7 +30,7 @@ public class Observation {
 		String[] col = line.split("µ");
 		fiche=fiches.find(col[2]);
 		espece=col[1];
-		imago=col[3].equals("TRUE");
+		imago=col[3].equals("TRUE") || col[3].equals("1");
 	}
 
 	public static void addFile(String filename, Fiches fiches) throws IOException{
