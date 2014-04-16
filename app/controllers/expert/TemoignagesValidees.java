@@ -4,6 +4,7 @@ import java.util.List;
 
 import controllers.admin.Admin;
 import models.Espece;
+import models.FicheHasMembre;
 import models.Groupe;
 import models.Observation;
 import play.mvc.Controller;
@@ -14,46 +15,96 @@ public class TemoignagesValidees extends Controller {
 
 	/**
 	 * Renvoie la liste des observations validées, il n'en revoit que 50, la page permet de savoir à quel endroit de la liste on se trouve).
+	 * filtre est un entier qui vaut 0 quand il n'y en a pas,  1 quand une espèce est filtrée, 2 quand un membre est filtré afin de pouvoir changer de page d'observation en gardant ses settings
 	 * @param groupe_id
 	 * @param page
 	 * @return
 	 */
-	public static Result observationsValidees (Integer groupe_id, Integer page){
+	public static Result observationsValidees (Integer groupe_id, Integer page, String orderBy, String dir){
+		Integer filtre=0;
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
 			Integer valide=Observation.VALIDEE;
-			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
+			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy(orderBy+" "+dir).findList();
 			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
-			Integer premierObservation=Math.min((page-1),observation.size() );
+			Integer premierObservation=Math.min(((page-1)*50),observation.size() );
 			Integer dernierObservation=Math.min((page*50-1), observation.size());
 			Integer nbpages = observation.size()/50+1;
 			List<Observation> observationsvues = observation.subList(premierObservation, dernierObservation);
-			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes));
+			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,0,"", orderBy, dir));
 		}else
 			return Admin.nonAutorise();
 	}
 	/**
 	 * Ne renvoit que les observations de l'espece voulue
+	 * filtre est un entier qui vaut 0 quand il n'y en a pas,  1 quand une espèce est filtrée, 2 quand un membre est filtré afin de pouvoir changer de page d'observation en gardant ses settings
 	 * @param groupe_id
 	 * @param page
 	 * @param espece_id
 	 * @return
 	 */
-	public static Result observationsValideesEspece (Integer groupe_id, Integer page, Integer espece_id){
+	public static Result observationsValideesEspece (Integer groupe_id, Integer page, Integer espece_id, String orderBy, String dir){
+		Integer filtre=1;
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
 			Integer valide=Observation.VALIDEE;
-			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).eq("observation_espece.espece_id", espece_id).findList();
+			List<Observation> observation= Observation.find.where()
+											.eq("observation_validee",valide)
+											.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
+											.eq("observation_espece.espece_id", espece_id)
+											.orderBy(orderBy+" "+dir)
+											.findList();
 			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
-			Integer premierObservation=Math.min((page-1),observation.size() );
+			Integer premierObservation=Math.min(((page-1)*50),observation.size() );
 			Integer dernierObservation=Math.min((page*50-1), observation.size());
 			Integer nbpages = observation.size()/50+1;
 			List<Observation> observationsvues = observation.subList(premierObservation, dernierObservation);
-			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes));
+			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,espece_id,"", orderBy, dir));
 		}else
 			return Admin.nonAutorise();
 	}
 	
+	/**
+	 * Permet de trier les observations, ne prenant que celles concernant un membre précis.
+	 * filtre est un entier qui vaut 0 quand il n'y en a pas,  1 quand une espèce est filtrée, 2 quand un membre est filtré afin de pouvoir changer de page d'observation en gardant ses settings
+	 * @param groupe_id
+	 * @param page
+	 * @param membre_nom
+	 * @return
+	 */
+	public static Result observationsValideesMembre (Integer groupe_id, Integer page, String membre_nom, String orderBy, String dir){
+		Integer filtre=2;
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+			Integer valide=Observation.VALIDEE;
+			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy(orderBy+" "+dir).findList();
+			List<Observation> observations= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
+			observations.clear();
+ 			for (Observation o : observation){
+				List<FicheHasMembre> fhms =o.observation_fiche.getFicheHasMembre();
+				for (FicheHasMembre fhm : fhms){
+					if(fhm.membre.membre_nom.equals(membre_nom)){
+						observations.add(o);
+					}
+				}
+			}
+			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
+			Integer premierObservation=Math.min(((page-1)*50),observations.size() );
+			Integer dernierObservation=Math.min((page*50-1), observations.size());
+			Integer nbpages = observations.size()/50+1;
+			List<Observation> observationsvues = observations.subList(premierObservation, dernierObservation);
+			return ok(temoignagesValides.render(observationsvues, page,nbpages, groupe, especes, filtre,0,membre_nom, orderBy, dir));
+
+		}else
+			return Admin.nonAutorise();
+	}
+	/**
+	 * Remet une observation en suspens afin de pouvoir la reediter
+	 * @param groupe_id
+	 * @param observation_id
+	 * @param page
+	 * @return
+	 */
 	public static Result remettreEnSuspens(Integer groupe_id, Long observation_id, Integer page){
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
@@ -62,9 +113,9 @@ public class TemoignagesValidees extends Controller {
 				observation.enSuspens();
 			}
 			observation.save();
-			return redirect("/temoignagesValides/"+groupe_id+"/"+page);
+			return redirect("/temoignagesValides/"+groupe_id+"/1/observation_date_validation/desc");
 		}else
 			return Admin.nonAutorise();
 	}
-	
+
 }
