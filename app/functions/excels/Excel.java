@@ -25,13 +25,15 @@ import java.util.Calendar;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import play.Play;
+
 /**
  * Une classe pour gérer les fichiers excels.
  * @author malik
  *
  */
 public class Excel {
-	Workbook wb = new HSSFWorkbook();
+	public Workbook wb = new HSSFWorkbook();
 	private String file_name; 
 	
 	public Excel(){
@@ -40,7 +42,7 @@ public class Excel {
 	}
 	
 	public void writeToDisk() throws IOException{
-		FileOutputStream fileOut = new FileOutputStream(file_name);
+		FileOutputStream fileOut = new FileOutputStream(Play.application().configuration().getString("xls_generes.path")+file_name);
 		wb.write(fileOut);
 		fileOut.close();
 	}

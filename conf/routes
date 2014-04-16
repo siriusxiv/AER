@@ -39,6 +39,7 @@ POST	/supprimerStadeSexeFils/:groupe_id/:stade_sexe_id	controllers.expert.GererS
 GET		/gererdatescharnieres/:groupe_id					controllers.expert.GererDatesChanieres.main(groupe_id: Integer)
 POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres.ajouter(groupe_id: Integer)
 POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
+GET		/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.main()
 
 #Routes pour faire des requêtes
 GET     /consulterDonnees           	controllers.expert.requetes.ConsulterDonnees.main()
