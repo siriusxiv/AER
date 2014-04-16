@@ -17,16 +17,33 @@
  ********************************************************************************/
 package controllers.expert;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import controllers.admin.Admin;
 import play.mvc.Controller;
 import play.mvc.Result;
-
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 import views.html.expert.deposerTemoignagesImportExcel;
 
 public class DeposerTemoignagesImportExcel extends Controller {
 	public static Result main(){
 		if(MenuExpert.isExpertConnected()){
-			return ok(deposerTemoignagesImportExcel.render());
+			return ok(deposerTemoignagesImportExcel.render(""));
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result post() throws FileNotFoundException{
+		if(MenuExpert.isExpertConnected()){
+			MultipartFormData body = request().body().asMultipartFormData();
+			FilePart fp = body.getFile("xls");
+			if(fp!=null){
+				FileInputStream fis = new FileInputStream(fp.getFile());
+				
+			}
+			return ok(deposerTemoignagesImportExcel.render("L'import s'est déroulé avec succès."));
 		}else
 			return Admin.nonAutorise();
 	}

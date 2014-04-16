@@ -40,6 +40,7 @@ GET		/gererdatescharnieres/:groupe_id					controllers.expert.GererDatesChanieres
 POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres.ajouter(groupe_id: Integer)
 POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
 GET		/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.main()
+POST	/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.post()
 
 #Routes pour faire des requêtes
 GET     /consulterDonnees           	controllers.expert.requetes.ConsulterDonnees.main()

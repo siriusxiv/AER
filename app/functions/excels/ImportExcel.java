@@ -17,6 +17,27 @@
  ********************************************************************************/
 package functions.excels;
 
-public class ImportExcel {
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+
+public class ImportExcel extends Excel{
+	Sheet sheet;
 	
+	public ImportExcel(FileInputStream fis) throws InvalidFormatException, IOException{
+		wb = WorkbookFactory.create(fis);
+		sheet = wb.getSheetAt(0);
+	}
+	
+	public StringBuilder checkRow(int rowNumber){
+		Row row = sheet.getRow(rowNumber);
+		StringBuilder errorReport = new StringBuilder();
+		String espece = row.getCell(0).getStringCellValue();
+		return errorReport;
+	}
 }
