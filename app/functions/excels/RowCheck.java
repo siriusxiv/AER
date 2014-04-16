@@ -95,7 +95,7 @@ public class RowCheck {
 		if(cell!=null){
 			commune_nom = cell.getStringCellValue();
 			if(commune_nom!=null && !commune_nom.equals("")){
-				commune = Commune.find.where().eq("ville_nom_reel", commune_nom).findUnique();
+				commune = Commune.findFromNomApproximatif(commune_nom);
 				if(commune==null)
 					addError("La commune "+commune_nom+" n'est pas référencée.");
 			}
@@ -109,7 +109,7 @@ public class RowCheck {
 			utm_str = cell.getStringCellValue();
 			utm = UTMS.find.byId(utm_str);
 			if(utm==null)
-				addError("Maille UTM "+utm+" non existante.");
+				addError("Maille UTM "+utm_str+" non existante.");
 		}
 		cell = row.getCell(7);
 		if(cell==null)

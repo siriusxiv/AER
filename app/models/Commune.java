@@ -103,4 +103,22 @@ public class Commune extends Model {
 	public String toString(){
 		return ville_nom_reel+" ("+ville_departement.departement_code+")";
 	}
+
+	/**
+	 * Remplace les abréviations pour Saint(e) et enlève les articles définis.
+	 * Trouve ensuite la commune ayant ce nom.
+	 * @param commune_nom
+	 * @return
+	 */
+	public static Commune findFromNomApproximatif(String commune_nom) {
+		commune_nom=commune_nom.replaceAll("St-", "Saint-");
+		commune_nom=commune_nom.replaceAll("Ste-", "Sainte-");
+		if(commune_nom.startsWith("Le ") || commune_nom.startsWith("La "))
+			commune_nom=commune_nom.substring(3);
+		else if(commune_nom.startsWith("Les "))
+			commune_nom=commune_nom.substring(4);
+		else if(commune_nom.startsWith("L'"))
+			commune_nom=commune_nom.substring(2);
+		return find.where().eq("ville_nom_reel", commune_nom).findUnique();
+	}
 }

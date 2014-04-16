@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 
+import models.Commune;
 import models.Espece;
 import models.Famille;
 import models.Fiche;
@@ -91,7 +92,9 @@ public class IntegrationTest {
             	
             	//System.out.println(StadeSexe.getStadesImagos());
             	
-            	testDoublonTemoin();
+            	//testDoublonTemoin();
+            	
+            	testDoublonCommune();
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");
@@ -185,6 +188,17 @@ public class IntegrationTest {
 				Membre.find.where().eq("membre_nom", m.membre_nom).findUnique();
 			}catch(PersistenceException e){
 				System.out.println(m.membre_nom);
+			}
+		}
+	}
+	
+	private void testDoublonCommune(){
+		List<Commune> communes = Commune.find.all();
+		for(Commune c : communes){
+			try{
+				Commune.find.where().eq("ville_nom_reel", c.ville_nom_reel).findUnique();
+			}catch(PersistenceException e){
+				System.out.println(c.ville_nom_reel);
 			}
 		}
 	}
