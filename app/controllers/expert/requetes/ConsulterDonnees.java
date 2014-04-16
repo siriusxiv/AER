@@ -17,6 +17,10 @@
  ********************************************************************************/
 package controllers.expert.requetes;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import controllers.admin.Admin;
 import controllers.expert.MenuExpert;
 import play.mvc.Controller;
@@ -30,5 +34,19 @@ public class ConsulterDonnees extends Controller {
     		return ok(consulterDonnees.render());
     	}else
     		return Admin.nonAutorise();
+    }
+    
+    /**
+     * Télécharge un fichier.
+     * @return
+     * @throws FileNotFoundException 
+     */
+    public static Result telechargerFichier(String filename) throws FileNotFoundException{
+        	if(MenuExpert.isExpertConnected()){
+        		FileInputStream fis = new FileInputStream(new File(filename));
+        		response().setHeader("Content-Disposition", "attachment; filename="+filename);
+        		return ok(fis);
+        	}else
+        		return Admin.nonAutorise();
     }
 }

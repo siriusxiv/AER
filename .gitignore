@@ -26,3 +26,4 @@ dist
 listeEspeces
 listeMembres.js
 motsDePasse.txt
+*.xls

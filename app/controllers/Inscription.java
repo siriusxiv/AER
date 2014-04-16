@@ -50,6 +50,8 @@ public class Inscription extends Controller {
 		String email = df.get("email");
 		String passw = df.get("passw");
 		if(Membre.find.where().eq("membre_email",email).findList().isEmpty()){
+			if(!Membre.find.where().eq("membre_nom",nom).findList().isEmpty())
+				nom+=" (2)";
 			Membre m = new Membre(nom,civilite,email,passw);
 			m.save();
 			VerifierMail.envoyerMailDeVerification(m);

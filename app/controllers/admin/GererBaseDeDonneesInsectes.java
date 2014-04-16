@@ -234,7 +234,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		}
 	}
 	
-	/** Ajotue l'ordre à la base de données
+	/** Ajoute l'ordre à la base de données
 	* @return
 	*/
 	public static Result ajouterNouvOrdre(){
@@ -242,6 +242,26 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			String nom = df.get("nom");
 			Ordre.ajouterOrdre(nom);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/** Change la sous-famille d'une espèce
+	* @return
+	*/
+	public static Result changerSousFamille(Integer espece_id){
+		if(Admin.isAdminConnected()){
+			Espece espece = Espece.find.byId(espece_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String sousfam = df.get("changerSousFamille");
+			if (sousfam!=null){
+				espece.espece_sousfamille = SousFamille.find.byId(Integer.parseInt(sousfam));
+				espece.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+sousfam);
+			}
 			return redirect("/gererBaseDeDonneesInsectes");
 		} else {
 			return Admin.nonAutorise();

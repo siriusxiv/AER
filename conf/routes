@@ -42,7 +42,8 @@ POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres
 POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
 
 #Routes pour faire des requêtes
-GET     /consulterDonnees           controllers.expert.requetes.ConsulterDonnees.main()
+GET     /consulterDonnees           	controllers.expert.requetes.ConsulterDonnees.main()
+GET		/telechargerRapport/:filename	controllers.expert.requetes.ConsulterDonnees.telechargerFichier(filename: String)
 
 #routes pour les admins
 GET     /menuAdmin                   controllers.admin.Admin.menuAdmin()
@@ -84,6 +85,7 @@ GET     /especesParSuperFamille   	controllers.admin.GererBaseDeDonneesInsectes.
 GET     /especesParOrdre   	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParOrdre()
 GET	/especesParSousGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousGroupe()
 GET	/especesParGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParGroupe()
+POST	/gererBaseDeDonneesInsectes/changerSousFamille/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.changerSousFamille(espece_id:Integer)
 
 #routes pour les listes de membres*****************
 GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")
@@ -115,6 +117,13 @@ GET		/ajax/consulter/listeSousGroupes/:groupe_id				controllers.ajax.expert.requ
 GET		/ajax/consulter/listeEspeces/:groupe_id/:sous_groupe_id	controllers.ajax.expert.requetes.Requetes.listeEspeces(groupe_id: Integer,sous_groupe_id: Integer)
 GET		/ajax/consulter/listeStades/:groupe_id					controllers.ajax.expert.requetes.Requetes.listeStades(groupe_id: Integer)
 GET		/ajax/consulter/infoDates/:groupe_id					controllers.ajax.expert.requetes.Requetes.infoDates(groupe_id: Integer)
+POST	/ajax/temoinsParPeriode						controllers.ajax.expert.requetes.Calculs.temoinsParPeriode()
+POST	/ajax/histogrammeDesImagos					controllers.ajax.expert.requetes.Calculs.histogrammeDesImagos()
+
+#Routes AJAX pour gérer la Base De Données des Insectes
+POST	/ajax/gererBaseDeDonneesInsectes/renommerEspece/:espece_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerEspece(espece_id: Integer)		
+POST	/ajax/gererBaseDeDonneesInsectes/changerAuteurEspece/:espece_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.changerAuteurEspece(espece_id: Integer)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
