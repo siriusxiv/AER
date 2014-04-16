@@ -37,6 +37,7 @@ import models.Membre;
 import models.Ordre;
 import models.SousFamille;
 import models.SousGroupe;
+import models.StadeSexe;
 import models.SuperFamille;
 
 import org.junit.*;
@@ -86,7 +87,9 @@ public class IntegrationTest {
             	//gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantes(), Famille.findAll(), SuperFamille.findSuperFamillesExistantes(), Ordre.findAll(), SousGroupe.findAll(), Groupe.findAll());
             	//gererBaseDeDonneesInsectes.render(Espece.findAll(), SousFamille.findSousFamillesExistantesTriees(), Famille.findAllTriees(), SuperFamille.findSuperFamillesExistantesTriees(), Ordre.findAllTries(), SousGroupe.findAll(), Groupe.findAll());
             	
-            	excelTests();
+            	//excelTests();
+            	
+            	System.out.println(StadeSexe.getStadesImagos());
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");

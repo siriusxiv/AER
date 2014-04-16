@@ -72,12 +72,37 @@ function temoinsParPeriode(){
 				$('#resultats').html(res);
 			}
 		});
-	}else
-		$('#message').html('Erreur de syntaxe');
+	}
+}
+function histogrammeDesImagos(){
+	var donnees = new Donnees();
+	if(isValide(donnees)){
+		$('#message').html('');
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/histogrammeDesImagos',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			}
+		});
+	}
 }
 function mailleValide(donnees){
 	return $.inArray(donnees.maille, listeUTMS)>=0 || donnees.maille=='';
 }
 function isValide(donnees){
-	return mailleValide(donnees) && donnees.temoinValide() && donnees.datesValides();
+	if(!mailleValide(donnees)){
+		$('#message').html('Maille entrée non valide !');
+		return false;
+	}else if(!donnees.temoinValide()){
+		$('#message').html('Témoin entré non référencé !');
+		return false;
+	}else if(!donnees.datesValides()){
+		$('#message').html('Les dates données ne sont pas valides !');
+		return false;
+	}
+	return true;
 }

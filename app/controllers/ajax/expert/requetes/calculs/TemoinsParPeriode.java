@@ -19,15 +19,22 @@ package controllers.ajax.expert.requetes.calculs;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import controllers.ajax.expert.requetes.Calculs;
+import models.Espece;
 import models.FicheHasMembre;
+import models.Groupe;
+import models.InformationsComplementaires;
 import models.Membre;
 import models.Observation;
+import models.SousGroupe;
+import models.StadeSexe;
+import models.UTMS;
 
 public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 	public Membre temoin;
@@ -55,7 +62,7 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 
 	public static List<TemoinsParPeriode> calculeTemoinsParPeriode(Map<String,String> info) throws ParseException {
 		List<TemoinsParPeriode> temoins = new ArrayList<TemoinsParPeriode>();
-		List<Observation> observations = Calculs.getObservations(info);
+		List<Observation> observations = TemoinsParPeriode.getObservations(info);
 		//On commence la génération des témoins par période.
 		int i=0;
 		for(Observation observation : observations){
@@ -89,5 +96,61 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 			i++;
 		}
 		return -1;
+	}
+	
+	/**
+	 * Renvoie les observations pour afficher temoins par période
+	 * @param info
+	 * @return
+	 * @throws ParseException
+	 */
+	public static List<Observation> getObservations(Map<String,String> info) throws ParseException{
+		Espece espece = Espece.find.byId(Integer.parseInt(info.get("espece")));
+		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
+		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
+		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
+		List<UTMS> mailles = UTMS.parseMaille(info.get("maille"));
+		Calendar date1 = Calculs.getDataDate1(info);
+		Calendar date2 = Calculs.getDataDate2(info);
+		List<Observation> observations;
+		if(espece!=null){
+			observations = Observation.find.where()
+								.eq("observation_espece",espece)
+								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.in("observation_fiche.fiche_utm", mailles)
+								.findList();
+		}else if(sous_groupe!=null){
+			observations = Observation.find.where()
+								.eq("observation_espece.espece_sous_groupe",sous_groupe)
+								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.in("observation_fiche.fiche_utm", mailles)
+								.findList();
+		}else if(groupe!=null){
+			observations = Observation.find.where()
+								.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
+								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.in("observation_fiche.fiche_utm", mailles)
+								.findList();
+		}else{
+			observations = Observation.find.where()
+					.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+					.in("observation_fiche.fiche_utm", mailles)
+					.findList();
+		}
+		//On enlève les stades/sexes non concernés
+		List<Observation> observationsAvecStadeSexe = new ArrayList<Observation>();
+		if(stade_sexe!=null){
+			for(Observation observation : observations){
+				List<InformationsComplementaires> complements = InformationsComplementaires.find.where().eq("informations_complementaires_observation", observation).findList();
+				for(InformationsComplementaires complement : complements){
+					if(stade_sexe.equals(complement.informations_complementaires_stade_sexe)
+							&& !observationsAvecStadeSexe.contains(observation)){
+						observationsAvecStadeSexe.add(observation);
+					}
+				}
+			}
+			observations = observationsAvecStadeSexe;
+		}
+		return observations;
 	}
 }

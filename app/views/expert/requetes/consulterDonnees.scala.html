@@ -75,6 +75,7 @@
 		<td>Dates :</td>
 		<td>
 			<span id="datesPartieMouvante"></span>
+			<input type="radio" name="periode" value="@{new functions.Periode(Fiche.getPlusVieuxTemoignage().fiche_date, Calendar.getInstance())}" onChange="changerDate()"> Toutes<br>
 			<input type="radio" name="periode" value="autre"> Autre<br>
 			De <input type="text" size="1" id="jour1" name="jour1" placeholder="jj">
 			<input type="text" size="1" id="mois1" name="mois1" placeholder="mm">
@@ -92,18 +93,23 @@
 <tr>
 	<td><button onClick="temoinsParPeriode()">Témoins par période</button></td>
 	<td><button>Espèces par maille</button></td>
+	<td><button>Historique de l'espèce ou du groupe sélectionné</button></td>
 </tr>
 <tr>
 	<td><button>Chronologie d'un témoin</button></td>
 	<td><button>Mailles par espèce</button></td>
+	<td><button>Antériorité de toutes les périodes</button></td>
 </tr>
 <tr>
-	<td><button>Histogramme des imagos ou non</button></td>
+	<td><button onClick="histogrammeDesImagos()">Histogramme des imagos ou non</button></td>
 	<td><button>Mailles par période</button></td>
+	<td><button>Carte 20x20 : mailles et espèces</button></td>
 </tr>
 </table>
 <div id="resultats"></div>
 }{
+<script src="assets/javascripts/highcharts/highcharts.js"></script>
+<script src="assets/javascripts/highcharts/exporting.js"></script>
 <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
 <script>
 var listeMembres = [@Html(controllers.ajax.Listes.listeMembres())];

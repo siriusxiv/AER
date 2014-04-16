@@ -65,4 +65,18 @@ public class StadeSexe extends Model{
 		}
 		return stadesexes;
 	}
+	
+	/**
+	 * Renvoie la liste des stades imagos.
+	 * @return
+	 */
+	public static List<StadeSexe> getStadesImagos() {
+		List<Integer> imagos = new ArrayList<Integer>();
+		imagos.add(1);
+		imagos.add(10);
+		imagos.add(11);
+		imagos.add(12);
+		imagos.add(13);
+		return find.where().in("stade_sexe_id", imagos).findList();
+	}
 }

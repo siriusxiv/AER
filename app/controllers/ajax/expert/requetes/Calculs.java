@@ -20,25 +20,19 @@ package controllers.ajax.expert.requetes;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Espece;
-import models.Groupe;
-import models.InformationsComplementaires;
-import models.Observation;
-import models.SousGroupe;
-import models.StadeSexe;
-import models.UTMS;
+import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
 import functions.excels.TemoinsParPeriodeExcel;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.requetes.ajax.resultats.temoinsParPeriode;
+import views.html.expert.requetes.ajax.resultats.histogrammeDesImagos;
 
 public class Calculs extends Controller {
 	
@@ -49,6 +43,12 @@ public class Calculs extends Controller {
 		TemoinsParPeriodeExcel tppe = new TemoinsParPeriodeExcel(info,temoins);
 		tppe.writeToDisk();
 		return ok(temoinsParPeriode.render(temoins,info,tppe.getFileName()));
+	}
+	public static Result histogrammeDesImagos() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		HistogrammeDesImagos hdi = new HistogrammeDesImagos(info);
+		return ok(histogrammeDesImagos.render(hdi,info));
 	}
 	
 	/**
@@ -96,55 +96,5 @@ public class Calculs extends Controller {
 		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
 		c.setTime(date_format.parse(info.get("jour2")+"/"+info.get("mois2")+"/"+info.get("annee2")));
 		return c;
-	}
-	
-	public static List<Observation> getObservations(Map<String,String> info) throws ParseException{
-		Espece espece = Espece.find.byId(Integer.parseInt(info.get("espece")));
-		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
-		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
-		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
-		List<UTMS> mailles = UTMS.parseMaille(info.get("maille"));
-		Calendar date1 = Calculs.getDataDate1(info);
-		Calendar date2 = Calculs.getDataDate2(info);
-		List<Observation> observations;
-		if(espece!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece",espece)
-								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-								.in("observation_fiche.fiche_utm", mailles)
-								.findList();
-		}else if(sous_groupe!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece.espece_sous_groupe",sous_groupe)
-								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-								.in("observation_fiche.fiche_utm", mailles)
-								.findList();
-		}else if(groupe!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
-								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-								.in("observation_fiche.fiche_utm", mailles)
-								.findList();
-		}else{
-			observations = Observation.find.where()
-					.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-					.in("observation_fiche.fiche_utm", mailles)
-					.findList();
-		}
-		//On enlève les stades/sexes non concernés
-		List<Observation> observationsAvecStadeSexe = new ArrayList<Observation>();
-		if(stade_sexe!=null){
-			for(Observation observation : observations){
-				List<InformationsComplementaires> complements = InformationsComplementaires.find.where().eq("informations_complementaires_observation", observation).findList();
-				for(InformationsComplementaires complement : complements){
-					if(stade_sexe.equals(complement.informations_complementaires_stade_sexe)
-							&& !observationsAvecStadeSexe.contains(observation)){
-						observationsAvecStadeSexe.add(observation);
-					}
-				}
-			}
-			observations = observationsAvecStadeSexe;
-		}
-		return observations;
 	}
 }
