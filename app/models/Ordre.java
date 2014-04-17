@@ -40,7 +40,7 @@ public class Ordre extends Model implements Comparator<Ordre>{
 	public static Finder<Integer,Ordre> find = new Finder<Integer,Ordre>(Integer.class, Ordre.class);
 
 	public static List<Ordre> findAll(){
-		return find.all();
+		return find.orderBy("ordre_nom").findList();
 	}
 	
 	/**

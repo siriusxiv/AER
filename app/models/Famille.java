@@ -46,7 +46,7 @@ public class Famille extends Model implements Comparator<Famille>{
 	public static Finder<Integer,Famille> find = new Finder<Integer,Famille>(Integer.class, Famille.class);
 
 	public static List<Famille> findAll(){
-		return find.findList();
+		return find.orderBy("famille_nom").findList();
 	}
 	
 	/** Crée une sous famille
