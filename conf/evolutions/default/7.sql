@@ -119,27 +119,27 @@ INSERT INTO `espece_synonyme` (`synonyme_id`,`synonyme_nom`,`synonyme_origine_ae
 (122,'Callicnemis atlanticus',1,295),
 (123,'Calicnemis atlanticus',0,295);
 
-INSERT INTO `stade_sexe` (`stade_sexe_id`,`stade_sexe_intitule`,`stade_sexe_explication`,`stade_sexe_abreviation`) VALUES
-(1,'Adulte vivant','','A'),
-(2,'Chrysalide','','C'),
-(3,'Nymphe','','n'),
-(4,'Chenille','','c'),
-(5,'Larve','','l'),
-(6,'Œuf','','o'),
-(7,'Indéterminé','','i'),
-(10,'Mâle','','m'),
-(11,'Femelle','','f'),
-(12,'Reine','','R'),
-(13,'Ouvrière','','O'),
-(20,'Traces','','t'),
-(21,'Restes imago','','dépouille'),
-(22,'Exuvie','','exuvie'),
-(23,'Cocon vide','','cocon'),
-(24,'Mue larvaire','','mue'),
-(25,'Terrier larvaire','','terrier'),
-(26,'Ponte vide','','ponte vide'),
-(27,'Oothèque','','oothèque'),
-(28,'Nid','','nid');
+INSERT INTO `stade_sexe` (`stade_sexe_id`,`stade_sexe_intitule`,`stade_sexe_explication`) VALUES
+(1,'Adulte vivant',''),
+(2,'Chrysalide',''),
+(3,'Nymphe',''),
+(4,'Chenille',''),
+(5,'Larve',''),
+(6,'Œuf',''),
+(7,'Indéterminé',''),
+(10,'Mâle',''),
+(11,'Femelle',''),
+(12,'Reine',''),
+(13,'Ouvrière',''),
+(20,'Traces',''),
+(21,'Restes imago',''),
+(22,'Exuvie',''),
+(23,'Cocon vide',''),
+(24,'Mue larvaire',''),
+(25,'Terrier larvaire',''),
+(26,'Ponte vide',''),
+(27,'Oothèque',''),
+(28,'Nid','');
 
 INSERT INTO `ordre_has_sous_groupe` (`ordre_ordre_id`,`sous_groupe_sous_groupe_id`) VALUES
 (2,3),

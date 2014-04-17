@@ -75,7 +75,7 @@ public class Observation {
 		if(imago)
 			return 1;
 		else
-			return null;
+			return 7;
 	}
 
 	private Integer getEspece() throws SQLException, IOException {

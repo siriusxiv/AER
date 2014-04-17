@@ -35,8 +35,6 @@ public class StadeSexe extends Model{
 	public Integer stade_sexe_id;
 	@NotNull
 	public String stade_sexe_intitule;
-	@NotNull
-	public String stade_sexe_abreviation;
 	@Column(columnDefinition="TEXT")
 	public String stade_sexe_explication;
 

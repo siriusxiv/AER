@@ -25,6 +25,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import com.avaje.ebean.Expr;
+
 import controllers.ajax.expert.requetes.Calculs;
 import models.Espece;
 import models.FicheHasMembre;
@@ -123,31 +125,59 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 			observations = Observation.find.where()
 								.eq("observation_espece",espece)
 								.eq("observation_validee", Observation.VALIDEE)
-								.isNull("observation_fiche.fiche_date_min")
-								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.or(Expr.and(
+										Expr.isNull("observation_fiche.fiche_date_min"),
+										Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+										),
+									Expr.and(
+										Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
+										Expr.le("observation_fiche.fiche_date", date2.getTime())
+										)
+									)
 								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
 		}else if(sous_groupe!=null){
 			observations = Observation.find.where()
 								.eq("observation_espece.espece_sous_groupe",sous_groupe)
 								.eq("observation_validee", Observation.VALIDEE)
-								.isNull("observation_fiche.fiche_date_min")
-								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.or(Expr.and(
+										Expr.isNull("observation_fiche.fiche_date_min"),
+										Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+										),
+									Expr.and(
+										Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
+										Expr.le("observation_fiche.fiche_date", date2.getTime())
+										)
+									)
 								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
 		}else if(groupe!=null){
 			observations = Observation.find.where()
 								.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
 								.eq("observation_validee", Observation.VALIDEE)
-								.isNull("observation_fiche.fiche_date_min")
-								.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+								.or(Expr.and(
+										Expr.isNull("observation_fiche.fiche_date_min"),
+										Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+										),
+									Expr.and(
+										Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
+										Expr.le("observation_fiche.fiche_date", date2.getTime())
+										)
+									)
 								.in("observation_fiche.fiche_utm", mailles)
 								.findList();
 		}else{
 			observations = Observation.find.where()
 					.eq("observation_validee", Observation.VALIDEE)
-					.isNull("observation_fiche.fiche_date_min")
-					.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+					.or(Expr.and(
+							Expr.isNull("observation_fiche.fiche_date_min"),
+							Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+							),
+						Expr.and(
+							Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
+							Expr.le("observation_fiche.fiche_date", date2.getTime())
+							)
+						)
 					.in("observation_fiche.fiche_utm", mailles)
 					.findList();
 		}
