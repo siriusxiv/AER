@@ -71,7 +71,7 @@ public class SuperFamille extends Model implements Comparator<SuperFamille>{
 	}
 	
 	public static List<SuperFamille> findSuperFamillesExistantes() {
-		return find.where().eq("super_famille_existe", true).findList();
+		return find.where().eq("super_famille_existe", true).orderBy("super_famille_nom").findList();
 	}
 	
 	/**

@@ -126,7 +126,7 @@ public class SousFamille extends Model implements Comparator<SousFamille>{
 	 * @return 
 	 */
 	public static List<SousFamille> findSousFamillesExistantes(){
-		return SousFamille.find.where().eq("sous_famille_existe", true).findList();
+		return SousFamille.find.where().eq("sous_famille_existe", true).orderBy("sous_famille_nom").findList();
 	}
 
 	/**
