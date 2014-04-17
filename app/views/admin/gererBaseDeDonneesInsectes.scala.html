@@ -237,7 +237,9 @@
 							<th>Nom</th>
 							<th>Auteur</th>
 							<th>Systématique</th>
+							<th>Photo</th>
 							<th>Sous-famille</th>
+							<th>Commentaires</th>
 							<th>Synonymes</th>
 						</tr>
 						<tr>
@@ -247,7 +249,16 @@
 							<td>
 								<span id="changerAuteur@espece.espece_id" onDblClick="changerAuteurEspece(@espece.espece_id)">@espece.espece_auteur</span>
 							</td>
-							<td>@espece.espece_systematique</td>
+							<td>
+								<span id="changerSystematique@espece.espece_id" onDblClick="changerSystematiqueEspece(@espece.espece_id)">@espece.espece_systematique</span>
+							</td>
+							<td>
+								<img src="@espece.espece_photo" style="max-width:220px;max-height:200px"></img>
+								<button onClick="afficherChangerPhoto()">Changer</button>
+								<div id="changerPhoto" style="display:none"><form action="/gererBaseDeDonneesInsectes/changerPhoto/@espece.espece_id" method="POST" enctype="multipart/form-data">
+								<input type="file" name="photo" accept="image/*"></input>
+								<button type="submit">&#10004;</button></form></div>
+							</td>
 							<td>
 								<form action="/gererBaseDeDonneesInsectes/changerSousFamille/@espece.espece_id" method="POST">
 								<select id="changerSousFamille" name="changerSousFamille">
@@ -258,6 +269,9 @@
 								</select>
 								<button type="submit">Changer</button>
 								</form>
+							</td>
+							<td onDblClick="changerCommentairesEspece(@espece.espece_id)">
+								<span id="changerCommentaires@espece.espece_id">@espece.espece_commentaires</span>
 							</td>
 							<td>
 								Nom<br>
@@ -274,7 +288,6 @@
 									<form action="/gererBaseDeDonneesInsectes/supprimerSynonyme/@synonyme.synonyme_id" method="POST"><button type="submit" style="color:red;">X</button></form></td>
 									}
 							</td>
-							
 						</tr>
 					</table>
 				</div>
@@ -404,6 +417,32 @@ function changerAuteurEspece(espece_id) {
 		}
 	});
 }
+function changerSystematiqueEspece(espece_id) {
+	var element = $('#changerSystematique'+espece_id);
+	var espece_systematique = element.html();
+	element.replaceWith('<input type="text" value="'+espece_systematique+'" id="nouvelleSystematiqueEspece'+espece_id+'">');
+	$('#nouvelleSystematiqueEspece'+espece_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouv_systematique = $('#nouvelleSystematiqueEspece'+espece_id).val();
+			if(nouv_systematique=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouv_systematique',nouv_systematique);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/changerSystematiqueEspece/'+espece_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouvelleSystematiqueEspece'+espece_id).replaceWith('<span id="changerSystematique'+espece_id+'" onDblClick="changerSytematiqueEspece('+espece_id+')">'+nouv_systematique+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
 function afficherAjouterSynonyme() {
 	if (document.getElementById("ajouterSynonyme").style.display == "none") {
 		document.getElementById("ajouterSynonyme").style.display = "block";
@@ -435,6 +474,39 @@ function changerSynonyme(synonyme_id, synonyme_origineAER) {
 						} else {
 							$('#nouveauSynonyme'+synonyme_id).replaceWith('<span id="changerSynonyme'+synonyme_id+'" onDblClick="changerSynonyme('+synonyme_id+')">'+nouveauSyn+'</span>');
 						}
+					}
+				});
+			}
+		}
+	});
+}
+function afficherChangerPhoto() {
+	if (document.getElementById("changerPhoto").style.display == "none") {
+		document.getElementById("changerPhoto").style.display = "block";
+	} else {
+		document.getElementById("changerPhoto").style.display = "none";
+	}
+}
+function changerCommentairesEspece(espece_id) {
+	var element = $('#changerCommentaires'+espece_id);
+	var espece_commentaires = element.html();
+	element.replaceWith('<input type="text" value="'+espece_commentaires+'" id="nouveauCommentaireEspece'+espece_id+'">');
+	$('#nouveauCommentaireEspece'+espece_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauCommentaire = $('#nouveauCommentaireEspece'+espece_id).val();
+			if(nouveauCommentaire=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauCommentaire',nouveauCommentaire);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/changerCommentaireEspece/'+espece_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauCommentaireEspece'+espece_id).replaceWith('<span id="changerCommentaire'+espece_id+'" onDblClick="changerCommentaireEspece('+espece_id+')">'+nouveauCommentaire+'</span>');
 					}
 				});
 			}
