@@ -1,9 +1,12 @@
 package controllers.expert;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import controllers.admin.Admin;
+import functions.excels.exports.ObservationsValidesExcel;
 import models.Espece;
 import models.Fiche;
 import models.FicheHasMembre;
@@ -118,6 +121,23 @@ public class TemoignagesValidees extends Controller {
 			return redirect("/temoignagesValides/"+groupe_id+"/1/observation_date_validation/desc");
 		}else
 			return Admin.nonAutorise();
+	}
+	/**
+	 * permet de créer le fichier excel de la liste voulue avec les différents paramètres de filtres/tri voulus.
+	 *  Si on prend toutes les espèces espèce_id=0, si on prend tout les membres membre_nom="". 
+	 * @param espece_id
+	 * @param membre_nom
+	 * @param orderBy
+	 * @param dir
+	 * @param groupe_id
+	 * @return
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	public static Result exportExcelTemoignagesValidees(Integer espece_id, String membre_nom, String orderBy, String dir, Integer groupe_id) throws ParseException, IOException{
+		ObservationsValidesExcel ove = new ObservationsValidesExcel(espece_id,membre_nom, orderBy, dir, groupe_id);
+		ove.writeToDisk();
+		return redirect("/temoignagesValides/"+groupe_id+"/1/observation_date_validation/desc");
 	}
 
 }
