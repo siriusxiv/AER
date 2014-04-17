@@ -64,11 +64,11 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 
 	public static List<TemoinsParPeriode> calculeTemoinsParPeriode(Map<String,String> info) throws ParseException {
 		List<TemoinsParPeriode> temoins = new ArrayList<TemoinsParPeriode>();
-		List<Observation> observations = TemoinsParPeriode.getObservations(info);
+		List<InformationsComplementaires> complements = TemoinsParPeriode.getObservations(info);
 		//On commence la génération des témoins par période.
 		int i=0;
-		for(Observation observation : observations){
-			List<FicheHasMembre> fhms = FicheHasMembre.find.where().eq("fiche", observation.getFiche()).findList();
+		for(InformationsComplementaires complement : complements){
+			List<FicheHasMembre> fhms = FicheHasMembre.find.where().eq("fiche", complement.informations_complementaires_observation.getFiche()).findList();
 			if(i%1000==0){System.out.println(i);}
 			for(FicheHasMembre fhm : fhms){
 				int position;
@@ -106,96 +106,88 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 	 * @return
 	 * @throws ParseException
 	 */
-	public static List<Observation> getObservations(Map<String,String> info) throws ParseException{
+	public static List<InformationsComplementaires> getObservations(Map<String,String> info) throws ParseException{
 		Espece espece = Espece.find.byId(Integer.parseInt(info.get("espece")));
 		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
 		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
 		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
-		List<StadeSexe> stades_sexes = null;
+		List<StadeSexe> stades_sexes;
 		if(stade_sexe!=null){
 			stades_sexes=new ArrayList<StadeSexe>();
 			stades_sexes.add(stade_sexe);
 			stades_sexes.addAll(stade_sexe.getStadeSexeFilsPourTelGroupe(groupe));
+		}else{
+			stades_sexes=StadeSexe.findAll();
 		}
 		List<UTMS> mailles = UTMS.parseMaille(info.get("maille"));
 		Calendar date1 = Calculs.getDataDate1(info);
 		Calendar date2 = Calculs.getDataDate2(info);
-		List<Observation> observations;
+		List<InformationsComplementaires> complements;
 		if(espece!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece",espece)
-								.eq("observation_validee", Observation.VALIDEE)
+			complements = InformationsComplementaires.find.where()
+								.eq("informations_complementaires_observation.observation_espece",espece)
+								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 								.or(Expr.and(
-										Expr.isNull("observation_fiche.fiche_date_min"),
-										Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+										Expr.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min"),
+										Expr.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 										),
 									Expr.and(
-										Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
-										Expr.le("observation_fiche.fiche_date", date2.getTime())
+										Expr.ge("informations_complementaires_observation.observation_fiche.fiche_date_min", date1.getTime()),
+										Expr.le("informations_complementaires_observation.observation_fiche.fiche_date", date2.getTime())
 										)
 									)
-								.in("observation_fiche.fiche_utm", mailles)
+								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
+								.in("informations_complementaires_stade_sexe", stades_sexes)
 								.findList();
 		}else if(sous_groupe!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece.espece_sous_groupe",sous_groupe)
-								.eq("observation_validee", Observation.VALIDEE)
+			complements = InformationsComplementaires.find.where()
+								.eq("informations_complementaires_observation.observation_espece.espece_sous_groupe",sous_groupe)
+								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 								.or(Expr.and(
-										Expr.isNull("observation_fiche.fiche_date_min"),
-										Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+										Expr.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min"),
+										Expr.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 										),
 									Expr.and(
-										Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
-										Expr.le("observation_fiche.fiche_date", date2.getTime())
+										Expr.ge("informations_complementaires_observation.observation_fiche.fiche_date_min", date1.getTime()),
+										Expr.le("informations_complementaires_observation.observation_fiche.fiche_date", date2.getTime())
 										)
 									)
-								.in("observation_fiche.fiche_utm", mailles)
+								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
+								.in("informations_complementaires_stade_sexe", stades_sexes)
 								.findList();
 		}else if(groupe!=null){
-			observations = Observation.find.where()
-								.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
-								.eq("observation_validee", Observation.VALIDEE)
+			complements = InformationsComplementaires.find.where()
+								.eq("informations_complementaires_observation.observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
+								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 								.or(Expr.and(
-										Expr.isNull("observation_fiche.fiche_date_min"),
-										Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+										Expr.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min"),
+										Expr.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 										),
 									Expr.and(
-										Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
-										Expr.le("observation_fiche.fiche_date", date2.getTime())
+										Expr.ge("informations_complementaires_observation.observation_fiche.fiche_date_min", date1.getTime()),
+										Expr.le("informations_complementaires_observation.observation_fiche.fiche_date", date2.getTime())
 										)
 									)
-								.in("observation_fiche.fiche_utm", mailles)
+								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
+								.in("informations_complementaires_stade_sexe", stades_sexes)
 								.findList();
 		}else{
-			observations = Observation.find.where()
-					.eq("observation_validee", Observation.VALIDEE)
+			complements = InformationsComplementaires.find.where()
+					.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
 					.or(Expr.and(
-							Expr.isNull("observation_fiche.fiche_date_min"),
-							Expr.between("observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+							Expr.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min"),
+							Expr.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
 							),
 						Expr.and(
-							Expr.ge("observation_fiche.fiche_date_min", date1.getTime()),
-							Expr.le("observation_fiche.fiche_date", date2.getTime())
+							Expr.ge("informations_complementaires_observation.observation_fiche.fiche_date_min", date1.getTime()),
+							Expr.le("informations_complementaires_observation.observation_fiche.fiche_date", date2.getTime())
 							)
 						)
-					.in("observation_fiche.fiche_utm", mailles)
+					.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
+					.in("informations_complementaires_stade_sexe", stades_sexes)
 					.findList();
 		}
-		//On enlève les stades/sexes non concernés
-		List<Observation> observationsAvecStadeSexe = new ArrayList<Observation>();
-		if(stade_sexe!=null){
-			for(Observation observation : observations){
-				List<InformationsComplementaires> complements = InformationsComplementaires.find.where().eq("informations_complementaires_observation", observation).findList();
-				for(InformationsComplementaires complement : complements){
-					if(stades_sexes.contains(complement.informations_complementaires_stade_sexe)
-							&& !observationsAvecStadeSexe.contains(observation)){
-						observationsAvecStadeSexe.add(observation);
-					}
-				}
-			}
-			observations = observationsAvecStadeSexe;
-		}
-		return observations;
+		return complements;
 	}
 	
 	/**
