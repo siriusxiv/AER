@@ -92,8 +92,13 @@ public class RowCheck {
 		cell = row.getCell(1);
 		if(cell!=null){
 			sexe = cell.getStringCellValue();
-			if((stade_sexe=StadeSexe.find.where().eq("stade_sexe_abreviation",sexe).findUnique())==null)
-				addError("Le stade/sexe "+sexe+" n'existe pas.");
+			if(sexe!=null && !sexe.equals("")){
+				if((stade_sexe=StadeSexe.find.where().eq("stade_sexe_intitule",sexe).findUnique())==null)
+					addError("Le stade/sexe "+sexe+" n'existe pas.");
+				if(stade_sexe!=null && !espece.getGroupe().getStadesSexes().contains(stade_sexe)){
+					addError("Le stade/sexe "+stade_sexe+" n'est pas valable pour le groupe "+espece.getGroupe());
+				}
+			}
 		}
 		cell = row.getCell(2);
 		if(cell!=null){

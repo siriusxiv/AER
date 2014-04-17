@@ -1,9 +1,11 @@
 package controllers.expert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import controllers.admin.Admin;
 import models.Espece;
+import models.Fiche;
 import models.FicheHasMembre;
 import models.Groupe;
 import models.Observation;
@@ -77,17 +79,17 @@ public class TemoignagesValidees extends Controller {
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		if(MenuExpert.isExpertOn(groupe)){
 			Integer valide=Observation.VALIDEE;
-			List<Observation> observation= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).orderBy(orderBy+" "+dir).findList();
-			List<Observation> observations= Observation.find.where().eq("observation_validee",valide).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
-			observations.clear();
- 			for (Observation o : observation){
-				List<FicheHasMembre> fhms =o.observation_fiche.getFicheHasMembre();
-				for (FicheHasMembre fhm : fhms){
-					if(fhm.membre.membre_nom.equals(membre_nom)){
-						observations.add(o);
-					}
-				}
+			List<FicheHasMembre> fhms= FicheHasMembre.find.where().eq("membre.membre_nom", membre_nom).findList();
+			List<Fiche> fiches= new ArrayList<Fiche>();
+			for (FicheHasMembre fhm: fhms){
+				fiches.add(fhm.fiche);
 			}
+			List<Observation> observations= Observation.find.where()
+							.eq("observation_validee",valide)
+							.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
+							.in("observation_fiche",fiches)
+							.orderBy(orderBy+" "+dir)
+							.findList();
 			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
 			Integer premierObservation=Math.min(((page-1)*50),observations.size() );
 			Integer dernierObservation=Math.min((page*50-1), observations.size());

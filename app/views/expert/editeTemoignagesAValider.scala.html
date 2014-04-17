@@ -16,6 +16,7 @@
  *   
  ********************************************************************************@
 @(observation: Observation, listUtms: List[UTMS], listEspece: List[Espece])
+		
  		 <form id="edite@observation.observation_id" action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
  		 <table>
  		 <tr>
@@ -62,3 +63,4 @@
         				</tr>
         				</table>
     </form>
+    <button onclick="location.reload()">Annuler</button>
