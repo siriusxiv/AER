@@ -27,6 +27,7 @@ GET     /temoignagesAValider/enSuspens/:groupe_id	     controllers.expert.Valide
 POST    /temoignagesAValider/vu/:groupe_id/:observation_id	 			controllers.expert.ValiderObservations.marquerVu(observation_id: Long, groupe_id: Integer)
 POST    /temoignagesAValider/valide/:groupe_id/:observation_id			controllers.expert.ValiderObservations.valide(observation_id: Long, groupe_id: Integer)
 POST    /temoignagesAValider/editer/:groupe_id/:observation_id			controllers.expert.ValiderObservations.editer(observation_id: Long, groupe_id: Integer)
+POST    /temoignagesAValider/supprime/:groupe_id/:observation_id			controllers.expert.ValiderObservations.supprimer(observation_id: Long, groupe_id: Integer)
 GET		/temoignagesAValider/edite/:groupe_id/:observation_id			controllers.expert.ValiderObservations.editeTemoignage(observation_id: Long, groupe_id: Integer)
 GET     /temoignagesValides/:groupe_id/:page/:orderBy/:dir        		controllers.expert.TemoignagesValidees.observationsValidees(groupe_id: Integer, page: Integer, orderBy: String, dir: String)
 GET     /temoignagesValides/espece/:groupe_id/:espece_id/:page/:orderBy/:dir		controllers.expert.TemoignagesValidees.observationsValideesEspece(groupe_id: Integer, page: Integer, espece_id:Integer, orderBy: String, dir: String)

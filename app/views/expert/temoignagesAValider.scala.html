@@ -24,7 +24,7 @@
 	</header>
 	<h2>Sélectionner le type de témoignage voulus</h2>
 	<form action="/temoignagesAValider/@groupe.groupe_id" method="GET"><button type="submit">Non Vus</button></form>
-	<form action="/temoignagesAValider/enSuspens/@groupe.groupe_id" method="GET"><button type="submit">En Suspend</button></form>
+	<form action="/temoignagesAValider/enSuspens/@groupe.groupe_id" method="GET"><button type="submit">En Suspens</button></form>
 
         
 <span id="editObservation"></span>
@@ -32,6 +32,7 @@
         	<tr>
         		
         		<th>Témoins</th>
+        		<th>Mail</th>
         		<th>Espèce</th>
         		<th>Déterminateur</th>
         		<th>Commentaires</th>
@@ -45,11 +46,14 @@
         		<th>Date de dernière modification</th>
         		<th>Marquer comme Vu/Valider</th>
         		<th>Editer l'Observation</th>
+        		<th>Supprimer l'Observation</th>
         	</tr>
         	@for(observation <- listObservation) {
         	<tr id="editObservation@observation.observation_id">
         	
         		<td>@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){ @ficheHasMembre.membre} 
+        		</td>
+        		<td>@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){ @ficheHasMembre.membre.membre_email} 
         		</td>
         		<td>@observation.observation_espece.espece_nom</td>
         		<td>@observation.observation_determinateur</td>
@@ -71,6 +75,9 @@
         		<input type="button" onclick="confirmValider(@observation.observation_id)" value="Valider"></form>}else{}}</td>
         		<td>@if(observation.estEnSuspend()){
         		@observation.observation_id<button type="button" onclick="edite(@observation.observation_id, @groupe.groupe_id)">editer</button>}else{} </td>
+        		<td>@if(observation.estEnSuspend()){
+        		<form id="supprime@observation.observation_id" action="/temoignagesAValider/supprime/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
+        		<input type="button" onclick="confirmSupprimer(@observation.observation_id)" value="Supprimer"></form>}else{}</td>
         	</tr>}
         </table>
     
@@ -108,4 +115,13 @@ function confirmEditer(observation_id){
 		else
 		{}
 	}
+function confirmSupprimer(observation_id){
+	var r=confirm("Etes-vous sûr de vouloir supprimer cette observation?");
+	if(r==true)
+		{
+		document.getElementById("supprime"+observation_id).submit();
+		}
+		else
+		{}
+}
 </script>}

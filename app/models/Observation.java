@@ -159,6 +159,9 @@ public class Observation extends Model {
 		this.observation_validee=Observation.VALIDEE;
 	}
 
+	public void supprimer(){
+		this.observation_validee=Observation.NON_VALIDEE;
+	}
 	/**
 	 * Renvoie true si l'observation est validée, false sinon.
 	 * @return

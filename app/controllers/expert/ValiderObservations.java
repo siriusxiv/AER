@@ -121,6 +121,19 @@ public class ValiderObservations extends Controller {
 		else
 			return Admin.nonAutorise();
 	}
+	
+	public static Result supprimer(Long id, Integer groupe_id){
+		Groupe groupe = Groupe.find.byId(groupe_id);
+		if(MenuExpert.isExpertOn(groupe)){
+		Observation observation = Observation.find.byId(id);
+		if (observation!=null){
+			observation.supprimer();
+		}
+		observation.save();
+		return redirect("/temoignagesAValider/enSuspens/"+groupe_id);}
+		else
+			return Admin.nonAutorise();
+	}
 	/**
 	 * Permet à un expert de changer les valeurs d'une observation 
 	 * @param observation_id
