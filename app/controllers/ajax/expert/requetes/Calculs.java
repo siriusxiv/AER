@@ -30,6 +30,7 @@ import controllers.ajax.expert.requetes.calculs.CarteSomme;
 import controllers.ajax.expert.requetes.calculs.CarteSommeBiodiversite;
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.exports.CarteBiodiversiteExcel;
 import functions.excels.exports.CarteSommeBiodiversiteExcel;
 import functions.excels.exports.CarteSommeExcel;
 import functions.excels.exports.HistogrammeDesImagosExcel;

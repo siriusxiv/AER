@@ -22,6 +22,7 @@ import java.util.Map;
 import models.Espece;
 import models.Groupe;
 import models.SousGroupe;
+import models.StadeSexe;
 import models.UTMS;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -40,7 +41,7 @@ public class CarteSommeExcel extends Excel {
 		Espece espece = Espece.find.byId(Integer.parseInt(info.get("espece")));
 		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
 		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
-		String maille = info.get("maille");
+		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
 		String date1 = info.get("jour1")+"/"+info.get("mois1")+"/"+info.get("annee1");
 		String date2 = info.get("jour2")+"/"+info.get("mois2")+"/"+info.get("annee2");
 		String titre = "Carte indiquant le nombre d'observations ";
@@ -50,8 +51,8 @@ public class CarteSommeExcel extends Excel {
 			titre+="de "+sous_groupe;
 		else if(groupe!=null)
 			titre+="de "+groupe;
-		if(!maille.equals(""))
-			titre+=" dans la maille "+maille;
+		if(stade_sexe!=null)
+			titre+=" au stade "+stade_sexe;
 		titre+=" du "+date1+" au "+date2;
 		titre+=" ("+cs.getSomme()+" témoignages)";
 		sheet.createRow(0).createCell(0).setCellValue(titre);
