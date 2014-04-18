@@ -33,6 +33,7 @@ create table commune (
   ville_population_2010_order_france INT(10) UNSIGNED,
   ville_densite_2010_order_france INT(10) UNSIGNED,
   ville_surface_order_france INT(10) UNSIGNED,
+  ville_nom_aer             varchar(255),
   constraint pk_commune primary key (ville_id))
 ;
 

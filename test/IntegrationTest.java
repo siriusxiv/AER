@@ -43,6 +43,9 @@ import models.SuperFamille;
 
 import org.junit.*;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlUpdate;
+
 import controllers.ajax.Listes;
 import functions.UTMtoXY;
 import functions.credentials.Credentials;
@@ -97,7 +100,9 @@ public class IntegrationTest {
             	
             	//testDoublonCommune();
             	
-            	testUTMtoXY();
+            	//testUTMtoXY();
+            	
+            	metAJourNomAERCommunes();
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");
@@ -210,7 +215,29 @@ public class IntegrationTest {
 	private void testUTMtoXY() throws NumberFormatException {
     	int[] xy = UTMtoXY.convert10x10("WT25");
     	System.out.println(xy[0]);
-    	System.out.println(xy[1]);
-		
+    	System.out.println(xy[1]);		
+	}
+
+	/**
+	 * Pour utiliser les noms de commune dicté par AER : c'est-à-dire
+	 * en minuscule avec des articles.
+	 */
+	private void metAJourNomAERCommunes() {
+		for(Commune c : Commune.find.all()){
+			if(c.ville_nom.startsWith("LA "))
+				c.ville_nom_aer="La "+c.ville_nom_reel;
+			else if(c.ville_nom.startsWith("LE "))
+				c.ville_nom_aer="Le "+c.ville_nom_reel;
+			else if(c.ville_nom.startsWith("LES "))
+				c.ville_nom_aer="Les "+c.ville_nom_reel;
+			else if(c.ville_nom.startsWith("L'"))
+				c.ville_nom_aer="L'"+c.ville_nom_reel;
+			else
+				c.ville_nom_aer=c.ville_nom_reel;
+			SqlUpdate update = Ebean.createSqlUpdate("UPDATE commune SET ville_nom_aer=:aer WHERE ville_id=:id")
+					.setParameter("aer", c.ville_nom_aer)
+					.setParameter("id", c.ville_id);
+			update.execute();
+		}
 	}
 }

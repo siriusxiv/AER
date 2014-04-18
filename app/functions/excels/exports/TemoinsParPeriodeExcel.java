@@ -65,7 +65,10 @@ public class TemoinsParPeriodeExcel extends Excel{
 	            0, //first column (0-based)
 	            9  //last column  (0-based)
 	    ));
-		int i = 1;
+		Row rowHead = sheet.createRow(1);
+		rowHead.createCell(0).setCellValue("Témoin");
+		rowHead.createCell(1).setCellValue("Nombre de témoignages");
+		int i = 2;
 		for(TemoinsParPeriode temoin : temoins){
 			Row row = sheet.createRow(i);
 			row.createCell(0);
@@ -74,5 +77,7 @@ public class TemoinsParPeriodeExcel extends Excel{
 			sheet.getRow(i).getCell(1).setCellValue(temoin.nombreDeTemoignages);
 			i++;
 		}
+		sheet.autoSizeColumn(0);
+		sheet.autoSizeColumn(1);
 	}
 }

@@ -160,7 +160,7 @@ function carteSommeBiodiversite(){
 }
 function chronologieDUnTemoin(){
 	var donnees = new Donnees();
-	if(mailleValide(donnees) && donnees.temoinValide() && donnees.temoin!=''){
+	if(mailleValide(donnees) && donnees.temoinValide() && donnees.temoin!='' && donnees.datesValides()){
 		$('#message').html('');
 		patientez();
 		$.ajax({

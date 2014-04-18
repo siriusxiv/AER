@@ -96,6 +96,7 @@ public class Commune extends Model {
 	public Integer ville_densite_2010_order_france;
 	@Column(columnDefinition="INT(10) UNSIGNED")
 	public Integer ville_surface_order_france;
+	public String ville_nom_aer;
 	
 	public static Finder<Integer,Commune> find = new Finder<Integer,Commune>(Integer.class, Commune.class);
 
