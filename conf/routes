@@ -54,7 +54,7 @@ GET		/telechargerRapport/:filename	controllers.expert.requetes.ConsulterDonnees.
 GET     /menuAdmin                   controllers.admin.Admin.menuAdmin()
 GET     /assignerExperts             controllers.admin.AssignerExpert.main()
 POST 	/assignerExpert/ajouter/:groupe_id		controllers.admin.AssignerExpert.ajouter(groupe_id: Integer)
-POST 	/assignerExpert/changer/:groupe_id		controllers.admin.AssignerExpert.changer(groupe_id: Integer)
+POST 	/assignerExpert/retrograder/:mieog_id	controllers.admin.AssignerExpert.retrograder(mieog_id: Integer)
 GET     /demandesInscription         			controllers.admin.DemandesInscription.main()
 POST    /demandesInscription/valider/:membre_id	controllers.admin.DemandesInscription.valideInscription(membre_id: Integer)
 POST    /demandesInscription/refuser/:membre_id	controllers.admin.DemandesInscription.refuserInscription(membre_id: Integer)
