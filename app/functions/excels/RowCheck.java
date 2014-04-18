@@ -20,8 +20,11 @@ package functions.excels;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.PersistenceException;
+
 import models.Commune;
 import models.Espece;
+import models.EspeceSynonyme;
 import models.Fiche;
 import models.FicheHasMembre;
 import models.InformationsComplementaires;
@@ -86,17 +89,30 @@ public class RowCheck {
 			addError("Pas d'espèce.");
 		else{
 			espece_nom = cell.getStringCellValue();
-			if((espece=Espece.find.where().eq("espece_nom", espece_nom).findUnique())==null)
-				addError("L'espèce "+espece_nom+" n'existe pas.");
+			if((espece=Espece.find.where().eq("espece_nom", espece_nom).findUnique())==null){
+				try{
+					EspeceSynonyme syn = EspeceSynonyme.find.where().eq("synonyme_nom", espece_nom).findUnique();
+					if(syn!=null)
+						espece=syn.synonyme_espece;
+					else
+						addError("L'espèce "+espece_nom+" n'existe pas.");
+				}catch(PersistenceException e){
+					addError("Deux espèces synonymes ont le même nom : "+espece_nom);
+				}
+			}
 		}
 		cell = row.getCell(1);
 		if(cell!=null){
 			sexe = cell.getStringCellValue();
 			if(sexe!=null && !sexe.equals("")){
-				if((stade_sexe=StadeSexe.find.where().eq("stade_sexe_intitule",sexe).findUnique())==null)
-					addError("Le stade/sexe "+sexe+" n'existe pas.");
-				if(stade_sexe!=null && !espece.getGroupe().getStadesSexes().contains(stade_sexe)){
-					addError("Le stade/sexe "+stade_sexe+" n'est pas valable pour le groupe "+espece.getGroupe());
+				if(sexe.equals("oeuf") || sexe.equals("OEuf") || sexe.equals("Oeuf"))
+					stade_sexe=StadeSexe.find.byId(6);
+				else{
+					if((stade_sexe=StadeSexe.find.where().eq("stade_sexe_intitule",sexe).findUnique())==null)
+						addError("Le stade/sexe "+sexe+" n'existe pas.");
+					if(stade_sexe!=null && espece!=null && !espece.getGroupe().getStadesSexes().contains(stade_sexe)){
+						addError("Le stade/sexe "+stade_sexe+" n'est pas valable pour le groupe "+espece.getGroupe());
+					}
 				}
 			}
 		}
