@@ -139,6 +139,10 @@ public class Groupe extends Model {
 		for(StadeSexeHierarchieDansGroupe sshdsg : sshdsgs){
 			sshdsg.delete();
 		}
+		List<DateCharniere> dates_charnieres = DateCharniere.find.where().eq("date_charniere_groupe", this).findList();
+		for(DateCharniere date_charniere : dates_charnieres){
+			date_charniere.delete();
+		}
 		this.delete();
 	}
 	
