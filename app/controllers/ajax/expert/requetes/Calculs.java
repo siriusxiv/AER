@@ -25,8 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controllers.ajax.expert.requetes.calculs.CarteSomme;
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.exports.CarteSommeExcel;
 import functions.excels.exports.HistogrammeDesImagosExcel;
 import functions.excels.exports.TemoinsParPeriodeExcel;
 import play.data.DynamicForm;
@@ -34,6 +36,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.requetes.ajax.resultats.temoinsParPeriode;
 import views.html.expert.requetes.ajax.resultats.histogrammeDesImagos;
+import views.html.expert.requetes.ajax.resultats.carteSomme;
 
 public class Calculs extends Controller {
 	
@@ -52,6 +55,14 @@ public class Calculs extends Controller {
 		HistogrammeDesImagosExcel hdie = new HistogrammeDesImagosExcel(info,hdi);
 		hdie.writeToDisk();
 		return ok(histogrammeDesImagos.render(hdi,info,hdie.getFileName()));
+	}
+	public static Result carteSomme() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		CarteSomme cs = new CarteSomme(info);
+		CarteSommeExcel cse = new CarteSommeExcel(info,cs);
+		cse.writeToDisk();
+		return ok(carteSomme.render(cs,info,cse.getFileName()));
 	}
 	
 	/**
