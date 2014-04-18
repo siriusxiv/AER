@@ -158,6 +158,28 @@ function carteSommeBiodiversite(){
 		});
 	}
 }
+function chronologieDUnTemoin(){
+	var donnees = new Donnees();
+	if(mailleValide(donnees) && donnees.temoinValide() && donnees.temoin!=''){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/chronologieDUnTemoin',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}else{
+		$('#message').html('La maille est invalide, ou bien le témoin n\'existe pas.');
+	}
+}
 function mailleValide(donnees){
 	return $.inArray(donnees.maille, listeUTMS)>=0 || donnees.maille=='';
 }
