@@ -128,6 +128,8 @@ GET		/ajax/consulter/infoDates/:groupe_id					controllers.ajax.expert.requetes.R
 POST	/ajax/temoinsParPeriode						controllers.ajax.expert.requetes.Calculs.temoinsParPeriode()
 POST	/ajax/histogrammeDesImagos					controllers.ajax.expert.requetes.Calculs.histogrammeDesImagos()
 POST	/ajax/carteSomme							controllers.ajax.expert.requetes.Calculs.carteSomme()
+POST	/ajax/carteSommeBiodiversite				controllers.ajax.expert.requetes.Calculs.carteSommeBiodiversite()
+POST	/ajax/carteBiodiversite						controllers.ajax.expert.requetes.Calculs.carteBiodiversite()
 
 #Routes AJAX pour gérer la Base De Données des Insectes
 POST	/ajax/gererBaseDeDonneesInsectes/renommerEspece/:espece_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerEspece(espece_id: Integer)		

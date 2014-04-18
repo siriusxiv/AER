@@ -25,9 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controllers.ajax.expert.requetes.calculs.CarteBiodiversite;
 import controllers.ajax.expert.requetes.calculs.CarteSomme;
+import controllers.ajax.expert.requetes.calculs.CarteSommeBiodiversite;
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.exports.CarteSommeBiodiversiteExcel;
 import functions.excels.exports.CarteSommeExcel;
 import functions.excels.exports.HistogrammeDesImagosExcel;
 import functions.excels.exports.TemoinsParPeriodeExcel;
@@ -37,6 +40,8 @@ import play.mvc.Result;
 import views.html.expert.requetes.ajax.resultats.temoinsParPeriode;
 import views.html.expert.requetes.ajax.resultats.histogrammeDesImagos;
 import views.html.expert.requetes.ajax.resultats.carteSomme;
+import views.html.expert.requetes.ajax.resultats.carteSommeBiodiversite;
+import views.html.expert.requetes.ajax.resultats.carteBiodiversite;
 
 public class Calculs extends Controller {
 	
@@ -63,6 +68,22 @@ public class Calculs extends Controller {
 		CarteSommeExcel cse = new CarteSommeExcel(info,cs);
 		cse.writeToDisk();
 		return ok(carteSomme.render(cs,info,cse.getFileName()));
+	}
+	public static Result carteSommeBiodiversite() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		CarteSommeBiodiversite csb = new CarteSommeBiodiversite(info);
+		CarteSommeBiodiversiteExcel csbe = new CarteSommeBiodiversiteExcel(info,csb);
+		csbe.writeToDisk();
+		return ok(carteSommeBiodiversite.render(csb,info,csbe.getFileName()));
+	}
+	public static Result carteBiodiversite() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		CarteBiodiversite cb = new CarteBiodiversite(info);
+		CarteBiodiversiteExcel cbe = new CarteBiodiversiteExcel(info,cb);
+		cbe.writeToDisk();
+		return ok(carteBiodiversite.render(cb,info,cbe.getFileName()));
 	}
 	
 	/**
