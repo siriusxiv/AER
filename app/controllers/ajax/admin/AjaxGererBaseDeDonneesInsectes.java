@@ -17,6 +17,7 @@
  ********************************************************************************/
 package controllers.ajax.admin;
 
+import java.util.List;
 import controllers.admin.Admin;
 import models.Espece;
 import models.EspeceSynonyme;
@@ -57,6 +58,56 @@ public class AjaxGererBaseDeDonneesInsectes extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
+	
+	/**
+	* Change la systématique de l'espèce et remet tout dans le bon ordre
+	* @param nouv_systematique
+	 * @param espece_id
+	 * @return
+	 */
+	 public static Result changerSystematiqueEspece(Integer espece_id){
+	 	 if (Admin.isAdminConnected()){
+	 	 	 Espece espece = Espece.find.byId(espece_id);
+	 	 	 DynamicForm df = DynamicForm.form().bindFromRequest();
+	 	 	 String nouvelle_systematique = df.get("nouv_systematique");
+	 	 	 Integer nouv_systematique = Integer.parseInt(nouvelle_systematique);
+	 	 	 if(espece.espece_systematique < nouv_systematique){
+	 	 	 	List<Espece> especesEntre = Espece.find.where().gt("espece_systematique",espece.espece_systematique).le("espece_systematique",nouv_systematique).findList();
+	 	 	 	for (Espece e : especesEntre){
+	 	 	 	 	e.espece_systematique--;
+	 	 	 	 	e.save();
+	 	 	 	}
+	 	 	 espece.espece_systematique = nouv_systematique;
+	 	 	 espece.save();
+	 	 	 } else {
+	 	 	 	List<Espece> especesEntre = Espece.find.where().lt("espece_systematique",espece.espece_systematique).ge("espece_systematique",nouv_systematique).findList();
+	 	 	 	for (Espece e : especesEntre){
+	 	 	 	 	e.espece_systematique++;
+	 	 	 	 	e.save();
+	 	 	 	}
+	 	 	 espece.espece_systematique = nouv_systematique;
+	 	 	 espece.save();
+	 	 	 }
+	 	 	 return redirect("/gererBaseDeDonneesInsectes");
+	 	 } else 
+	 	 	return Admin.nonAutorise();
+	 }
+	
+	/**
+	* Change le commentaire associé à l'espèce
+	* @param espece_id
+	 * @return
+	 */
+	 public static Result changerCommentaireEspece(Integer espece_id){
+	 	 if(Admin.isAdminConnected()){
+	 	 	 Espece espece = Espece.find.byId(espece_id);
+	 	 	 DynamicForm df = DynamicForm.form().bindFromRequest();
+	 	 	 espece.espece_commentaires=df.get("nouveauCommentaire");
+	 	 	 espece.save();
+	 	 	 return redirect("/gererBaseDeDonneesInsectes");
+	 	 } else 
+	 	 	return Admin.nonAutorise();
+	 }
 	
 	/**
 	* Change le synonyme dans la base de données

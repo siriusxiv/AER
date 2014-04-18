@@ -36,7 +36,7 @@ public class Image extends Model {
 
 	public Image(String image_nom){
 		this.image_nom=image_nom;
-		image_chemin=this.idSuivante()+"_"+image_nom;
+		 this.image_chemin=this.idSuivante()+"_"+image_nom;
 	}
 	
 	/**

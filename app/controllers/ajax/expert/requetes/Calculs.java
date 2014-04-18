@@ -27,6 +27,7 @@ import java.util.Map;
 
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.exports.HistogrammeDesImagosExcel;
 import functions.excels.exports.TemoinsParPeriodeExcel;
 import play.data.DynamicForm;
 import play.mvc.Controller;
@@ -48,7 +49,9 @@ public class Calculs extends Controller {
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		Map<String,String> info = getData(df);
 		HistogrammeDesImagos hdi = new HistogrammeDesImagos(info);
-		return ok(histogrammeDesImagos.render(hdi,info));
+		HistogrammeDesImagosExcel hdie = new HistogrammeDesImagosExcel(info,hdi);
+		hdie.writeToDisk();
+		return ok(histogrammeDesImagos.render(hdi,info,hdie.getFileName()));
 	}
 	
 	/**

@@ -40,7 +40,7 @@ public class UploadImage {
 			File image = filePart.getFile();
 			String fileName = filePart.getFilename();
 			Image i = new Image(fileName);
-			String path = Play.application().configuration().getString("image.path")+i.image_nom;
+			String path = Play.application().configuration().getString("image.path")+i.image_chemin;
 			File destinationFile = new File(path);
 		    FileUtils.copyFile(image, destinationFile);
 		    i.save();

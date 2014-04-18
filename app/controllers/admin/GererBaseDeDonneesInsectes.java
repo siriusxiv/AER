@@ -37,6 +37,9 @@ import play.mvc.Http.MultipartFormData;
 import javax.naming.NamingException;
 import javax.persistence.PersistenceException; 
 
+import java.io.File;
+import java.io.IOException;
+
 import functions.UploadImage;
 import views.html.admin.gererBaseDeDonneesInsectes;
 
@@ -247,6 +250,22 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		} else {
 			return Admin.nonAutorise();
 		}
+	}
+	
+	/**Change la photo associée à l'espèce
+	* @return
+	*/
+	public static Result changerPhoto(Integer espece_id) throws IOException {
+		if(Admin.isAdminConnected()){
+			Espece espece = Espece.find.byId(espece_id);
+			MultipartFormData body = request().body().asMultipartFormData();
+			FilePart fp = body.getFile("photo");
+			Image photo = UploadImage.upload(fp);
+			espece.espece_photo = photo;
+			espece.save();
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else 
+			return Admin.nonAutorise();
 	}
 	
 	/** Change la sous-famille d'une espèce
