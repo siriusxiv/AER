@@ -31,6 +31,7 @@ import models.UTMS;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -111,10 +112,17 @@ public class CarteSommeBiodiversiteExcel extends Excel {
 			if(sheet.getRow(k)==null)
 				sheet.createRow(k);
 		}
+		CellStyle redBackGround = wb.createCellStyle();
+		redBackGround.setFillBackgroundColor(IndexedColors.RED.getIndex());
+		redBackGround.setFillPattern(CellStyle.BIG_SPOTS);
 		for(UTMS utm : csb.carte.keySet()){
 			int xy[] = UTMtoXY.convert10x10(utm.utm);
 			Row row = sheet.getRow(xy[1]+1);
-			row.createCell(xy[0]+5).setCellValue(csb.getNombreDEspecesDansMaille(utm));
+			Cell cell = row.createCell(xy[0]+5);
+			int nombreDEspeces = csb.getNombreDEspecesDansMaille(utm);
+			cell.setCellValue(nombreDEspeces);
+			if(nombreDEspeces!=0)
+				cell.setCellStyle(redBackGround);
 		}
 		for(int k = 5 ; k<25 ; k++){
 			sheet.autoSizeColumn(k);

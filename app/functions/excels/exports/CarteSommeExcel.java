@@ -25,6 +25,9 @@ import models.SousGroupe;
 import models.StadeSexe;
 import models.UTMS;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -65,10 +68,20 @@ public class CarteSommeExcel extends Excel {
 		for(int i = 1 ; i<=20 ; i++){
 			sheet.createRow(i);
 		}
+		CellStyle redBackGround = wb.createCellStyle();
+		redBackGround.setFillBackgroundColor(IndexedColors.RED.getIndex());
+		redBackGround.setFillPattern(CellStyle.BIG_SPOTS);
 		for(UTMS utm : cs.carte.keySet()){
 			int xy[] = UTMtoXY.convert10x10(utm.utm);
 			Row row = sheet.getRow(xy[1]+1);
-			row.createCell(xy[0]).setCellValue(cs.carte.get(utm));
+			Cell cell = row.createCell(xy[0]);
+			int nombre = cs.carte.get(utm);
+			cell.setCellValue(nombre);
+			if(nombre!=0)
+				cell.setCellStyle(redBackGround);
+		}
+		for(int k = 1 ; k<=20 ; k++){
+			sheet.autoSizeColumn(k);
 		}
 	}
 
