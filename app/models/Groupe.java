@@ -51,16 +51,11 @@ public class Groupe extends Model {
 	}
 
 	/**
-	 * Renvoie l'expert assigné à ce groupe.
-	 * S'il n'y a pas d'expert assigné à ce groupe, alors renvoie null.
+	 * Renvoie la liste d'experts assigné à ce groupe.
 	 * @return
 	 */
-	public Membre getExpert(){
-		MembreIsExpertOnGroupe mieog = MembreIsExpertOnGroupe.find.where().eq("groupe", this).findUnique();
-		if(mieog!=null)
-			return mieog.membre;
-		else
-			return null;
+	public List<MembreIsExpertOnGroupe> getExperts(){
+		return MembreIsExpertOnGroupe.find.where().eq("groupe", this).findList();
 	}
 	
 	/**

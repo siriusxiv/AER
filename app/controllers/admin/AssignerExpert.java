@@ -88,6 +88,7 @@ public class AssignerExpert extends Controller {
 				mieog.membre=expert;
 				mieog.save();
 				expert.membre_droits=Droits.EXPERT;
+				expert.save();
 			}
 			return redirect("/assignerExperts");
 		}else

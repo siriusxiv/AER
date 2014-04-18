@@ -32,11 +32,15 @@
 		<tr>
 			<td>@groupe.groupe_nom</td>
 			<td>
-			@defining(groupe.getExpert()){ expert=>
-				@if(expert==null){
-					<span id="expertDuGroupe@groupe.groupe_id">Pas d'expert, <button onClick="assignerExpert(@groupe.groupe_id)">l'assigner</button></span>
+			@defining(groupe.getExperts()){ mieogs=>
+				@if(mieogs.isEmpty()){
+					<span id="expertDuGroupe@groupe.groupe_id">Pas d'expert, <button onClick="assignerExpert(@groupe.groupe_id)">en assigner un</button>.</span>
 				}else{
-					<span id="expertDuGroupe@groupe.groupe_id">@expert.membre_nom <button onClick="changerExpert(@groupe.groupe_id)">Changer d'expert</button></span>
+				<ul>
+					@for(i:Int <- 0 to (mieogs.size()-1)){
+					<li id="expert@mieogs.get(i).MembreIsExpertOnGroupe_id">@mieogs.get(i).membre.membre_nom <button onClick="retrogaderExpert(@groupe.groupe_id)">Rétrograder expert</button></li>
+					}
+				</ul>
 				}
 			}
 			</td>

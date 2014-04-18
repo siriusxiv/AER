@@ -44,6 +44,7 @@ import models.SuperFamille;
 import org.junit.*;
 
 import controllers.ajax.Listes;
+import functions.UTMtoXY;
 import functions.credentials.Credentials;
 import functions.excels.exports.TemoinsParPeriodeExcel;
 import functions.mail.VerifierMail;
@@ -66,7 +67,7 @@ public class IntegrationTest {
     public void test() {
     	databaseConfiguration.put("db.default.url", "jdbc:mysql://localhost:3306/aer");
         running(testServer(3333, fakeApplication(databaseConfiguration)), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+            public void invoke(TestBrowser browser){
 
             	long i = Calendar.getInstance().getTimeInMillis();
             	
@@ -94,7 +95,9 @@ public class IntegrationTest {
             	
             	//testDoublonTemoin();
             	
-            	testDoublonCommune();
+            	//testDoublonCommune();
+            	
+            	testUTMtoXY();
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");
@@ -201,5 +204,13 @@ public class IntegrationTest {
 				System.out.println(c.ville_nom_reel);
 			}
 		}
+	}
+	
+
+	private void testUTMtoXY() throws NumberFormatException {
+    	int[] xy = UTMtoXY.convert10x10("WT25");
+    	System.out.println(xy[0]);
+    	System.out.println(xy[1]);
+		
 	}
 }
