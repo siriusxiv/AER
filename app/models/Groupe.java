@@ -108,6 +108,20 @@ public class Groupe extends Model {
 	}
 
 	/**
+	 * Renvoie la liste des espèces dans ce groupe triées par systématique.
+	 * @return
+	 */
+	public List<Espece> getEspecesInThisBySystematique(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Espece> especes = new ArrayList<Espece>();
+		for(SousGroupe sg : sgs){
+			List<Espece> especeDansSG = Espece.find.where().eq("espece_sous_groupe", sg).findList();
+			especes.addAll(especeDansSG);
+		}
+		Collections.sort(especes,new Espece());
+		return especes;
+	}
+	/**
 	 * Renvoie la liste des espèces dans ce groupe.
 	 * @return
 	 */
@@ -118,7 +132,6 @@ public class Groupe extends Model {
 			List<Espece> especeDansSG = Espece.find.where().eq("espece_sous_groupe", sg).findList();
 			especes.addAll(especeDansSG);
 		}
-		Collections.sort(especes,new Espece());
 		return especes;
 	}
 	

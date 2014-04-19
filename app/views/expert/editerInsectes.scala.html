@@ -18,10 +18,12 @@
 @(groupe: Groupe)
 @main("Gérer les insectes du groupe "+groupe){
 	<h1>Gérer les insectes du groupe @groupe</h1>
+	<a href="/menuExpert">Retour</a>
 	<table>
 	<tr>
 		<th>Systématique</th>
 		<th>Nom</th>
+		<th>Synonyme(s)</th>
 		<th>Auteur</th>
 		<th>Photo</th>
 		<th>Sous-famille</th>
@@ -30,21 +32,24 @@
 		<th>Ordre</th>
 		<th>Sous-groupe</th>
 	</tr>
-	@for(espece <- groupe.getEspecesInThis()){
+	@for(espece <- groupe.getEspecesInThisBySystematique()){
 	<tr>
 		<td>@espece.espece_systematique</td>
 		<td>@espece.espece_nom</td>
+		<td>
+			@for(synonyme <- espece.getSynonymes()){
+			<span@if(synonyme.synonyme_origineAER){ style="color:red;"}>@synonyme.synonyme_nom</span><br>
+			}</td>
 		<td>@espece.espece_auteur</td>
-		<td><img src="@espece.espece_photo" style="max-width:220px;max-height:200px"></img></td>
-		<td>@espece.espece_sousfamille.sous_famille_nom</td>
+		<td>@if(espece.espece_photo!=null){<img src="@espece.espece_photo" style="max-width:220px;max-height:200px"></img>}</td>
+		<td>@if(espece.espece_sousfamille.sous_famille_existe){@espece.espece_sousfamille.sous_famille_nom}</td>
 		<td>@espece.espece_sousfamille.sous_famille_famille</td>
-		<td>@espece.espece_sousfamille.sous_famille_famille.famille_super_famille</td>
+		<td>@if(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_existe){@espece.espece_sousfamille.sous_famille_famille.famille_super_famille}</td>
 		<td>@espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre</td>
 		<td>@espece.espece_sous_groupe</td>
 	</tr>
 	}
 	</table>
-	<a href="/menuExpert">Retour</a>
 }{
 <script>
 </script>
