@@ -46,7 +46,10 @@ public class Application extends Controller {
 	 */
 	public static Result view(String filename) {
 	    File file  = new File(play.Play.application().configuration().getString("image.path") + filename);
-	    return ok(file);
+	    if(file.canRead())
+	    	return ok(file);
+	    else
+	    	return notFound("404: Image not found");
 	}
     
     /*Pages de l'utilisateur  */

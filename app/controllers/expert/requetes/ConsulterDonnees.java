@@ -30,24 +30,29 @@ import views.html.expert.requetes.consulterDonnees;
 
 public class ConsulterDonnees extends Controller {
 
-    public static Result main() {
-    	if(MenuExpert.isExpertConnected()){
-    		return ok(consulterDonnees.render());
-    	}else
-    		return Admin.nonAutorise();
-    }
-    
-    /**
-     * Télécharge un fichier.
-     * @return
-     * @throws FileNotFoundException 
-     */
-    public static Result telechargerFichier(String filename) throws FileNotFoundException{
-        	if(MenuExpert.isExpertConnected()){
-        		FileInputStream fis = new FileInputStream(new File(Play.application().configuration().getString("xls_generes.path")+filename));
-        		response().setHeader("Content-Disposition", "attachment; filename="+filename);
-        		return ok(fis);
-        	}else
-        		return Admin.nonAutorise();
-    }
+	public static Result main() {
+		if(MenuExpert.isExpertConnected()){
+			return ok(consulterDonnees.render());
+		}else
+			return Admin.nonAutorise();
+	}
+
+	/**
+	 * Télécharge un fichier.
+	 * @return
+	 * @throws FileNotFoundException 
+	 */
+	public static Result telechargerFichier(String filename){
+		if(MenuExpert.isExpertConnected()){
+			FileInputStream fis;
+			try {
+				fis = new FileInputStream(new File(Play.application().configuration().getString("xls_generes.path")+filename));
+				response().setHeader("Content-Disposition", "attachment; filename="+filename);
+				return ok(fis);
+			} catch (FileNotFoundException e) {
+				return notFound("404: File not found");
+			}
+		}else
+			return Admin.nonAutorise();
+	}
 }
