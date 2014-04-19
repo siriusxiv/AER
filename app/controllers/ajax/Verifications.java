@@ -34,4 +34,17 @@ public class Verifications extends Controller {
 		else
 			return badRequest();
 	}
+
+	/**
+	 * Renvoie ok() si le nom en entrée n'est pas déjà utilisé.
+	 * Renvoie badRequest() s'il est déjà utilisé par un utilisateur.
+	 * @param nom
+	 * @return
+	 */
+	public static Result nomExisteOuPas(String nom){
+		if(Membre.find.where().eq("membre_nom",nom).findList().isEmpty())
+			return ok();
+		else
+			return badRequest();
+	}
 }

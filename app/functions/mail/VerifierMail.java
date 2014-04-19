@@ -47,9 +47,21 @@ public class VerifierMail extends Controller{
 			return notFound("Ressource not found on server");
 		}
 	}
+	
+	/**
+	 * Envoie le mail de confirmation lorsque l'on change son adresse mail.
+	 * @param membre
+	 */
+	public static void envoyerMailDeVerificationNouveauMail(Membre membre){
+		Mail mail = new Mail("Validation du changement de votre adresse email",
+				mailDeVerificationNouveauMail.render(membre.membre_lien_de_validation_de_mail).toString(),
+				membre.membre_email,
+				membre.membre_nom);
+		mail.sendMail();
+	}
 
 	/**
-	 * A écrire
+	 * Envoie le mail à l'admin pour dire que quelqu'un s'est inscrit
 	 * @param membre
 	 */
 	public static void envoyerMailAcceptationAAdmin(Membre membre){
