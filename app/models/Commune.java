@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -102,9 +104,13 @@ public class Commune extends Model {
 
 	@Override
 	public String toString(){
-		return ville_nom_reel+" ("+ville_departement.departement_code+")";
+		return ville_nom_aer+" ("+ville_departement.departement_code+")";
 	}
 
+	public static List<Commune> findAll(){
+		return find.orderBy("ville_nom_reel").findList();
+	}
+	
 	/**
 	 * Remplace les abréviations pour Saint(e) et enlève les articles définis.
 	 * Trouve ensuite la commune ayant ce nom.

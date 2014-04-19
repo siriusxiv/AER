@@ -15,9 +15,49 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Liste des villes"){
-
+@main("Liste des communes"){
+<h1>Liste des communes</h1>
+<a href="/menuAdmin">Retour</a>
+<table>
+<tr>
+	<th>Nom réel</th>
+	<th>Nom AER</th>
+	<th>Département</th>
+</tr>
+@for(commune <- Commune.findAll()){
+<tr>
+	<td>@commune.ville_nom_reel</td>
+	<td><span id="commune@commune.ville_id" onDblClick="renommeCommune(@commune.ville_id)">@commune.ville_nom_aer</span></td>
+	<td>@commune.ville_departement.departement_code</td>
+</tr>
+}
+</table>
 }{
 <script>
+function renommeCommune(ville_id){
+	var ancienNom = $('#commune'+ville_id).html();
+	$('#commune'+ville_id).replaceWith('<input type="text" id="renommer'+ville_id+'" value="'+ancienNom+'">');
+	$('#renommer'+ville_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNom = $('#renommer'+ville_id).val();
+			if(nouveauNom=='')
+				alert('Vous avez laissé le champ vide !');
+			else{
+				formdata.append('nouveauNom',nouveauNom);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/ville/renommer/'+ville_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#renommer'+ville_id).replaceWith('<span id="commune'+ville_id+'" onDblClick="renommeCommune('+ville_id+')">'+nouveauNom+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
 </script>
 }
