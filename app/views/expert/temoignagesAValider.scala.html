@@ -16,11 +16,9 @@
  *   
  ********************************************************************************@
 @(listObservation :List[Observation], groupe :Groupe)
- @main("Témoignages à valider"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-		<h1> Page pour l'expert qui voit la liste des témoignages à valider </h1>
+ @main("Témoignages à valider"){
+ <a href="/menuExpert">Retour</a><br>
+		<h1>Témoignages à valider</h1>
 	</header>
 	<h2>Sélectionner le type de témoignage voulus</h2>
 	<form action="/temoignagesAValider/@groupe.groupe_id" method="GET"><button type="submit">Non Vus</button></form>

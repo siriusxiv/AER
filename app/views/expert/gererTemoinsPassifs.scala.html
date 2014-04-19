@@ -16,10 +16,12 @@
  *   
  ********************************************************************************@
 @(message: String)
-@main("Gérer les témoins passifs"){
-<button onClick="ajouter()">Ajouter un témoin passif</button>
+@main("Gérer les témoins"){
+<a href="/menuExpert">Retour</a><br>
+<h1>Gestion des témoins</h1>
+<button onClick="ajouter()">Ajouter un témoin</button>
 <div style="display:none" id="ajouter">
-<h2>Ajouter un témoin passif dans la base de données.</h2>
+<h2>Ajouter un témoin dans la base de données</h2>
 <form action="/ajouterTemoinPassif" method="POST" id="form">
 <span id="message">@Html(message)</span>
 	<table class="gestionDesTemoinsPassifs">

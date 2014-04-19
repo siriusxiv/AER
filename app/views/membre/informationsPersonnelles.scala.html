@@ -16,11 +16,8 @@
  *   
  ********************************************************************************@
 @(message: String, membre: Membre)
-@main("Informations Personnelles"){<header>
-		<dl>
-		<a href="/menuUtilisateur">Retour</a>
-		</dl>
-	</header>
+@main("Informations Personnelles"){
+<a href="javascript:history.back()">Retour</a><br>
 <span id="message">@message</span>
 	<h1>Modifiez vos informations personnelles</h1>
 <span id="message1"></span>

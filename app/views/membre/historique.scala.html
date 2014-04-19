@@ -17,11 +17,7 @@
  ********************************************************************************@
 @(cdut : controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin, file_name: String)
 @main("Historique"){
-<header>
-	<dl>
-	<a href="/">Retour</a>
-	</dl>
-</header>
+<a href="javascript:history.back()">Retour</a><br>
 <h1>Historique de mes témoignages</h1>
 <a href="/telechargerHistorique/@file_name">Télécharger le fichier Excel de mes témoignages</a>
 }{

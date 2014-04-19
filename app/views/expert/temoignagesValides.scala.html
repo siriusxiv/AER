@@ -16,11 +16,9 @@
  *   
  ********************************************************************************@
  @(listObservation: List[Observation], page: Integer, nbpages: Integer, groupe : Groupe, listEspeces: List[Espece], filtre: Integer, especeselectid: Integer, membreselectnom: String, orderBy: String, dir: String )
- @main("Témoignages validés"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-		<h1> Pages des témoignages validés </h1>
+ @main("Témoignages validés"){
+ <a href="/menuExpert">Retour</a><br>
+		<h1>Témoignages validés</h1>
 	</header>
 	<form method="POST" action="/temoignagesValides/export/@groupe.groupe_id/@especeselectid/@orderBy/@dir/@membreselectnom">
 		<button>Créer un export excell</button>
