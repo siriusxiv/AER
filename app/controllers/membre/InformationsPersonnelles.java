@@ -29,7 +29,6 @@ import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import views.html.inscriptionTerminee;
 import views.html.membre.informationsPersonnelles;
 import views.html.membre.changementDeMailTermine;
 

@@ -50,6 +50,7 @@ GET		/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImport
 POST	/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.post()
 GET		/gererTemoinsPassifs								controllers.expert.GererTemoinsPassifs.main()
 POST	/ajouterTemoinPassif								controllers.expert.GererTemoinsPassifs.ajouter()
+GET		/editerInsectes/:groupe_id							controllers.expert.EditerInsectes.main(groupe_id: Integer)
 
 #Routes pour faire des requêtes
 GET     /consulterDonnees           	controllers.expert.requetes.ConsulterDonnees.main()
