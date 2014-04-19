@@ -65,8 +65,8 @@
         		<td>@observation.observation_fiche.fiche_memo</td>
         		<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
         		<td>@for(informationsComplementaires <-observation.getInfos()){
-        			@informationsComplementaires.informations_complementaires_nombre_de_specimens
-        			@informationsComplementaires.informations_complementaires_stade_sexe
+        			@if(informationsComplementaires.informations_complementaires_nombre_de_specimens!=null){@informationsComplementaires.informations_complementaires_nombre_de_specimens,&nbsp;}
+        			@informationsComplementaires.informations_complementaires_stade_sexe<br>
         			} </td>
         		<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
         		<td>@if(!observation.observation_vue_par_expert){<form action="/temoignagesAValider/vu/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">

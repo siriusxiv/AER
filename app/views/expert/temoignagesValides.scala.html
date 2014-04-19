@@ -83,9 +83,8 @@
         		<td>@observation.observation_fiche.fiche_memo</td>
         		<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
         		<td>@for(informationsComplementaires <-observation.getInfos()){
-        			@informationsComplementaires.informations_complementaires_nombre_de_specimens
-        			@informationsComplementaires.informations_complementaires_stade_sexe
-        			
+        			@if(informationsComplementaires.informations_complementaires_nombre_de_specimens!=null){@informationsComplementaires.informations_complementaires_nombre_de_specimens,&nbsp;}
+        			@informationsComplementaires.informations_complementaires_stade_sexe<br>
         			} </td>
         		<td>@observation.observation_date_validation.getTime().format("dd/MM/yyyy")</td>
         		<td><form id="suspens@observation.observation_id" method="POST" action="/temoignagesValides/suspens/@groupe.groupe_id/@page/@observation.observation_id"><input type="button" onclick="confirmSuspens(@observation.observation_id)" value="Remettre en Suspens"></form></td>
