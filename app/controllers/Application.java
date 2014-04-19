@@ -25,18 +25,14 @@ import models.Confidentialite;
 import models.Droits;
 import models.Membre;
 import controllers.admin.Admin;
-import controllers.membre.SecuredMembre;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
-import views.html.*;
-import views.html.membre.*;
 import views.html.admin.*;
 
 public class Application extends Controller {
 
     public static Result index() {
-        return ok(index.render());
+        return redirect("/identification");
     }
     
     /**
@@ -50,14 +46,7 @@ public class Application extends Controller {
 	    	return ok(file);
 	    else
 	    	return notFound("404: Image not found");
-	}
-    
-    /*Pages de l'utilisateur  */
-    @Security.Authenticated(SecuredMembre.class)
-    public static Result menuUtilisateur() {
-    	return ok( menuUtilisateur.render());
-    }
-    
+	}    
     
     /* Pages de l'expert  */
     

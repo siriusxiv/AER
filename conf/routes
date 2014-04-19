@@ -16,7 +16,7 @@ POST	/reinitialiseMotDePasse/:membre_id/:lien	controllers.membre.MotDePasseOubli
 GET		/verification/:lien			functions.mail.VerifierMail.verifier(lien: String)
 
 #routes pour l'utilisateur
-GET     /menuUtilisateur            		controllers.Application.menuUtilisateur()
+GET     /menuUtilisateur            		controllers.membre.MenuUtilisateur.main()
 GET     /informationsPersonnelles   		controllers.membre.InformationsPersonnelles.main()
 POST	/changerInformationsPersonnelles	controllers.membre.InformationsPersonnelles.changerInfos()
 POST	/changerMail						controllers.membre.InformationsPersonnelles.changerMail()
