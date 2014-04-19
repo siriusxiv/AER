@@ -1,4 +1,4 @@
-@*********************************************************************************
+/*********************************************************************************
  * 
  *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
  *
@@ -14,16 +14,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *   
- ********************************************************************************@
-@(cdut : controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin, file_name: String)
-@main("Historique"){
-<header>
-	<dl>
-	<a href="/">Retour</a>
-	</dl>
-</header>
-<h1>Historique de mes témoignages</h1>
-<a href="/telechargerRapport/@file_name">Télécharger le fichier Excel de mes témoignages</a>
-}{
-<script></script>
+ ********************************************************************************/
+package controllers.membre;
+
+import play.mvc.Controller;
+import play.mvc.Result;
+import views.html.membre.historique;
+
+public class Historique extends Controller {
+	
+	public static Result main() {
+    	return ok(historique.render(null,".xls"));
+    }
 }

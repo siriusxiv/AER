@@ -55,15 +55,8 @@ public class Application extends Controller {
     	return ok( menuUtilisateur.render());
     }
     
-    public static Result historique() {
-    	return ok( historique.render());
-    }
-    
     
     /* Pages de l'expert  */
-    
-    
-
     
    /******* Results de la page liste de membres **********/
     public static Result listeMembres(String orderBy, String sortDirection){

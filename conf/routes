@@ -18,7 +18,7 @@ GET		/verification/:lien			functions.mail.VerifierMail.verifier(lien: String)
 #routes pour l'utilisateur
 GET     /menuUtilisateur            controllers.Application.menuUtilisateur()
 GET     /informationsPersonnelles   controllers.membre.InformationsPersonnelles.main()
-GET     /historique                 controllers.Application.historique()
+GET     /historique                 controllers.membre.Historique.main()
 
 #routes pour les experts
 GET     /menuExpert                 controllers.expert.MenuExpert.main()
