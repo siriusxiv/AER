@@ -15,12 +15,8 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(groupe: Groupe)
-@main("Gérer les insectes du groupe "+groupe){
-	<h1>Gérer les insectes du groupe @groupe</h1>
-	<a href="/menuExpert">Retour</a>
-<div id="edit"></div>
-	<table>
+@(espece: Espece)
+<table>
 	<tr>
 		<th>Systématique</th>
 		<th>Nom</th>
@@ -32,32 +28,47 @@
 		<th>Super-famille</th>
 		<th>Ordre</th>
 		<th>Sous-groupe</th>
-		<th>Editer</th>
 	</tr>
-	@for(espece <- groupe.getEspecesInThisBySystematique()){
 	<tr>
 		<td>@espece.espece_systematique</td>
-		<td>@espece.espece_nom</td>
+		<td>
+			<form action="/editerInsectes/changerNom/@espece.espece_id" method="POST">
+			<input name="nom" value="@espece.espece_nom"><button>Changer le nom</button></td>
+			</form>
 		<td>
 			@for(synonyme <- espece.getSynonymes()){
-			<span@if(synonyme.synonyme_origineAER){ style="color:red;"}>@synonyme.synonyme_nom</span><br>
+			<form action="/editerInsectes/supprimerSynonyme/@synonyme.synonyme_id" method="POST">
+			<span@if(synonyme.synonyme_origineAER){ style="color:red;"}>@synonyme.synonyme_nom</span>
+			<button>Suppr.</button>
+			</form>
+			<br>
 			}
+			<form action="/editerInsectes/ajouterSynonyme/@espece.espece_id" method="POST">
+			<input name="synonyme" placeholder="Nouveau synonyme"><button>Ajouter synonyme</button></td>
+			</form>
 		</td>
-		<td>@espece.espece_auteur</td>
-		<td>@if(espece.espece_photo!=null){<img src="@espece.espece_photo" style="max-width:150px;max-height:100px"></img>}</td>
+		<td>
+			<form action="/editerInsectes/changerAuteur/@espece.espece_id" method="POST">
+			<input name="auteur" value="@espece.espece_auteur"><button>Changer l'auteur</button>
+			</form>
+		</td>
+		<td>
+			<form action="/editerInsectes/changerPhoto/@espece.espece_id" method="POST" enctype="multipart/form-data">
+			@if(espece.espece_photo!=null){
+			<img src="@espece.espece_photo" style="max-width:150px;max-height:100px"></img>
+			<input type="file" name="photo" accept="image/*">
+			<button>Changer photo</button>
+			}else{
+			<input type="file" name="photo" accept="image/*">
+			<button>Ajouter photo</button>
+			}
+			</form>
+		</td>
 		<td>@if(espece.espece_sousfamille.sous_famille_existe){@espece.espece_sousfamille.sous_famille_nom}</td>
 		<td>@espece.espece_sousfamille.sous_famille_famille</td>
 		<td>@if(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_existe){@espece.espece_sousfamille.sous_famille_famille.famille_super_famille}</td>
 		<td>@espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_ordre</td>
 		<td>@espece.espece_sous_groupe</td>
-		<td><button onClick="editerEspece(@espece.espece_id)">Editer</button></td>
 	</tr>
-	}
-	</table>
-}{
-<script>
-function editerEspece(espece_id){
-	$('#edit').load('/editerInsectes/espece/@groupe.groupe_id/'+espece_id);
-}
-</script>
-}
+</table>
+<br>
