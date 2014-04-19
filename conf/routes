@@ -16,10 +16,10 @@ POST	/reinitialiseMotDePasse/:membre_id/:lien	controllers.membre.MotDePasseOubli
 GET		/verification/:lien			functions.mail.VerifierMail.verifier(lien: String)
 
 #routes pour l'utilisateur
-GET     /menuUtilisateur            controllers.Application.menuUtilisateur()
-GET     /informationsPersonnelles   controllers.membre.InformationsPersonnelles.main()
-GET     /historique                 controllers.membre.Historique.main()
-
+GET     /menuUtilisateur            		controllers.Application.menuUtilisateur()
+GET     /informationsPersonnelles   		controllers.membre.InformationsPersonnelles.main()
+GET     /historique                 		controllers.membre.Historique.main()
+GET		/telechargerHistorique/:file_name	controllers.membre.Historique.telechargerFichier(file_name: String)
 #routes pour les experts
 GET     /menuExpert                 controllers.expert.MenuExpert.main()
 GET     /temoignagesAValider/:groupe_id  			    controllers.expert.ValiderObservations.temoignagesNonVus(groupe_id: Integer)
