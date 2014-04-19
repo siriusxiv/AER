@@ -77,6 +77,7 @@ POST	/gererSousGroupes/enleverSousFamille/:sofhsg_id			controllers.admin.groupes
 POST	/gererSousGroupes/enleverFamille/:fhsg_id				controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverFamille(fhsg_id: Integer)
 POST	/gererSousGroupes/enleverSuperFamille/:sufhsg_id		controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverSuperFamille(sufhsg_id: Integer)
 POST	/gererSousGroupes/enleverOrdre/:ohsg_id					controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverOrdre(ohsg_id: Integer)
+GET		/listeVilles											controllers.admin.ListeVilles.main()
 
 #route pour gérer la base des insectes (admin)
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()
@@ -107,7 +108,6 @@ GET     /listeMembresPrecis  controllers.Application.listeMembresPrecis(membre_n
 #**********************************************
 GET     /ficheDeTemoignage			controllers.membre.DeposerTemoignage.main()
 POST	/deposerTemoignage			controllers.membre.DeposerTemoignage.post()
-GET     /listeTemoignages            controllers.Application.listeTemoignages()
 
 #routes ajax
 GET		/listeDesMembres/:string_id						controllers.ajax.Listes.membres(string_id: String)

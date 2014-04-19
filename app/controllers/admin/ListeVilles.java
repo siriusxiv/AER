@@ -1,4 +1,4 @@
-@*********************************************************************************
+/*********************************************************************************
  * 
  *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
  *
@@ -14,11 +14,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *   
- ********************************************************************************@
-@main("Liste des témoignages"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1> Page pour que l'admin puisse voir la liste des témoignages </h1>
-}{<script></script>}
+ ********************************************************************************/
+package controllers.admin;
+
+import play.mvc.Controller;
+import play.mvc.Result;
+
+import views.html.admin.listeVilles;
+
+public class ListeVilles extends Controller {
+
+	public static Result main(){
+		if(Admin.isAdminConnected()){
+			return ok(listeVilles.render());
+		}else
+			return Admin.nonAutorise();
+	}
+}

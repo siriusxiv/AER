@@ -111,9 +111,4 @@ public class Application extends Controller {
 			return Admin.nonAutorise();
     }
     
-    /*******************************************************************/
-    public static Result listeTemoignages() {
-    	return ok(listeTemoignages.render());
-    }
-    
 }
