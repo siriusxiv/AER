@@ -22,6 +22,9 @@
 		</dl>
 		<h1> Pages des témoignages validés </h1>
 	</header>
+	<form method="POST" action="/temoignagesValides/export/@groupe.groupe_id/@especeselectid/@orderBy/@dir/@membreselectnom">
+		<button>Créer un export excell</button>
+	</form>
 	<span id="trimembre"><button onclick="triMembre(@groupe.groupe_id)">Voir les observations d'un membre: </button></span>
 	<p>Trier par espece:<select name="selespesce" onchange="triEspece(@groupe.groupe_id, this.options[this.selectedIndex].value)">
 				<option value="-1">&nbsp </option>
@@ -30,9 +33,9 @@
 					<option value="@espece.espece_id">@espece.espece_nom</option>
 					}
 				</select><span id="triespece"></span></p>
-		@for( pg:Int <- 1 to nbpages){@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@pg/@orderBy/@dir">p.@pg</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@pg/@orderBy/@dir">p.@pg</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@pg/@orderBy/@dir">p.@pg</a>}
+		@for( pg:Int <- 1 to nbpages){ @if(((pg>(page-5))&&(pg <(page+5)))||(pg%100==0)||(pg==nbpages)||(pg==1)){@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@pg/@orderBy/@dir">p.@pg</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@pg/@orderBy/@dir">p.@pg</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@pg/@orderBy/@dir">p.@pg</a>}
 		}
-		}
+		}else{}}
 	 <table>
         	<tr>
         		<th>@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_id/desc">▼</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_id/desc">▼</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_id/desc">▼</a>}
@@ -52,7 +55,7 @@
         		}</th>
         		<th>Lieu-dit</th>
         		<th>Commune</th>
-        		<th>UTMS</th>
+        		<th>UTM</th>
         		<th>Memo</th>
         		<th>@if(filtre==0){<a href="/temoignagesValides/@groupe.groupe_id/@page/observation_fiche.fiche_date_soumission/desc">▼</a>}else{@if(filtre==1){<a href="/temoignagesValides/espece/@groupe.groupe_id/@especeselectid/@page/observation_fiche.fiche_date_soumission/desc">▼</a>}else{<a href="/temoignagesValides/membre/@groupe.groupe_id/@membreselectnom/@page/observation_fiche.fiche_date_soumission/desc">▼</a>}
         			}Date de soumission
@@ -82,6 +85,7 @@
         		<td>@for(informationsComplementaires <-observation.getInfos()){
         			@informationsComplementaires.informations_complementaires_nombre_de_specimens
         			@informationsComplementaires.informations_complementaires_stade_sexe
+        			
         			} </td>
         		<td>@observation.observation_date_validation.getTime().format("dd/MM/yyyy")</td>
         		<td><form id="suspens@observation.observation_id" method="POST" action="/temoignagesValides/suspens/@groupe.groupe_id/@page/@observation.observation_id"><input type="button" onclick="confirmSuspens(@observation.observation_id)" value="Remettre en Suspens"></form></td>
