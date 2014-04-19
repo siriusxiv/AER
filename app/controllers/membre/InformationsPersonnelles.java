@@ -83,9 +83,8 @@ public class InformationsPersonnelles extends Controller {
 		if(membre!=null){
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			String passw = df.get("passw");
-			System.out.println(passw);
-	    	Credentials credentials = new Credentials(session("username"));
-	    	if(credentials.connect(passw)){
+			Credentials credentials = new Credentials(session("username"));
+			if(credentials.connect(passw)){
 				String email = df.get("email");
 				if(Membre.find.where().eq("membre_email", email).findUnique()==null){
 					membre.membre_email=email;
@@ -95,21 +94,28 @@ public class InformationsPersonnelles extends Controller {
 					return ok(changementDeMailTermine.render());
 				}else
 					return badRequest(informationsPersonnelles.render("L'adresse mail entrée est déjà utilisée !",membre));
-	    	}else
-	    		return badRequest(informationsPersonnelles.render("Mot de passe entré incorrect !",membre));
+			}else
+				return badRequest(informationsPersonnelles.render("Mot de passe entré incorrect !",membre));
 		}else
 			return Admin.nonAutorise();
 	}
+	
 	/**
 	 * Change le mot de passe du membre
 	 * @return
 	 */
 	@Security.Authenticated(SecuredMembre.class)
-	public static Result changerMdp() {
+	public static Result changerMdp() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		Membre membre = Membre.find.where().eq("membre_email", session("username")).findUnique();
 		if(membre!=null){
-			DynamicForm df = DynamicForm.form().bindFromRequest();
-			return ok();
+			DynamicForm df = DynamicForm.form().bindFromRequest();String passw = df.get("passw");
+			Credentials credentials = new Credentials(session("username"));
+			if(credentials.connect(passw)){
+				String newpassw = df.get("newpassw");
+				credentials.changeMotDePasse(newpassw);
+				return ok(informationsPersonnelles.render("Mot de passe mis à jour avec succès",membre));
+			}else
+				return badRequest(informationsPersonnelles.render("Mot de passe entré incorrect !",membre));
 		}else
 			return Admin.nonAutorise();
 
