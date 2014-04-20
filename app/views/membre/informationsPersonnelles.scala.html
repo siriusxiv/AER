@@ -17,7 +17,7 @@
  ********************************************************************************@
 @(message: String, membre: Membre)
 @main("Informations Personnelles"){
-<a href="javascript:history.back()">Retour</a><br>
+<a href="/@if(membre.membre_droits.equals(Droits.TEMOIN)){menuUtilisateur}else{@if(membre.membre_droits.equals(Droits.EXPERT)){menuExpert}else{menuAdmin}}">Retour</a><br>
 <span id="message">@message</span>
 	<h1>Modifiez vos informations personnelles</h1>
 <span id="message1"></span>
