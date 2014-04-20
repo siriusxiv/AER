@@ -74,4 +74,12 @@ public class VerifierMail extends Controller{
 			mail.sendMail();
 		}
 	}
+
+	public static void envoyerMailAcceptation(Membre membre) {
+		Mail mail = new Mail("Votre inscription sur le site de l'AER a été acceptée",
+				mailNotificationAcceptation.render(membre).toString(),
+				membre.membre_email,
+				membre.membre_nom);
+		mail.sendMail();
+	}
 }

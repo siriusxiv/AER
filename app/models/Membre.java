@@ -26,6 +26,7 @@ import javax.validation.constraints.NotNull;
 
 import functions.credentials.Credentials;
 import functions.credentials.PasswordHash;
+import functions.mail.VerifierMail;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -168,14 +169,15 @@ public class Membre extends Model {
 	/************************************/
 
 	/**
-	 * Valide l'inscription d'un utilisateur
-	 * @param id
+	 * Valide l'inscription d'un utilisateur et envoie un mail de validation
+	 * @param membre_id
 	 */
 
-	public static void valideMembre(Integer id){
-		Membre membre= Membre.find.byId(id);
+	public static void valideMembre(Integer membre_id){
+		Membre membre = Membre.find.byId(membre_id);
 		membre.membre_inscription_acceptee=true;
 		membre.save();
+		VerifierMail.envoyerMailAcceptation(membre);
 	}
 
 	/**
