@@ -16,6 +16,6 @@
  *   
  ********************************************************************************@
  @(groupe: Groupe)
- @for(espece <- groupe.getEspecesInThis()){
+ @for(espece <- groupe.getEspecesInThisByAlpha()){
 	<option value="@espece.espece_id">@espece.espece_nom</option>
 }

@@ -134,6 +134,25 @@ public class Groupe extends Model {
 		}
 		return especes;
 	}
+	/**
+	 * Renvoie la liste des espèces dans ce groupe par ordre alphabétique.
+	 * @return
+	 */
+	public List<Espece> getEspecesInThisByAlpha(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Espece> especes = new ArrayList<Espece>();
+		for(SousGroupe sg : sgs){
+			List<Espece> especeDansSG = Espece.find.where().eq("espece_sous_groupe", sg).findList();
+			especes.addAll(especeDansSG);
+		}
+		Collections.sort(especes, new Comparator<Espece>(){
+			@Override
+			public int compare(Espece arg0, Espece arg1) {
+				return arg0.espece_nom.compareToIgnoreCase(arg1.espece_nom);
+			}
+		});
+		return especes;
+	}
 	
 	/**
 	 * Supprimer le groupe de la base de données et toutes ses références
