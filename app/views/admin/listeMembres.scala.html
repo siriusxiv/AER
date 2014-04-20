@@ -16,11 +16,9 @@
  *   
  ********************************************************************************@
  @(listMembre :List[Membre], listDroits:List[Droits], listConfidentialite:List[Confidentialite])
- @main("Liste des Membres"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-		<h1> Page pour que l'admin puisse voir la liste des membres </h1>
+ @main("Liste des Membres"){
+<a href="/menuAdmin">Retour</a><br>
+		<h1>Liste des membres</h1>
 	</header>
 	<form action="@routes.Application.listeMembresTemoinActif()" method="GET"><select name="isTemoinActif" onchange="this.form.submit()" isTemoinActif="select" >
 						<option value="-1">Filtrer par Témoins Actifs ou non</option>
