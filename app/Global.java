@@ -16,6 +16,7 @@
  *   
  ********************************************************************************/
 
+import functions.mail.PrevenirExperts;
 import models.Confidentialite;
 import models.Droits;
 import models.Espece;
@@ -34,8 +35,12 @@ public class Global extends GlobalSettings {
 		Confidentialite.OUVERTE=Confidentialite.find.byId(1);
 		Confidentialite.CASPARCAS=Confidentialite.find.byId(2);
 		Confidentialite.FERMEE=Confidentialite.find.byId(3);
-		
+
 		//On duplique la base de données en remplissant les champs de espece_sousgroupe
 		Espece.metAJourSousGroupesPourToutes();
+		
+		//Lance les mails pour prévenir les experts.
+		PrevenirExperts.scheduler();
 	}
+	
 }
