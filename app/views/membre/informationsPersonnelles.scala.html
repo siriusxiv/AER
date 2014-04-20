@@ -52,7 +52,7 @@
 	</tr>
 	<tr>
 		<td>Pays :</td>
-		<td><input type="text" name="pays" placeholder="Pays" value="@membre.membre_pays""></td>
+		<td><input type="text" name="pays" placeholder="Pays" value="@membre.membre_pays"></td>
 	</tr>
 	<tr>
 		<td>Date de naissance :</td>
@@ -75,6 +75,20 @@
 				<option value="@i"@if(membre.membre_annenais==i){ selected}>@i</option>
 			}
 			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Confidentialité des témoignages :</td>
+		<td>
+			<input type="radio" name="confidentialite" value="libre"@if(membre.membre_confidentialite.equals(Confidentialite.OUVERTE)){ checked}> Libre
+			<input type="radio" name="confidentialite" value="casparcas"@if(membre.membre_confidentialite.equals(Confidentialite.CASPARCAS)){ checked}> Cas par cas
+		</td>
+	</tr>
+	<tr>
+		<td>Abonné à la newletter :</td>
+		<td>
+			<input type="radio" name="newletter" value="oui"@if(membre.membre_abonne){ checked}> Oui
+			<input type="radio" name="newletter" value="non"@if(!membre.membre_abonne){ checked}> Non
 		</td>
 	</tr>
 </table>

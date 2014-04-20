@@ -20,6 +20,7 @@ package controllers.membre;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import models.Confidentialite;
 import models.Membre;
 import controllers.admin.Admin;
 import controllers.membre.SecuredMembre;
@@ -38,6 +39,14 @@ public class InformationsPersonnelles extends Controller {
 	public static Result main() {
 		Membre membre = Membre.find.where().eq("membre_email", session("username")).findUnique();
 		return ok(informationsPersonnelles.render("",membre));
+	}
+	
+	/**
+	 * Redirige vers la page d'informations personnelles principale.
+	 * @return
+	 */
+	public static Result redirectMain(){
+		return redirect("/informationsPersonnelles");
 	}
 
 	/**
@@ -68,6 +77,8 @@ public class InformationsPersonnelles extends Controller {
 			int annenais = Integer.parseInt(df.get("annee"));
 			if(annenais!=0)
 				membre.membre_annenais = annenais;
+			membre.membre_abonne = df.get("newletter").equals("oui");
+			membre.membre_confidentialite = df.get("confidentialite").equals("libre") ? Confidentialite.OUVERTE : Confidentialite.CASPARCAS;
 			membre.update();
 		}
 		return ok(informationsPersonnelles.render("Informations mises à jour avec succès",membre));
@@ -117,6 +128,6 @@ public class InformationsPersonnelles extends Controller {
 				return badRequest(informationsPersonnelles.render("Mot de passe entré incorrect !",membre));
 		}else
 			return Admin.nonAutorise();
-
 	}
+	
 }
