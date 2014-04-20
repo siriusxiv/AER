@@ -17,5 +17,7 @@
  ********************************************************************************@
 @(lien: String)
 Veuillez suivre le lien suivant pour valider la création de votre compte :<br>
-@{play.Play.application().configuration().getString("domain.name")+"/verification/"+lien}<br>
+<a href="@{play.Play.application().configuration().getString("domain.name")+"/verification/"+lien}">
+@{play.Play.application().configuration().getString("domain.name")+"/verification/"+lien}
+</a><br>
 Ce sera au webmestre d'accepter ou non votre inscription.

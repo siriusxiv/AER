@@ -17,4 +17,6 @@
  ********************************************************************************@
 @(lien: String)
 Cliquez sur le lien suivant pour choisir un nouveau mot de passe :<br>
+<a href="@{play.Play.application().configuration().getString("domain.name")+"/nouveauMotDePasse/"+lien}">
 @{play.Play.application().configuration().getString("domain.name")+"/nouveauMotDePasse/"+lien}
+</a>
