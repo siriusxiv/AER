@@ -119,6 +119,7 @@ GET     /listeMembresPrecis  controllers.Application.listeMembresPrecis(membre_n
 #**********************************************
 GET     /ficheDeTemoignage			controllers.membre.DeposerTemoignage.main()
 POST	/deposerTemoignage			controllers.membre.DeposerTemoignage.post()
+GET		/deposerTemoignage			controllers.membre.DeposerTemoignage.redirectMain()
 
 #routes ajax
 GET		/listeDesMembres/:string_id						controllers.ajax.Listes.membres(string_id: String)

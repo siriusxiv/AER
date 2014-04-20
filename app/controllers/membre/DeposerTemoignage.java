@@ -41,8 +41,12 @@ public class DeposerTemoignage extends Controller {
 	@Security.Authenticated(SecuredMembre.class)
     public static Result main() {
 		Membre membre = Membre.find.where().eq("membre_email", session("username")).findUnique();
-    	return ok(ficheDeTemoignage.render(membre));
+    	return ok(ficheDeTemoignage.render(membre,""));
     }
+	
+	public static Result redirectMain(){
+		return redirect("/ficheDeTemoignage");
+	}
 	
 	@Security.Authenticated(SecuredMembre.class)
 	public static Result post() throws ParseException{
@@ -106,6 +110,7 @@ public class DeposerTemoignage extends Controller {
 			}
 			observation_position++;
 		}
-		return redirect("/ficheDeTemoignage");
+		Membre membre = Membre.find.where().eq("membre_email", session("username")).findUnique();
+		return ok(ficheDeTemoignage.render(membre,"Votre témoignage a été déposé avec succès !"));
 	}
 }
