@@ -29,9 +29,9 @@
 	</tr>
 	<tr>
 		<td>Civilité :</td>
-		<td><input type="radio" name="civilite" value="M."@if(membre.membre_civilite.equals("M.")){ checked}>M. 
-			<input type="radio" name="civilite" value="Mme"@if(membre.membre_civilite.equals("Mme")){ checked}>Mme 
-			<input type="radio" name="civilite" value=""@if(membre.membre_civilite.equals("")){ checked}>Autre 
+		<td><input type="radio" name="civilite" value="M."@if(membre.membre_civilite!=null && membre.membre_civilite.equals("M.")){ checked}>M. 
+			<input type="radio" name="civilite" value="Mme"@if(membre.membre_civilite!=null && membre.membre_civilite.equals("Mme")){ checked}>Mme 
+			<input type="radio" name="civilite" value=""@if(membre.membre_civilite==null || membre.membre_civilite.equals("")){ checked}>Autre 
 		</td>
 	</tr>
 	<tr>
