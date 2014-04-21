@@ -1,4 +1,4 @@
-/*********************************************************************************
+@*********************************************************************************
  * 
  *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
  *
@@ -14,17 +14,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *   
- ********************************************************************************/
-package functions.excels.exports;
-
-import java.util.Map;
-
-import controllers.ajax.expert.requetes.calculs.CarteBiodiversite;
-import functions.excels.Excel;
-
-public class CarteBiodiversiteExcel extends Excel {
-
-	public CarteBiodiversiteExcel(Map<String, String> info, CarteBiodiversite cb) {
-	}
-
-}
+ ********************************************************************************@
+ @(cb : controllers.ajax.expert.requetes.calculs.MaillesParEspece, info : Map[String,String], file_name: String)
+<a href="/telechargerRapport/@file_name">Télécharger le fichier Excel</a>
+<script>
+</script>

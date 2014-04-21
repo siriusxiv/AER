@@ -139,7 +139,7 @@ POST	/ajax/temoinsParPeriode						controllers.ajax.expert.requetes.Calculs.temoi
 POST	/ajax/histogrammeDesImagos					controllers.ajax.expert.requetes.Calculs.histogrammeDesImagos()
 POST	/ajax/carteSomme							controllers.ajax.expert.requetes.Calculs.carteSomme()
 POST	/ajax/carteSommeBiodiversite				controllers.ajax.expert.requetes.Calculs.carteSommeBiodiversite()
-POST	/ajax/carteBiodiversite						controllers.ajax.expert.requetes.Calculs.carteBiodiversite()
+POST	/ajax/maillesParEspece						controllers.ajax.expert.requetes.Calculs.maillesParEspece()
 POST	/ajax/chronologieDUnTemoin					controllers.ajax.expert.requetes.Calculs.chronologieDUnTemoin()
 #Routes AJAX pour expert, editer especes et témoins
 GET		/editerInsectes/espece/:groupe_id/:espece_id	controllers.expert.EditerInsectes.edit(groupe_id: Integer, espece_id: Integer)

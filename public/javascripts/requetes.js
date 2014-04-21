@@ -118,14 +118,14 @@ function carteSomme(){
 		});
 	}
 }
-function carteBiodiversite(){
+function maillesParEspece(){
 	var donnees = new Donnees();
 	if(isValide(donnees)){
 		$('#message').html('');
 		patientez();
 		$.ajax({
 			type : 'POST',
-			url : '/ajax/carteBiodiversite',
+			url : '/ajax/maillesParEspece',
 			data: donnees.getFormData(),
 			processData: false,
 			contentType: false,

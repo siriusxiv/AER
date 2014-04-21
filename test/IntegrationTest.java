@@ -48,7 +48,9 @@ import com.avaje.ebean.SqlUpdate;
 
 import controllers.ajax.Listes;
 import functions.UTMtoXY;
+import functions.cartes.Carte;
 import functions.credentials.Credentials;
+import functions.excels.Excel;
 import functions.excels.exports.TemoinsParPeriodeExcel;
 import functions.mail.VerifierMail;
 import play.mvc.*;
@@ -70,7 +72,7 @@ public class IntegrationTest {
     public void test() {
     	databaseConfiguration.put("db.default.url", "jdbc:mysql://localhost:3306/aer");
         running(testServer(3333, fakeApplication(databaseConfiguration)), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser){
+            public void invoke(TestBrowser browser) throws IOException{
 
             	long i = Calendar.getInstance().getTimeInMillis();
             	
@@ -102,7 +104,9 @@ public class IntegrationTest {
             	
             	//testUTMtoXY();
             	
-            	metAJourNomAERCommunes();
+            	//metAJourNomAERCommunes();
+            	
+            	excelCartes();
             	
             	long j = Calendar.getInstance().getTimeInMillis();
             	System.out.println("Calculé en "+(j-i)+" ms");
@@ -239,5 +243,13 @@ public class IntegrationTest {
 					.setParameter("id", c.ville_id);
 			update.execute();
 		}
+	}
+	
+	private void excelCartes() throws IOException {
+		Carte carte = new Carte();
+		carte.allumeRouge(2, 3);
+		carte.ecrit(2, 3, "0");
+		carte.ecrit(10, 12, "51");
+		carte.writeToDisk();
 	}
 }
