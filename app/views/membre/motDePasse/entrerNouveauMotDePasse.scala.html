@@ -17,6 +17,8 @@
  ********************************************************************************@
 @(membre: Membre)
 @main("Réinitialisation du mot de passe"){
+<h1>Mot de passe oublié</h1>
+<p>Vous pouvez choisir un nouveau mot de passe en remplissant le champ ci-dessous.</p>
 <span class="message" id="message"></span>
 <form id="form" method="POST" action="/reinitialiseMotDePasse/@membre.membre_id/@membre.membre_lien_de_validation_de_mail">
 	<table>
