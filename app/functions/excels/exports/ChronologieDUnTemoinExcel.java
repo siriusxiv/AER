@@ -17,7 +17,6 @@
  ********************************************************************************/
 package functions.excels.exports;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +29,9 @@ import models.Observation;
 import models.SousGroupe;
 import models.StadeSexe;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -76,13 +78,16 @@ public class ChronologieDUnTemoinExcel extends Excel {
 		rowHead.createCell(2).setCellValue("Lieu-dit");
 		rowHead.createCell(3).setCellValue("Commune");
 		rowHead.createCell(4).setCellValue("Dép.");
-		rowHead.createCell(5).setCellValue("Date");
-		rowHead.createCell(6).setCellValue("Espèce");
-		rowHead.createCell(7).setCellValue("Nombre");
-		rowHead.createCell(8).setCellValue("Stade/Sexe");
-		rowHead.createCell(9).setCellValue("Témoins");
-		rowHead.createCell(10).setCellValue("Mémo");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("d/M/yyyy");
+		rowHead.createCell(5).setCellValue("Date min");
+		rowHead.createCell(6).setCellValue("Date");
+		rowHead.createCell(7).setCellValue("Espèce");
+		rowHead.createCell(8).setCellValue("Nombre");
+		rowHead.createCell(9).setCellValue("Stade/Sexe");
+		rowHead.createCell(10).setCellValue("Témoins");
+		rowHead.createCell(11).setCellValue("Mémo");
+		CellStyle cellStyleDate = wb.createCellStyle();
+		CreationHelper creationHelper = wb.getCreationHelper();
+		cellStyleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd/mm/yyyy"));
 		int i = 2;
 		for(InformationsComplementaires complements : cdut.chronologie){
 			Row row = sheet.createRow(i);
@@ -95,20 +100,21 @@ public class ChronologieDUnTemoinExcel extends Excel {
 				row.createCell(3).setCellValue(fiche.fiche_commune.ville_nom_aer);
 				row.createCell(4).setCellValue(fiche.fiche_commune.ville_departement.departement_code);
 			}
-			String date;
-			if(fiche.fiche_date_min==null)
-				date = dateFormat.format(fiche.fiche_date.getTime());
-			else
-				date = dateFormat.format(fiche.fiche_date_min.getTime())
-							+" à "+dateFormat.format(fiche.fiche_date.getTime());
-			row.createCell(5).setCellValue(date);
-			row.createCell(6).setCellValue(observation.observation_espece.espece_nom);
+			if(fiche.fiche_date_min!=null){
+				Cell cell = row.createCell(5);
+				cell.setCellValue(fiche.fiche_date_min.getTime());
+				cell.setCellStyle(cellStyleDate);
+			}
+			Cell cell = row.createCell(6);
+			cell.setCellValue(fiche.fiche_date.getTime());
+			cell.setCellStyle(cellStyleDate);
+			row.createCell(7).setCellValue(observation.observation_espece.espece_nom);
 			Integer nombre = complements.informations_complementaires_nombre_de_specimens;
 			if(nombre==null)
-				row.createCell(7).setCellValue("?");
+				row.createCell(8).setCellValue("?");
 			else
-				row.createCell(7).setCellValue(nombre);
-			row.createCell(8).setCellValue(complements.informations_complementaires_stade_sexe.stade_sexe_intitule);
+				row.createCell(9).setCellValue(nombre);
+			row.createCell(10).setCellValue(complements.informations_complementaires_stade_sexe.stade_sexe_intitule);
 			StringBuilder membres = new StringBuilder();
 			List<FicheHasMembre> fhms = fiche.getFicheHasMembre();
 			for(int j = 0 ; j<fhms.size()-1 ; j++){
@@ -119,8 +125,8 @@ public class ChronologieDUnTemoinExcel extends Excel {
 				membres.append(fhms.get(fhms.size()-1).membre);
 			else
 				membres.append("et al.");
-			row.createCell(9).setCellValue(membres.toString());
-			row.createCell(10).setCellValue(fiche.fiche_memo);
+			row.createCell(11).setCellValue(membres.toString());
+			row.createCell(12).setCellValue(fiche.fiche_memo);
 			i++;
 		}
 		for(int j = 0; j<11 ; j++)

@@ -76,7 +76,7 @@ public class CarteSommeBiodiversiteExcel extends Excel {
 		rowHead.createCell(4).setCellValue("Témoin(s)");
 		CellStyle cellStyleDate = wb.createCellStyle();
 		CreationHelper creationHelper = wb.getCreationHelper();
-		cellStyleDate.setDataFormat(creationHelper.createDataFormat().getFormat("d/m/yyyy"));
+		cellStyleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd/mm/yyyy"));
 		int i = 2;
 		for(UTMS utm : UTMS.findAll()){
 			List<List<InformationsComplementaires>> observationsDansCetteMaille = csb.carte.get(utm);
