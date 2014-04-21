@@ -16,8 +16,11 @@
  *   
  ********************************************************************************@
 @(membre: Membre)
+Bonjour,<br>
 <p>
-@membre.membre_civilite @membre.membre_nom, votre inscription a été acceptée par le webmestre. Vous pouvez dès à présent vous connecter et témoigner.
+@membre.membre_civilite @membre.membre_nom votre inscription a été acceptée par le webmestre. Vous pouvez dès à présent vous connecter et témoigner.
 </p>
 Vous pouvez vous connectez ici :
 <a href="@play.Play.application().configuration().getString("domain.name")/">@play.Play.application().configuration().getString("domain.name")/</a>
+
+<p>En cas de problème, vous pouvez écrire à <a href="mailto://@Membre.getAdminMail()">@Membre.getAdminMail()</a></p>

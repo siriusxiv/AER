@@ -16,12 +16,10 @@
  *   
  ********************************************************************************@
 @(message: String)
-@main("Identification"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1>Identification</h1>
+@main("Identification"){
+<img src="/assets/images/banniere-aer.png">
+<p style="font-size:150%">Bienvenue sur la base de données de l'Atlas Entomologique Régional</p>
+<h1>Identification</h1>
 	@Html(message)
 	<form action="/connexion" method="POST">
 		<p>	
@@ -38,6 +36,17 @@
 			<a href="/inscription">Pas encore inscrit ? Créez un compte ici !</a>
 	 	</p>
 		<p>	
-			Si vous avez déjà témoigné ou avez un problème pour vous connecter, contactez l'administrateur : <a href="mailto://@Membre.getAdminMail()">@Membre.getAdminMail()</a>, un compte est déjà prêt pour vous !
+			Vous avez déjà témoigné via un formulaire papier et vous souhaitez désormais saisir vos témoignages en ligne, demandez votre identifiant et votre mot de passe à <a href="mailto://@Membre.getAdminMail()">@Membre.getAdminMail()</a>.
 	 	</p>
-	}{<script></script>}
+	 	<p>
+	 		En cas de problème de connexion, merci de le signaler à <a href="mailto://@Membre.getAdminMail()">@Membre.getAdminMail()</a>
+	 	</p>
+	 	<br><br><br><br><br>
+
+<p style="font-size:50%">
+Cette base de données a été développée par Malik Olivier Boussejra, Geoffroy Haldebique, Johan Royer, élèves ingénieur à l'École centrale de Nantes, dans le cadre de leur projet "web stratégies".
+</p>	 	
+}{
+<script>
+</script>
+}
