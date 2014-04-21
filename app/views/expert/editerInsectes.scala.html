@@ -20,7 +20,8 @@
 	<h1>Gérer les insectes du groupe @groupe</h1>
 	<a href="/menuExpert">Retour</a>
 <div id="edit"></div>
-	<table>
+<table id="table">
+<thead>
 	<tr>
 		<th>Systématique</th>
 		<th>Nom</th>
@@ -34,6 +35,8 @@
 		<th>Sous-groupe</th>
 		<th>Editer</th>
 	</tr>
+</thead>
+<tbody>
 	@for(espece <- groupe.getEspecesInThisBySystematique()){
 	<tr>
 		<td>@espece.espece_systematique</td>
@@ -53,8 +56,26 @@
 		<td><button onClick="editerEspece(@espece.espece_id)">Editer</button></td>
 	</tr>
 	}
-	</table>
+</tbody>
+</table>
 }{
+<script type="text/javascript" src="/assets/javascripts/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+	$('#table').dataTable({
+		"sScrollY": "500px",
+		"bPaginate": false,
+		"oLanguage": {
+			"sLengthMenu": "Display _MENU_ records per page",
+			"sZeroRecords": "Aucun résultat",
+			"sInfo": "Montre _START_ à _END_ de _TOTAL_ lignes",
+			"sInfoEmpty": "Showing 0 to 0 of 0 records",
+			"sInfoFiltered": "(filtré à partir de _MAX_ lignes au total)"
+		}
+	});
+	
+});
+</script>
 <script>
 function editerEspece(espece_id){
 	$('#edit').load('/editerInsectes/espece/@groupe.groupe_id/'+espece_id);
