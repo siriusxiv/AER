@@ -58,6 +58,9 @@ public class Espece extends Model implements Comparator<Espece>{
 	public static List<Espece> findAll(){
 		return find.orderBy("espece_systematique").findList();
 	}
+	public static List<Espece> findAllByAlpha(){
+		return find.orderBy("espece_nom").findList();
+	}
 	
 	//Fonctions de filtres de la liste des insectes
 	/*************************************************/

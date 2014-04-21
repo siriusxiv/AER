@@ -118,6 +118,13 @@ public class SousGroupe extends Model {
 	public List<Espece> getEspecesInThis(){
 		return Espece.find.where().eq("espece_sous_groupe", this).orderBy("espece_systematique").findList();
 	}
+	/**
+	 * Trouve les espèces dans ce sous-groupe dans l'ordre alpha
+	 * @return
+	 */
+	public List<Espece> getEspecesInThisByAlpha(){
+		return Espece.find.where().eq("espece_sous_groupe", this).orderBy("espece_nom").findList();
+	}
 
 	/**
 	 * Supprimer le sous-groupe de la base de données et toutes ses références
