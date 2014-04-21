@@ -155,6 +155,79 @@ public class Groupe extends Model {
 	}
 	
 	/**
+	 * Renvoie la liste des sous-familles dans ce groupe triées par ordre alpha.
+	 * @return
+	 */
+	public List<SousFamilleHasSousGroupe> getSousFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<SousFamilleHasSousGroupe> sfhsgs = new ArrayList<SousFamilleHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			sfhsgs.addAll(sg.getSousFamilles());
+		}
+		Collections.sort(sfhsgs,new Comparator<SousFamilleHasSousGroupe>(){
+			@Override
+			public int compare(SousFamilleHasSousGroupe arg0, SousFamilleHasSousGroupe arg1) {
+				return arg0.sous_famille.sous_famille_nom.compareTo(arg1.sous_famille.sous_famille_nom);
+			}
+		});
+		return sfhsgs;
+	}
+	/**
+	 * Renvoie la liste des familles dans ce groupe triées par ordre alpha.
+	 * @return
+	 */
+	public List<FamilleHasSousGroupe> getFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<FamilleHasSousGroupe> fhsgs = new ArrayList<FamilleHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			fhsgs.addAll(sg.getFamilles());
+		}
+		Collections.sort(fhsgs,new Comparator<FamilleHasSousGroupe>(){
+			@Override
+			public int compare(FamilleHasSousGroupe arg0, FamilleHasSousGroupe arg1) {
+				return arg0.famille.famille_nom.compareTo(arg1.famille.famille_nom);
+			}
+		});
+		return fhsgs;
+	}
+	/**
+	 * Renvoie la liste des super-familles dans ce groupe triées par ordre alpha.
+	 * @return
+	 */
+	public List<SuperFamilleHasSousGroupe> getSuperFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<SuperFamilleHasSousGroupe> sfhsgs = new ArrayList<SuperFamilleHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			sfhsgs.addAll(sg.getSuperFamilles());
+		}
+		Collections.sort(sfhsgs,new Comparator<SuperFamilleHasSousGroupe>(){
+			@Override
+			public int compare(SuperFamilleHasSousGroupe arg0, SuperFamilleHasSousGroupe arg1) {
+				return arg0.super_famille.super_famille_nom.compareTo(arg1.super_famille.super_famille_nom);
+			}
+		});
+		return sfhsgs;
+	}
+	/**
+	 * Renvoie la liste des ordres dans ce groupe triés par ordre alpha.
+	 * @return
+	 */
+	public List<OrdreHasSousGroupe> getOrdres(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<OrdreHasSousGroupe> ohsgs = new ArrayList<OrdreHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			ohsgs.addAll(sg.getOrdres());
+		}
+		Collections.sort(ohsgs,new Comparator<OrdreHasSousGroupe>(){
+			@Override
+			public int compare(OrdreHasSousGroupe arg0, OrdreHasSousGroupe arg1) {
+				return arg0.ordre.ordre_nom.compareTo(arg1.ordre.ordre_nom);
+			}
+		});
+		return ohsgs;
+	}
+	
+	/**
 	 * Supprimer le groupe de la base de données et toutes ses références
 	 * dans les autres tables
 	 */
