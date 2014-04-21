@@ -32,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 
+import play.Play;
 import play.db.ebean.Model;
 
 @SuppressWarnings("serial")
@@ -243,7 +244,7 @@ public class Membre extends Model {
 	 * @return
 	 */
 	public static String getAdminMail(){
-		return find.where().eq("membre_droits", Droits.ADMIN).setMaxRows(1).findUnique().membre_email;
+		return Play.application().configuration().getString("contact.mail");
 	}
 	
 }
