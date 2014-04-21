@@ -57,7 +57,7 @@ public class TemoinsParPeriodeExcel extends Excel{
 		if(!maille.equals(""))
 			titre+=" dans la maille "+maille;
 		titre+=" du "+date1+" au "+date2;
-		titre+=" ("+TemoinsParPeriode.getSomme(temoins)+" témoignages)";
+		titre+=" ("+temoins.size()+" témoin(s) pour "+TemoinsParPeriode.getSomme(temoins)+" témoignage(s))";
 		sheet.createRow(0).createCell(0).setCellValue(titre);
 		sheet.addMergedRegion(new CellRangeAddress(
 	            0, //first row (0-based)

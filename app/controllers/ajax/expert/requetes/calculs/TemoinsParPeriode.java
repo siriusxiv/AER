@@ -57,7 +57,7 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 	 */
 	@Override
 	public int compare(TemoinsParPeriode t1, TemoinsParPeriode t2) {
-		return (t1.nombreDeTemoignages<t2.nombreDeTemoignages ? 1 : (t1.nombreDeTemoignages==t2.nombreDeTemoignages ? 0 : -1));
+		return t1.temoin.membre_nom.compareToIgnoreCase(t2.temoin.membre_nom);
 	}
 	private TemoinsParPeriode(){}
 
@@ -66,10 +66,8 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 		List<TemoinsParPeriode> temoins = new ArrayList<TemoinsParPeriode>();
 		List<InformationsComplementaires> complements = TemoinsParPeriode.getObservations(info);
 		//On commence la génération des témoins par période.
-		int i=0;
 		for(InformationsComplementaires complement : complements){
 			List<FicheHasMembre> fhms = FicheHasMembre.find.where().eq("fiche", complement.informations_complementaires_observation.getFiche()).findList();
-			if(i%1000==0){System.out.println(i);}
 			for(FicheHasMembre fhm : fhms){
 				int position;
 				if((position=position(fhm.membre,temoins))==-1){
@@ -78,7 +76,6 @@ public class TemoinsParPeriode implements Comparator<TemoinsParPeriode>{
 					temoins.get(position).nombreDeTemoignages++;
 				}
 			}
-			i++;
 		}
 		Collections.sort(temoins,new TemoinsParPeriode());
 		return temoins;
