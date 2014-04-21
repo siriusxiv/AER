@@ -17,12 +17,14 @@
  ********************************************************************************/
 package controllers.expert;
 
+import models.Confidentialite;
 import models.Membre;
 import controllers.admin.Admin;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.gererTemoinsPassifs;
+import views.html.expert.ajax.editerTemoinAjax;
 
 public class GererTemoinsPassifs extends Controller {
 
@@ -56,8 +58,83 @@ public class GererTemoinsPassifs extends Controller {
 			String jourdece = df.get("jourdece");
 			String moisdece = df.get("moisdece");
 			String annedece = df.get("annedece");
+			String telephone = df.get("tel");
+			String confidentialite = df.get("confidentialite");
 			String biographie = df.get("biographie");
-			new Membre(civilite,nom,email,adresse,complement,cp,ville,pays,journais,moisnais,annenais,jourdece,moisdece,annedece,biographie).save();
+			new Membre(civilite,nom,email,adresse,complement,cp,ville,pays,journais,moisnais,annenais,jourdece,moisdece,annedece,telephone,biographie,confidentialite).save();
+			return redirect("/gererTemoinsPassifs");
+		}else
+			return Admin.menuAdmin();
+	}
+	
+	/**
+	 * Requête ajax pour éditer les informations du témoin.
+	 * @param membre_id
+	 * @return
+	 */
+	public static Result editer(Integer membre_id){
+		if(MenuExpert.isExpertConnected()){
+			Membre membre = Membre.find.byId(membre_id);
+			return ok(editerTemoinAjax.render(membre));
+		}else
+			return Admin.menuAdmin();
+	}
+	
+
+	public static Result editPost(Integer membre_id){
+		if(MenuExpert.isExpertConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String civilite = df.get("civilite");
+			String nom = df.get("nom");
+			if(Membre.find.where().eq("membre_nom",nom).findUnique()!=null)
+				return ok(gererTemoinsPassifs.render("Quelqu'un portant le nom '"+nom+"' est déjà référencé. Si par hasard ces deux personnes différentes ont le même nom, rajoutez (2) par exemple pour les différencier."));
+			String adresse = df.get("adresse");
+			String complement = df.get("complement");
+			String cp = df.get("cp");
+			String ville = df.get("ville");
+			String pays = df.get("pays");
+			String journais = df.get("journais");
+			String moisnais = df.get("moisnais");
+			String annenais = df.get("annenais");
+			String jourdece = df.get("jourdece");
+			String moisdece = df.get("moisdece");
+			String annedece = df.get("annedece");
+			String telephone = df.get("tel");
+			String confidentialite = df.get("confidentialite");
+			String biographie = df.get("biographie");
+			Membre temoin = Membre.find.byId(membre_id);
+			temoin.membre_civilite=civilite;
+			temoin.membre_nom=nom;
+			temoin.membre_adresse=adresse;
+			temoin.membre_adresse_complement=complement;
+			temoin.membre_code_postal=cp;
+			temoin.membre_ville=ville;
+			temoin.membre_pays=pays;
+			temoin.membre_tel=telephone;
+			temoin.membre_biographie=biographie;
+			if(confidentialite.equals("casparcas"))
+				temoin.membre_confidentialite=Confidentialite.CASPARCAS;
+			else
+				temoin.membre_confidentialite=Confidentialite.OUVERTE;
+			if(!annenais.equals("")){
+				temoin.membre_annenais=Integer.parseInt(annenais);
+				if(!moisnais.equals("")){
+					temoin.membre_moisnais=Integer.parseInt(moisnais);
+					if(!journais.equals("")){
+						temoin.membre_journais=Integer.parseInt(journais);
+					}
+				}
+			}
+			if(!annedece.equals("")){
+				temoin.membre_annedece=Integer.parseInt(annedece);
+				if(!moisdece.equals("")){
+					temoin.membre_moisdece=Integer.parseInt(moisdece);
+					if(!jourdece.equals("")){
+						temoin.membre_jourdece=Integer.parseInt(jourdece);
+					}
+				}
+			}
+			temoin.update();
 			return redirect("/gererTemoinsPassifs");
 		}else
 			return Admin.menuAdmin();

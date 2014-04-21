@@ -51,6 +51,8 @@ GET		/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImport
 POST	/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.post()
 GET		/gererTemoinsPassifs								controllers.expert.GererTemoinsPassifs.main()
 POST	/ajouterTemoinPassif								controllers.expert.GererTemoinsPassifs.ajouter()
+GET		/editerTemoin/:membre_id							controllers.expert.GererTemoinsPassifs.editer(membre_id: Integer)
+POST	/editerTemoin/:membre_id							controllers.expert.GererTemoinsPassifs.editPost(membre_id: Integer)
 GET		/editerInsectes/:groupe_id							controllers.expert.EditerInsectes.main(groupe_id: Integer)
 POST	/editerInsectes/changerNom/:espece_id				controllers.expert.EditerInsectes.changerNom(espece_id: Integer)
 POST	/editerInsectes/changerAuteur/:espece_id			controllers.expert.EditerInsectes.changerAuteur(espece_id: Integer)

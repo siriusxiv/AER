@@ -64,7 +64,7 @@ public class Membre extends Model {
 	public String membre_biographie;
 	public String membre_email;
 	public String membre_mdp_hash;
-	public String membre_sel;
+	public String membre_tel;
 	@NotNull
 	@ManyToOne
 	public Droits membre_droits;
@@ -98,11 +98,12 @@ public class Membre extends Model {
 
 	/**
 	 * Ajoute un témoin passif.
+	 * @param telephone 
 	 */
 	public Membre(String civilite, String nom, String email, String adresse,
 			String complement, String cp, String ville, String pays,
 			String journais, String moisnais, String annenais, String jourdece,
-			String moisdece, String annedece, String biographie) {
+			String moisdece, String annedece, String telephone, String biographie, String confidentialite) {
 		this.membre_civilite=civilite;
 		this.membre_nom=nom;
 		this.membre_email=email;
@@ -111,9 +112,13 @@ public class Membre extends Model {
 		this.membre_code_postal=cp;
 		this.membre_ville=ville;
 		this.membre_pays=pays;
+		this.membre_tel=telephone;
 		this.membre_biographie=biographie;
 		this.membre_abonne=false;
-		this.membre_confidentialite=Confidentialite.CASPARCAS;
+		if(confidentialite.equals("casparcas"))
+			this.membre_confidentialite=Confidentialite.CASPARCAS;
+		else
+			this.membre_confidentialite=Confidentialite.OUVERTE;
 		this.membre_droits=Droits.TEMOIN;
 		this.membre_temoin_actif=false;
 		this.membre_inscription_acceptee=true;
