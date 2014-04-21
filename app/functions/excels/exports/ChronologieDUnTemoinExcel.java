@@ -85,6 +85,7 @@ public class ChronologieDUnTemoinExcel extends Excel {
 		rowHead.createCell(9).setCellValue("Stade/Sexe");
 		rowHead.createCell(10).setCellValue("Témoins");
 		rowHead.createCell(11).setCellValue("Mémo");
+		rowHead.createCell(12).setCellValue("Groupe");
 		CellStyle cellStyleDate = wb.createCellStyle();
 		CreationHelper creationHelper = wb.getCreationHelper();
 		cellStyleDate.setDataFormat(creationHelper.createDataFormat().getFormat("dd/mm/yyyy"));
@@ -113,8 +114,8 @@ public class ChronologieDUnTemoinExcel extends Excel {
 			if(nombre==null)
 				row.createCell(8).setCellValue("?");
 			else
-				row.createCell(9).setCellValue(nombre);
-			row.createCell(10).setCellValue(complements.informations_complementaires_stade_sexe.stade_sexe_intitule);
+				row.createCell(8).setCellValue(nombre);
+			row.createCell(9).setCellValue(complements.informations_complementaires_stade_sexe.stade_sexe_intitule);
 			StringBuilder membres = new StringBuilder();
 			List<FicheHasMembre> fhms = fiche.getFicheHasMembre();
 			for(int j = 0 ; j<fhms.size()-1 ; j++){
@@ -125,8 +126,9 @@ public class ChronologieDUnTemoinExcel extends Excel {
 				membres.append(fhms.get(fhms.size()-1).membre);
 			else
 				membres.append("et al.");
-			row.createCell(11).setCellValue(membres.toString());
-			row.createCell(12).setCellValue(fiche.fiche_memo);
+			row.createCell(10).setCellValue(membres.toString());
+			row.createCell(11).setCellValue(fiche.fiche_memo);
+			row.createCell(12).setCellValue(observation.observation_espece.espece_sous_groupe.sous_groupe_groupe.groupe_nom);
 			i++;
 		}
 		for(int j = 0; j<11 ; j++)
