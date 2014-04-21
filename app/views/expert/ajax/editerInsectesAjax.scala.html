@@ -66,14 +66,14 @@
 		</td>
 		<td>
 			@if(espece.espece_sousfamille.sous_famille_existe){@espece.espece_sousfamille.sous_famille_nom}
-			<br>
+			@*<br>
 			<select name="sous-famille">
 				<option value="0">Sans sous-famille</option>
 			@for(sohsg <- espece.espece_sous_groupe.sous_groupe_groupe.getSousFamilles()){
 				<option value="@sohsg.sous_famille.sous_famille_id">@sohsg.sous_famille</option>
 			}
 			</select>
-			<button>Changer sous-famille</button>
+			<button>Changer sous-famille</button>*@
 		</td>
 		<td>@espece.espece_sousfamille.sous_famille_famille</td>
 		<td>@if(espece.espece_sousfamille.sous_famille_famille.famille_super_famille.super_famille_existe){@espece.espece_sousfamille.sous_famille_famille.famille_super_famille}</td>
