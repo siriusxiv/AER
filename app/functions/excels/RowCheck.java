@@ -57,6 +57,8 @@ public class RowCheck {
 	private UTMS utm;
 	private Date date_date;
 	private Calendar date = Calendar.getInstance();
+	private Date date_min_date;
+	private Calendar date_min = null;
 	private String[] temoins;
 	private Membre[] membres;
 	private String determinateur;
@@ -149,6 +151,18 @@ public class RowCheck {
 				addError("Maille UTM "+utm_str+" non existante.");
 		}
 		cell = row.getCell(7);
+		if(cell!=null){
+			try{
+				date_min_date=cell.getDateCellValue();
+				if(date_min_date!=null){
+					date_min = Calendar.getInstance();
+					date_min.setTime(date_min_date);
+				}
+			} catch (IllegalStateException e) {
+				addError("Date minimum spécifiée invalide.");
+			}
+		}
+		cell = row.getCell(8);
 		if(cell==null)
 			addError("Date non spécifiée.");
 		else{
@@ -157,11 +171,13 @@ public class RowCheck {
 				date.setTime(date_date);
 				if(date_date==null)
 					addError("La date n'est pas spécifiée.");
+				if(date_min!=null && date!=null && date_min.compareTo(date)>=0)
+					addError("La date min est supérieure au égale à la date.");
 			} catch (IllegalStateException e) {
 				addError("Date invalide.");
 			}
 		}
-		cell = row.getCell(8);
+		cell = row.getCell(9);
 		if(cell==null)
 			addError("Témoin non spécifiée.");
 		else{
@@ -179,30 +195,30 @@ public class RowCheck {
 				}
 			}
 		}
-		cell = row.getCell(9);
+		cell = row.getCell(10);
 		if(cell!=null)
 			determinateur=cell.getStringCellValue();
-		cell = row.getCell(10);
+		cell = row.getCell(11);
 		if(cell!=null)
 			methodeCapture=cell.getStringCellValue();
 		else
 			methodeCapture=null;
-		cell = row.getCell(11);
+		cell = row.getCell(12);
 		if(cell!=null)
 			milieu=cell.getStringCellValue();
 		else
 			milieu=null;
-		cell = row.getCell(12);
+		cell = row.getCell(13);
 		if(cell!=null)
 			essence=cell.getStringCellValue();
 		else
 			essence=null;
-		cell = row.getCell(13);
+		cell = row.getCell(14);
 		if(cell!=null)
 			remarque=cell.getStringCellValue();
 		else
 			remarque=null;
-		cell = row.getCell(14);
+		cell = row.getCell(15);
 		if(cell!=null)
 			collection=cell.getStringCellValue();
 		else
@@ -269,7 +285,7 @@ public class RowCheck {
 	 * Sauvegarde la Row dans la base de données.
 	 */
 	public void saveToDatabase() {
-		Fiche fiche = new Fiche(commune,lieu_dit,utm,date,memo);
+		Fiche fiche = new Fiche(commune,lieu_dit,utm,date_min,date,memo);
 		fiche.save();
 		Observation observation = new Observation(fiche,espece,determinateur,null);
 		observation.observation_date_validation=Calendar.getInstance();

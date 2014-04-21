@@ -47,6 +47,29 @@
 				<td>@listeDesCommunes("commune")</td>
 			</tr>
 			<tr>
+				<td>Date minimum :</td>
+				<td>
+					<select name="jourmin">
+						<option value="">&nbsp;</option>
+					@for(i: Int <- 1 to 31){
+						<option value="@i">@i</option>
+					}
+					</select>
+					<select name="moismin">
+						<option value="">&nbsp;</option>
+					@for(i: Int <- 1 to 12){
+						<option value="@i">@i</option>
+					}
+					</select>
+					<select name="anneemin">
+						<option value="">&nbsp;</option>
+					@for(i: Int <- 1950 to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
+						<option value="@i">@i</option>
+					}
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td>Date* :</td>
 				<td>
 				@defining(Calendar.getInstance().getTime()){ maintenant =>

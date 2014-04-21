@@ -80,7 +80,11 @@ public class GererTemoinsPassifs extends Controller {
 			return Admin.menuAdmin();
 	}
 	
-
+	/**
+	 * Edite les informations du témoin et enregistre le tout dans la base.
+	 * @param membre_id
+	 * @return
+	 */
 	public static Result editPost(Integer membre_id){
 		if(MenuExpert.isExpertConnected()){
 			DynamicForm df = DynamicForm.form().bindFromRequest();
