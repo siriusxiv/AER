@@ -20,10 +20,10 @@
 <a href="/menuExpert">Retour</a><br>
 <h1>Gestion des témoins</h1>
 <button onClick="ajouter()">Ajouter un témoin</button>
+<span id="message">@Html(message)</span>
 <div style="display:none" id="ajouter">
 <h2>Ajouter un témoin dans la base de données</h2>
 <form action="/ajouterTemoinPassif" method="POST" id="form">
-<span id="message">@Html(message)</span>
 	<table class="gestionDesTemoinsPassifs">
 	<tr>
 		<th>Civilité</th>

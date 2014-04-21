@@ -51,7 +51,6 @@ GET		/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImport
 POST	/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.post()
 GET		/gererTemoinsPassifs								controllers.expert.GererTemoinsPassifs.main()
 POST	/ajouterTemoinPassif								controllers.expert.GererTemoinsPassifs.ajouter()
-GET		/editerTemoin/:membre_id							controllers.expert.GererTemoinsPassifs.editer(membre_id: Integer)
 POST	/editerTemoin/:membre_id							controllers.expert.GererTemoinsPassifs.editPost(membre_id: Integer)
 GET		/editerInsectes/:groupe_id							controllers.expert.EditerInsectes.main(groupe_id: Integer)
 POST	/editerInsectes/changerNom/:espece_id				controllers.expert.EditerInsectes.changerNom(espece_id: Integer)
@@ -91,6 +90,8 @@ POST	/gererSousGroupes/enleverFamille/:fhsg_id				controllers.admin.groupesSousG
 POST	/gererSousGroupes/enleverSuperFamille/:sufhsg_id		controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverSuperFamille(sufhsg_id: Integer)
 POST	/gererSousGroupes/enleverOrdre/:ohsg_id					controllers.admin.groupesSousGroupes.GererElementsDansSousGroupe.enleverOrdre(ohsg_id: Integer)
 GET		/listeVilles											controllers.admin.ListeVilles.main()
+GET     /listeMembres                							controllers.admin.ListeMembres.main()
+POST	/admin/editerTemoin/:membre_id							controllers.admin.ListeMembres.editPost(membre_id: Integer)
 
 #route pour gérer la base des insectes (admin)
 GET     /gererBaseDeDonneesInsectes  	controllers.admin.GererBaseDeDonneesInsectes.main()
@@ -110,15 +111,7 @@ POST	/gererBaseDeDonneesInsectes/changerPhoto/:espece_id		controllers.admin.Gere
 POST	/gererBaseDeDonneesInsectes/ajouterSynonyme/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.ajouterSynonyme(espece_id:Integer)
 POST	/gererBaseDeDonneesInsectes/supprimerSynonyme/:synonyme_id	controllers.admin.GererBaseDeDonneesInsectes.supprimerSynonyme(synonyme_id: Integer)
 
-#routes pour les listes de membres*****************
-GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")
-GET     /listeMembresTemoinActif   controllers.Application.listeMembresTemoinActif(isTemoinActif:Boolean ?=true)
-GET     /listeMembresAbonne   controllers.Application.listeMembresAbonne(isAbonne:Boolean ?=true)
-GET     /listeMembresConfidentialite   controllers.Application.listeMembresConfidentialite(confidentialite:Integer ?=-1)
-GET     /listeMembresDroits   controllers.Application.listeMembresDroits(droits:Integer ?=-1)
-GET     /listeMembresInscrit   controllers.Application.listeMembresInscrit(isInscrit:Boolean ?=true)
-GET     /listeMembresPrecis  controllers.Application.listeMembresPrecis(membre_nom: String)
-#**********************************************
+#Fiche de témoignage
 GET     /ficheDeTemoignage			controllers.membre.DeposerTemoignage.main()
 POST	/deposerTemoignage			controllers.membre.DeposerTemoignage.post()
 GET		/deposerTemoignage			controllers.membre.DeposerTemoignage.redirectMain()
@@ -148,8 +141,11 @@ POST	/ajax/carteSomme							controllers.ajax.expert.requetes.Calculs.carteSomme(
 POST	/ajax/carteSommeBiodiversite				controllers.ajax.expert.requetes.Calculs.carteSommeBiodiversite()
 POST	/ajax/carteBiodiversite						controllers.ajax.expert.requetes.Calculs.carteBiodiversite()
 POST	/ajax/chronologieDUnTemoin					controllers.ajax.expert.requetes.Calculs.chronologieDUnTemoin()
-#Routes AJAX pour expert, editer especes
+#Routes AJAX pour expert, editer especes et témoins
 GET		/editerInsectes/espece/:groupe_id/:espece_id	controllers.expert.EditerInsectes.edit(groupe_id: Integer, espece_id: Integer)
+GET		/editerTemoin/:membre_id						controllers.expert.GererTemoinsPassifs.editer(membre_id: Integer)
+#Routes AJAX pour admin, editer témoins
+GET		/admin/editerTemoin/:membre_id					controllers.admin.ListeMembres.editer(membre_id: Integer)
 
 #Routes AJAX pour gérer la Base De Données des Insectes
 POST	/ajax/gererBaseDeDonneesInsectes/renommerEspece/:espece_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerEspece(espece_id: Integer)		

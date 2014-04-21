@@ -15,54 +15,24 @@
  *   limitations under the License.
  *   
  ********************************************************************************/
-package controllers.expert;
+package controllers.admin;
 
+import controllers.expert.MenuExpert;
 import models.Confidentialite;
+import models.Droits;
 import models.Membre;
-import controllers.admin.Admin;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.admin.listeMembres;
+import views.html.admin.ajax.editerTemoinAdminAjax;
 import views.html.expert.gererTemoinsPassifs;
-import views.html.expert.ajax.editerTemoinAjax;
 
-public class GererTemoinsPassifs extends Controller {
+public class ListeMembres extends Controller {
 
 	public static Result main(){
-		if(MenuExpert.isExpertConnected()){
-			return ok(gererTemoinsPassifs.render(""));
-		}else
-			return Admin.nonAutorise();
-	}
-
-	public static Result ajouter(){
-		if(MenuExpert.isExpertConnected()){
-			DynamicForm df = DynamicForm.form().bindFromRequest();
-			String civilite = df.get("civilite");
-			String nom = df.get("nom");
-			if(Membre.find.where().eq("membre_nom",nom).findUnique()!=null)
-				return ok(gererTemoinsPassifs.render("Quelqu'un portant le nom '"+nom+"' est déjà référencé. Si par hasard ces deux personnes différentes ont le même nom, rajoutez (2) par exemple pour les différencier."));
-			String email = df.get("email");
-			if(!email.equals("")){
-				if(Membre.find.where().eq("membre_email",email).findUnique()!=null)
-					return ok(gererTemoinsPassifs.render("Cette adresse mail est déjà utilisée par un autre membre."));
-			}
-			String adresse = df.get("adresse");
-			String complement = df.get("complement");
-			String cp = df.get("cp");
-			String ville = df.get("ville");
-			String pays = df.get("pays");
-			String journais = df.get("journais");
-			String moisnais = df.get("moisnais");
-			String annenais = df.get("annenais");
-			String jourdece = df.get("jourdece");
-			String moisdece = df.get("moisdece");
-			String annedece = df.get("annedece");
-			String telephone = df.get("tel");
-			String confidentialite = df.get("confidentialite");
-			String biographie = df.get("biographie");
-			new Membre(civilite,nom,email,adresse,complement,cp,ville,pays,journais,moisnais,annenais,jourdece,moisdece,annedece,telephone,biographie,confidentialite).save();
-			return redirect("/gererTemoinsPassifs");
+		if(Admin.isAdminConnected()){
+			return ok(listeMembres.render(""));
 		}else
 			return Admin.nonAutorise();
 	}
@@ -73,9 +43,9 @@ public class GererTemoinsPassifs extends Controller {
 	 * @return
 	 */
 	public static Result editer(Integer membre_id){
-		if(MenuExpert.isExpertConnected()){
+		if(Admin.isAdminConnected()){
 			Membre membre = Membre.find.byId(membre_id);
-			return ok(editerTemoinAjax.render(membre));
+			return ok(editerTemoinAdminAjax.render(membre));
 		}else
 			return Admin.nonAutorise();
 	}
@@ -86,13 +56,13 @@ public class GererTemoinsPassifs extends Controller {
 	 * @return
 	 */
 	public static Result editPost(Integer membre_id){
-		if(MenuExpert.isExpertConnected()){
+		if(Admin.isAdminConnected()){
 			Membre temoin = Membre.find.byId(membre_id);
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			String civilite = df.get("civilite");
 			String nom = df.get("nom");
 			if(!nom.equals(temoin.membre_nom) && Membre.find.where().eq("membre_nom",nom).findUnique()!=null)
-				return ok(gererTemoinsPassifs.render("Quelqu'un portant le nom '"+nom+"' est déjà référencé. Si par hasard ces deux personnes différentes ont le même nom, rajoutez (2) par exemple pour les différencier."));
+				return ok(listeMembres.render("Quelqu'un portant le nom '"+nom+"' est déjà référencé. Si par hasard ces deux personnes différentes ont le même nom, rajoutez (2) par exemple pour les différencier."));
 			String adresse = df.get("adresse");
 			String complement = df.get("complement");
 			String cp = df.get("cp");
@@ -139,7 +109,7 @@ public class GererTemoinsPassifs extends Controller {
 				}
 			}
 			temoin.update();
-			return redirect("/gererTemoinsPassifs");
+			return redirect("/listeMembres");
 		}else
 			return Admin.nonAutorise();
 	}

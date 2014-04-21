@@ -21,13 +21,8 @@ package controllers;
 
 import java.io.File;
 
-import models.Confidentialite;
-import models.Droits;
-import models.Membre;
-import controllers.admin.Admin;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.admin.*;
 
 public class Application extends Controller {
 
@@ -47,57 +42,4 @@ public class Application extends Controller {
 	    else
 	    	return notFound("404: Image not found");
 	}    
-    
-    /* Pages de l'expert  */
-    
-   /******* Results de la page liste de membres **********/
-    public static Result listeMembres(String orderBy, String sortDirection){
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.findAll(orderBy, sortDirection), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresTemoinActif(Boolean isTemoinActif) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresTemoinActif(isTemoinActif), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresAbonne(Boolean isAbonne) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresAbonne(isAbonne), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresConfidentialite(Integer confidentialite) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresConfidentialite(confidentialite), Droits.findAll(),Confidentialite.findAll()));
-    }else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresDroits(Integer droits) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresDroits(droits), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresInscrit(Boolean isInscrit) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresInscrit(isInscrit), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresPrecis(String nom) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembres(nom), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
 }

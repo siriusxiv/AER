@@ -15,95 +15,80 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
- @(listMembre :List[Membre], listDroits:List[Droits], listConfidentialite:List[Confidentialite])
- @main("Liste des Membres"){
+@(message: String)
+@main("Liste des membres"){
 <a href="/menuAdmin">Retour</a><br>
-		<h1>Liste des membres</h1>
-	</header>
-	<form action="@routes.Application.listeMembresTemoinActif()" method="GET"><select name="isTemoinActif" onchange="this.form.submit()" isTemoinActif="select" >
-						<option value="-1">Filtrer par Témoins Actifs ou non</option>
-						<option value="false">Liste des Témoins Passifs</option>
-						<option value="true">Liste des Témoins Actifs</option>
-					</select></form>
-					
-	<form action="@routes.Application.listeMembresAbonne()" method="GET"><select name="isAbonne" onchange="this.form.submit()" isAbonne="select" >
-						<option value="-1">Filtrer par Abonnés ou non</option>
-						<option value="false">Liste des Non-Abonnés</option>
-						<option value="true">Liste des Abonnés</option>
-					</select></form>
-					
-	<form action="@routes.Application.listeMembresConfidentialite()" method="GET"><select name="confidentialite" onchange="this.form.submit()" confidentialite="select" >
-						<option value="-1">Filtrer par niveau de confidentialite des données</option>
-						@for(confidentialite <-listConfidentialite) {
-						<option value="@confidentialite.confidentialite_id">@confidentialite.confidentialite_intitule</option>}
-					</select></form>
-	
-	<form action="@routes.Application.listeMembresDroits()" method="GET"><select name="droits" onchange="this.form.submit()" droits="select" >
-						<option value="-1">Filtrer par droits d'accès dans la Base</option>
-						@for(droits <-listDroits) {
-						<option value="@droits.droits_id">@droits.droits_intitule</option>}
-					</select></form>
-		
-	<form action="@routes.Application.listeMembresInscrit()" method="GET"><select name="isInscrit" onchange="this.form.submit()" isInscrit="select" >
-						<option value="-1">Filtrer selon que l'inscription soit validée ou non</option>
-						<option value="false">Liste des Membres à l'inscription Non Validée</option>
-						<option value="true">Liste des Membres Inscrits</option>
-					</select></form>
-					
-<span id="recherchePrecise"> Chercher les informations d'une personne précise<button onClick="recherche()">Recherche</button></span>
-
-<form action="/listeMembres" method="GET"><button type="submit">Liste Complète</button></form>
-						
-	<table>
-		<tr>
-			<th>Nom</th>
-			<th>Civilité</th>
-			<th>Adresse</th>
-			<th>Adresse complément</th>
-			<th>Code postal</th>
-			<th>Ville</th>
-			<th>Pays</th>
-			<th>Confidentialité</th>
-			<th>Abonné</th>
-			<th>Témoin actif</th>
-			<th>Date de naissance</th>
-			<th>Biographie</th>
-			<th>Adresse mail</th>
-			<th>Droits</th>
-			<th>Inscription acceptée</th>
-		</tr>
-		@for(membre <- listMembre) {
-		<tr>
-			<td>@membre.membre_nom</td>
-			<td>@membre.membre_civilite</td>
-			<td>@membre.membre_adresse</td>
-			<td>@membre.membre_adresse_complement</td>
-			<td>@membre.membre_code_postal</td>
-			<td>@membre.membre_ville</td>
-			<td>@membre.membre_pays</td>
-			<td>@membre.membre_confidentialite.confidentialite_intitule</td>
-			<td>@if(membre.membre_abonne==false){Non Abonné}else{Abonné}</td>
-			<td>@if(membre.membre_temoin_actif==false){Passif}else{Actif}</td>
-			<td>@membre.membre_journais/@membre.membre_moisnais/@membre.membre_annenais</td>
-			<td>@membre.membre_biographie</td>
-			<td>@membre.membre_email</td>
-			<td>@membre.membre_droits.droits_intitule</td>
-			<td>@if(membre.membre_inscription_acceptee==false){Non Inscrit}else{Inscrit}</td>
-		</tr>
-		}
-	</table>
-}{ <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
- <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
-<script> 
-function recherche(){
-	$.ajax({
-		url : '/listeDesMembres/inputMembre',
-		success: function (res) {
-			$('#recherchePrecise').html(
-					'<form action="/listeMembresPrecis" method="GET">'+res+'<button type="submit">Recherche</button></form>'
-			);
-			
-		}
-	}); 
+<h1>Liste des membres</h1>
+<span>@message</span>
+<div id="edit"></div>
+<br>
+<table class="gestionDesTemoinsPassifs" id="table">
+<thead>
+	<tr>
+		<th>Civilité</th>
+		<th>Nom</th>
+		<th>Adresse</th>
+		<th>Complément d'adresse</th>
+		<th>Code postal</th>
+		<th>Ville</th>
+		<th>Pays</th>
+		<th>Date de naissance</th>
+		<th>Date de décès</th>
+		<th>E-mail</th>
+		<th>Téléphone</th>
+		<th>Biographie</th>
+		<th>Confidentialité</th>
+		<th>Abonné</th>
+		<th>Inscrit</th>
+		<th>Editer</th>
+	</tr>
+</thead>
+<tbody>
+@for( membre <- Membre.findAll("membre_nom","asc")){
+	<tr>
+		<td>@membre.membre_civilite</td>
+		<td>@membre.membre_nom</td>
+		<td>@membre.membre_adresse</td>
+		<td>@membre.membre_adresse_complement</td>
+		<td>@membre.membre_code_postal</td>
+		<td>@membre.membre_ville</td>
+		<td>@membre.membre_pays</td>
+		<td>@membre.membre_journais/@membre.membre_moisnais/@membre.membre_annenais</td>
+		<td>@membre.membre_jourdece/@membre.membre_moisdece/@membre.membre_annedece</td>
+		<td>@membre.membre_email</td>
+		<td>@membre.membre_tel</td>
+		<td>@membre.membre_biographie</td>
+		<td>@membre.membre_confidentialite</td>
+		<td>@if(membre.membre_abonne){Abonné}else{Non abonné}</td>
+		<td>@if(membre.membre_mdp_hash==null){Non inscrit}else{@if(membre.membre_inscription_acceptee){Inscrit}else{Inscription soumise au jugement de l'admin}}</td>
+		<td><button onClick="editTemoin(@membre.membre_id)">Editer</button></td>
+	</tr>
 }
-</script>}
+</tbody>
+</table>
+}{
+<script type="text/javascript" src="/assets/javascripts/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+	$('#table').dataTable({
+		"sScrollY": "500px",
+		"bPaginate": false,
+		"oLanguage": {
+			"sSearch": "Recherche :",
+			"sLengthMenu": "Display _MENU_ records per page",
+			"sZeroRecords": "Aucun résultat",
+			"sInfo": "Montre _START_ à _END_ de _TOTAL_ lignes",
+			"sInfoEmpty": "Showing 0 to 0 of 0 records",
+			"sInfoFiltered": "(filtré à partir de _MAX_ lignes au total)"
+		}
+	});
+	
+});
+</script>
+<script src="/assets/javascripts/verify-mail.js" type="text/javascript"></script>
+<script>
+function editTemoin(membre_id){
+	$('#edit').load('/admin/editerTemoin/'+membre_id);
+}
+</script>
+}
