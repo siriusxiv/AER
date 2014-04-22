@@ -92,14 +92,14 @@ public class MaillesParPeriodeExcel extends Excel {
 				ligne++;
 			}else{
 				row = sheet.getRow(ligne);
-				row.createCell(3).setCellValue(especeATraiter.espece_nom);
+				row.createCell(4).setCellValue(especeATraiter.espece_nom);
 				sheet.addMergedRegion(new CellRangeAddress(
 						ligne, //first row (0-based)
 						ligne, //last row  (0-based)
-						3, //first column (0-based)
-						4  //last column  (0-based)
+						4, //first column (0-based)
+						5  //last column  (0-based)
 						));
-				row.createCell(5).setCellValue(mpp.nb_mailles_par_espece.get(especeATraiter)+" observation(s)");
+				row.createCell(6).setCellValue(mpp.nb_mailles_par_espece.get(especeATraiter)+"  maille(s)");
 				ligne++;
 			}
 			if(ligne%LIGNES==(LIGNES-2)){
