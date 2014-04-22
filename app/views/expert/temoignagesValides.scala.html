@@ -105,9 +105,9 @@
 		{}
 	}
 	function triEspece(groupe_id, espece_id){
-	 if (espece_id=="toutes"){document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1/observation_date_validation/asc"><button>Trier</button></a>'
+	 if (espece_id=="toutes"){document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/'+groupe_id+'/1/observation_date_validation/desc"><button>Trier</button></a>'
 	 ;}else{
-	document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/espece/'+groupe_id+'/'+espece_id+'/1/observation_date_validation/asc"><button>Trier</button></a>'
+	document.getElementById("triespece").innerHTML='<a href="/temoignagesValides/espece/'+groupe_id+'/'+espece_id+'/1/observation_date_validation/desc"><button>Trier</button></a>'
 	;} 
 	}
 	
@@ -121,7 +121,7 @@
 }
 	function launchTriMembre(groupe_id){
 	var membre_nom=document.getElementById('triMembres').value
-	document.getElementById('trimembre').innerHTML='<a href="/temoignagesValides/membre/'+groupe_id+'/'+membre_nom+'/1/observation_date_validation/asc"><button>Valider le tri</button></a>'
+	document.getElementById('trimembre').innerHTML='<a href="/temoignagesValides/membre/'+groupe_id+'/'+membre_nom+'/1/observation_date_validation/desc"><button>Valider le tri</button></a>'
 	;}
 	</script>
 }
