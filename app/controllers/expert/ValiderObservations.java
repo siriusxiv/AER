@@ -153,6 +153,7 @@ public class ValiderObservations extends Controller {
 		String communenom= df.get("ville_nom_reel");
 		String utm = df.get("utm");
 		String memo = df.get("memo");
+		String nouvelleinfo=df.get("infonew");
 		Observation observation= Observation.find.byId(observation_id);
 		List<InformationsComplementaires> infos= observation.getInfos();
 		for(InformationsComplementaires info: infos){
@@ -168,6 +169,8 @@ public class ValiderObservations extends Controller {
 			if (nombres!=null){
 				Integer nombre=Integer.parseInt(nombres);
 				info.informations_complementaires_nombre_de_specimens=nombre;
+				}else{
+					info.informations_complementaires_nombre_de_specimens=null;
 				}
 			Integer stadesexeid=Integer.parseInt(df.get("stadesexe"+id));
 			if(stadesexeid!=null){
@@ -175,6 +178,11 @@ public class ValiderObservations extends Controller {
 			info.informations_complementaires_stade_sexe=stadesexe;
 			}
 			info.save();
+		}
+		if (nouvelleinfo!=null){
+			StadeSexe stade=StadeSexe.find.byId(1);
+			InformationsComplementaires newinfo = new InformationsComplementaires(observation,0,stade);
+			newinfo.save();
 		}
 		if (observation!=null){
 			observation.observation_commentaires=commentaire;

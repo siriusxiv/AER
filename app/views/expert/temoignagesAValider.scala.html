@@ -95,6 +95,10 @@ function edite(observation_id, groupe_id){
 			}
 	});
 }
+function ajoutInfo(){
+document.getElementById("nouvelleinfo").innerHTML='<input type="text" name="infonew" value="1" style="display:none;">';
+document.getElementById("nouvelleInfoValidee").innerHTML='Une nouvelle information à été créée, rééditez cette observation pour la préciser.';
+}
 function confirmValider(observation_id){
 	var r=confirm("Etes-vous sûr de valider cette observation?");
 	if(r==true)
