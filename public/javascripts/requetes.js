@@ -200,6 +200,26 @@ function historiqueDesEspeces(){
 		});
 	}
 }
+function maillesParPeriode(){
+	var donnees = new Donnees();
+	if(isValide(donnees)){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/maillesParPeriode',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}
+}
 function mailleValide(donnees){
 	return $.inArray(donnees.maille, listeUTMS)>=0 || donnees.maille=='';
 }

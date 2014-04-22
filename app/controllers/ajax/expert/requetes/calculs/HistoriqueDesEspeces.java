@@ -177,7 +177,7 @@ public class HistoriqueDesEspeces {
 	}
 	
 	/**
-	 * Calcule le nombre d'observation en tout
+	 * Calcule le nombre d'observations en tout
 	 * @return
 	 */
 	public int getSomme(){
