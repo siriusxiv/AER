@@ -167,4 +167,27 @@ public class SuperFamille extends Model implements Comparator<SuperFamille>{
 		else
 			return espece.espece_systematique;
 	}
+	
+	/**
+	* Teste si une super-famille contient des espèces
+	*/
+	public boolean estVide(){
+		List<Espece> especes = this.getEspecesDansThis();
+		return (especes.isEmpty());
+	}
+	
+	/**
+	* Supprime la super-famille SEULEMENT si elle ne contient pas d'espèces, 
+	* et si elle contient des familles vides supprime celles-ci également
+	* (supprime également les sous-familles par récursion)
+	*/
+	public static void supprSuperFamille(Integer super_famille_id){
+		SuperFamille superfam = find.byId(super_famille_id);
+		List<Famille> fams = Famille.find.where().eq("famille_super_famille",superfam).findList();
+		for (Famille fam : fams){
+			if(fam.estVide())
+				Famille.supprFamille(fam.famille_id);
+		}
+		superfam.delete();
+	}
 }
