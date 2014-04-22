@@ -37,15 +37,20 @@ import play.mvc.Security;
 import views.html.membre.ficheDeTemoignage;
 
 public class DeposerTemoignage extends Controller {
-	
+
 	@Security.Authenticated(SecuredMembre.class)
-    public static Result main() {
+	public static Result main() {
 		Membre membre = Membre.find.where().eq("membre_email", session("username")).findUnique();
-    	return ok(ficheDeTemoignage.render(membre));
-    }
-	
+		return ok(ficheDeTemoignage.render(membre,""));
+	}
+
+	public static Result redirectMain(){
+		return redirect("/ficheDeTemoignage");
+	}
+
 	@Security.Authenticated(SecuredMembre.class)
 	public static Result post() throws ParseException{
+		Membre temoin = Membre.find.where().eq("membre_email", session("username")).findUnique();
 		DynamicForm df = DynamicForm.form().bindFromRequest();
 		String commune_nom = df.get("ville_nom_reel");
 		Commune commune = Commune.find.where().eq("ville_nom_reel", commune_nom).findUnique();
@@ -56,14 +61,24 @@ public class DeposerTemoignage extends Controller {
 		UTMS utm = UTMS.find.byId(utm_string);
 		if(utm==null)
 			return badRequest("La maille "+utm_string+" n'est pas répertoriée !");
+		String jourmin = df.get("jourmin");
+		String moismin = df.get("moismin");
+		String anneemin = df.get("anneemin");
 		String jour = df.get("jour");
 		String mois = df.get("mois");
 		String annee = df.get("annee");
 		Calendar date = Calendar.getInstance();
 		SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy");
 		date.setTime(date_format.parse(jour+"/"+mois+"/"+annee));
+		Calendar date_min = null;
+		if(!jourmin.isEmpty() && !moismin.isEmpty() && !anneemin.isEmpty()){
+			date_min = Calendar.getInstance();
+			date_min.setTime(date_format.parse(jourmin+"/"+moismin+"/"+anneemin));
+			if(date_min.compareTo(date)>=0)
+				return ok(ficheDeTemoignage.render(temoin,"La date min est supérieur à la date !"));
+		}
 		String memo = df.get("memo");
-		Fiche fiche = new Fiche(commune,lieu_dit,utm,date,memo);
+		Fiche fiche = new Fiche(commune,lieu_dit,utm,date_min,date,memo);
 		fiche.save();
 
 		int membre_position=1;
@@ -78,7 +93,7 @@ public class DeposerTemoignage extends Controller {
 			}
 			membre_position++;
 		}
-		
+
 		int observation_position=1;
 		String especeId;
 		while( (especeId = df.get("espece"+observation_position)) != null ){
@@ -106,6 +121,6 @@ public class DeposerTemoignage extends Controller {
 			}
 			observation_position++;
 		}
-		return redirect("/ficheDeTemoignage");
+		return ok(ficheDeTemoignage.render(temoin,"Votre témoignage a été déposé avec succès !"));
 	}
 }

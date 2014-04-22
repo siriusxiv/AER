@@ -16,11 +16,9 @@
  *   
  ********************************************************************************@
  @(listObservation: List[Observation], page: Integer, nbpages: Integer, groupe : Groupe, listEspeces: List[Espece], filtre: Integer, especeselectid: Integer, membreselectnom: String, orderBy: String, dir: String )
- @main("Témoignages validés"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-		<h1> Pages des témoignages validés </h1>
+ @main("Témoignages validés"){
+ <a href="/menuExpert">Retour</a><br>
+		<h1>Témoignages validés</h1>
 	</header>
 	<form method="POST" action="/temoignagesValides/export/@groupe.groupe_id/@especeselectid/@orderBy/@dir/@membreselectnom">
 		<button>Créer un export excell</button>
@@ -83,9 +81,8 @@
         		<td>@observation.observation_fiche.fiche_memo</td>
         		<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
         		<td>@for(informationsComplementaires <-observation.getInfos()){
-        			@informationsComplementaires.informations_complementaires_nombre_de_specimens
-        			@informationsComplementaires.informations_complementaires_stade_sexe
-        			
+        			@if(informationsComplementaires.informations_complementaires_nombre_de_specimens!=null){@informationsComplementaires.informations_complementaires_nombre_de_specimens,&nbsp;}
+        			@informationsComplementaires.informations_complementaires_stade_sexe<br>
         			} </td>
         		<td>@observation.observation_date_validation.getTime().format("dd/MM/yyyy")</td>
         		<td><form id="suspens@observation.observation_id" method="POST" action="/temoignagesValides/suspens/@groupe.groupe_id/@page/@observation.observation_id"><input type="button" onclick="confirmSuspens(@observation.observation_id)" value="Remettre en Suspens"></form></td>

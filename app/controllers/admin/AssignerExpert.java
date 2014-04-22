@@ -59,7 +59,7 @@ public class AssignerExpert extends Controller {
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			Groupe groupe = Groupe.find.byId(groupe_id);
 			Membre expert = Membre.find.where().eq("membre_nom", df.get("membre_nominputGroupe"+groupe_id)).findUnique();
-			if(expert!=null && groupe!=null){
+			if(expert!=null && groupe!=null && !expert.membre_droits.equals(Droits.ADMIN)){
 				MembreIsExpertOnGroupe mieog = new MembreIsExpertOnGroupe(expert,groupe);
 				mieog.save();
 				expert.membre_droits=Droits.EXPERT;
@@ -71,7 +71,7 @@ public class AssignerExpert extends Controller {
 	}
 
 	/**
-	 * Change l'expert du groupe.
+	 * Change l'expert du groupe. DEPRECIEE !!!
 	 * @param groupe_id
 	 * @return
 	 */
@@ -88,6 +88,29 @@ public class AssignerExpert extends Controller {
 				mieog.membre=expert;
 				mieog.save();
 				expert.membre_droits=Droits.EXPERT;
+				expert.save();
+			}
+			return redirect("/assignerExperts");
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Enlève un expert de son statut d'expert en tel domaine.
+	 * @param mieog_id
+	 * @return
+	 */
+	public static Result retrograder(Integer mieog_id){
+		if(Admin.isAdminConnected()){
+			MembreIsExpertOnGroupe mieog = MembreIsExpertOnGroupe.find.byId(mieog_id);
+			if(mieog!=null){
+				Membre ex_expert = mieog.membre;
+				mieog.delete();
+				if(MembreIsExpertOnGroupe.find.where().eq("membre",ex_expert).findList().isEmpty()
+						&& !ex_expert.membre_droits.equals(Droits.ADMIN)){
+					ex_expert.membre_droits=Droits.TEMOIN;
+					ex_expert.update();
+				}
 			}
 			return redirect("/assignerExperts");
 		}else

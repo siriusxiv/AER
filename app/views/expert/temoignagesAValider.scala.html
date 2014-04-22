@@ -16,11 +16,9 @@
  *   
  ********************************************************************************@
 @(listObservation :List[Observation], groupe :Groupe)
- @main("Témoignages à valider"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-		<h1> Page pour l'expert qui voit la liste des témoignages à valider </h1>
+ @main("Témoignages à valider"){
+ <a href="/menuExpert">Retour</a><br>
+		<h1>Témoignages à valider</h1>
 	</header>
 	<h2>Sélectionner le type de témoignage voulus</h2>
 	<form action="/temoignagesAValider/@groupe.groupe_id" method="GET"><button type="submit">Non Vus</button></form>
@@ -65,8 +63,8 @@
         		<td>@observation.observation_fiche.fiche_memo</td>
         		<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
         		<td>@for(informationsComplementaires <-observation.getInfos()){
-        			@informationsComplementaires.informations_complementaires_nombre_de_specimens
-        			@informationsComplementaires.informations_complementaires_stade_sexe
+        			@if(informationsComplementaires.informations_complementaires_nombre_de_specimens!=null){@informationsComplementaires.informations_complementaires_nombre_de_specimens,&nbsp;}
+        			@informationsComplementaires.informations_complementaires_stade_sexe<br>
         			} </td>
         		<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
         		<td>@if(!observation.observation_vue_par_expert){<form action="/temoignagesAValider/vu/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">

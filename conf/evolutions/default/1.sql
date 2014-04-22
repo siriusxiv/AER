@@ -33,6 +33,7 @@ create table commune (
   ville_population_2010_order_france INT(10) UNSIGNED,
   ville_densite_2010_order_france INT(10) UNSIGNED,
   ville_surface_order_france INT(10) UNSIGNED,
+  ville_nom_aer             varchar(255),
   constraint pk_commune primary key (ville_id))
 ;
 
@@ -175,7 +176,7 @@ create table membre (
   membre_biographie         TEXT,
   membre_email              varchar(255),
   membre_mdp_hash           varchar(255),
-  membre_sel                varchar(255),
+  membre_tel                varchar(255),
   membre_droits_droits_id   integer not null,
   membre_inscription_acceptee tinyint(1) default 0 not null,
   membre_lien_de_validation_de_mail varchar(255),

@@ -17,12 +17,8 @@
  ********************************************************************************@
 @(groupes : List[Groupe])
 @main("Assigner des Experts"){
-	<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
 	<h1>Assigner un expert à un groupe</h1>
+	<a href="/menuAdmin">Retour</a><br>
 	<table>
 		<tr>
 			<th>Groupe</th>
@@ -32,11 +28,20 @@
 		<tr>
 			<td>@groupe.groupe_nom</td>
 			<td>
-			@defining(groupe.getExpert()){ expert=>
-				@if(expert==null){
-					<span id="expertDuGroupe@groupe.groupe_id">Pas d'expert, <button onClick="assignerExpert(@groupe.groupe_id)">l'assigner</button></span>
+			@defining(groupe.getExperts()){ mieogs=>
+				@if(mieogs.isEmpty()){
+					<span id="expertDuGroupe@groupe.groupe_id">Pas d'expert, <button onClick="assignerExpert(@groupe.groupe_id)">en assigner un</button>.</span>
 				}else{
-					<span id="expertDuGroupe@groupe.groupe_id">@expert.membre_nom <button onClick="changerExpert(@groupe.groupe_id)">Changer d'expert</button></span>
+				<ul>
+					@for(i:Int <- 0 to (mieogs.size()-1)){
+					<li id="expert@mieogs.get(i).MembreIsExpertOnGroupe_id">
+						@mieogs.get(i).membre.membre_nom
+						<button onClick="retrograderExpert(@mieogs.get(i).MembreIsExpertOnGroupe_id)">Rétrograder expert</button>
+					</li>
+					<form id="retrograderExpert@mieogs.get(i).MembreIsExpertOnGroupe_id" action="/assignerExpert/retrograder/@mieogs.get(i).MembreIsExpertOnGroupe_id" method="POST"></form>
+					}
+				</ul>
+				<span id="expertDuGroupe@groupe.groupe_id"><button onClick="assignerExpert(@groupe.groupe_id)">Ajouter un autre expert</button></span>
 				}
 			}
 			</td>
@@ -58,15 +63,10 @@ function assignerExpert(groupe_id){
 		}
 	});
 }
-function changerExpert(groupe_id){
-	$.ajax({
-		url : '/listeDesMembres/inputGroupe'+groupe_id,
-		success: function (res) {
-			$('#expertDuGroupe'+groupe_id).html(
-					'<form method="POST" action="/assignerExpert/changer/'+groupe_id+'">'+res+'<button>Changer</button></form><button onClick="location.reload()">Annuler</button>'
-			);
-		}
-	});
+function retrograderExpert(mieog_id){
+	if(confirm("Ce membre va perdre ses droits d'expert. Êtes-vous sûr de vouloir continuer ?")){
+		$('#retrograderExpert'+mieog_id).submit();
+	}
 }
 </script>
 }

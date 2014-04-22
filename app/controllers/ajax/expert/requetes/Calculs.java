@@ -25,8 +25,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controllers.ajax.expert.requetes.calculs.MaillesParEspece;
+import controllers.ajax.expert.requetes.calculs.CarteSomme;
+import controllers.ajax.expert.requetes.calculs.CarteSommeBiodiversite;
+import controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin;
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.exports.MaillesParEspeceExcel;
+import functions.excels.exports.CarteSommeBiodiversiteExcel;
+import functions.excels.exports.CarteSommeExcel;
+import functions.excels.exports.ChronologieDUnTemoinExcel;
 import functions.excels.exports.HistogrammeDesImagosExcel;
 import functions.excels.exports.TemoinsParPeriodeExcel;
 import play.data.DynamicForm;
@@ -34,6 +42,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.expert.requetes.ajax.resultats.temoinsParPeriode;
 import views.html.expert.requetes.ajax.resultats.histogrammeDesImagos;
+import views.html.expert.requetes.ajax.resultats.carteSomme;
+import views.html.expert.requetes.ajax.resultats.carteSommeBiodiversite;
+import views.html.expert.requetes.ajax.resultats.maillesParEspece;
+import views.html.expert.requetes.ajax.resultats.chronologieDUnTemoin;
 
 public class Calculs extends Controller {
 	
@@ -52,6 +64,38 @@ public class Calculs extends Controller {
 		HistogrammeDesImagosExcel hdie = new HistogrammeDesImagosExcel(info,hdi);
 		hdie.writeToDisk();
 		return ok(histogrammeDesImagos.render(hdi,info,hdie.getFileName()));
+	}
+	public static Result carteSomme() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		CarteSomme cs = new CarteSomme(info);
+		CarteSommeExcel cse = new CarteSommeExcel(info,cs);
+		cse.writeToDisk();
+		return ok(carteSomme.render(cs,info,cse.getFileName()));
+	}
+	public static Result carteSommeBiodiversite() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		CarteSommeBiodiversite csb = new CarteSommeBiodiversite(info);
+		CarteSommeBiodiversiteExcel csbe = new CarteSommeBiodiversiteExcel(info,csb);
+		csbe.writeToDisk();
+		return ok(carteSommeBiodiversite.render(csb,info,csbe.getFileName()));
+	}
+	public static Result chronologieDUnTemoin() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		ChronologieDUnTemoin cdut = new ChronologieDUnTemoin(info);
+		ChronologieDUnTemoinExcel cdute = new ChronologieDUnTemoinExcel(info,cdut);
+		cdute.writeToDisk();
+		return ok(chronologieDUnTemoin.render(cdut,info,cdute.getFileName()));
+	}
+	public static Result maillesParEspece() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		MaillesParEspece mpe = new MaillesParEspece(info);
+		MaillesParEspeceExcel mpee = new MaillesParEspeceExcel(info,mpe);
+		mpee.writeToDisk();
+		return ok(maillesParEspece.render(mpe,info,mpee.getFileName()));
 	}
 	
 	/**

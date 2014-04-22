@@ -15,10 +15,11 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Historique"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1>Page pour que tout le monde puisse voir l'historique de ses propres témoignages </h1>
-	 }{<script></script>}
+@(cdut : controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin, file_name: String)
+@main("Historique"){
+<a href="javascript:history.back()">Retour</a><br>
+<h1>Historique de mes témoignages</h1>
+<a href="/telechargerHistorique/@file_name">Télécharger le fichier Excel de mes témoignages</a>
+}{
+<script></script>
+}

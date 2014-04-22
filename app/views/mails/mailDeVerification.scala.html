@@ -16,6 +16,15 @@
  *   
  ********************************************************************************@
 @(lien: String)
-Veuillez suivre le lien suivant pour valider la création de votre compte :<br>
-@{play.Play.application().configuration().getString("domain.name")+"/verification/"+lien}<br>
-Ce sera au webmestre d'accepter ou non votre inscription.
+Bonjour,<br>
+Vous avez demandé l'ouverture d'un compte pour témoigner sur la base en ligne de l'Atlas Entomologique Régional et nous vous en remercions.<br>
+Merci de suivre le lien ci-dessous pour confirmer votre demande de création :<br>
+<a href="@{play.Play.application().configuration().getString("domain.name")+"/verification/"+lien}">
+@{play.Play.application().configuration().getString("domain.name")+"/verification/"+lien}
+</a><br><br>
+Votre inscription ne sera véritablement effective qu'après la validation de l'administrateur de la
+base qui interviendra dans quelques jours. Vous en serez averti par courriel.<br>
+Cordialement<br>
+Le webmestre de l'AER<br>
+<a href="mailto://@Membre.getAdminMail()">@Membre.getAdminMail()</a>
+<br>

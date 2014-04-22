@@ -16,12 +16,14 @@
  *   
  ********************************************************************************@
 @(message: String)
-@main("Gérer les témoins passifs"){
-<button onClick="ajouter()">Ajouter un témoin passif</button>
-<div style="display:none" id="ajouter">
-<h2>Ajouter un témoin passif dans la base de données.</h2>
-<form action="/ajouterTemoinPassif" method="POST" id="form">
+@main("Gérer les témoins"){
+<a href="/menuExpert">Retour</a><br>
+<h1>Gestion des témoins</h1>
+<button onClick="ajouter()">Ajouter un témoin</button>
 <span id="message">@Html(message)</span>
+<div style="display:none" id="ajouter">
+<h2>Ajouter un témoin dans la base de données</h2>
+<form action="/ajouterTemoinPassif" method="POST" id="form">
 	<table class="gestionDesTemoinsPassifs">
 	<tr>
 		<th>Civilité</th>
@@ -34,6 +36,8 @@
 		<th>Date de naissance</th>
 		<th>Date de décès</th>
 		<th>E-mail</th>
+		<th>Téléphone</th>
+		<th>Confidentialité</th>
 		<th>Biographie</th>
 	</tr>
 	<tr>
@@ -85,14 +89,21 @@
 			</select>
 		</td>
 		<td><input class="nouveauTemoinInput" id="email" type="text" name="email"></td>
-		<td><input type="text" name="biographie"></td>
+		<td><input class="nouveauTemoinInput" type="text" name="tel"></td>
+		<td>
+			<input type="radio" name="confidentialite" value="ouverte" checked> Libre<br>
+			<input type="radio" name="confidentialite" value="casparcas"> Cas par cas
+		</td>
+		<td><textarea name="biographie"></textarea></td>
 	</tr>
 	</table>
 	<button onClick="post();return false;">Ajouter</button>
 </form>
 </div>
+<div id="edit"></div>
 <br>
-<table class="gestionDesTemoinsPassifs">
+<table class="gestionDesTemoinsPassifs" id="table">
+<thead>
 	<tr>
 		<th>Civilité</th>
 		<th>Nom</th>
@@ -104,11 +115,14 @@
 		<th>Date de naissance</th>
 		<th>Date de décès</th>
 		<th>E-mail</th>
+		<th>Téléphone</th>
 		<th>Biographie</th>
 		<th>Confidentialité</th>
 		<th>Abonné</th>
-		<th>Passif/Actif</th>
+		<th>Editer</th>
 	</tr>
+</thead>
+<tbody>
 @for( membre <- Membre.findAll("membre_nom","asc")){
 	<tr>
 		<td>@membre.membre_civilite</td>
@@ -121,14 +135,34 @@
 		<td>@membre.membre_journais/@membre.membre_moisnais/@membre.membre_annenais</td>
 		<td>@membre.membre_jourdece/@membre.membre_moisdece/@membre.membre_annedece</td>
 		<td>@membre.membre_email</td>
+		<td>@membre.membre_tel</td>
 		<td>@membre.membre_biographie</td>
 		<td>@membre.membre_confidentialite</td>
 		<td>@if(membre.membre_abonne){Abonné}else{Non abonné}</td>
-		<td>@if(membre.membre_temoin_actif){Actif}else{Passif}</td>
+		<td><button onClick="editTemoin(@membre.membre_id)">Editer</button></td>
 	</tr>
 }
+</tbody>
 </table>
 }{
+<script type="text/javascript" src="/assets/javascripts/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+	$('#table').dataTable({
+		"sScrollY": "500px",
+		"bPaginate": false,
+		"oLanguage": {
+			"sSearch": "Recherche :",
+			"sLengthMenu": "Display _MENU_ records per page",
+			"sZeroRecords": "Aucun résultat",
+			"sInfo": "Montre _START_ à _END_ de _TOTAL_ lignes",
+			"sInfoEmpty": "Showing 0 to 0 of 0 records",
+			"sInfoFiltered": "(filtré à partir de _MAX_ lignes au total)"
+		}
+	});
+	
+});
+</script>
 <script src="/assets/javascripts/verify-mail.js" type="text/javascript"></script>
 <script>
 function ajouter(){
@@ -155,6 +189,9 @@ function post(){
 			}
 		});
 	}
+}
+function editTemoin(membre_id){
+	$('#edit').load('/editerTemoin/'+membre_id);
 }
 </script>
 }

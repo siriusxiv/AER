@@ -51,16 +51,11 @@ public class Groupe extends Model {
 	}
 
 	/**
-	 * Renvoie l'expert assigné à ce groupe.
-	 * S'il n'y a pas d'expert assigné à ce groupe, alors renvoie null.
+	 * Renvoie la liste d'experts assigné à ce groupe.
 	 * @return
 	 */
-	public Membre getExpert(){
-		MembreIsExpertOnGroupe mieog = MembreIsExpertOnGroupe.find.where().eq("groupe", this).findUnique();
-		if(mieog!=null)
-			return mieog.membre;
-		else
-			return null;
+	public List<MembreIsExpertOnGroupe> getExperts(){
+		return MembreIsExpertOnGroupe.find.where().eq("groupe", this).findList();
 	}
 	
 	/**
@@ -113,6 +108,20 @@ public class Groupe extends Model {
 	}
 
 	/**
+	 * Renvoie la liste des espèces dans ce groupe triées par systématique.
+	 * @return
+	 */
+	public List<Espece> getEspecesInThisBySystematique(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Espece> especes = new ArrayList<Espece>();
+		for(SousGroupe sg : sgs){
+			List<Espece> especeDansSG = Espece.find.where().eq("espece_sous_groupe", sg).findList();
+			especes.addAll(especeDansSG);
+		}
+		Collections.sort(especes,new Espece());
+		return especes;
+	}
+	/**
 	 * Renvoie la liste des espèces dans ce groupe.
 	 * @return
 	 */
@@ -123,8 +132,99 @@ public class Groupe extends Model {
 			List<Espece> especeDansSG = Espece.find.where().eq("espece_sous_groupe", sg).findList();
 			especes.addAll(especeDansSG);
 		}
-		Collections.sort(especes,new Espece());
 		return especes;
+	}
+	/**
+	 * Renvoie la liste des espèces dans ce groupe par ordre alphabétique.
+	 * @return
+	 */
+	public List<Espece> getEspecesInThisByAlpha(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Espece> especes = new ArrayList<Espece>();
+		for(SousGroupe sg : sgs){
+			List<Espece> especeDansSG = Espece.find.where().eq("espece_sous_groupe", sg).findList();
+			especes.addAll(especeDansSG);
+		}
+		Collections.sort(especes, new Comparator<Espece>(){
+			@Override
+			public int compare(Espece arg0, Espece arg1) {
+				return arg0.espece_nom.compareToIgnoreCase(arg1.espece_nom);
+			}
+		});
+		return especes;
+	}
+	
+	/**
+	 * Renvoie la liste des sous-familles dans ce groupe triées par ordre alpha.
+	 * @return
+	 */
+	public List<SousFamilleHasSousGroupe> getSousFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<SousFamilleHasSousGroupe> sfhsgs = new ArrayList<SousFamilleHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			sfhsgs.addAll(sg.getSousFamilles());
+		}
+		Collections.sort(sfhsgs,new Comparator<SousFamilleHasSousGroupe>(){
+			@Override
+			public int compare(SousFamilleHasSousGroupe arg0, SousFamilleHasSousGroupe arg1) {
+				return arg0.sous_famille.sous_famille_nom.compareTo(arg1.sous_famille.sous_famille_nom);
+			}
+		});
+		return sfhsgs;
+	}
+	/**
+	 * Renvoie la liste des familles dans ce groupe triées par ordre alpha.
+	 * @return
+	 */
+	public List<FamilleHasSousGroupe> getFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<FamilleHasSousGroupe> fhsgs = new ArrayList<FamilleHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			fhsgs.addAll(sg.getFamilles());
+		}
+		Collections.sort(fhsgs,new Comparator<FamilleHasSousGroupe>(){
+			@Override
+			public int compare(FamilleHasSousGroupe arg0, FamilleHasSousGroupe arg1) {
+				return arg0.famille.famille_nom.compareTo(arg1.famille.famille_nom);
+			}
+		});
+		return fhsgs;
+	}
+	/**
+	 * Renvoie la liste des super-familles dans ce groupe triées par ordre alpha.
+	 * @return
+	 */
+	public List<SuperFamilleHasSousGroupe> getSuperFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<SuperFamilleHasSousGroupe> sfhsgs = new ArrayList<SuperFamilleHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			sfhsgs.addAll(sg.getSuperFamilles());
+		}
+		Collections.sort(sfhsgs,new Comparator<SuperFamilleHasSousGroupe>(){
+			@Override
+			public int compare(SuperFamilleHasSousGroupe arg0, SuperFamilleHasSousGroupe arg1) {
+				return arg0.super_famille.super_famille_nom.compareTo(arg1.super_famille.super_famille_nom);
+			}
+		});
+		return sfhsgs;
+	}
+	/**
+	 * Renvoie la liste des ordres dans ce groupe triés par ordre alpha.
+	 * @return
+	 */
+	public List<OrdreHasSousGroupe> getOrdres(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<OrdreHasSousGroupe> ohsgs = new ArrayList<OrdreHasSousGroupe>();
+		for(SousGroupe sg : sgs){
+			ohsgs.addAll(sg.getOrdres());
+		}
+		Collections.sort(ohsgs,new Comparator<OrdreHasSousGroupe>(){
+			@Override
+			public int compare(OrdreHasSousGroupe arg0, OrdreHasSousGroupe arg1) {
+				return arg0.ordre.ordre_nom.compareTo(arg1.ordre.ordre_nom);
+			}
+		});
+		return ohsgs;
 	}
 	
 	/**
@@ -143,6 +243,10 @@ public class Groupe extends Model {
 		List<StadeSexeHierarchieDansGroupe> sshdsgs = StadeSexeHierarchieDansGroupe.find.where().eq("groupe", this).findList();
 		for(StadeSexeHierarchieDansGroupe sshdsg : sshdsgs){
 			sshdsg.delete();
+		}
+		List<DateCharniere> dates_charnieres = DateCharniere.find.where().eq("date_charniere_groupe", this).findList();
+		for(DateCharniere date_charniere : dates_charnieres){
+			date_charniere.delete();
 		}
 		this.delete();
 	}

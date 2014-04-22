@@ -16,5 +16,13 @@
  *   
  ********************************************************************************@
 @(lien: String)
-Cliquez sur le lien suivant pour choisir un nouveau mot de passe :<br>
+Bonjour,<br>
+Vous avez oublié votre mot de passe. Cliquez sur le lien suivant pour en choisir un nouveau :<br>
+<a href="@{play.Play.application().configuration().getString("domain.name")+"/nouveauMotDePasse/"+lien}">
 @{play.Play.application().configuration().getString("domain.name")+"/nouveauMotDePasse/"+lien}
+</a>
+<br><br>
+Cordialement<br>
+Le webmestre de l'AER<br>
+<a href="mailto://@Membre.getAdminMail()">@Membre.getAdminMail()</a>
+<br>
