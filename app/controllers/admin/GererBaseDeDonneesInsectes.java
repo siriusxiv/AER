@@ -321,4 +321,63 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	 	 	return Admin.nonAutorise();
 	 }
 	 
+	 /** Change la famille d'une sous-famille
+	* @return
+	*/
+	public static Result changerFamille(Integer sous_famille_id){
+		if(Admin.isAdminConnected()){
+			SousFamille sousfam = SousFamille.find.byId(sous_famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String fam = df.get("changerFamille");
+			if (fam!=null){
+				sousfam.sous_famille_famille = Famille.find.byId(Integer.parseInt(fam));
+				sousfam.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+fam);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/** Change la super-famille d'une famille
+	* @return
+	*/
+	public static Result changerSuperFamille(Integer famille_id){
+		if(Admin.isAdminConnected()){
+			Famille fam = Famille.find.byId(famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String superfam = df.get("changerSuperFamille");
+			if (superfam!=null){
+				fam.famille_super_famille = SuperFamille.find.byId(Integer.parseInt(superfam));
+				fam.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+superfam);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	 
+	 /** Change l'ordre d'une super-famille
+	* @return
+	*/
+	public static Result changerOrdre(Integer super_famille_id){
+		if(Admin.isAdminConnected()){
+			SuperFamille superfam = SuperFamille.find.byId(super_famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String ordre = df.get("changerOrdre");
+			if (ordre!=null){
+				superfam.super_famille_ordre = Ordre.find.byId(Integer.parseInt(ordre));
+				superfam.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+ordre);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
 }

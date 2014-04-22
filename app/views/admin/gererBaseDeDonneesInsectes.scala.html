@@ -292,10 +292,96 @@
 					</table>
 				</div>
 			</td>
-			<td>@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</td>
-			<td>@espece.getFamille()</td>
-			<td>@if(espece.getSuperFamille().super_famille_existe){@espece.getSuperFamille()}</td>
-			<td>@espece.getOrdre()</td>
+			<td>
+				<span id="afficherInfo@espece.espece_sousfamille.sous_famille_id" onClick="afficherInfoSousFamille(@espece.espece_sousfamille.sous_famille_id)">@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</span>
+				<div id="info_sous_famille@espece.espece_sousfamille.sous_famille_id" style="display:none">
+					<table>
+						<tr>
+							<th>Nom</th>
+							<th>Famille</th>
+						</tr>
+						<tr>
+							<td>
+								<span id="changerNom@espece.espece_sousfamille.sous_famille_id" onDblClick="renommerSousFamille(@espece.espece_sousfamille.sous_famille_id)">@espece.espece_sousfamille.sous_famille_nom</span>
+							</td>
+							<td>
+								<form action="/gererBaseDeDonneesInsectes/changerFamille/@espece.espece_sousfamille.sous_famille_id" method="POST">
+								<select id="changerFamille" name="changerFamille">
+								<option value="-1" selected="selected">@espece.getFamille()</option>
+								@for(famille <- familles) {
+								<option value="@famille.famille_id">@famille.famille_nom</option>
+								}
+								</select>
+								<button type="submit">Changer</button>
+								</form>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+			<td>
+				<span id="afficherInfo@espece.getFamille().famille_id" onClick="afficherInfoFamille(@espece.getFamille().famille_id)">@espece.getFamille()</span>
+				<div id="info_famille@espece.getFamille().famille_id" style="display:none">
+					<table>
+						<tr>
+							<th>Nom</th>
+							<th>Super-famille</th>
+						</tr>
+						<tr>
+							<td>
+								<span id="changerNom@espece.getFamille().famille_id" onDblClick="renommerFamille(@espece.getFamille().famille_id)">@espece.getFamille().famille_nom</span>
+							</td>
+							<td>
+								<form action="/gererBaseDeDonneesInsectes/changerSuperFamille/@espece.getFamille().famille_id" method="POST">
+								<select id="changerSuperFamille" name="changerSuperFamille">
+								<option value="-1" selected="selected">@espece.getSuperFamille()</option>
+								@for(superFamille <- superFamilles) {
+								<option value="@superFamille.super_famille_id">@superFamille.super_famille_nom</option>
+								}
+								</select>
+								<button type="submit">Changer</button>
+								</form>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+			<td>
+				<span id="afficherInfo@espece.getSuperFamille().super_famille_id" onClick="afficherInfoSuperFamille(@espece.getSuperFamille().super_famille_id)">@if(espece.getSuperFamille().super_famille_existe){@espece.getSuperFamille()}</span>
+				<div id="info_super_famille@espece.getSuperFamille().super_famille_id" style="display:none">
+					<table>
+						<tr>
+							<th>Nom</th>
+							<th>Ordre</th>
+						</tr>
+						<tr>
+							<td>
+								<span id="changerNom@espece.getSuperFamille().super_famille_id" onDblClick="renommerSuperFamille(@espece.getSuperFamille().super_famille_id)">@espece.getSuperFamille().super_famille_nom</span>
+							</td>
+							<td>
+								<form action="/gererBaseDeDonneesInsectes/changerOrdre/@espece.getSuperFamille().super_famille_id" method="POST">
+								<select id="changerOrdre" name="changerOrdre">
+								<option value="-1" selected="selected">@espece.getOrdre()</option>
+								@for(ordre <- ordres) {
+								<option value="@ordre.ordre_id">@ordre.ordre_nom</option>
+								}
+								</select>
+								<button type="submit">Changer</button>
+								</form>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+			<td>
+				<span id="afficherInfo@espece.getOrdre().ordre_id" onClick="afficherInfoOrdre(@espece.getOrdre().ordre_id)">@espece.getOrdre()</span>
+				<div id="info_ordre@espece.getOrdre().ordre_id" style="display:none">
+					<table>
+						<tr><th>Nom</th></tr>
+						<tr><td><span id="changerNom@espece.getOrdre().ordre_id" onDblClick="renommerOrdre(@espece.getOrdre().ordre_id)">@espece.getOrdre().ordre_nom</span></td></tr>
+					</table>
+				</div>
+			</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe}</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe.sous_groupe_groupe}</td>
 			<td><button>Supprimer</button></td>
@@ -507,6 +593,138 @@ function changerCommentairesEspece(espece_id) {
 					contentType: false,
 					success: function (res) {
 						$('#nouveauCommentaireEspece'+espece_id).replaceWith('<span id="changerCommentaire'+espece_id+'" onDblClick="changerCommentaireEspece('+espece_id+')">'+nouveauCommentaire+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+function afficherInfoSousFamille(sous_famille_id){
+	var style = $('#info_sous_famille'+sous_famille_id).attr('style');
+	if(style=='display:none')
+		$('#info_sous_famille'+sous_famille_id).attr('style','display:block');
+	else
+		$('#info_sous_famille'+sous_famille_id).attr('style','display:none');
+}
+function renommerSousFamille(sous_famille_id) {
+	var element = $('#changerNom'+sous_famille_id);
+	var sous_famille_nom = element.html();
+	element.replaceWith('<input type="text" value="'+sous_famille_nom+'" id="nouveauNomSousFamille'+sous_famille_id+'">');
+	$('#nouveauNomSousFamille'+sous_famille_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNomSsFam = $('#nouveauNomSousFamille'+sous_famille_id).val();
+			if(nouveauNomSsFam=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauNomSsFam',nouveauNomSsFam);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/renommerSousFamille/'+sous_famille_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauNomSousFamille'+sous_famille_id).replaceWith('<span id="changerNom'+sous_famille_id+'" onDblClick="renommerSousFamille('+sous_famille_id+')">'+nouveauNomSsFam+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+function afficherInfoFamille(famille_id){
+	var style = $('#info_famille'+famille_id).attr('style');
+	if(style=='display:none')
+		$('#info_famille'+famille_id).attr('style','display:block');
+	else
+		$('#info_famille'+famille_id).attr('style','display:none');
+}
+function renommerFamille(famille_id) {
+	var element = $('#changerNom'+famille_id);
+	var famille_nom = element.html();
+	element.replaceWith('<input type="text" value="'+famille_nom+'" id="nouveauNomFamille'+famille_id+'">');
+	$('#nouveauNomFamille'+famille_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNomFam = $('#nouveauNomFamille'+famille_id).val();
+			if(nouveauNomFam=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauNomFam',nouveauNomFam);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/renommerFamille/'+famille_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauNomFamille'+famille_id).replaceWith('<span id="changerNom'+famille_id+'" onDblClick="renommerFamille('+famille_id+')">'+nouveauNomFam+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+function afficherInfoSuperFamille(super_famille_id){
+	var style = $('#info_super_famille'+super_famille_id).attr('style');
+	if(style=='display:none')
+		$('#info_super_famille'+super_famille_id).attr('style','display:block');
+	else
+		$('#info_super_famille'+super_famille_id).attr('style','display:none');
+}
+function renommerSuperFamille(super_famille_id) {
+	var element = $('#changerNom'+super_famille_id);
+	var super_famille_nom = element.html();
+	element.replaceWith('<input type="text" value="'+super_famille_nom+'" id="nouveauNomSuperFamille'+super_famille_id+'">');
+	$('#nouveauNomSuperFamille'+super_famille_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNomSuperFam = $('#nouveauNomSuperFamille'+super_famille_id).val();
+			if(nouveauNomSuperFam=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauNomSuperFam',nouveauNomSuperFam);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/renommerSuperFamille/'+super_famille_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauNomSuperFamille'+super_famille_id).replaceWith('<span id="changerNom'+super_famille_id+'" onDblClick="renommerSuperFamille('+super_famille_id+')">'+nouveauNomSuperFam+'</span>');
+					}
+				});
+			}
+		}
+	});
+}
+function afficherInfoOrdre(ordre_id){
+	var style = $('#info_ordre'+ordre_id).attr('style');
+	if(style=='display:none')
+		$('#info_ordre'+ordre_id).attr('style','display:block');
+	else
+		$('#info_ordre'+ordre_id).attr('style','display:none');
+}
+function renommerOrdre(ordre_id) {
+	var element = $('#changerNom'+ordre_id);
+	var ordre_nom = element.html();
+	element.replaceWith('<input type="text" value="'+ordre_nom+'" id="nouveauNomOrdre'+ordre_id+'">');
+	$('#nouveauNomOrdre'+ordre_id).keyup(function(event){
+		if(event.keyCode == 13){
+			var formdata = new FormData();
+			var nouveauNomOrd = $('#nouveauNomOrdre'+ordre_id).val();
+			if(nouveauNomOrd=='')
+				alert('Le nom que vous avez entré est vide.');
+			else{
+				formdata.append('nouveauNomOrd',nouveauNomOrd);
+				$.ajax({
+					type : 'POST',
+					url : '/ajax/gererBaseDeDonneesInsectes/renommerOrdre/'+ordre_id,
+					data: formdata,
+					processData: false,
+					contentType: false,
+					success: function (res) {
+						$('#nouveauNomOrdre'+ordre_id).replaceWith('<span id="changerNom'+ordre_id+'" onDblClick="renommerOrdre('+ordre_id+')">'+nouveauNomOrd+'</span>');
 					}
 				});
 			}
