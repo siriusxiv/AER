@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(observation: Observation, listUtms: List[UTMS], listEspece: List[Espece])
+@(observation: Observation, listUtms: List[UTMS], listEspece: List[Espece], listStadeSexe: List[StadeSexe])
 		
  		 <form id="edite@observation.observation_id" action="/temoignagesAValider/editer/@observation.observation_espece.getGroupe().groupe_id/@observation.observation_id" method="POST">
  		 <table>
@@ -54,8 +54,15 @@
 				<td><input type="text" name="memo" value="@observation.observation_fiche.fiche_memo"></td>
 				<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
 				<td>@for(informationsComplementaires <-observation.getInfos()){
-					@informationsComplementaires.informations_complementaires_nombre_de_specimens
+				
+					nombre: @informationsComplementaires.informations_complementaires_nombre_de_specimens
+					<input type="text" name="nombre@informationsComplementaires.informations_complementaires_id" value="@informationsComplementaires.informations_complementaires_nombre_de_specimens">
 					@informationsComplementaires.informations_complementaires_stade_sexe
+					<select name="stadesexe@informationsComplementaires.informations_complementaires_id">
+					@for(stadesexe <- listStadeSexe){
+						<option value="@stadesexe.stade_sexe_id">
+							@stadesexe.stade_sexe_intitule
+						</option>}
 				} </td>
         			<td>@observation.observation_date_derniere_modification.getTime().format("dd/MM/yyyy")</td>
         			<td><input type="button" value="Valider les changements" onclick="confirmEditer(@observation.observation_id)">
