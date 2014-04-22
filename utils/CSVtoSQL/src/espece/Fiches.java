@@ -105,8 +105,8 @@ public class Fiches {
 	}
 	
 	private int getMembreId(Fiche f, String temoin) throws IOException, SQLException {
-		if(temoin.equals("et al.") || temoin.equals("et alii") || temoin.equals("et al"))
-			return 0;
+		if(temoin.equals("et alii") || temoin.equals("et al"))
+			return getMembreId("et al.");
 		int res = 0;
 		Statement statement = FicheReader.connect.createStatement();
 		String query = "SELECT membre_id FROM membre WHERE membre_nom='"+temoin.replaceAll("'", "''")+"';";
