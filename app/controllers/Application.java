@@ -21,22 +21,13 @@ package controllers;
 
 import java.io.File;
 
-import models.Confidentialite;
-import models.Droits;
-import models.Membre;
-import controllers.admin.Admin;
-import controllers.membre.SecuredMembre;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
-import views.html.*;
-import views.html.membre.*;
-import views.html.admin.*;
 
 public class Application extends Controller {
 
     public static Result index() {
-        return ok(index.render());
+        return redirect("/identification");
     }
     
     /**
@@ -46,78 +37,9 @@ public class Application extends Controller {
 	 */
 	public static Result view(String filename) {
 	    File file  = new File(play.Play.application().configuration().getString("image.path") + filename);
-	    return ok(file);
-	}
-    
-    /*Pages de l'utilisateur  */
-    @Security.Authenticated(SecuredMembre.class)
-    public static Result menuUtilisateur() {
-    	return ok( menuUtilisateur.render());
-    }
-    
-    public static Result historique() {
-    	return ok( historique.render());
-    }
-    
-    
-    /* Pages de l'expert  */
-    
-    
-
-    
-   /******* Results de la page liste de membres **********/
-    public static Result listeMembres(String orderBy, String sortDirection){
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.findAll(orderBy, sortDirection), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresTemoinActif(Boolean isTemoinActif) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresTemoinActif(isTemoinActif), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresAbonne(Boolean isAbonne) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresAbonne(isAbonne), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresConfidentialite(Integer confidentialite) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresConfidentialite(confidentialite), Droits.findAll(),Confidentialite.findAll()));
-    }else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresDroits(Integer droits) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresDroits(droits), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresInscrit(Boolean isInscrit) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembresInscrit(isInscrit), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    public static Result listeMembresPrecis(String nom) {
-    	if(Admin.isAdminConnected()){
-    	return ok( listeMembres.render(Membre.selectMembres(nom), Droits.findAll(),Confidentialite.findAll()));
-    	}else
-			return Admin.nonAutorise();
-    }
-    
-    /*******************************************************************/
-    public static Result listeTemoignages() {
-    	return ok(listeTemoignages.render());
-    }
-    
+	    if(file.canRead())
+	    	return ok(file);
+	    else
+	    	return notFound("404: Image not found");
+	}    
 }

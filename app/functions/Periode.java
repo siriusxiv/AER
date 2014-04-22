@@ -52,12 +52,19 @@ public class Periode {
 		List<DateCharniere> dates_charnieres = DateCharniere.find.where().eq("date_charniere_groupe", groupe).findList();
 		Calendar date1 = Fiche.getPlusVieuxTemoignage().fiche_date;
 		Calendar date2;
+		boolean premierePeriode = true;
 		for(DateCharniere date_charniere : dates_charnieres){
 			date2 = date_charniere.date_charniere_date;
-			periodes.add(new Periode((Calendar) date1.clone(),date2));
+			Calendar date1plusUnJour = (Calendar) date1.clone();
+			if(!premierePeriode)
+				date1plusUnJour.add(Calendar.DAY_OF_YEAR, 1);
+			periodes.add(new Periode(date1plusUnJour,date2));
 			date1.setTime(date2.getTime());
+			premierePeriode = false;
 		}
 		date2=Calendar.getInstance();
+		if(!premierePeriode)
+			date1.add(Calendar.DAY_OF_YEAR, 1);
 		periodes.add(new Periode(date1,date2));
 		return periodes;
 	}

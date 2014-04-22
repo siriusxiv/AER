@@ -15,68 +15,35 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Menu Admin"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1> Page des options disponibles pour l'admin </h1>
-	<ul>
-		<li onClick="afficherMenuUtilisateur()">Options d'utilisateur</li>
-		<li onClick="afficherMenuAdmin()">Options d'admin</li>
-	</ul>
-	<div id="menuUtilisateur">
-	<dl>
-		<dt>
-		<a href="/ficheDeTemoignage">Témoignage</a>
-		</dt>
-		<dt>
-		<a href="/historique">Historique</a>
-		</dt>
-		<dt>
-		<a href="/informationsPersonnelles">Informations personnelles</a>
-		</dt>
-		<dt>
-		<a href="/consulterDonnees">Consulter les données</a>
-		</dt>
-		<dt>
-		<a href="http://www.aer-nantes.fr/">Se Déconnecter</a>
-		</dt>
-	</dl>
-	</div>
-	<div id="menuAdmin" style="display:none">
+@main("Menu Admin"){
+	<h1>Bienvenue Admin. Ici, vous pouvez gérer la base.</h1>
 	<dl>
 		<dt>
 		<a href="/assignerExperts">Assigner des experts</a>
 		</dt>
 		<dt>
+		<a href="/gererGroupesEtSousGroupes">Gerer les groupes et les sous-groupes</a>
+		</dt>
+		<dt>
 		<a href="/demandesInscription">Demandes d'inscription</a>
 		</dt>
 		<dt>
-		<a href="/gererBaseDeDonneesInsectes">Gérer la base de données des Insectes</a>
-		</dt>
-		<dt>
-		<a href="/listeTemoignages">Liste des témoignages</a>
+		<a href="/gererBaseDeDonneesInsectes">Gérer la base de données des insectes</a>
 		</dt>
 		<dt>
 		<a href="/listeMembres">Liste des membres</a>
 		</dt>
 		<dt>
+		<a href="/listeVilles">Liste des communes</a>
+		</dt>
+		<dt>
+		<a href="/informationsPersonnelles">Informations personnelles (changement de mot de passe ou d'adresse email)</a>
+		</dt>
+		<dt>
 		<a href="/deconnexion">Se Déconnecter</a>
 		</dt>
 	</dl>
-	</div>
-	}{<script>
-	function afficherMenuUtilisateur() {
-		if (document.getElementById("menuUtilisateur").style.display == "none") {
-			document.getElementById("menuUtilisateur").style.display = "block";
-			document.getElementById("menuAdmin").style.display = "none";
-		}
-	}
-	function afficherMenuAdmin() {
-		if (document.getElementById("menuAdmin").style.display == "none") {
-			document.getElementById("menuUtilisateur").style.display = "none";
-			document.getElementById("menuAdmin").style.display = "block";
-		}
-	}
-</script>}
+}{
+<script>
+</script>
+}

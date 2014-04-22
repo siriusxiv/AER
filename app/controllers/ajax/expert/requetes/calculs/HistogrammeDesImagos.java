@@ -18,6 +18,7 @@
 package controllers.ajax.expert.requetes.calculs;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +97,8 @@ public class HistogrammeDesImagos {
 		String maille = info.get("maille");
 		String date1 = info.get("jour1")+"/"+info.get("mois1")+"/"+info.get("annee1");
 		String date2 = info.get("jour2")+"/"+info.get("mois2")+"/"+info.get("annee2");
-		titre = "Histogramme des imagos";
+		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
+		titre = "Histogramme des observations ";
 		if(espece!=null)
 			titre+=" de "+espece.espece_nom;
 		else if(sous_groupe!=null)
@@ -105,6 +107,10 @@ public class HistogrammeDesImagos {
 			titre+=" de "+groupe;
 		if(!maille.equals(""))
 			titre+=" dans la maille "+maille;
+		if(stade_sexe==null)
+			titre+=" à tous les stades";
+		else
+			titre+=" au stade "+stade_sexe.stade_sexe_intitule;
 		titre+=" du "+date1+" au "+date2;
 	}
 	
@@ -195,48 +201,36 @@ public class HistogrammeDesImagos {
 		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
 		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
 		List<UTMS> mailles = UTMS.parseMaille(info.get("maille"));
-		//On récupère les stades.sexes imagos : ce sont donc les stades 
-		List<StadeSexe> stades_sexes = StadeSexe.getStadesImagos();
+		StadeSexe stade_sexe = StadeSexe.find.byId(Integer.parseInt(info.get("stade")));
 		Calendar date1 = Calculs.getDataDate1(info);
 		Calendar date2 = Calculs.getDataDate2(info);
-		List<InformationsComplementaires> complements;
-		if(espece!=null){
-			complements = InformationsComplementaires.find.where()
-								.eq("informations_complementaires_observation.observation_espece",espece)
-								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
-								.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min")
-								.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
-								.in("informations_complementaires_stade_sexe", stades_sexes)
-								.findList();
-		}else if(sous_groupe!=null){
-			complements = InformationsComplementaires.find.where()
-								.eq("informations_complementaires_observation.observation_espece.espece_sous_groupe",sous_groupe)
-								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
-								.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min")
-								.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
-								.in("informations_complementaires_stade_sexe", stades_sexes)
-								.findList();
-		}else if(groupe!=null){
-			complements = InformationsComplementaires.find.where()
-								.eq("informations_complementaires_observation.observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
-								.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
-								.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min")
-								.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-								.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
-								.in("informations_complementaires_stade_sexe", stades_sexes)
-								.findList();
+		List<StadeSexe> stades_sexes;
+		if(stade_sexe!=null){
+			stades_sexes=new ArrayList<StadeSexe>();
+			stades_sexes.add(stade_sexe);
+			stades_sexes.addAll(stade_sexe.getStadeSexeFilsPourTelGroupe(groupe));
 		}else{
-			complements = InformationsComplementaires.find.where()
-					.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
-					.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min")
-					.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
-					.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
-					.in("informations_complementaires_stade_sexe", stades_sexes)
-					.findList();
+			stades_sexes=StadeSexe.findAll();
 		}
-		return complements;
+		List<Espece> especesATraiter;
+		if(espece!=null){
+			especesATraiter = new ArrayList<Espece>();
+			especesATraiter.add(espece);
+		}else if(sous_groupe!=null){
+			especesATraiter = sous_groupe.getEspecesInThis();
+		}else if(groupe!=null){
+			especesATraiter = groupe.getEspecesInThis();
+		}else{
+			especesATraiter = Espece.findAll();
+		}
+		return InformationsComplementaires.find.where()
+						.in("informations_complementaires_observation.observation_espece",especesATraiter)
+						.eq("informations_complementaires_observation.observation_validee", Observation.VALIDEE)
+						.isNull("informations_complementaires_observation.observation_fiche.fiche_date_min")
+						.between("informations_complementaires_observation.observation_fiche.fiche_date", date1.getTime(), date2.getTime())
+						.in("informations_complementaires_observation.observation_fiche.fiche_utm", mailles)
+						.in("informations_complementaires_stade_sexe", stades_sexes)
+						.findList();
 	}
 	
 	/**

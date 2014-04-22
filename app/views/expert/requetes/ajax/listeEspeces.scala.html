@@ -18,16 +18,16 @@
 @(groupe: Groupe, sous_groupe: SousGroupe)
 	<option value="0">*</option>
 @if(sous_groupe!=null){
-	@for(espece <- sous_groupe.getEspecesInThis()){
+	@for(espece <- sous_groupe.getEspecesInThisByAlpha()){
 	<option value="@espece.espece_id">@espece.espece_nom</option>
 	}
 }else{
 	@if(groupe!=null){
-		@for(espece <- groupe.getEspecesInThis()){
+		@for(espece <- groupe.getEspecesInThisByAlpha()){
 		<option value="@espece.espece_id">@espece.espece_nom</option>
 		}
 	}else{
-		@for(espece <- Espece.findAll()){
+		@for(espece <- Espece.findAllByAlpha()){
 		<option value="@espece.espece_id">@espece.espece_nom</option>
 		}
 	}

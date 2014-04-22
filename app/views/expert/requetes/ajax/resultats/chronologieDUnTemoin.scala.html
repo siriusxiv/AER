@@ -15,10 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@main("Liste des témoignages"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1> Page pour que l'admin puisse voir la liste des témoignages </h1>
-}{<script></script>}
+ @(cdut : controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin, info : Map[String,String], file_name: String)
+<a href="/telechargerRapport/@file_name">Télécharger le fichier Excel</a>
+<script>
+</script>

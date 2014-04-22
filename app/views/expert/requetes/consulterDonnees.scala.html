@@ -16,9 +16,7 @@
  *   
  ********************************************************************************@
 @main("Consulter les Données"){
-	<header>
-		<a href="/">Retour</a>
-	</header>
+<a href="/menuExpert">Retour</a><br>
 <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
 	<h1>Consultation des données</h1>
 	<span id="message"></span>
@@ -75,7 +73,7 @@
 		<td>Dates :</td>
 		<td>
 			<span id="datesPartieMouvante"></span>
-			<input type="radio" name="periode" value="@{new functions.Periode(Fiche.getPlusVieuxTemoignage().fiche_date, Calendar.getInstance())}" onChange="changerDate()"> Toutes<br>
+			<input type="radio" name="periode" value="@{new functions.Periode(Fiche.getPlusVieuxTemoignage().fiche_date, Calendar.getInstance())}" onChange="changerDate()" checked> Toutes<br>
 			<input type="radio" name="periode" value="autre"> Autre<br>
 			De <input type="text" size="1" id="jour1" name="jour1" placeholder="jj">
 			<input type="text" size="1" id="mois1" name="mois1" placeholder="mm">
@@ -92,18 +90,18 @@
 <table>
 <tr>
 	<td><button onClick="temoinsParPeriode()">Témoins par période</button></td>
-	<td><button>Espèces par maille</button></td>
-	<td><button>Historique de l'espèce ou du groupe sélectionné</button></td>
+	<td><button onClick="historiqueDesEspeces()">Historique des espèces sélectionnées</button></td>
 </tr>
 <tr>
-	<td><button>Chronologie d'un témoin</button></td>
-	<td><button>Mailles par espèce</button></td>
-	<td><button>Antériorité de toutes les périodes</button></td>
+	<td><button onClick="chronologieDUnTemoin()">Chronologie d'un témoin</button></td>
 </tr>
 <tr>
-	<td><button onClick="histogrammeDesImagos()">Histogramme des imagos ou non</button></td>
-	<td><button>Mailles par période</button></td>
-	<td><button>Carte 20x20 : mailles et espèces</button></td>
+	<td><button onClick="histogrammeDesImagos()">Histogramme des stades</button></td>
+	<td><button onClick="maillesParEspece()">Mailles par espèce</button></td>
+</tr>
+<tr>
+	<td><button onClick="carteSomme()">Carte somme</button></td>
+	<td><button onClick="carteSommeBiodiversite()">Carte somme biodiversité</button></td>
 </tr>
 </table>
 <div id="resultats"></div>
@@ -121,6 +119,7 @@ setTimeout(function(){
 var listeUTMS = [@Html(controllers.ajax.Listes.listeUTMS())];
 rafraichirSousGroupe();
 rafraichirDates();
+changerDate();
 function rafraichirSousGroupe(){
 	var groupe_id = $('#groupe').val();
 	$('#sous-groupe').load('/ajax/consulter/listeSousGroupes/'+groupe_id, function(){

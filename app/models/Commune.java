@@ -18,6 +18,8 @@
 
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -38,10 +40,10 @@ public class Commune extends Model {
 	@Id
 	@Column(columnDefinition="MEDIUMINT(8) UNSIGNED")
 	public Integer ville_id;
-	
+
 	@ManyToOne
 	public Departement ville_departement;
-	
+
 	public String ville_slug;
 	@Column(columnDefinition="VARCHAR(45)")
 	@NotNull
@@ -96,14 +98,19 @@ public class Commune extends Model {
 	public Integer ville_densite_2010_order_france;
 	@Column(columnDefinition="INT(10) UNSIGNED")
 	public Integer ville_surface_order_france;
-	
+	public String ville_nom_aer;
+
 	public static Finder<Integer,Commune> find = new Finder<Integer,Commune>(Integer.class, Commune.class);
 
 	@Override
 	public String toString(){
-		return ville_nom_reel+" ("+ville_departement.departement_code+")";
+		return ville_nom_aer+" ("+ville_departement.departement_code+")";
 	}
 
+	public static List<Commune> findAll(){
+		return find.orderBy("ville_nom_reel").findList();
+	}
+	
 	/**
 	 * Remplace les abréviations pour Saint(e) et enlève les articles définis.
 	 * Trouve ensuite la commune ayant ce nom.
@@ -111,14 +118,20 @@ public class Commune extends Model {
 	 * @return
 	 */
 	public static Commune findFromNomApproximatif(String commune_nom) {
-		commune_nom=commune_nom.replaceAll("St-", "Saint-");
-		commune_nom=commune_nom.replaceAll("Ste-", "Sainte-");
-		if(commune_nom.startsWith("Le ") || commune_nom.startsWith("La "))
-			commune_nom=commune_nom.substring(3);
-		else if(commune_nom.startsWith("Les "))
-			commune_nom=commune_nom.substring(4);
-		else if(commune_nom.startsWith("L'"))
-			commune_nom=commune_nom.substring(2);
+		if(commune_nom.equals("Bonnoeuvre"))
+			commune_nom="Bonnœuvre";
+		else if(commune_nom.equals("Paimboeuf"))
+			commune_nom="Paimbœuf";
+		else{
+			commune_nom=commune_nom.replaceAll("St-", "Saint-");
+			commune_nom=commune_nom.replaceAll("Ste-", "Sainte-");
+			if(commune_nom.startsWith("Le ") || commune_nom.startsWith("La "))
+				commune_nom=commune_nom.substring(3);
+			else if(commune_nom.startsWith("Les "))
+				commune_nom=commune_nom.substring(4);
+			else if(commune_nom.startsWith("L'"))
+				commune_nom=commune_nom.substring(2);
+		}
 		return find.where().eq("ville_nom_reel", commune_nom).findUnique();
 	}
 }

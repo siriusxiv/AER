@@ -16,8 +16,8 @@
  *   
  ********************************************************************************@
 @(erreur: String)
-@main("Déposer des témoignages via fichier .xls"){
-<h1>Import de témoignages via fichier Excel</h1>
+@main("Intégrer une liste excel"){
+<h1>Intégrer une liste excel (XLS)</h1>
 <span class="message">@Html(erreur)</span>
 Vous pouvez ici déposer un fichier Excel contenant des témoignages qui sera ajouter dans la base de données à condition que sa syntaxe soit strictement correcte.
 <form action="/deposerTemoignages/excel" method="POST" enctype="multipart/form-data">

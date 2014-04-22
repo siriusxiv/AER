@@ -16,21 +16,18 @@
  *   
  ********************************************************************************@
 @(expert: Membre)
-@main("Menu Expert"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1>Page des options disponibles pour l'expert </h1>
+@main("Menu Expert"){
+<a href="/deconnexion">Se Déconnecter</a><br>
+	<h1>Responsable de groupe : bienvenue @expert.membre_nom</h1>
 	<dl>
 		<dt>
-		<a href="/ficheDeTemoignage">Témoignage</a>
+		<a href="/ficheDeTemoignage">Témoigner</a>
 		</dt>
 		<dt>
-		<a href="/deposerTemoignages/excel">Déposer un témoignage avec un fichier .xls</a>
+		<a href="/deposerTemoignages/excel">Intégrer une liste excel (XLS)</a>
 		</dt>
 		<dt>
-		<a href="/historique">Historique</a>
+		<a href="/historique">Historique de mes témoignages</a>
 		</dt>
 		<dt>
 		<a href="/informationsPersonnelles">Informations personnelles</a>
@@ -39,9 +36,13 @@
 		<a href="/consulterDonnees">Consulter les données</a>
 		</dt>
 		<dt>
-		<a href="/gererTemoinsPassifs">Gérer les témoins passifs</a>
+		<a href="/gererTemoinsPassifs">Gérer les témoins</a>
 		</dt>
 		@for(mieog <- expert.getGroupesDExpertise()){
+		<br>
+		<dt>
+		<a href="/editerInsectes/@mieog.groupe.groupe_id">Gérer les insectes du groupe @mieog.groupe</a>
+		</dt>
 		<dt>
 		<a href="/gererstadesexe/@mieog.groupe.groupe_id">Gérer les sexes et les stades du groupe @mieog.groupe</a>
 		</dt>
@@ -55,8 +56,5 @@
 		<a href="/temoignagesValides/@mieog.groupe.groupe_id/1/observation_date_validation/desc">Témoignages validés des @mieog.groupe </a>
 		</dt>
 		}
-		<dt>
-		<a href="/deconnexion">Se Déconnecter</a>
-		</dt>
 	</dl>
 }{<script></script>}

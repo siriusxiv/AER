@@ -16,40 +16,22 @@
  *   
  ********************************************************************************@
  @(listMembre :List[Membre])
- @main("Demande d'inscription"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-		<h1> Page pour voir et valider les demandes d'inscriptions </h1>
+ @main("Demande d'inscription"){
+<a href="/menuAdmin">Retour</a><br>
+<h1>Demandes d'inscriptions</h1>
 	</header>
 	<table>
 		<tr>
-			<th>Nom</th>
 			<th>Civilité</th>
-			<th>Adresse</th>
-			<th>Adresse complément</th>
-			<th>Code postal</th>
-			<th>Ville</th>
-			<th>Pays</th>
-			<th>Confidentialité</th>
-			<th>Abonné</th>
-			<th>Date de naissance</th>
+			<th>Nom</th>
 			<th>Adresse mail</th>
 			<th>Valider cette Inscription</th>
 			<th>Refuser Inscription</th>
 		</tr>
 		@for(membre <- listMembre) {
 		<tr>
-			<td>@membre.membre_nom</td>
 			<td>@membre.membre_civilite</td>
-			<td>@membre.membre_adresse</td>
-			<td>@membre.membre_adresse_complement</td>
-			<td>@membre.membre_code_postal</td>
-			<td>@membre.membre_ville</td>
-			<td>@membre.membre_pays</td>
-			<td>@membre.membre_confidentialite.confidentialite_intitule</td>
-			<td>@if(membre.membre_abonne==false){Non Abonné}else{Abonné}</td>
-			<td>@membre.membre_journais/@membre.membre_moisnais/@membre.membre_annenais</td>
+			<td>@membre.membre_nom</td>
 			<td>@membre.membre_email</td>
 			<td>
 				<form id="valide@membre.membre_id" action="/demandesInscription/valider/@membre.membre_id" method="POST">

@@ -64,6 +64,7 @@ public class DemandesInscription extends Controller {
 			if(membreAvecMemeEmail==null){
 				membre.membre_email=email;
 				membre.genereLienDeValidation();
+				membre.membre_inscription_acceptee=true;
 				Mail mail = new Mail(
 						"AER - Votre compte a été créé. Choisissez un mot de passe",
 						"Votre compte AER a été créé ! Vous devez maintenant choisir un mot de passe pour vous connecter. L'identifiant est votre adresse e-mail.<br>"+mailNouveauMotDePasse.render(membre.membre_lien_de_validation_de_mail).toString(),

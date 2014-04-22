@@ -98,6 +98,108 @@ function histogrammeDesImagos(){
 		});
 	}
 }
+function carteSomme(){
+	var donnees = new Donnees();
+	if(isValide(donnees)){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/carteSomme',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}
+}
+function maillesParEspece(){
+	var donnees = new Donnees();
+	if(isValide(donnees)){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/maillesParEspece',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}
+}
+function carteSommeBiodiversite(){
+	var donnees = new Donnees();
+	if(isValide(donnees)){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/carteSommeBiodiversite',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}
+}
+function chronologieDUnTemoin(){
+	var donnees = new Donnees();
+	if(mailleValide(donnees) && donnees.temoinValide() && donnees.temoin!='' && donnees.datesValides()){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/chronologieDUnTemoin',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}else{
+		$('#message').html('La maille est invalide, ou bien le témoin n\'existe pas.');
+	}
+}
+function historiqueDesEspeces(){
+	var donnees = new Donnees();
+	if(isValide(donnees)){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/historiqueDesEspeces',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}
+}
 function mailleValide(donnees){
 	return $.inArray(donnees.maille, listeUTMS)>=0 || donnees.maille=='';
 }
@@ -116,7 +218,7 @@ function isValide(donnees){
 }
 
 function patientez(){
-	$('#resultats').html('Calcul en cours... Veuillez patientiez');
+	$('#resultats').html('Calcul en cours... Veuillez patientier');
 }
 function rapportDErreur(){
 	$('#resultats').html('Un problème est survenu lors du calcul côté serveur...');

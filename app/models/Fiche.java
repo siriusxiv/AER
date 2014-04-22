@@ -59,10 +59,11 @@ public class Fiche extends Model {
 	
 	public static Finder<Long,Fiche> find = new Finder<Long,Fiche>(Long.class, Fiche.class);
 	
-	public Fiche(Commune commune, String lieu_dit, UTMS utm, Calendar date, String memo) {
+	public Fiche(Commune commune, String lieu_dit, UTMS utm, Calendar date_min, Calendar date, String memo) {
 		fiche_commune=commune;
 		fiche_lieudit=lieu_dit;
 		fiche_utm=utm;
+		fiche_date_min=date_min;
 		fiche_date=date;
 		fiche_memo=memo;
 		fiche_date_soumission=Calendar.getInstance();

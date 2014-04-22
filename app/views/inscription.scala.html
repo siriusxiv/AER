@@ -21,7 +21,7 @@
 		<a href="/">Retour</a>
 		</dl>
 	</header>
-	<h1> Page pour s'inscrire </h1>
+	<h1>Inscription</h1>
 	<span class="message" id="message">@Html(message)</span>
 	<form action="/inscription" method="POST" id="form">
 	<table>
@@ -90,7 +90,7 @@
 		<td><input type="password" name="passw_conf" placeholder="Confirmation" id="passw_conf"></td>
 	</tr>
 	</table>
-	<input type="checkbox" id="conditions"> J'accepte les <a class="lien" onClick="window.open('http://aer-nantes.fr/mentions-legales');">mentions légales</a> de l'association.
+	<input type="checkbox" id="conditions"> J'accepte les <a class="lien" href="#" onClick="window.open('http://aer-nantes.fr/mentions-legales');">mentions légales</a> de l'association.
 	<button onClick="poster();return false;">Valider</button>
 	</form>
 	}{
@@ -100,7 +100,7 @@
 		if(!$('#conditions').is(':checked'))
 			$('#message').html('Vous n\'avez pas accepté les mentions légales.');
 		else if($('#passw').val()!=$('#passw_conf').val())
-			$('#message').html('Vos mots de pass sont différents');
+			$('#message').html('Vos mots de passe sont différents');
 		else if($('#passw').val().length<5)
 			$('#message').html('Votre mot de passe fait moins de 5 caractères. Faites un mot de passe plus long.');
 		else if($('#nom').val()=='')

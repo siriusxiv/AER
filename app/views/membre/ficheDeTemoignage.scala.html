@@ -15,19 +15,14 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(membre: Membre)
+@(membre: Membre, message: String)
 @main("Fiche de Témoignage"){
-<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-		<h1>Poster des témoignages </h1>
-</header>
+<a href="/@if(membre.membre_droits.equals(Droits.TEMOIN)){menuUtilisateur}else{menuExpert}">Retour</a>
 <script src="@routes.Assets.at("javascripts/jquery-1.11.0.min.js")" type="text/javascript"></script>
 <link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
 <script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
 		<h1>Fiche de Témoignage </h1>
-		<span id="message" class="message"></span>
+		<span id="message" class="message">@message</span>
 		<form id="form" action="/deposerTemoignage" method="POST">
 		<table>
 		<tr>
@@ -50,6 +45,29 @@
 			<tr>
 				<td>Commune :</td>
 				<td>@listeDesCommunes("commune")</td>
+			</tr>
+			<tr>
+				<td>Date minimum :</td>
+				<td>
+					<select name="jourmin">
+						<option value="">&nbsp;</option>
+					@for(i: Int <- 1 to 31){
+						<option value="@i">@i</option>
+					}
+					</select>
+					<select name="moismin">
+						<option value="">&nbsp;</option>
+					@for(i: Int <- 1 to 12){
+						<option value="@i">@i</option>
+					}
+					</select>
+					<select name="anneemin">
+						<option value="">&nbsp;</option>
+					@for(i: Int <- 1950 to Integer.parseInt(Calendar.getInstance().getTime().format("yyyy"))){
+						<option value="@i">@i</option>
+					}
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td>Date* :</td>
@@ -80,12 +98,12 @@
 			</table>
 		</td>
 		<td>
-			Groupe en expédition :<br>
-			<button id="avantDernierMembre" onClick="ajouterUnMembre();return false;">Ajouter un membre</button>
+			Témoin(s) :<br>
+			<button id="avantDernierMembre" onClick="ajouterUnMembre();return false;">Ajouter un témoin</button>
 		</td>
 		</tr>
 		</table>
-			<p>Espèces observées: </p>
+			<p>Espèces observées : </p>
 			<div id="observation1"></div>
 			<button id="apresDerniereObservation" onClick="ajouterObservation();return false;">Ajouter une observation</button>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onClick="poster();return false;">Valider témoignage</button>

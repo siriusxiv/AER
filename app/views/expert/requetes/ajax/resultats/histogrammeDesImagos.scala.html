@@ -15,7 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
- @(hdi : controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos, info : Map[String,String])
+ @(hdi : controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos, info : Map[String,String], file_name: String)
 @*Espèce : @info.get("espece")<br>
 Sous-groupe : @info.get("sous-groupe")<br>
 Groupe : @info.get("groupe")<br>
@@ -30,6 +30,7 @@ Maille : @info.get("maille")<br>*@
 	</tr>
 }
 </table>*@
+<a href="/telechargerRapport/@file_name">Télécharger le fichier Excel</a>
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <script>
 $(function () {
@@ -49,7 +50,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: 'Nombre d\'imagos observés'
+                text: 'Nombre d\'observations'
             }
         },
         tooltip: {
@@ -67,7 +68,7 @@ $(function () {
             }
         },
         series: [{
-        	name: 'Nombre d\'imagos observés',
+        	name: 'Nombre d\'observations',
             data: [@for(i:Int <- 0 to 34){@hdi.histogramme(i),}@hdi.histogramme(35)]
         }]
     });
