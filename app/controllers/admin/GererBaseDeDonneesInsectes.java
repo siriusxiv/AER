@@ -380,4 +380,46 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			return Admin.nonAutorise();
 		}
 	}
+	
+	/******* fonctions de suppression (! destructives !) **********/
+	public static Result supprimerEspece(Integer espece_id){
+		if(Admin.isAdminConnected()){
+			Espece.supprEspece(espece_id);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result supprimerSousFamille(Integer sous_famille_id){
+		if(Admin.isAdminConnected()){
+			SousFamille.supprSousFamille(sous_famille_id);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result supprimerFamille(Integer famille_id){
+		if(Admin.isAdminConnected()){
+			Famille.supprFamille(famille_id);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result supprimerSuperFamille(Integer super_famille_id){
+		if(Admin.isAdminConnected()){
+			SuperFamille.supprSuperFamille(super_famille_id);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result supprimerOrdre(Integer ordre_id){
+		if(Admin.isAdminConnected()){
+			Ordre.supprOrdre(ordre_id);
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else
+			return Admin.nonAutorise();
+	}
+			
 }

@@ -312,5 +312,18 @@ public class Espece extends Model implements Comparator<Espece>{
 	public static List<Espece> findEspecesAjoutablesDansSousGroupe(){
 		return find.where().eq("espece_sous_groupe", null).findList();
 	}
+	
+	/**
+	* Supprime l'espèce et tous les témoignages qui lui sont associés
+	*/
+	public static void supprEspece(Integer espece_id){
+		Espece espece = find.byId(espece_id);
+		List<Espece> especesApres = find.where().gt("espece_systematique",espece.espece_systematique).findList();
+		for (Espece e : especesApres){
+			e.espece_systematique--;
+			e.save();
+		}
+		espece.delete();
+	}
 
 }

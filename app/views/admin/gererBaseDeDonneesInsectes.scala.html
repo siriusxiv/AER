@@ -63,6 +63,18 @@
 		</table>
 	</div>
 	</form>
+	@for(sousFamille <- sousFamilles){
+	@if(sousFamille.estVide()){
+		<table>
+			<tr>
+				<td style="color:black;"><b>Cette sous-famille ne contient pas d'espèces !</b></td>
+				<td>@sousFamille.sous_famille_nom</td>
+				<td>
+					<form action="/gererBaseDeDonneesInsectes/supprimerSousFamille/@sousFamille.sous_famille_id" method="POST">
+					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+				</td>
+			</tr>
+		</table>}}
 	<button onClick="visibleAjoutSousFamille()">Ajouter une sous-famille</button>
 	<form action="/gererBaseDeDonneesInsectes/ajoutSousFam" method="POST">
 	<div id="nouv_sousfam" style="display:none">
@@ -88,6 +100,18 @@
 		</table>
 	</div>
 	</form>
+	@for(famille <- familles){
+	@if(famille.estVide()){
+		<table>
+			<tr>
+				<td style="color:black;"><b>Cette famille ne contient pas d'espèces !</b></td>
+				<td>@famille.famille_nom</td>
+				<td>
+					<form action="/gererBaseDeDonneesInsectes/supprimerFamille/@famille.famille_id" method="POST">
+					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+				</td>
+			</tr>
+		</table>}}
 	<button onClick="visibleAjoutFamille()">Ajouter une famille</button>
 	<form action="/gererBaseDeDonneesInsectes/ajoutFam" method="POST">
 	<div id="nouv_famille" style="display:none">
@@ -123,6 +147,18 @@
 		</table>
 	</div>
 	</form>
+	@for(superFamille <- superFamilles){
+	@if(superFamille.estVide()){
+		<table>
+			<tr>
+				<td style="color:black;"><b>Cette super-famille ne contient pas d'espèces !</b></td>
+				<td>@superFamille.super_famille_nom</td>
+				<td>
+					<form action="/gererBaseDeDonneesInsectes/supprimerSuperFamille/@superFamille.super_famille_id" method="POST">
+					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+				</td>
+			</tr>
+		</table>}}
 	<button onClick="visibleAjoutSuperFamille()">Ajouter une super-famille</button>
 	<form action="/gererBaseDeDonneesInsectes/ajoutSuperFam" method="POST">
 	<div id="nouv_superfam" style="display:none">
@@ -148,6 +184,18 @@
 		</table>
 	</div>
 	</form>
+	@for(ordre<- ordres){
+	@if(ordre.estVide()){
+		<table>
+			<tr>
+				<td style="color:black;"><b>Cet ordre ne contient pas d'espèces !</b></td>
+				<td>@ordre.ordre_nom</td>
+				<td>
+					<form action="/gererBaseDeDonneesInsectes/supprimerOrdre/@ordre.ordre_id" method="POST">
+					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+				</td>
+			</tr>
+		</table>}}
 	<button onClick="visibleAjoutOrdre()">Ajouter un ordre</button>
 	<form action="/gererBaseDeDonneesInsectes/ajoutOrdre" method="POST">
 	<div id="nouv_ordre" style="display:none">
@@ -224,7 +272,6 @@
 				</select>
 				</form>
 			</th>
-			<th>Action</th>
 		</tr>
 		@for(espece <- especes){
 		<tr>
@@ -290,6 +337,7 @@
 							</td>
 						</tr>
 					</table>
+					<form action="/gererBaseDeDonneesInsectes/supprimerEspece/@espece.espece_id" method="POST"><button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
 				</div>
 			</td>
 			<td>
@@ -371,6 +419,7 @@
 							</td>
 						</tr>
 					</table>
+					<form action="/gererBaseDeDonneesInsectes/supprimerSuperFamille/@espece.getSuperFamille().super_famille_id" method="POST"><button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
 				</div>
 			</td>
 			<td>
@@ -384,7 +433,6 @@
 			</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe}</td>
 			<td>@if(espece.espece_sous_groupe!=null){@espece.espece_sous_groupe.sous_groupe_groupe}</td>
-			<td><button>Supprimer</button></td>
 		</tr>
 		}
 	</table>
@@ -730,6 +778,9 @@ function renommerOrdre(ordre_id) {
 			}
 		}
 	});
+}
+function alert(){
+	alert("ATTENTION !! Vous etes sur le point de supprimer tous les témoignages liés à cette espèce, cette sous-famille, cette famille ou cet ordre !!");
 }
 </script>
 }

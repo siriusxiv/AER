@@ -149,4 +149,26 @@ public class Famille extends Model implements Comparator<Famille>{
 		else
 			return espece.espece_systematique;
 	}
+	
+	/**
+	* Teste si une famille contient des especes
+	*/
+	public boolean estVide(){
+		List<Espece> especes = this.getEspecesDansThis();
+		return (especes.isEmpty());
+	}
+	
+	/**
+	* Supprime la famille SEULEMENT si elle ne contient pas d'espèces, 
+	* et si elle contient des sous-familles vides supprime celles-ci également
+	*/
+	public static void supprFamille(Integer famille_id){
+		Famille fam = find.byId(famille_id);
+		List<SousFamille> sousfams = SousFamille.find.where().eq("sous_famille_famille",fam).findList();
+		for (SousFamille sousfam : sousfams){
+			if(sousfam.estVide())
+				SousFamille.supprSousFamille(sousfam.sous_famille_id);
+		}	
+		fam.delete();
+	}
 }

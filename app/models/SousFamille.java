@@ -176,4 +176,20 @@ public class SousFamille extends Model implements Comparator<SousFamille>{
 		else
 			return espece.espece_systematique;
 	}
+	
+	/**
+	* Teste si une sous-famille contient des espèces
+	*/
+	public boolean estVide(){
+		List<Espece> especes = this.getEspecesDansThis();
+		return (especes.isEmpty());
+	}
+	
+	/**
+	* Supprime la sous-famille SEULEMENT si elle ne contient pas d'espèces
+	*/
+	public static void supprSousFamille(Integer sous_famille_id){
+		SousFamille sousfam = find.byId(sous_famille_id);
+		sousfam.delete();
+	}
 }

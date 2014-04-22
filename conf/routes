@@ -97,6 +97,11 @@ POST	/gererBaseDeDonneesInsectes/supprimerSynonyme/:synonyme_id	controllers.admi
 POST	/gererBaseDeDonneesInsectes/changerFamille/:sous_famille_id	controllers.admin.GererBaseDeDonneesInsectes.changerFamille(sous_famille_id: Integer)
 POST	/gererBaseDeDonneesInsectes/changerSuperFamille/:famille_id	controllers.admin.GererBaseDeDonneesInsectes.changerSuperFamille(famille_id: Integer)
 POST	/gererBaseDeDonneesInsectes/changerOrdre/:super_famille_id	controllers.admin.GererBaseDeDonneesInsectes.changerOrdre(super_famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerEspece/:espece_id		controllers.admin.GererBaseDeDonneesInsectes.supprimerEspece(espece_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerSousFamille/:sous_famille_id	controllers.admin.GererBaseDeDonneesInsectes.supprimerSousFamille(sous_famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerFamille/:famille_id	controllers.admin.GererBaseDeDonneesInsectes.supprimerFamille(famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerSuperFamille/:super_famille_id		controllers.admin.GererBaseDeDonneesInsectes.supprimerSuperFamille(super_famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerOrdre/:ordre_id		controllers.admin.GererBaseDeDonneesInsectes.supprimerOrdre(ordre_id: Integer)
 
 #routes pour les listes de membres*****************
 GET     /listeMembres                controllers.Application.listeMembres(orderBy:String ?="membre_nom", sortDirection:String ?="asc")
