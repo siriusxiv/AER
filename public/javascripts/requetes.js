@@ -218,7 +218,7 @@ function isValide(donnees){
 }
 
 function patientez(){
-	$('#resultats').html('Calcul en cours... Veuillez patientiez');
+	$('#resultats').html('Calcul en cours... Veuillez patientier');
 }
 function rapportDErreur(){
 	$('#resultats').html('Un problème est survenu lors du calcul côté serveur...');

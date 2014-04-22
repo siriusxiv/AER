@@ -50,7 +50,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: 'Nombre d\'imagos observés'
+                text: 'Nombre d\'observations'
             }
         },
         tooltip: {
@@ -68,7 +68,7 @@ $(function () {
             }
         },
         series: [{
-        	name: 'Nombre d\'imagos observés',
+        	name: 'Nombre d\'observations',
             data: [@for(i:Int <- 0 to 34){@hdi.histogramme(i),}@hdi.histogramme(35)]
         }]
     });
