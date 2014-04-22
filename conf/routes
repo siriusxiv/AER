@@ -142,6 +142,7 @@ GET		/deposerObservation/:observation_ordre/:groupe_precedent_id	controllers.aja
 GET		/ajax/especes/dansGroupe/:groupe_id				controllers.ajax.membre.DeposerObservation.getListeEspeces(groupe_id: Integer)
 GET		/ajax/chargeinfoscomplementaires/:observation_position/:groupe_id/:complement_position	controllers.ajax.membre.DeposerObservation.getComplement(observation_position: Integer,groupe_id: Integer,complement_position: Integer)
 GET		/ajax/chargestadesexeprecis/:groupe_id/:stade_sexe_pere_id/:observation_position/:complement_position	controllers.ajax.membre.DeposerObservation.getStadeSexePrecis(groupe_id: Integer, stade_sexe_pere_id: Integer, observation_position: Integer, complement_position: Integer)
+GET		/ajax/chargephoto/:espece_id							controllers.ajax.membre.DeposerObservation.getPhoto(espece_id: Integer)
 #Routes AJAX pour consulter les données
 GET		/ajax/consulter/listeSousGroupes/:groupe_id				controllers.ajax.expert.requetes.Requetes.listeSousGroupes(groupe_id: Integer)
 GET		/ajax/consulter/listeEspeces/:groupe_id/:sous_groupe_id	controllers.ajax.expert.requetes.Requetes.listeEspeces(groupe_id: Integer,sous_groupe_id: Integer)
