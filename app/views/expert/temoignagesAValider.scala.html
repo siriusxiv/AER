@@ -34,6 +34,7 @@
         		<th>Espèce</th>
         		<th>Déterminateur</th>
         		<th>Commentaires</th>
+        		<th>Date Minimum(intervalle)</th>
         		<th>Date d'observation</th>
         		<th>Lieu-dit</th>
         		<th>Commune</th>
@@ -56,6 +57,7 @@
         		<td>@observation.observation_espece.espece_nom</td>
         		<td>@observation.observation_determinateur</td>
         		<td>@observation.observation_commentaires</td>
+        		<td>@if(observation.observation_fiche.fiche_date_min!=null){@observation.observation_fiche.fiche_date_min.getTime().format("dd/MM/yyyy")}</td>
         		<td>@observation.observation_fiche.fiche_date.getTime().format("dd/MM/yyyy")</td>
         		<td>@observation.observation_fiche.fiche_lieudit</td>
         		<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}</td>
