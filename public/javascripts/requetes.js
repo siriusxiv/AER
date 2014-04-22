@@ -180,6 +180,26 @@ function chronologieDUnTemoin(){
 		$('#message').html('La maille est invalide, ou bien le témoin n\'existe pas.');
 	}
 }
+function historiqueDesEspeces(){
+	var donnees = new Donnees();
+	if(isValide(donnees)){
+		$('#message').html('');
+		patientez();
+		$.ajax({
+			type : 'POST',
+			url : '/ajax/historiqueDesEspeces',
+			data: donnees.getFormData(),
+			processData: false,
+			contentType: false,
+			success: function (res) {
+				$('#resultats').html(res);
+			},
+			error: function(){
+				rapportDErreur();
+			}
+		});
+	}
+}
 function mailleValide(donnees){
 	return $.inArray(donnees.maille, listeUTMS)>=0 || donnees.maille=='';
 }

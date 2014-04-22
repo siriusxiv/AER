@@ -25,12 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controllers.ajax.expert.requetes.calculs.HistoriqueDesEspeces;
 import controllers.ajax.expert.requetes.calculs.MaillesParEspece;
 import controllers.ajax.expert.requetes.calculs.CarteSomme;
 import controllers.ajax.expert.requetes.calculs.CarteSommeBiodiversite;
 import controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin;
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
+import functions.excels.exports.HistoriqueDesEspecesExcel;
 import functions.excels.exports.MaillesParEspeceExcel;
 import functions.excels.exports.CarteSommeBiodiversiteExcel;
 import functions.excels.exports.CarteSommeExcel;
@@ -46,6 +48,7 @@ import views.html.expert.requetes.ajax.resultats.carteSomme;
 import views.html.expert.requetes.ajax.resultats.carteSommeBiodiversite;
 import views.html.expert.requetes.ajax.resultats.maillesParEspece;
 import views.html.expert.requetes.ajax.resultats.chronologieDUnTemoin;
+import views.html.expert.requetes.ajax.resultats.historiqueDesEspeces;
 
 public class Calculs extends Controller {
 	
@@ -96,6 +99,14 @@ public class Calculs extends Controller {
 		MaillesParEspeceExcel mpee = new MaillesParEspeceExcel(info,mpe);
 		mpee.writeToDisk();
 		return ok(maillesParEspece.render(mpe,info,mpee.getFileName()));
+	}
+	public static Result historiqueDesEspeces() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		HistoriqueDesEspeces hde = new HistoriqueDesEspeces(info);
+		HistoriqueDesEspecesExcel hdee = new HistoriqueDesEspecesExcel(info,hde);
+		hdee.writeToDisk();
+		return ok(historiqueDesEspeces.render(hde,info,hdee.getFileName()));
 	}
 	
 	/**

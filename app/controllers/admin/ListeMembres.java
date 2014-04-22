@@ -17,16 +17,13 @@
  ********************************************************************************/
 package controllers.admin;
 
-import controllers.expert.MenuExpert;
 import models.Confidentialite;
-import models.Droits;
 import models.Membre;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.admin.listeMembres;
 import views.html.admin.ajax.editerTemoinAdminAjax;
-import views.html.expert.gererTemoinsPassifs;
 
 public class ListeMembres extends Controller {
 
