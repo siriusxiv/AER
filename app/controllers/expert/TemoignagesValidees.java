@@ -142,6 +142,8 @@ public class TemoignagesValidees extends Controller {
 		if(MenuExpert.isExpertOn(groupe)){
 		ObservationsValidesExcel ove = new ObservationsValidesExcel(espece_id,membre_nom, orderBy, dir, groupe_id);
 		ove.writeToDisk();
+		
+		
 		String filename = ove.getFileName();
 		FileInputStream fis = new FileInputStream(new File(Play.application().configuration().getString("xls_generes.path")+filename));
 		response().setHeader("Content-Disposition", "attachment; filename="+filename);
