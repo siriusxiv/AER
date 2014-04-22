@@ -288,6 +288,74 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		}
 	}
 	
+	/** Change une espèce avec une sous-famille en une espèce sans sous-famille avec une famille
+	* @return
+	* @throws NamingException
+	 * @throws PersistenceException
+	 */
+	public static Result changerVersFamille(Integer espece_id) throws NamingException, PersistenceException{
+		if(Admin.isAdminConnected()){
+			Espece espece = Espece.find.byId(espece_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String sousfam = df.get("changerVersFamille");
+			if (sousfam!=null){
+				Integer sousfam_id = Integer.parseInt(sousfam);
+				espece.espece_sousfamille = new SousFamille(espece.espece_nom,false,sousfam_id);
+				espece.espece_sousfamille.save();
+				espece.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+sousfam);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/** Change la famille d'une espèce sans sous-famille
+	* @return
+	* @throws NamingException
+	 * @throws PersistenceException
+	 */
+	public static Result changerFamilleEspece(Integer espece_id) throws NamingException, PersistenceException{
+		if(Admin.isAdminConnected()){
+			Espece espece = Espece.find.byId(espece_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String fam = df.get("changerFamilleEspece");
+			if (fam!=null){
+				Integer fam_id = Integer.parseInt(fam);
+				espece.espece_sousfamille = new SousFamille(espece.espece_nom,false,fam_id);
+				espece.espece_sousfamille.save();
+				espece.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+fam);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/** Change une espèce sans sous-famille avec une espèce avec sous-famille et attribue la sous-famille
+	* @return
+	*/
+	public static Result changerVersSousFamille(Integer espece_id){
+		if(Admin.isAdminConnected()){
+			Espece espece = Espece.find.byId(espece_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String sousfam = df.get("changerVersSousFamille");
+			if (sousfam!=null){
+				espece.espece_sousfamille = SousFamille.find.byId(Integer.parseInt(sousfam));
+				espece.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+sousfam);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
 	/**Ajoute un synonyme à la base de données
 	* @return
 	* @throws NamingException

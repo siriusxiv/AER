@@ -306,16 +306,60 @@
 								<input type="file" name="photo" accept="image/*"></input>
 								<button type="submit">&#10004;</button></form></div>
 							</td>
-							<td>
+							<td>	
+								@if(espece.getSousFamille().sous_famille_existe){
+								<div id="changerSsFam" style="display:block">
 								<form action="/gererBaseDeDonneesInsectes/changerSousFamille/@espece.espece_id" method="POST">
+								Sous-famille : 
 								<select id="changerSousFamille" name="changerSousFamille">
-								<option value="-1" selected="selected">@if(espece.getSousFamille().sous_famille_existe){@espece.getSousFamille()}</option>
-								@for(sousFamille <- sousFamilles) {
+								<option value="-1" selected="selected">@espece.getSousFamille()</option>
+								@for(sousFamille <- sousFamilles){
 								<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>
 								}
 								</select>
 								<button type="submit">Changer</button>
 								</form>
+								<h6>Si cette espèce n'a plus de sous-famille, mais une famille : </h6>
+								<button onClick="afficherAutreSelect()">Cliquez ici</button></div>
+								<div id="changerVersFam" style="display:none">
+								<form action="/gererBaseDeDonneesInsectes/changerVersFamille/@espece.espece_id" method="POST">
+								Famille : 
+								<select id="changerVersFamille" name="changerVersFamille">
+								<option value="-1" selected="selected">&nbsp;</option>
+								@for(famille <- familles){
+								<option value="@famille.famille_id">@famille.famille_nom</option>
+								}
+								</select>
+								<button type="submit">Attribuer la famille (retire la sous-famille)</button>
+								</form>
+								<button onClick="afficherAutreSelect()">Retour</button></div>
+								}else{
+								<div id="changerFam" style="display:block">
+								<form action="/gererBaseDeDonneesInsectes/changerFamilleEspece/@espece.espece_id" method="POST">
+								Famille : 
+								<select id="changerFamilleEspece" name="changerFamilleEspece">
+								<option value="-1" selected="selected">@espece.getFamille()</option>
+								@for(famille <- familles){
+								<option value="@famille.famille_id">@famille.famille_nom</option>
+								}
+								</select>
+								<button type="submit">Changer</button>
+								</form>
+								<h6>Si cette espèce a à présent une sous-famille : </h6>
+								<button onClick="afficherAutreSelectAutre()">Cliquez ici</button></div>
+								<div id="changerVersSsFam" style="display:none">
+								<form action="/gererBaseDeDonneesInsectes/changerVersSousFamille/@espece.espece_id" method="POST">
+								Sous-famille : 
+								<select id="changerVersSousFamille" name="changerVersSousFamille">
+								<option value="-1" selected="selected">&nbsp;</option>
+								@for(sousFamille <- sousFamilles){
+								<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>
+								}
+								</select>
+								<button type="submit">Attribuer la sous-famille</button>
+								</form>
+								<button onCLick="afficherAutreSelectAutre()">Retour</button></div>
+								}
 							</td>
 							<td onDblClick="changerCommentairesEspece(@espece.espece_id)">
 								<span id="changerCommentaires@espece.espece_id">@espece.espece_commentaires</span>
@@ -619,6 +663,24 @@ function afficherChangerPhoto() {
 		document.getElementById("changerPhoto").style.display = "block";
 	} else {
 		document.getElementById("changerPhoto").style.display = "none";
+	}
+}
+function afficherAutreSelect() {
+	if (document.getElementById("changerVersFam").style.display == "none") {
+		document.getElementById("changerSsFam").style.display = "none";
+		document.getElementById("changerVersFam").style.display = "block";
+	} else {
+		document.getElementById("changerSsFam").style.display = "block"
+		document.getElementById("changerVersFam").style.display = "none";
+	}
+}
+function afficherAutreSelectAutre() {
+	if (document.getElementById("changerVersSsFam").style.display == "none") {
+		document.getElementById("changerFam").style.display = "none";
+		document.getElementById("changerVersSsFam").style.display = "block";
+	} else {
+		document.getElementById("changerFam").style.display = "block"
+		document.getElementById("changerVersSsFam").style.display = "none";
 	}
 }
 function changerCommentairesEspece(espece_id) {
