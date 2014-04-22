@@ -108,9 +108,20 @@ GET     /especesParOrdre   	controllers.admin.GererBaseDeDonneesInsectes.listeEs
 GET	/especesParSousGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParSousGroupe()
 GET	/especesParGroupe	controllers.admin.GererBaseDeDonneesInsectes.listeEspecesParGroupe()
 POST	/gererBaseDeDonneesInsectes/changerSousFamille/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.changerSousFamille(espece_id:Integer)
+POST	/gererBaseDeDonneesInsectes/changerVersFamille/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.changerVersFamille(espece_id: Integer)
+POST	/gererBaseDeDonneesInsectes/changerFamilleEspece/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.changerFamilleEspece(espece_id: Integer)
+POST	/gererBaseDeDonneesInsectes/changerVersSousFamille/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.changerVersSousFamille(espece_id: Integer)
 POST	/gererBaseDeDonneesInsectes/changerPhoto/:espece_id		controllers.admin.GererBaseDeDonneesInsectes.changerPhoto(espece_id: Integer)
 POST	/gererBaseDeDonneesInsectes/ajouterSynonyme/:espece_id	controllers.admin.GererBaseDeDonneesInsectes.ajouterSynonyme(espece_id:Integer)
 POST	/gererBaseDeDonneesInsectes/supprimerSynonyme/:synonyme_id	controllers.admin.GererBaseDeDonneesInsectes.supprimerSynonyme(synonyme_id: Integer)
+POST	/gererBaseDeDonneesInsectes/changerFamille/:sous_famille_id	controllers.admin.GererBaseDeDonneesInsectes.changerFamille(sous_famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/changerSuperFamille/:famille_id	controllers.admin.GererBaseDeDonneesInsectes.changerSuperFamille(famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/changerOrdre/:super_famille_id	controllers.admin.GererBaseDeDonneesInsectes.changerOrdre(super_famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerEspece/:espece_id		controllers.admin.GererBaseDeDonneesInsectes.supprimerEspece(espece_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerSousFamille/:sous_famille_id	controllers.admin.GererBaseDeDonneesInsectes.supprimerSousFamille(sous_famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerFamille/:famille_id	controllers.admin.GererBaseDeDonneesInsectes.supprimerFamille(famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerSuperFamille/:super_famille_id		controllers.admin.GererBaseDeDonneesInsectes.supprimerSuperFamille(super_famille_id: Integer)
+POST	/gererBaseDeDonneesInsectes/supprimerOrdre/:ordre_id		controllers.admin.GererBaseDeDonneesInsectes.supprimerOrdre(ordre_id: Integer)
 
 #Fiche de témoignage
 GET     /ficheDeTemoignage			controllers.membre.DeposerTemoignage.main()
@@ -155,6 +166,10 @@ POST	/ajax/gererBaseDeDonneesInsectes/changerAuteurEspece/:espece_id	controllers
 POST	/ajax/gererBaseDeDonneesInsectes/changerSystematiqueEspece/:espece_id		controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.changerSystematiqueEspece(espece_id: Integer)
 POST	/ajax/gererBaseDeDonneesInsectes/changerSynonyme/:synonyme_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.changerSynonyme(synonyme_id: Integer)
 POST 	/ajax/gererBaseDeDonneesInsectes/changerCommentaireEspece/:espece_id		controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.changerCommentaireEspece(espece_id: Integer)
+POST	/ajax/gererBaseDeDonneesInsectes/renommerSousFamille/:sous_famille_id		controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerSousFamille(sous_famille_id: Integer)
+POST	/ajax/gererBaseDeDonneesInsectes/renommerFamille/:famille_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerFamille(famille_id: Integer)
+POST	/ajax/gererBaseDeDonneesInsectes/renommerSuperFamille/:super_famille_id		controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerSuperFamille(super_famille_id: Integer)
+POST	/ajax/gererBaseDeDonneesInsectes/renommerOrdre/:ordre_id	controllers.ajax.admin.AjaxGererBaseDeDonneesInsectes.renommerOrdre(ordre_id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -130,5 +130,28 @@ public class Ordre extends Model implements Comparator<Ordre>{
 		else
 			return espece.espece_systematique;
 	}
+	
+	/**
+	* Teste si un ordre contient des espèces
+	*/
+	public boolean estVide(){
+		List<Espece> especes = this.getEspecesDansThis();
+		return (especes.isEmpty());
+	}
+		
+	/**
+	* Supprime l'ordre SEULEMENT si elle ne contient pas d'espèces, 
+	* et si elle contient des super-familles vides supprime celles-ci également
+	* (supprime aussi les sous-familles et familles par récursion)
+	*/
+	public static void supprOrdre(Integer ordre_id){
+		Ordre ordre = find.byId(ordre_id);
+		List<SuperFamille> superfams = SuperFamille.find.where().eq("super_famille_ordre",ordre).findList();
+		for (SuperFamille superfam : superfams){
+			if(superfam.estVide())
+				SuperFamille.supprSuperFamille(superfam.super_famille_id);
+		}
+		ordre.delete();
+	}
 
 }

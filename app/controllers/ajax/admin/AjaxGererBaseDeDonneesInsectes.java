@@ -21,6 +21,10 @@ import java.util.List;
 import controllers.admin.Admin;
 import models.Espece;
 import models.EspeceSynonyme;
+import models.SousFamille;
+import models.Famille;
+import models.SuperFamille;
+import models.Ordre;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -123,5 +127,69 @@ public class AjaxGererBaseDeDonneesInsectes extends Controller {
 	 		return redirect("/gererBaseDeDonneesInsectes");
 	 	} else
 	 		return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Renomme la sous famille et enregistre le tout dans la base de données
+	 * @param sous_famille_id
+	 * @return
+	 */
+	public static Result renommerSousFamille(Integer sous_famille_id){
+		if(Admin.isAdminConnected()){
+			SousFamille sousfam = SousFamille.find.byId(sous_famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			sousfam.sous_famille_nom=df.get("nouveauNomSsFam");
+			sousfam.save();
+			return redirect("/gererBaseDeDonneesInsectes");
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Renomme la famille et enregistre le tout dans la base de données
+	 * @param famille_id
+	 * @return
+	 */
+	public static Result renommerFamille(Integer famille_id){
+		if(Admin.isAdminConnected()){
+			Famille fam = Famille.find.byId(famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			fam.famille_nom=df.get("nouveauNomFam");
+			fam.save();
+			return redirect("/gererBaseDeDonneesInsectes");
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Renomme la super-famille et enregistre le tout dans la base de données
+	 * @param super_famille_id
+	 * @return
+	 */
+	public static Result renommerSuperFamille(Integer super_famille_id){
+		if(Admin.isAdminConnected()){
+			SuperFamille superfam = SuperFamille.find.byId(super_famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			superfam.super_famille_nom=df.get("nouveauNomSuperFam");
+			superfam.save();
+			return redirect("/gererBaseDeDonneesInsectes");
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	/**
+	 * Renomme l'ordre et enregistre le tout dans la base de données
+	 * @param ordre_id
+	 * @return
+	 */
+	public static Result renommerOrdre(Integer ordre_id){
+		if(Admin.isAdminConnected()){
+			Ordre ordre = Ordre.find.byId(ordre_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			ordre.ordre_nom=df.get("nouveauNomOrd");
+			ordre.save();
+			return redirect("/gererBaseDeDonneesInsectes");
+		}else
+			return Admin.nonAutorise();
 	}
 }
