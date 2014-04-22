@@ -60,14 +60,19 @@ public class HistogrammeDesImagosExcel extends Excel {
 	            0, //first column (0-based)
 	            12  //last column  (0-based)
 	    ));
-		int i = 1;
+		Row row = sheet.createRow(1);
+		row.createCell(0).setCellValue("Période");
+		row.createCell(1).setCellValue("Nbr. Obs.");
+		int i = 0;
 		while(i<hdi.histogramme.length){
-			Row row = sheet.createRow(i);
+			row = sheet.createRow(i+2);
 			row.createCell(0);
 			row.createCell(1);
-			sheet.getRow(i).getCell(0).setCellValue(hdi.legende.get(i));
-			sheet.getRow(i).getCell(1).setCellValue(hdi.histogramme[i]);
+			sheet.getRow(i+2).getCell(0).setCellValue(hdi.legende.get(i));
+			sheet.getRow(i+2).getCell(1).setCellValue(hdi.histogramme[i]);
 			i++;
 		}
+		sheet.autoSizeColumn(0);
+		sheet.autoSizeColumn(1);
 	}
 }
