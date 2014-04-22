@@ -21,7 +21,7 @@
 		<h1>Témoignages validés</h1>
 	</header>
 	<form method="POST" action="/temoignagesValides/export/@groupe.groupe_id/@especeselectid/@orderBy/@dir/@membreselectnom">
-		<button>Créer un export excell</button>
+		<button>Créer un export excel</button>
 	</form>
 	<span id="trimembre"><button onclick="triMembre(@groupe.groupe_id)">Voir les observations d'un membre: </button></span>
 	<p>Trier par espece:<select name="selespesce" onchange="triEspece(@groupe.groupe_id, this.options[this.selectedIndex].value)">
