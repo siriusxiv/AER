@@ -28,13 +28,12 @@ import models.StadeSexe;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
 
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
 import functions.excels.Excel;
 
 public class TemoinsParPeriodeExcel extends Excel{
-	
+
 	public TemoinsParPeriodeExcel(Map<String,String> info, List<TemoinsParPeriode> temoins) throws IOException{
 		super();
 		Sheet sheet = wb.createSheet("Témoins par période");
@@ -45,7 +44,7 @@ public class TemoinsParPeriodeExcel extends Excel{
 		String maille = info.get("maille");
 		String date1 = info.get("jour1")+"/"+info.get("mois1")+"/"+info.get("annee1");
 		String date2 = info.get("jour2")+"/"+info.get("mois2")+"/"+info.get("annee2");
-		String titre = "Liste des témoins ayant fait une observation ";
+		String titre = "Liste des témoins ayant fait une observation"+crLf;
 		if(espece!=null)
 			titre+="de "+espece.espece_nom;
 		else if(sous_groupe!=null)
@@ -57,27 +56,56 @@ public class TemoinsParPeriodeExcel extends Excel{
 		if(!maille.equals(""))
 			titre+=" dans la maille "+maille;
 		titre+=" du "+date1+" au "+date2;
-		titre+=" ("+temoins.size()+" témoin(s) pour "+TemoinsParPeriode.getSomme(temoins)+" témoignage(s))";
-		sheet.createRow(0).createCell(0).setCellValue(titre);
-		sheet.addMergedRegion(new CellRangeAddress(
-	            0, //first row (0-based)
-	            0, //last row  (0-based)
-	            0, //first column (0-based)
-	            9  //last column  (0-based)
-	    ));
-		Row rowHead = sheet.createRow(1);
+		titre+=crLf+" ("+temoins.size()+" témoin(s) pour "+TemoinsParPeriode.getSomme(temoins)+" témoignage(s))";
+
+		int page = 0;
+		int ligne = 7;
+		this.collerLogoEtTitre(page,titre);
+		Row rowHead = sheet.createRow(ligne);
 		rowHead.createCell(0).setCellValue("Témoin");
-		rowHead.createCell(1).setCellValue("Nombre de témoignages");
-		int i = 2;
+		rowHead.createCell(1).setCellValue("Nbre tém.");
+		ligne++;
+		boolean ecritAGauche = true;
 		for(TemoinsParPeriode temoin : temoins){
-			Row row = sheet.createRow(i);
-			row.createCell(0);
-			row.createCell(1);
-			sheet.getRow(i).getCell(0).setCellValue(temoin.temoin.toString());
-			sheet.getRow(i).getCell(1).setCellValue(temoin.nombreDeTemoignages);
-			i++;
+			if(ecritAGauche){
+				Row row = sheet.createRow(ligne);
+				row.createCell(0).setCellValue(temoin.temoin.toString());
+				row.createCell(1).setCellValue(temoin.nombreDeTemoignages);
+				ligne++;
+			}else{
+				Row row = sheet.getRow(ligne);
+				row.createCell(3).setCellValue(temoin.temoin.toString());
+				row.createCell(4).setCellValue(temoin.nombreDeTemoignages);
+				ligne++;
+			}
+			if(ligne%LIGNES==(LIGNES-2)){
+				if(ecritAGauche){
+					ecritAGauche=!ecritAGauche;
+					ligne-=(LIGNES-9);
+					Row row = sheet.getRow(ligne);
+					row.createCell(3).setCellValue("Témoin");
+					row.createCell(4).setCellValue("Nbre tém.");
+					ligne++;
+				}else{
+					ecritAGauche=!ecritAGauche;
+					//On écrit le pied de page
+					this.piedDePage(page);
+					//On fait une nouvelle page
+					ligne+=9;
+					page++;
+					this.collerLogoEtTitre(page, titre);
+					Row row = sheet.createRow(ligne);
+					row.createCell(0).setCellValue("Témoin");
+					row.createCell(1).setCellValue("Nbre tém.");
+					ligne++;
+				}
+			}
 		}
-		sheet.autoSizeColumn(0);
+		this.piedDePage(page);
+		sheet.setColumnWidth(0, 7937);
 		sheet.autoSizeColumn(1);
+		sheet.setColumnWidth(2, 256);
+		sheet.setColumnWidth(3,7937);
+		sheet.autoSizeColumn(4);
 	}
 }
