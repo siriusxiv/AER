@@ -128,6 +128,7 @@ var nombreObservations=1;
 var nombresComplement = [0];
 $('#observation1').load('/deposerObservation/1/1',function(){
 	ajouterComplement(1);
+	setTimeout(function(){rafraichirPhoto(1);},200);
 });
 function ajouterObservation(){
 	nombreObservations++;
@@ -136,6 +137,7 @@ function ajouterObservation(){
 	var groupe_precedent_id = $('#groupes'+(nombreObservations-1)).val();
 	$('#observation'+nombreObservations).load('/deposerObservation/'+nombreObservations+'/'+groupe_precedent_id, function(){
 		ajouterComplement(nombreObservations);
+		setTimeout(function(){rafraichirPhoto(nombreObservations);},200);
 	});
 }
 function rafraichirListeDEspeces(observation_position){
@@ -175,6 +177,12 @@ function chargerStadeSexePrecis(observation_position,complement_position){
 	var id_select_pere='#stadeSexeSelect'+observation_position+'-'+complement_position;
 	var stade_sexe_pere_id = $(id_select_pere).val();
 	var url = '/ajax/chargestadesexeprecis/'+groupe_id+'/'+stade_sexe_pere_id+'/'+observation_position+'/'+complement_position;
+	$(id).load(url);
+}
+function rafraichirPhoto(observation_position){
+	var espece_id = $('#especes'+observation_position).val();
+	var id = '#photo'+observation_position;
+	var url = '/ajax/chargephoto/'+espece_id;
 	$(id).load(url);
 }
 function poster(){

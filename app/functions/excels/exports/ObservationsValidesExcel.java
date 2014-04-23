@@ -129,8 +129,8 @@ public class ObservationsValidesExcel extends Excel{
 		sheet.getRow(i).getCell(8).setCellValue(observation.observation_fiche.fiche_utm.utm);
 		sheet.getRow(i).getCell(9).setCellValue(observation.observation_fiche.fiche_memo);
 		sheet.getRow(i).getCell(10).setCellValue(observation.observation_fiche.fiche_memo);
-		sheet.getRow(i).getCell(11).setCellValue(observation.observation_fiche.fiche_date_soumission);
-		sheet.getRow(i).getCell(11).setCellStyle(cellStyleDate);
+		sheet.getRow(i).getCell(12).setCellValue(observation.observation_fiche.fiche_date_soumission);
+		sheet.getRow(i).getCell(12).setCellStyle(cellStyleDate);
 		
 		StringBuilder infos = new StringBuilder();
 		List<InformationsComplementaires> ic= observation.getInfos();
@@ -144,7 +144,7 @@ public class ObservationsValidesExcel extends Excel{
 			infos.append(", ");
 			}
 		}
-		sheet.getRow(i).getCell(12).setCellValue(infos.toString());
+		sheet.getRow(i).getCell(11).setCellValue(infos.toString());
 		/*
 		Integer nombre = complements.informations_complementaires_nombre_de_specimens;
 		if(nombre==null)

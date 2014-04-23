@@ -23,7 +23,8 @@ GET		/changerInformationsPersonnelles	controllers.membre.InformationsPersonnelle
 POST	/changerMail						controllers.membre.InformationsPersonnelles.changerMail()
 POST	/changerMdp							controllers.membre.InformationsPersonnelles.changerMdp()
 GET     /historique                 		controllers.membre.Historique.main()
-GET		/telechargerHistorique/:file_name	controllers.membre.Historique.telechargerFichier(file_name: String)
+GET		/historique/page/:page				controllers.membre.Historique.voirPage(page: Integer)
+GET		/telechargerHistorique				controllers.membre.Historique.telechargerHistorique()
 
 #routes pour les experts
 GET     /menuExpert                 controllers.expert.MenuExpert.main()
@@ -142,6 +143,7 @@ GET		/deposerObservation/:observation_ordre/:groupe_precedent_id	controllers.aja
 GET		/ajax/especes/dansGroupe/:groupe_id				controllers.ajax.membre.DeposerObservation.getListeEspeces(groupe_id: Integer)
 GET		/ajax/chargeinfoscomplementaires/:observation_position/:groupe_id/:complement_position	controllers.ajax.membre.DeposerObservation.getComplement(observation_position: Integer,groupe_id: Integer,complement_position: Integer)
 GET		/ajax/chargestadesexeprecis/:groupe_id/:stade_sexe_pere_id/:observation_position/:complement_position	controllers.ajax.membre.DeposerObservation.getStadeSexePrecis(groupe_id: Integer, stade_sexe_pere_id: Integer, observation_position: Integer, complement_position: Integer)
+GET		/ajax/chargephoto/:espece_id							controllers.ajax.membre.DeposerObservation.getPhoto(espece_id: Integer)
 #Routes AJAX pour consulter les données
 GET		/ajax/consulter/listeSousGroupes/:groupe_id				controllers.ajax.expert.requetes.Requetes.listeSousGroupes(groupe_id: Integer)
 GET		/ajax/consulter/listeEspeces/:groupe_id/:sous_groupe_id	controllers.ajax.expert.requetes.Requetes.listeEspeces(groupe_id: Integer,sous_groupe_id: Integer)
@@ -154,6 +156,7 @@ POST	/ajax/carteSommeBiodiversite				controllers.ajax.expert.requetes.Calculs.ca
 POST	/ajax/maillesParEspece						controllers.ajax.expert.requetes.Calculs.maillesParEspece()
 POST	/ajax/chronologieDUnTemoin					controllers.ajax.expert.requetes.Calculs.chronologieDUnTemoin()
 POST	/ajax/historiqueDesEspeces					controllers.ajax.expert.requetes.Calculs.historiqueDesEspeces()
+POST	/ajax/maillesParPeriode						controllers.ajax.expert.requetes.Calculs.maillesParPeriode()
 #Routes AJAX pour expert, editer especes et témoins
 GET		/editerInsectes/espece/:groupe_id/:espece_id	controllers.expert.EditerInsectes.edit(groupe_id: Integer, espece_id: Integer)
 GET		/editerTemoin/:membre_id						controllers.expert.GererTemoinsPassifs.editer(membre_id: Integer)

@@ -10,6 +10,7 @@ import java.util.Calendar;
 
 public class Fiche {
 	String line_origine;
+	String fichier_nom;
 	
 	static int id_compteur = 0;
 	int id = 0;
@@ -26,6 +27,8 @@ public class Fiche {
 
 	public Fiche(String line, int compteur_line, String fichier) throws ArrayIndexOutOfBoundsException, StringIndexOutOfBoundsException{
 		line_origine=fichier+": line"+compteur_line+". "+line;
+		fichier_nom=fichier;
+		
 		id_compteur++;
 		id=id_compteur;
 		String[] col = line.split("µ");
@@ -76,7 +79,10 @@ public class Fiche {
 		try {
 			c.setTime(f.parse(s));
 		} catch (ParseException e) {
-			f = new SimpleDateFormat("d/M/yyyy H:mm");
+			if(fichier_nom.equals("FICHES_Zygaenidae.txt"))
+				f = new SimpleDateFormat("d/M/yyyy H:mm");
+			else
+				f = new SimpleDateFormat("M/d/yyyy H:mm");
 			try {
 				c.setTime(f.parse(s));
 			} catch (ParseException e1) {

@@ -17,6 +17,7 @@
  ********************************************************************************/
 package controllers.ajax.membre;
 
+import models.Espece;
 import models.Groupe;
 import models.StadeSexe;
 import controllers.membre.SecuredMembre;
@@ -27,6 +28,7 @@ import views.html.membre.ajax.observation;
 import views.html.membre.ajax.listeEspeces;
 import views.html.membre.ajax.informationsComplementaires;
 import views.html.membre.ajax.stadeSexePrecis;
+import views.html.membre.ajax.photo;
 
 public class DeposerObservation extends Controller {
 	/**
@@ -78,5 +80,15 @@ public class DeposerObservation extends Controller {
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		StadeSexe stadesexe = StadeSexe.find.byId(stade_sexe_pere_id);
 		return ok(stadeSexePrecis.render(stadesexe,stadesexe.getStadeSexeFilsPourTelGroupe(groupe),observation_position,complement_position));
+	}
+	
+	/**
+	 * Affiche la photo de l'insecte en question
+	 * @param espece_id
+	 * @return
+	 */
+	@Security.Authenticated(SecuredMembre.class)
+	public static Result getPhoto(Integer espece_id){
+		return ok(photo.render(Espece.find.byId(espece_id).espece_photo));
 	}
 }

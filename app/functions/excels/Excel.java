@@ -32,8 +32,10 @@ import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
 
 import functions.cartes.Carte;
@@ -67,6 +69,11 @@ public class Excel {
 		return file_name;
 	}
 	
+	/**
+	 * Colle le logo en haut à gauche de la page donnée.
+	 * @param page
+	 * @throws IOException
+	 */
 	public void collerLogo(int page) throws IOException{
 		InputStream is = new FileInputStream("public/images/banniere-aer.png");
 	    byte[] bytes = IOUtils.toByteArray(is);
@@ -87,6 +94,12 @@ public class Excel {
 	    pict.resize();
 	}
 	
+	/**
+	 * Insère la carte en paramètre à la page donnée
+	 * @param carte
+	 * @param page
+	 * @throws IOException
+	 */
 	public void pasteMap(Carte carte, int page) throws IOException{
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		ImageIO.write(carte.getImage(), "png", os);
@@ -105,5 +118,32 @@ public class Excel {
 	    Picture pict = drawing.createPicture(anchor, pictureIdx);
 	    //auto-size picture relative to its top-left corner
 	    pict.resize();
+	}
+	
+	/**
+	 * Insère le pied de page de la page
+	 * @param page
+	 */
+	public void piedDePage(int page){
+		Sheet sheet = wb.getSheetAt(0);
+		//On écrit le pied de page
+		Row row = sheet.getRow((page+1)*LIGNES-1);
+		if(row==null)
+			row= sheet.createRow((page+1)*LIGNES-1);
+		row.createCell(8).setCellValue("Page "+(page+1));
+	}
+
+
+	protected void collerLogoEtTitre(int page, String titre) throws IOException {
+		// TODO Auto-generated method stub
+		Sheet sheet = wb.getSheetAt(0);
+		sheet.createRow(page*LIGNES+3).createCell(4).setCellValue(titre);
+		sheet.addMergedRegion(new CellRangeAddress(
+				page*LIGNES+3, //first row (0-based)
+				page*LIGNES+5, //last row  (0-based)
+	            4, //first column (0-based)
+	            8  //last column  (0-based)
+	    ));
+		this.collerLogo(page);
 	}
 }

@@ -30,7 +30,9 @@ import views.html.expert.editeTemoignagesAValider;
 import models.Commune;
 import models.Espece;
 import models.Groupe;
+import models.InformationsComplementaires;
 import models.Observation;
+import models.StadeSexe;
 import models.UTMS;
 
 
@@ -79,8 +81,9 @@ public class ValiderObservations extends Controller {
     			Observation observation= Observation.find.byId(observation_id);
     			List<UTMS> utms= UTMS.find.all();
     			List<Espece> especes= Espece.find.where().eq("espece_sous_groupe.sous_groupe_groupe", groupe).findList();
+    			List<StadeSexe> stadessexes=groupe.getStadesSexes();
     			if(MenuExpert.isExpertOn(groupe))
-    				return ok( editeTemoignagesAValider.render(observation,utms,especes));
+    				return ok( editeTemoignagesAValider.render(observation,utms,especes, stadessexes));
     			else
     				return Admin.nonAutorise();
      }
@@ -150,7 +153,37 @@ public class ValiderObservations extends Controller {
 		String communenom= df.get("ville_nom_reel");
 		String utm = df.get("utm");
 		String memo = df.get("memo");
+		String nouvelleinfo=df.get("infonew");
 		Observation observation= Observation.find.byId(observation_id);
+		List<InformationsComplementaires> infos= observation.getInfos();
+		for(InformationsComplementaires info: infos){
+			String id=Long.toString(info.informations_complementaires_id);
+			String nombres=df.get("nombre"+id);
+			try{
+			Integer.parseInt(nombres);}
+			catch(NumberFormatException e){
+				nombres=null;
+			} 
+			
+			
+			if (nombres!=null){
+				Integer nombre=Integer.parseInt(nombres);
+				info.informations_complementaires_nombre_de_specimens=nombre;
+				}else{
+					info.informations_complementaires_nombre_de_specimens=null;
+				}
+			Integer stadesexeid=Integer.parseInt(df.get("stadesexe"+id));
+			if(stadesexeid!=null){
+			StadeSexe stadesexe= StadeSexe.find.byId(stadesexeid);
+			info.informations_complementaires_stade_sexe=stadesexe;
+			}
+			info.save();
+		}
+		if (nouvelleinfo!=null){
+			StadeSexe stade=StadeSexe.find.byId(1);
+			InformationsComplementaires newinfo = new InformationsComplementaires(observation,0,stade);
+			newinfo.save();
+		}
 		if (observation!=null){
 			observation.observation_commentaires=commentaire;
 			observation.observation_fiche.fiche_lieudit=lieudit;

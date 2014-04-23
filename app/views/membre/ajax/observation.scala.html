@@ -33,7 +33,7 @@
 </tr>
 <tr>
 	<td>Espece : </td>
-	<td><select id="especes@observation_position" name="espece@observation_position"></select></td>
+	<td><select onClick="rafraichirPhoto(@observation_position)" id="especes@observation_position" name="espece@observation_position"></select></td>
 </tr>
 <tr>
 	<td>Déterminateur :</td>
@@ -49,6 +49,7 @@
 	<button onClick="ajouterComplement(@observation_position);return false;">Ajouter des informations complémentaires</button>
 	<span id="apresDernierComplement@observation_position"></span>
 </td>
+<td id="photo@observation_position"></td>
 </tr>
 </table>
 <script>

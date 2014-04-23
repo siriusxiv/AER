@@ -22,14 +22,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.HashMap;
 
-import models.Fiche;
 import models.Membre;
 import controllers.admin.Admin;
-import controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin;
-import functions.excels.exports.ChronologieDUnTemoinExcel;
+import controllers.ajax.expert.requetes.calculs.MaChronologie;
+import functions.excels.exports.MaChronologieExcel;
 import play.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -42,39 +40,43 @@ public class Historique extends Controller {
 		Membre temoin = Membre.find.where().eq("membre_email", session("username")).findUnique();
 		if(temoin!=null){
 			HashMap<String,String> info = new HashMap<String,String>();
-			info.put("groupe", "0");
-			info.put("sous_groupe", "0");
-			info.put("espece", "0");
-			info.put("stade", "0");
-			info.put("maille", "");
 			info.put("temoin", temoin.membre_nom);
-			Calendar plus_vieux = Fiche.getPlusVieuxTemoignage().fiche_date;
-			info.put("jour1", Integer.toString(plus_vieux.get(Calendar.DAY_OF_MONTH)));
-			info.put("mois1", Integer.toString(plus_vieux.get(Calendar.MONTH)));
-			info.put("annee1", Integer.toString(plus_vieux.get(Calendar.YEAR)));
-			Calendar now = Calendar.getInstance();
-			info.put("jour2", Integer.toString(now.get(Calendar.DAY_OF_MONTH)));
-			info.put("mois2", Integer.toString(now.get(Calendar.MONTH)));
-			info.put("annee2", Integer.toString(now.get(Calendar.YEAR)));
-			ChronologieDUnTemoin cdut = new ChronologieDUnTemoin(info);
-			ChronologieDUnTemoinExcel cdute = new ChronologieDUnTemoinExcel(info,cdut);
-			cdute.writeToDisk();
-			return ok(historique.render(cdut,cdute.getFileName()));
+			MaChronologie maChronologie = new MaChronologie(info,0);
+			return ok(historique.render(maChronologie));
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result voirPage(int page) throws ParseException, IOException {
+		Membre temoin = Membre.find.where().eq("membre_email", session("username")).findUnique();
+		if(temoin!=null){
+			HashMap<String,String> info = new HashMap<String,String>();
+			info.put("temoin", temoin.membre_nom);
+			MaChronologie maChronologie = new MaChronologie(info,page);
+			return ok(historique.render(maChronologie));
 		}else
 			return Admin.nonAutorise();
 	}
 
 	/**
-	 * Télécharge un fichier.
+	 * Télécharge les témoignages.
 	 * @return
+	 * @throws ParseException 
+	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
 	@Security.Authenticated(SecuredMembre.class)
-	public static Result telechargerFichier(String filename){
+	public static Result telechargerHistorique() throws ParseException, IOException{
+		Membre temoin = Membre.find.where().eq("membre_email", session("username")).findUnique();
+		HashMap<String,String> info = new HashMap<String,String>();
+		info.put("temoin", temoin.membre_nom);
+		MaChronologie maChronologie = new MaChronologie(info,MaChronologie.TOUT);
+		MaChronologieExcel maChronologieExcel = new MaChronologieExcel(info,maChronologie);
+		maChronologieExcel.writeToDisk();
 		FileInputStream fis;
 		try {
-			fis = new FileInputStream(new File(Play.application().configuration().getString("xls_generes.path")+filename));
-			response().setHeader("Content-Disposition", "attachment; filename="+filename);
+			fis = new FileInputStream(new File(Play.application().configuration().getString("xls_generes.path")+maChronologieExcel.getFileName()));
+			response().setHeader("Content-Disposition", "attachment; filename="+maChronologieExcel.getFileName());
 			return ok(fis);
 		} catch (FileNotFoundException e) {
 			return notFound("404: File not found");

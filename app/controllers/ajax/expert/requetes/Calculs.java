@@ -31,6 +31,7 @@ import controllers.ajax.expert.requetes.calculs.CarteSomme;
 import controllers.ajax.expert.requetes.calculs.CarteSommeBiodiversite;
 import controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin;
 import controllers.ajax.expert.requetes.calculs.HistogrammeDesImagos;
+import controllers.ajax.expert.requetes.calculs.MaillesParPeriode;
 import controllers.ajax.expert.requetes.calculs.TemoinsParPeriode;
 import functions.excels.exports.HistoriqueDesEspecesExcel;
 import functions.excels.exports.MaillesParEspeceExcel;
@@ -38,6 +39,7 @@ import functions.excels.exports.CarteSommeBiodiversiteExcel;
 import functions.excels.exports.CarteSommeExcel;
 import functions.excels.exports.ChronologieDUnTemoinExcel;
 import functions.excels.exports.HistogrammeDesImagosExcel;
+import functions.excels.exports.MaillesParPeriodeExcel;
 import functions.excels.exports.TemoinsParPeriodeExcel;
 import play.data.DynamicForm;
 import play.mvc.Controller;
@@ -49,6 +51,7 @@ import views.html.expert.requetes.ajax.resultats.carteSommeBiodiversite;
 import views.html.expert.requetes.ajax.resultats.maillesParEspece;
 import views.html.expert.requetes.ajax.resultats.chronologieDUnTemoin;
 import views.html.expert.requetes.ajax.resultats.historiqueDesEspeces;
+import views.html.expert.requetes.ajax.resultats.maillesParPeriode;
 
 public class Calculs extends Controller {
 	
@@ -107,6 +110,14 @@ public class Calculs extends Controller {
 		HistoriqueDesEspecesExcel hdee = new HistoriqueDesEspecesExcel(info,hde);
 		hdee.writeToDisk();
 		return ok(historiqueDesEspeces.render(hde,info,hdee.getFileName()));
+	}
+	public static Result maillesParPeriode() throws ParseException, IOException{
+		DynamicForm df = DynamicForm.form().bindFromRequest();
+		Map<String,String> info = getData(df);
+		MaillesParPeriode mpp = new MaillesParPeriode(info);
+		MaillesParPeriodeExcel mppe = new MaillesParPeriodeExcel(info,mpp);
+		mppe.writeToDisk();
+		return ok(maillesParPeriode.render(mpp,info,mppe.getFileName()));
 	}
 	
 	/**

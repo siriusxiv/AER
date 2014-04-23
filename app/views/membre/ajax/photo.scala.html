@@ -15,26 +15,7 @@
  *   limitations under the License.
  *   
  ********************************************************************************@
-@(membre : Membre)
-@main("Menu Utilisateur"){<header>
-		<dl>
-		<a href="/">Retour</a>
-		</dl>
-	</header>
-	<h1>Bienvenue sur la base de données de l'AER, @membre.membre_nom.</h1>
-	<p>Ici, vous pouvez déposer un témoignage, accéder à l'historique de vos témoignages ou modifier vos informations personnelles.</p>
-	<dl>
-		<dt>
-		<a href="/ficheDeTemoignage">Témoigner</a>
-		</dt>
-		<dt>
-		<a href="/historique">Historique de mes témoignages</a>
-		</dt>
-		<dt>
-		<a href="/informationsPersonnelles">Informations personnelles</a>
-		</dt>
-		<dt>
-		<a href="/deconnexion">Se Déconnecter</a>
-		</dt>
-	</dl>
-}{<script></script>}
+@(photo: Image)
+@if(photo!=null){
+	<img src="@photo" style="max-width:200px;max-height:200px">
+}

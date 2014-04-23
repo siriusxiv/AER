@@ -43,7 +43,7 @@ public class ChronologieDUnTemoinExcel extends Excel {
 
 	public ChronologieDUnTemoinExcel(Map<String,String> info,ChronologieDUnTemoin cdut){
 		super();
-		Sheet sheet = wb.createSheet("Carte somme");
+		Sheet sheet = wb.createSheet("Chronologie d'un témoin");
 		Espece espece = Espece.find.byId(Integer.parseInt(info.get("espece")));
 		SousGroupe sous_groupe = SousGroupe.find.byId(Integer.parseInt(info.get("sous_groupe")));
 		Groupe groupe = Groupe.find.byId(Integer.parseInt(info.get("groupe")));
