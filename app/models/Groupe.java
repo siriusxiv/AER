@@ -228,6 +228,84 @@ public class Groupe extends Model {
 	}
 	
 	/**
+	* Renvoie la liste complète des ordres contenus dans le groupe
+	* @return
+	*/
+	public List<Ordre> getAllOrdres(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Ordre> ordres = new ArrayList<Ordre>();
+		for(SousGroupe sg : sgs){
+			List<OrdreHasSousGroupe> ohsgs = sg.getOrdres();
+			for(OrdreHasSousGroupe ohsg : ohsgs) {
+				ordres.add(ohsg.ordre);
+			}
+		}
+		return ordres;
+	}
+	
+	/**
+	* Renvoie la liste complète des super-familles contenues dans le groupe
+	* @return
+	*/
+	public List<SuperFamille> getAllSuperFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Ordre> ordres = this.getAllOrdres();
+		List<SuperFamille> superfams = new ArrayList<SuperFamille>();
+		for(Ordre ordre : ordres){
+			List<SuperFamille> supFamsDsOrdres = SuperFamille.find.where().eq("super_famille_ordre",ordre).eq("super_famille_existe",true).findList();
+			superfams.addAll(supFamsDsOrdres);}
+		for(SousGroupe sg : sgs){
+			List<SuperFamilleHasSousGroupe> sfhsgs = sg.getSuperFamilles();
+			for(SuperFamilleHasSousGroupe sfhsg : sfhsgs){
+				superfams.add(sfhsg.super_famille);
+			}
+		}
+		return superfams;
+	}
+	
+	/**
+	* Renvoie la liste complète les familles contenues dans le groupes
+	* @return
+	*/
+	public List<Famille> getAllFamilles(){
+		List<SousGroupe> sgs = this.getSousGroupes();
+		List<Ordre> ordres = this.getAllOrdres();
+		List<Famille> fams = new ArrayList<Famille>();
+		for(Ordre ordre : ordres){
+			List<Famille> famsDsOrdres = Famille.find.where().eq("famille_super_famille.super_famille_ordre",ordre).findList();
+			fams.addAll(famsDsOrdres);}
+		for(SousGroupe sg : sgs){
+			List<FamilleHasSousGroupe> fhsgs = sg.getFamilles();
+			for(FamilleHasSousGroupe fhsg : fhsgs){
+				fams.add(fhsg.famille);
+			}
+		}
+		return fams;
+	}
+			
+	
+	/** 
+	* Renvoie la liste complète des sous-familles contenues dans le groupe
+	* @return
+	 */
+	 public List<SousFamille> getAllSousFamilles(){
+	 	 List<SousGroupe> sgs = this.getSousGroupes();
+	 	 List<Famille> fams = this.getAllFamilles();
+	 	 List<SousFamille> sousfams = new ArrayList<SousFamille>();
+	 	 for(Famille fam : fams){
+	 	 	 List<SousFamille> ssFamsDsFams = SousFamille.find.where().eq("sous_famille_famille",fam).eq("sous_famille_existe",true).findList();
+	 	 	sousfams.addAll(ssFamsDsFams);}
+	 	 for(SousGroupe sg : sgs){
+	 	 	List<SousFamilleHasSousGroupe> ssfhsgs = sg.getSousFamilles();
+	 	 	for(SousFamilleHasSousGroupe ssfhsg : ssfhsgs){
+	 	 		sousfams.add(ssfhsg.sous_famille);
+	 	 	}
+	 	 }
+	 	 return sousfams;
+	 }
+	 	 	
+	
+	/**
 	 * Supprimer le groupe de la base de données et toutes ses références
 	 * dans les autres tables
 	 */

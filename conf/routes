@@ -60,6 +60,8 @@ POST	/editerInsectes/changerAuteur/:espece_id			controllers.expert.EditerInsecte
 POST	/editerInsectes/supprimerSynonyme/:synonyme_id		controllers.expert.EditerInsectes.supprimerSynonyme(synonyme_id: Integer)
 POST	/editerInsectes/ajouterSynonyme/:espece_id			controllers.expert.EditerInsectes.ajouterSynonyme(espece_id: Integer)
 POST	/editerInsectes/changerPhoto/:espece_id				controllers.expert.EditerInsectes.changerPhoto(espece_id: Integer)
+POST	/editerInsectes/changerSousFamille/:espece_id			controllers.expert.EditerInsectes.changerSousFamille(espece_id: Integer)
+POST	/editerInsectes/changerFamille/:espece_id			controllers.expert.EditerInsectes.changerFamille(espece_id: Integer)
 
 #Routes pour faire des requêtes
 GET     /consulterDonnees           	controllers.expert.requetes.ConsulterDonnees.main()

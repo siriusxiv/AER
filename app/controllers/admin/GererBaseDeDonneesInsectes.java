@@ -324,9 +324,11 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			String fam = df.get("changerFamilleEspece");
 			if (fam!=null){
 				Integer fam_id = Integer.parseInt(fam);
+				SousFamille ancienne = espece.espece_sousfamille;
 				espece.espece_sousfamille = new SousFamille(espece.espece_nom,false,fam_id);
 				espece.espece_sousfamille.save();
 				espece.save();
+				ancienne.delete();
 			} else {
 				System.out.println("Erreur lors du changement par "+fam);
 			}
@@ -336,7 +338,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		}
 	}
 	
-	/** Change une espèce sans sous-famille avec une espèce avec sous-famille et attribue la sous-famille
+	/** Change une espèce sans sous-famille en une espèce avec sous-famille et attribue la sous-famille
 	* @return
 	*/
 	public static Result changerVersSousFamille(Integer espece_id){
@@ -345,8 +347,10 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			String sousfam = df.get("changerVersSousFamille");
 			if (sousfam!=null){
+				SousFamille ancienne = espece.espece_sousfamille;
 				espece.espece_sousfamille = SousFamille.find.byId(Integer.parseInt(sousfam));
 				espece.save();
+				ancienne.delete();
 			} else {
 				System.out.println("Erreur lors du changement par "+sousfam);
 			}
@@ -452,7 +456,14 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	/******* fonctions de suppression (! destructives !) **********/
 	public static Result supprimerEspece(Integer espece_id){
 		if(Admin.isAdminConnected()){
-			Espece.supprEspece(espece_id);
+			Espece espece = Espece.find.byId(espece_id);
+			if(espece.espece_sousfamille.sous_famille_existe){
+				Espece.supprEspece(espece_id);
+			} else {
+				Integer sousfam_id = espece.espece_sousfamille.sous_famille_id;
+				Espece.supprEspece(espece_id);
+				SousFamille.supprSousFamille(sousfam_id);
+			}
 			return redirect("/gererBaseDeDonneesInsectes");
 		} else
 			return Admin.nonAutorise();

@@ -68,7 +68,7 @@
 				<td>@sousFamille.sous_famille_nom</td>
 				<td>
 					<form action="/gererBaseDeDonneesInsectes/supprimerSousFamille/@sousFamille.sous_famille_id" method="POST">
-					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+					<button onClick="alerte()" type="submit"> ! SUPPRIMER ! </button></form>
 				</td>
 			</tr>
 		</table>}}
@@ -105,7 +105,7 @@
 				<td>@famille.famille_nom</td>
 				<td>
 					<form action="/gererBaseDeDonneesInsectes/supprimerFamille/@famille.famille_id" method="POST">
-					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+					<button onClick="alerte()" type="submit"> ! SUPPRIMER ! </button></form>
 				</td>
 			</tr>
 		</table>}}
@@ -152,7 +152,7 @@
 				<td>@superFamille.super_famille_nom</td>
 				<td>
 					<form action="/gererBaseDeDonneesInsectes/supprimerSuperFamille/@superFamille.super_famille_id" method="POST">
-					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+					<button onClick="alerte()" type="submit"> ! SUPPRIMER ! </button></form>
 				</td>
 			</tr>
 		</table>}}
@@ -189,7 +189,7 @@
 				<td>@ordre.ordre_nom</td>
 				<td>
 					<form action="/gererBaseDeDonneesInsectes/supprimerOrdre/@ordre.ordre_id" method="POST">
-					<button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+					<button onClick="alerte()" type="submit"> ! SUPPRIMER ! </button></form>
 				</td>
 			</tr>
 		</table>}}
@@ -297,7 +297,7 @@
 								<span id="changerSystematique@espece.espece_id" onDblClick="changerSystematiqueEspece(@espece.espece_id)">@espece.espece_systematique</span>
 							</td>
 							<td>
-								<img src="@espece.espece_photo" style="max-width:220px;max-height:200px"></img>
+								@if(espece.espece_photo != null){<img src="@espece.espece_photo" style="max-width:220px;max-height:200px"></img>}
 								<button onClick="afficherChangerPhoto()">Changer</button>
 								<div id="changerPhoto" style="display:none"><form action="/gererBaseDeDonneesInsectes/changerPhoto/@espece.espece_id" method="POST" enctype="multipart/form-data">
 								<input type="file" name="photo" accept="image/*"></input>
@@ -309,9 +309,9 @@
 								<form action="/gererBaseDeDonneesInsectes/changerSousFamille/@espece.espece_id" method="POST">
 								Sous-famille : 
 								<select id="changerSousFamille" name="changerSousFamille">
-								<option value="-1" selected="selected">@espece.getSousFamille()</option>
+								<option value="-1">&nbsp;</option>
 								@for(sousFamille <- sousFamilles){
-								<option value="@sousFamille.sous_famille_id">@sousFamille.sous_famille_nom</option>
+								<option value="@sousFamille.sous_famille_id"@if(sousFamille.sous_famille_id==espece.getSousFamille().sous_famille_id){ selected}>@sousFamille.sous_famille_nom</option>
 								}
 								</select>
 								<button type="submit">Changer</button>
@@ -335,9 +335,9 @@
 								<form action="/gererBaseDeDonneesInsectes/changerFamilleEspece/@espece.espece_id" method="POST">
 								Famille : 
 								<select id="changerFamilleEspece" name="changerFamilleEspece">
-								<option value="-1" selected="selected">@espece.getFamille()</option>
+								<option value="-1">&nbsp;</option>
 								@for(famille <- familles){
-								<option value="@famille.famille_id">@famille.famille_nom</option>
+								<option value="@famille.famille_id"@if(famille.famille_id==espece.getFamille().famille_id){ selected}>@famille.famille_nom</option>
 								}
 								</select>
 								<button type="submit">Changer</button>
@@ -378,7 +378,7 @@
 							</td>
 						</tr>
 					</table>
-					<form action="/gererBaseDeDonneesInsectes/supprimerEspece/@espece.espece_id" method="POST"><button onClick="alert()" type="submit"> ! SUPPRIMER ! </button></form>
+					<form action="/gererBaseDeDonneesInsectes/supprimerEspece/@espece.espece_id" method="POST"><button onClick="alerte()" type="submit"> ! SUPPRIMER ! </button></form>
 				</div>
 			</td>
 			<td>
@@ -396,9 +396,9 @@
 							<td>
 								<form action="/gererBaseDeDonneesInsectes/changerFamille/@espece.espece_sousfamille.sous_famille_id" method="POST">
 								<select id="changerFamille" name="changerFamille">
-								<option value="-1" selected="selected">@espece.getFamille()</option>
+								<option value="-1">&nbsp;</option>
 								@for(famille <- familles) {
-								<option value="@famille.famille_id">@famille.famille_nom</option>
+								<option value="@famille.famille_id"@if(famille.famille_id==espece.getFamille().famille_id){ selected}>@famille.famille_nom</option>
 								}
 								</select>
 								<button type="submit">Changer</button>
@@ -423,9 +423,9 @@
 							<td>
 								<form action="/gererBaseDeDonneesInsectes/changerSuperFamille/@espece.getFamille().famille_id" method="POST">
 								<select id="changerSuperFamille" name="changerSuperFamille">
-								<option value="-1" selected="selected">@espece.getSuperFamille()</option>
+								<option value="-1">&nbsp;</option>
 								@for(superFamille <- superFamilles) {
-								<option value="@superFamille.super_famille_id">@superFamille.super_famille_nom</option>
+								<option value="@superFamille.super_famille_id"@if(superFamille.super_famille_id==espece.getSuperFamille().super_famille_id){ selected}>@superFamille.super_famille_nom</option>
 								}
 								</select>
 								<button type="submit">Changer</button>
@@ -450,9 +450,9 @@
 							<td>
 								<form action="/gererBaseDeDonneesInsectes/changerOrdre/@espece.getSuperFamille().super_famille_id" method="POST">
 								<select id="changerOrdre" name="changerOrdre">
-								<option value="-1" selected="selected">@espece.getOrdre()</option>
+								<option value="-1">&nbsp;</option>
 								@for(ordre <- ordres) {
-								<option value="@ordre.ordre_id">@ordre.ordre_nom</option>
+								<option value="@ordre.ordre_id"@if(ordre.ordre_id==espece.getOrdre().ordre_id){ selected}>@ordre.ordre_nom</option>
 								}
 								</select>
 								<button type="submit">Changer</button>
@@ -838,8 +838,8 @@ function renommerOrdre(ordre_id) {
 		}
 	});
 }
-function alert(){
-	alert("ATTENTION !! Vous etes sur le point de supprimer tous les témoignages liés à cette espèce, cette sous-famille, cette famille ou cet ordre !!");
+function alerte(){
+	confirm("ATTENTION !! Vous etes sur le point de supprimer tous les témoignages liés à cette espèce, cette sous-famille, cette famille ou cet ordre !!");
 }
 </script>
 }
