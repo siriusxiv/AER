@@ -49,7 +49,7 @@ public class Periode {
 	 */
 	public static List<Periode> getPeriodes(Groupe groupe){
 		List<Periode> periodes = new ArrayList<Periode>();
-		List<DateCharniere> dates_charnieres = DateCharniere.find.where().eq("date_charniere_groupe", groupe).findList();
+		List<DateCharniere> dates_charnieres = DateCharniere.find.where().eq("date_charniere_groupe", groupe).orderBy("date_charniere_date").findList();
 		Calendar date1 = Fiche.getPlusVieuxTemoignage().fiche_date;
 		Calendar date2;
 		boolean premierePeriode = true;
