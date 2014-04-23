@@ -123,7 +123,10 @@ public class Historique extends Controller {
 		observation.observation_espece=espece;
 		observation.observation_determinateur=determinateur;
 		observation.observation_date_derniere_modification=Calendar.getInstance();
-		observation.observation_validee=Observation.EN_SUSPEND;
+		if(observation.observation_vue_par_expert)
+			observation.observation_validee=Observation.EN_SUSPEND;
+		else
+			observation.observation_validee=Observation.NON_VALIDEE;
 		observation.update();
 		return redirect("/historique/page/"+session("page"));
 	}
