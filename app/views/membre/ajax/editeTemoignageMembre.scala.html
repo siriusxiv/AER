@@ -13,7 +13,7 @@ License. *
 @(observation: Observation)
 
 <form id="edite@observation.observation_id"
-	action="/historique/editer/post/@observation.observation_id"
+	action="/historique/editer/@observation.observation_id"
 	method="POST">
 	<table>
 		<tr>
@@ -77,14 +77,12 @@ License. *
 					@ficheHasMembre.membre<br>
 				}
 			</td>
-			<td>@observation.observation_determinateur</td>
+			<td><input type="text" name="determinateur" value="@observation.observation_determinateur"></td>
 			<td><textarea name="memo">@observation.observation_fiche.fiche_memo</textarea></td>
 		</tr>
 	</table>
-<button onClick="confirmEditer(@observation.observation_id)">Valider les changements</button>
+<button onClick="confirmEditer(@observation.observation_id);return false;">Valider les changements</button>
 </form>
-<span id="nouvelleInfoValidee"><button onclick="ajoutInfo()">Rajouter
-		une nouvelle information complémentaire</button></span>
 <script>
 $(document).ready(function() {
 	setTimeout(function(){
