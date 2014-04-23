@@ -19,6 +19,7 @@ package controllers.ajax.expert.requetes.calculs;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class MaChronologie {
 			.findList();
 		nombreTemoignages = chronologieTout.size();
 		if(page!=TOUT && page<getNombreDePages())
-			chronologie = chronologieTout.subList(page*ELEMENTS_PAR_PAGE, (page+1)*ELEMENTS_PAR_PAGE);
+			chronologie = chronologieTout.subList(page*ELEMENTS_PAR_PAGE, Math.min(nombreTemoignages, (page+1)*ELEMENTS_PAR_PAGE));
 	}
 	
 	public int getNombreDePages(){
@@ -58,7 +59,10 @@ public class MaChronologie {
 	}
 	
 	public Date getDateAtPage(int page){
-		return chronologieTout.get(page*ELEMENTS_PAR_PAGE).observation_fiche.fiche_date.getTime();
+		if(page*ELEMENTS_PAR_PAGE<this.nombreTemoignages)
+			return chronologieTout.get(page*ELEMENTS_PAR_PAGE).observation_fiche.fiche_date.getTime();
+		else
+			return Calendar.getInstance().getTime();
 	}
 
 }

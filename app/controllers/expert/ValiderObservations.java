@@ -192,9 +192,13 @@ public class ValiderObservations extends Controller {
 			observation.observation_espece=espece;
 			}
 			observation.observation_fiche.fiche_memo=memo;
+			if(communenom.isEmpty())
+				observation.observation_fiche.fiche_commune=null;
+			else{
 			Commune commune=Commune.find.where().eq("ville_nom_reel", communenom).findUnique();
-			if (commune!=null){
-			observation.observation_fiche.fiche_commune=commune;
+				if (commune!=null){
+					observation.observation_fiche.fiche_commune=commune;
+				}
 			}
 			UTMS utms=UTMS.find.byId(utm);
 			if (utms!=null){
