@@ -270,7 +270,17 @@ public class Groupe extends Model {
 	public List<Famille> getAllFamilles(){
 		List<SousGroupe> sgs = this.getSousGroupes();
 		List<Ordre> ordres = this.getAllOrdres();
+		List<SuperFamille> superfams = new ArrayList<SuperFamille>();
+		for(SousGroupe sg : sgs){
+			List<SuperFamilleHasSousGroupe> sfhsgs = sg.getSuperFamilles();
+			for(SuperFamilleHasSousGroupe sfhsg : sfhsgs){
+				superfams.add(sfhsg.super_famille);
+			}
+		}
 		List<Famille> fams = new ArrayList<Famille>();
+		for(SuperFamille superfam : superfams){
+			List<Famille> famsDsSuperFams = Famille.find.where().eq("famille_super_famille",superfam).findList();
+			fams.addAll(famsDsSuperFams);}
 		for(Ordre ordre : ordres){
 			List<Famille> famsDsOrdres = Famille.find.where().eq("famille_super_famille.super_famille_ordre",ordre).findList();
 			fams.addAll(famsDsOrdres);}
