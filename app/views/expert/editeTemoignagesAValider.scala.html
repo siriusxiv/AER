@@ -51,7 +51,7 @@
 					@for(utms <- listUtms){
 					<option value="@utms.utm" @if(utms.utm==observation.observation_fiche.fiche_utm.utm){selected}>@utms.utm</option>
 					}</select></td>
-				<td><input type="text" name="memo" value="@observation.observation_fiche.fiche_memo"></td>
+				<td><textarea name="memo">@observation.observation_fiche.fiche_memo</textarea></td>
 				<td>@observation.observation_fiche.fiche_date_soumission.getTime().format("dd/MM/yyyy")</td>
 				<td>
 				<span id="nouvelleinfo"></span> 
