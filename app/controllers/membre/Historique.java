@@ -29,7 +29,9 @@ import models.Fiche;
 import models.Membre;
 import controllers.admin.Admin;
 import controllers.ajax.expert.requetes.calculs.ChronologieDUnTemoin;
+import controllers.ajax.expert.requetes.calculs.MaChronologie;
 import functions.excels.exports.ChronologieDUnTemoinExcel;
+import functions.excels.exports.MaChronologieExcel;
 import play.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -42,24 +44,11 @@ public class Historique extends Controller {
 		Membre temoin = Membre.find.where().eq("membre_email", session("username")).findUnique();
 		if(temoin!=null){
 			HashMap<String,String> info = new HashMap<String,String>();
-			info.put("groupe", "0");
-			info.put("sous_groupe", "0");
-			info.put("espece", "0");
-			info.put("stade", "0");
-			info.put("maille", "");
 			info.put("temoin", temoin.membre_nom);
-			Calendar plus_vieux = Fiche.getPlusVieuxTemoignage().fiche_date;
-			info.put("jour1", Integer.toString(plus_vieux.get(Calendar.DAY_OF_MONTH)));
-			info.put("mois1", Integer.toString(plus_vieux.get(Calendar.MONTH)));
-			info.put("annee1", Integer.toString(plus_vieux.get(Calendar.YEAR)));
-			Calendar now = Calendar.getInstance();
-			info.put("jour2", Integer.toString(now.get(Calendar.DAY_OF_MONTH)));
-			info.put("mois2", Integer.toString(now.get(Calendar.MONTH)));
-			info.put("annee2", Integer.toString(now.get(Calendar.YEAR)));
-			ChronologieDUnTemoin cdut = new ChronologieDUnTemoin(info);
-			ChronologieDUnTemoinExcel cdute = new ChronologieDUnTemoinExcel(info,cdut);
-			cdute.writeToDisk();
-			return ok(historique.render(cdut,cdute.getFileName()));
+			MaChronologie maChronologie = new MaChronologie(info);
+			MaChronologieExcel maChronologieExcel = new MaChronologieExcel(info,maChronologie);
+			maChronologieExcel.writeToDisk();
+			return ok(historique.render(maChronologie,maChronologieExcel.getFileName()));
 		}else
 			return Admin.nonAutorise();
 	}
