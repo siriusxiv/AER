@@ -324,9 +324,11 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			String fam = df.get("changerFamilleEspece");
 			if (fam!=null){
 				Integer fam_id = Integer.parseInt(fam);
+				SousFamille ancienne = espece.espece_sousfamille;
 				espece.espece_sousfamille = new SousFamille(espece.espece_nom,false,fam_id);
 				espece.espece_sousfamille.save();
 				espece.save();
+				ancienne.delete();
 			} else {
 				System.out.println("Erreur lors du changement par "+fam);
 			}
@@ -336,7 +338,7 @@ public class GererBaseDeDonneesInsectes extends Controller {
 		}
 	}
 	
-	/** Change une espèce sans sous-famille avec une espèce avec sous-famille et attribue la sous-famille
+	/** Change une espèce sans sous-famille en une espèce avec sous-famille et attribue la sous-famille
 	* @return
 	*/
 	public static Result changerVersSousFamille(Integer espece_id){
@@ -345,8 +347,10 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			DynamicForm df = DynamicForm.form().bindFromRequest();
 			String sousfam = df.get("changerVersSousFamille");
 			if (sousfam!=null){
+				SousFamille ancienne = espece.espece_sousfamille;
 				espece.espece_sousfamille = SousFamille.find.byId(Integer.parseInt(sousfam));
 				espece.save();
+				ancienne.delete();
 			} else {
 				System.out.println("Erreur lors du changement par "+sousfam);
 			}
@@ -428,6 +432,78 @@ public class GererBaseDeDonneesInsectes extends Controller {
 			return Admin.nonAutorise();
 		}
 	}
+	
+	/** Change une famille avec une super-famille en une famille sans super-famille avec une famille
+	* @return
+	* @throws NamingException
+	 * @throws PersistenceException
+	 */
+	public static Result changerVersOrdre(Integer famille_id) throws NamingException, PersistenceException{
+		if(Admin.isAdminConnected()){
+			Famille famille = Famille.find.byId(famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String superfam = df.get("changerVersOrdre");
+			if (superfam!=null){
+				Integer superfam_id = Integer.parseInt(superfam);
+				famille.famille_super_famille = new SuperFamille(famille.famille_nom,false,superfam_id);
+				famille.famille_super_famille.save();
+				famille.save();
+			} else {
+				System.out.println("Erreur lors du changement par "+superfam);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/** Change l'ordre d'une famille sans super-famille
+	* @return
+	* @throws NamingException
+	 * @throws PersistenceException
+	 */
+	public static Result changerOrdreFamille(Integer famille_id) throws NamingException, PersistenceException{
+		if(Admin.isAdminConnected()){
+			Famille famille = Famille.find.byId(famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String ordre = df.get("changerOrdreFam");
+			if (ordre!=null){
+				Integer ordre_id = Integer.parseInt(ordre);
+				SuperFamille ancienne = famille.famille_super_famille;
+				famille.famille_super_famille = new SuperFamille(famille.famille_nom,false,ordre_id);
+				famille.famille_super_famille.save();
+				famille.save();
+				ancienne.delete();
+			} else {
+				System.out.println("Erreur lors du changement par "+ordre);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
+	
+	/** Change une espèce sans sous-famille en une espèce avec sous-famille et attribue la sous-famille
+	* @return
+	*/
+	public static Result changerVersSuperFamille(Integer famille_id){
+		if(Admin.isAdminConnected()){
+			Famille famille = Famille.find.byId(famille_id);
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			String superfam = df.get("changerVersSuperFamille");
+			if (superfam!=null){
+				SuperFamille ancienne = famille.famille_super_famille;
+				famille.famille_super_famille = SuperFamille.find.byId(Integer.parseInt(superfam));
+				famille.save();
+				ancienne.delete();
+			} else {
+				System.out.println("Erreur lors du changement par "+superfam);
+			}
+			return redirect("/gererBaseDeDonneesInsectes");
+		} else {
+			return Admin.nonAutorise();
+		}
+	}
 	 
 	 /** Change l'ordre d'une super-famille
 	* @return
@@ -452,7 +528,14 @@ public class GererBaseDeDonneesInsectes extends Controller {
 	/******* fonctions de suppression (! destructives !) **********/
 	public static Result supprimerEspece(Integer espece_id){
 		if(Admin.isAdminConnected()){
-			Espece.supprEspece(espece_id);
+			Espece espece = Espece.find.byId(espece_id);
+			if(espece.espece_sousfamille.sous_famille_existe){
+				Espece.supprEspece(espece_id);
+			} else {
+				Integer sousfam_id = espece.espece_sousfamille.sous_famille_id;
+				Espece.supprEspece(espece_id);
+				SousFamille.supprSousFamille(sousfam_id);
+			}
 			return redirect("/gererBaseDeDonneesInsectes");
 		} else
 			return Admin.nonAutorise();

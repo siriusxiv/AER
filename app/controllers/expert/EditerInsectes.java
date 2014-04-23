@@ -20,9 +20,11 @@ package controllers.expert;
 import java.io.IOException;
 
 import javax.naming.NamingException;
+import javax.persistence.PersistenceException;
 
 import models.Espece;
 import models.EspeceSynonyme;
+import models.SousFamille;
 import models.Groupe;
 import models.Image;
 import controllers.admin.Admin;
@@ -116,4 +118,68 @@ public class EditerInsectes extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
+	
+	/**
+	* Change la sous-famille d'une espèce, ou l'enlève si jamais elle n'en a plus
+	* @return
+	* @throws NamingException
+	 *@throws PersistenceException
+	 */
+	 public static Result changerSousFamille(Integer espece_id) throws NamingException, PersistenceException {
+	 	 if(MenuExpert.isExpertConnected()){
+	 	 	 Espece espece = Espece.find.byId(espece_id);
+	 	 	 DynamicForm df = DynamicForm.form().bindFromRequest();
+	 	 	 String sousfam = df.get("sous-famille");
+	 	 	 if (sousfam!=null){
+	 	 	 	 if(sousfam.equals("0")){
+	 	 	 	 	 if(espece.espece_sousfamille.sous_famille_existe){
+	 	 	 	 	 	 Integer fam_id = espece.getFamille().famille_id;
+	 	 	 	 	 	 espece.espece_sousfamille = new SousFamille(espece.espece_nom,false,fam_id);
+	 	 	 	 	 	 espece.espece_sousfamille.save();
+	 	 	 	 	 	 espece.update();
+	 	 	 	 	 }
+	 	 	 	 } else {
+	 	 	 	 	 if(espece.espece_sousfamille.sous_famille_existe){
+	 	 	 	 	 	 espece.espece_sousfamille = SousFamille.find.byId(Integer.parseInt(sousfam));
+	 	 	 	 	 	 espece.update();
+	 	 	 	 	 } else {
+	 	 	 	 	 	 SousFamille ancienne = espece.espece_sousfamille;
+	 	 	 	 	 	 espece.espece_sousfamille = SousFamille.find.byId(Integer.parseInt(sousfam));
+	 	 	 	 	 	 espece.update();
+	 	 	 	 	 	 ancienne.delete();
+	 	 	 	 	 }
+	 	 	 	 }
+	 	 	 } else {
+	 	 	 	return badRequest("Erreur lors du changement par "+sousfam);
+	 	 	 }
+	 	 	 return redirect("/editerInsectes/"+espece.espece_sous_groupe.sous_groupe_groupe.groupe_id);
+	 	 } else
+	 	 	return Admin.nonAutorise();
+	 } 
+	 
+	 /**
+	 * Change la famille d'une espèce
+	 * @return
+	 * @throws NamingException
+	 * @throws PersistenceException
+	 */
+	 public static Result changerFamille(Integer espece_id) throws NamingException, PersistenceException{
+	 	 if(MenuExpert.isExpertConnected()){
+	 	 	 Espece espece = Espece.find.byId(espece_id);
+	 	 	 DynamicForm df = DynamicForm.form().bindFromRequest();
+	 	 	 String fam = df.get("famille");
+	 	 	 if(fam!=null){
+	 	 	 	 Integer fam_id = Integer.parseInt(fam);
+	 	 	 	 SousFamille ancienne = espece.espece_sousfamille;
+	 	 	 	 espece.espece_sousfamille = new SousFamille(espece.espece_nom,false,fam_id);
+	 	 	 	 espece.espece_sousfamille.save();
+	 	 	 	 espece.update();
+	 	 	 	 ancienne.delete();
+	 	 	 } else {
+	 	 	 	 return badRequest("Erreur lors du changement par "+fam);
+	 	 	 }
+	 	 	 return redirect("/editerInsectes/"+espece.espece_sous_groupe.sous_groupe_groupe.groupe_id);
+	 	 } else
+	 	 	 return Admin.nonAutorise();
+	 }
 }
