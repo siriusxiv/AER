@@ -23,7 +23,8 @@ GET		/changerInformationsPersonnelles	controllers.membre.InformationsPersonnelle
 POST	/changerMail						controllers.membre.InformationsPersonnelles.changerMail()
 POST	/changerMdp							controllers.membre.InformationsPersonnelles.changerMdp()
 GET     /historique                 		controllers.membre.Historique.main()
-GET		/telechargerHistorique/:file_name	controllers.membre.Historique.telechargerFichier(file_name: String)
+GET		/historique/page/:page				controllers.membre.Historique.voirPage(page: Integer)
+GET		/telechargerHistorique				controllers.membre.Historique.telechargerHistorique()
 
 #routes pour les experts
 GET     /menuExpert                 controllers.expert.MenuExpert.main()

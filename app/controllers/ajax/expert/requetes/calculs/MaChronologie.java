@@ -19,6 +19,7 @@ package controllers.ajax.expert.requetes.calculs;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,19 +30,35 @@ import models.Observation;
 
 public class MaChronologie {
 
-	public List<Observation> chronologie = new ArrayList<Observation>();
+	public static int TOUT = -1;
+	public static int ELEMENTS_PAR_PAGE = 700;
 
-	public MaChronologie(Map<String,String> info) throws ParseException {
+	public List<Observation> chronologieTout = new ArrayList<Observation>();
+	public List<Observation> chronologie = new ArrayList<Observation>();
+	public int nombreTemoignages;
+
+	public MaChronologie(Map<String,String> info, int page) throws ParseException {
 		Membre temoin = Membre.find.where().eq("membre_nom", info.get("temoin")).findUnique();
 		List<FicheHasMembre> fhms = FicheHasMembre.find.where().eq("membre", temoin).findList();
 		List<Fiche> fiches = new ArrayList<Fiche>();
 		for (FicheHasMembre fhm: fhms){
 			fiches.add(fhm.fiche);
 		}
-		chronologie = Observation.find.where()
-						.in("observation_fiche", fiches)
-						.orderBy("observation_fiche.fiche_date desc")
-						.findList();
+		chronologieTout = Observation.find.where()
+			.in("observation_fiche", fiches)
+			.orderBy("observation_fiche.fiche_date desc")
+			.findList();
+		nombreTemoignages = chronologieTout.size();
+		if(page!=TOUT && page<getNombreDePages())
+			chronologie = chronologieTout.subList(page*ELEMENTS_PAR_PAGE, (page+1)*ELEMENTS_PAR_PAGE);
+	}
+	
+	public int getNombreDePages(){
+		return nombreTemoignages/ELEMENTS_PAR_PAGE+1;
+	}
+	
+	public Date getDateAtPage(int page){
+		return chronologieTout.get(page*ELEMENTS_PAR_PAGE).observation_fiche.fiche_date.getTime();
 	}
 
 }
