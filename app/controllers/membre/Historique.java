@@ -23,16 +23,25 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.List;
 
+import models.Espece;
+import models.Groupe;
 import models.Membre;
+import models.Observation;
+import models.StadeSexe;
+import models.UTMS;
 import controllers.admin.Admin;
 import controllers.ajax.expert.requetes.calculs.MaChronologie;
+import controllers.expert.MenuExpert;
 import functions.excels.exports.MaChronologieExcel;
 import play.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import views.html.expert.editeTemoignagesAValider;
 import views.html.membre.historique;
+import views.html.membre.ajax.editeTemoignageMembre;
 
 public class Historique extends Controller {
 
@@ -46,7 +55,7 @@ public class Historique extends Controller {
 		}else
 			return Admin.nonAutorise();
 	}
-	
+
 	public static Result voirPage(int page) throws ParseException, IOException {
 		Membre temoin = Membre.find.where().eq("membre_email", session("username")).findUnique();
 		if(temoin!=null){
@@ -56,6 +65,12 @@ public class Historique extends Controller {
 			return ok(historique.render(maChronologie));
 		}else
 			return Admin.nonAutorise();
+	}
+
+	@Security.Authenticated(SecuredMembre.class)
+	public static Result editer(Long observation_id){
+		Observation observation= Observation.find.byId(observation_id);
+		return ok(editeTemoignageMembre.render(observation));
 	}
 
 	/**

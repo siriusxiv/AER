@@ -24,6 +24,7 @@ POST	/changerMail						controllers.membre.InformationsPersonnelles.changerMail()
 POST	/changerMdp							controllers.membre.InformationsPersonnelles.changerMdp()
 GET     /historique                 		controllers.membre.Historique.main()
 GET		/historique/page/:page				controllers.membre.Historique.voirPage(page: Integer)
+GET	    /historique/editer/:observation_id	controllers.membre.Historique.editer(observation_id: Long)
 GET		/telechargerHistorique				controllers.membre.Historique.telechargerHistorique()
 
 #routes pour les experts

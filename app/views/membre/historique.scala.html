@@ -1,86 +1,89 @@
 @*********************************************************************************
- * 
- *   Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER Johan
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- *   
- ********************************************************************************@
-@(maChronologie : controllers.ajax.expert.requetes.calculs.MaChronologie)
+* * Copyright 2014 BOUSSEJRA Malik Olivier, HALDEBIQUE Geoffroy, ROYER
+Johan * * Licensed under the Apache License, Version 2.0 (the
+"License"); * you may not use this file except in compliance with the
+License. * You may obtain a copy of the License at * *
+http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by
+applicable law or agreed to in writing, software * distributed under the
+License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. * See the License for
+the specific language governing permissions and * limitations under the
+License. *
+********************************************************************************@
+@(maChronologie :
+controllers.ajax.expert.requetes.calculs.MaChronologie)
 @main("Historique"){
-<a href="javascript:history.back()">Retour</a><br>
+<a href="javascript:history.back()">Retour</a>
+<br>
 <h1>Historique de mes témoignages</h1>
-<a href="/telechargerHistorique">Télécharger le fichier Excel de mes témoignages</a>
+<a href="/telechargerHistorique">Télécharger le fichier Excel de mes
+	témoignages</a>
 <p>
-@for(i: Int <- 0 to (maChronologie.getNombreDePages()-1) ){
-<a href="/historique/page/@i">p.@{i+1} : @maChronologie.getDateAtPage(i).format("dd/MM/yyyy")</a>&nbsp;
-}
+	@for(i: Int <- 0 to (maChronologie.getNombreDePages()-1) ){ <a
+		href="/historique/page/@i">p.@{i+1} :
+		@maChronologie.getDateAtPage(i).format("dd/MM/yyyy")</a>&nbsp; }
 </p>
+<span id="editObservation"></span>
 <table id="table">
-<thead>
-<tr>
-	<th>Fiche ID</th>
-	<th>UTM</th>
-	<th>Lieu-dit</th>
-	<th>Commune</th>
-	<th>Dép.</th>
-	<th>Date min</th>
-	<th>Date</th>
-	<th>Espèce</th>
-	<th>Nombre</th>
-	<th>Stade/Sexe</th>
-	<th>Témoins</th>
-	<th>Mémo</th>
-	<th>Groupe</th>
-	<th>Validé</th>
-	<th>Editer</th>
-</tr>
-</thead>
-<tbody>
-@for(observation <- maChronologie.chronologie){
-<tr>
-	<td>@observation.observation_fiche.fiche_id</td>
-	<td>@observation.observation_fiche.fiche_utm</td>
-	<td>@observation.observation_fiche.fiche_lieudit</td>
-	<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}</td>
-	<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_departement.departement_code}</td>
-	<td>@if(observation.observation_fiche.fiche_date_min!=null){@observation.observation_fiche.fiche_date_min.getTime().format("dd/MM/yyyy")}</th>
-	<td>@observation.observation_fiche.fiche_date.getTime().format("dd/MM/yyyy")</th>
-	<td>@observation.observation_espece.espece_nom</th>
-	<td>
-		@for(informationsComplementaires <-observation.getInfos()){
-        	@if(informationsComplementaires.informations_complementaires_nombre_de_specimens!=null){@informationsComplementaires.informations_complementaires_nombre_de_specimens}else{?}
-        }
-	</td>
-	<td>
-		@for(informationsComplementaires <-observation.getInfos()){
-        	@informationsComplementaires.informations_complementaires_stade_sexe<br>
-        }
-	</td>
-	<td>
-		@for(ficheHasMembre <-observation.observation_fiche.getFicheHasMembre()){
-			@ficheHasMembre.membre<br>
+	<thead>
+		<tr>
+			<th>Fiche ID</th>
+			<th>UTM</th>
+			<th>Lieu-dit</th>
+			<th>Commune</th>
+			<th>Dép.</th>
+			<th>Date min</th>
+			<th>Date</th>
+			<th>Espèce</th>
+			<th>Nombre</th>
+			<th>Stade/Sexe</th>
+			<th>Témoins</th>
+			<th>Mémo</th>
+			<th>Groupe</th>
+			<th>Déterminateur</th>
+			<th>Validé</th>
+			<th>Editer</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for(observation <- maChronologie.chronologie){
+		<tr>
+			<td>@observation.observation_fiche.fiche_id</td>
+			<td>@observation.observation_fiche.fiche_utm</td>
+			<td>@observation.observation_fiche.fiche_lieudit</td>
+			<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}</td>
+			<td>@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_departement.departement_code}</td>
+			<td>@if(observation.observation_fiche.fiche_date_min!=null){@observation.observation_fiche.fiche_date_min.getTime().format("dd/MM/yyyy")}
+			</th>
+			<td>@observation.observation_fiche.fiche_date.getTime().format("dd/MM/yyyy")
+			</th>
+			<td>@observation.observation_espece.espece_nom
+			</th>
+			<td>@for(informationsComplementaires <-observation.getInfos()){
+				@if(informationsComplementaires.informations_complementaires_nombre_de_specimens!=null){@informationsComplementaires.informations_complementaires_nombre_de_specimens}else{?}
+				}</td>
+			<td>@for(informationsComplementaires <-observation.getInfos()){
+				@informationsComplementaires.informations_complementaires_stade_sexe<br>
+				}
+			</td>
+			<td>@for(ficheHasMembre
+				<-observation.observation_fiche.getFicheHasMembre()){
+				@ficheHasMembre.membre<br> }
+			</td>
+			<td>@observation.observation_fiche.fiche_memo</td>
+			<td>@observation.observation_espece.espece_sous_groupe.sous_groupe_groupe.groupe_nom</td>
+			<td>@observation.observation_determinateur</td>
+			<td>@if(observation.observation_validee==Observation.VALIDEE){Oui}else{Non}</td>
+			<td><button onClick="editer(@observation.observation_id)">Editer</button></td>
+		</tr>
 		}
-	</td>
-	<td>@observation.observation_fiche.fiche_memo</td>
-	<td>@observation.observation_espece.espece_sous_groupe.sous_groupe_groupe.groupe_nom</td>
-	<td>@if(observation.observation_validee==Observation.VALIDEE){Oui}else{Non}</td>
-	<td><button>Editer</button></td>
-</tr>
-}
-</tbody>
+	</tbody>
 </table>
 }{
-<script type="text/javascript" src="/assets/javascripts/jquery.dataTables.js"></script>
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery-ui-1.10.4.custom.min.css")">
+<script type="text/javascript" src="/assets/javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript"
+	src="/assets/javascripts/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
 	$('#table').dataTable({
@@ -98,5 +101,15 @@ $(document).ready(function() {
 	});
 	
 });
+function editer(observation_id){
+	$.ajax({
+		url : '/listeDesCommunes/communeObservation'+observation_id,
+		success: function(res){
+		$('#editObservation').load('/historique/editer/'+observation_id, function(){
+			$('#commune'+observation_id).html(res);
+		});
+	}
+});
+}
 </script>
 }

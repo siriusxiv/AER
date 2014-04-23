@@ -75,3 +75,10 @@
     </form>
     <button onclick="location.reload()">Annuler</button>
     <span id="nouvelleInfoValidee"><button onclick="ajoutInfo()">Rajouter une nouvelle information complémentaire</button></span>
+<script>
+$(document).ready(function() {
+	setTimeout(function(){
+		$('#communeObservation'+@observation.observation_id).val('@observation.observation_fiche.fiche_commune.ville_nom_reel');
+	}, 300)
+});
+</script>

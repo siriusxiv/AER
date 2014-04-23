@@ -87,7 +87,7 @@
  <script>
 function edite(observation_id, groupe_id){
 		$.ajax({
-			url : '/listeDesCommunes/observation'+observation_id,
+			url : '/listeDesCommunes/communeObservation'+observation_id,
 			success: function(res){
 			$('#editObservation').load('/temoignagesAValider/edite/'+groupe_id+'/'+observation_id, function(){
 				$('#commune'+observation_id).html(res);
