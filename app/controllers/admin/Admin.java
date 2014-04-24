@@ -48,6 +48,9 @@ public class Admin extends Controller{
 	 * @return
 	 */
     public static Result menuAdmin() {
-    	return ok( menuAdmin.render());
+    	if(isAdminConnected())
+    		return ok(menuAdmin.render());
+    	else
+    		return nonAutorise();
     }
 }
