@@ -28,6 +28,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import controllers.admin.Admin;
 import functions.excels.ImportExcel;
+import functions.excels.ImportExcelEdit;
 import functions.excels.exports.ExportExcelEdit;
 import play.Play;
 import play.data.DynamicForm;
@@ -91,7 +92,33 @@ public class DeposerTemoignagesImportExcel extends Controller {
 			return Admin.nonAutorise();
 	}
 	
-	public static Result televerserMajDeMasse(){
-		return ok();
+	/**
+	 * Permet un import de masse avec écrasement des données précédentes.
+	 * @return
+	 * @throws IOException
+	 */
+	public static Result televerserMajDeMasse() throws IOException{
+		Membre expert = Membre.find.where().eq("membre_email", session("username")).findUnique();
+		if(MenuExpert.isExpertConnected()){
+			MultipartFormData body = request().body().asMultipartFormData();
+			FilePart fp = body.getFile("xls");
+			try {
+				if(fp!=null){
+					FileInputStream fis = new FileInputStream(fp.getFile());
+					ImportExcelEdit ie = new ImportExcelEdit(fis);
+					ie.checkRows();
+					if(ie.noError()){
+						ie.saveToDatabase();
+						return ok(deposerTemoignagesImportExcel.render("L'import s'est déroulé avec succès.",expert));
+					}else{
+						return ok(deposerTemoignagesImportExcel.render(ie.getErrorReport(),expert));
+					}
+				}else
+					return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas valide.",expert));
+			} catch (InvalidFormatException e) {
+				return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas un fichier Excel .xls conforme.",expert));
+			}
+		}else
+			return Admin.nonAutorise();
 	}
 }
