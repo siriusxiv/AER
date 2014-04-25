@@ -112,7 +112,11 @@ public class Observation extends Model {
 	public static List<Observation> nonVus(Integer groupe_id){
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		boolean nonvu= false;
-		return find.where().eq("observation_vue_par_expert",nonvu).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
+		return find.where()
+				.eq("observation_vue_par_expert",nonvu)
+				.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
+				.orderBy("observation_date_derniere_modification desc")
+				.findList();
 	}
 
 	/**
@@ -122,7 +126,10 @@ public class Observation extends Model {
 	public static List<Observation> enSuspend(Integer groupe_id){
 		Groupe groupe = Groupe.find.byId(groupe_id);
 		Integer suspend=Observation.EN_SUSPEND;
-		return find.where().eq("observation_validee", suspend).eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe).findList();
+		return find.where().eq("observation_validee", suspend)
+				.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe",groupe)
+				.orderBy("observation_date_derniere_modification desc")
+				.findList();
 	}
 
 	/**
