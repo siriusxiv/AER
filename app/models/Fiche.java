@@ -113,4 +113,24 @@ public class Fiche extends Model {
 		else
 			return f.fiche_id+1L;
 	}
+	
+	/**
+	 * Renvoie la liste des témoins de la fiche sous la forme d'une
+	 * chaîne de carartères : "témoin1, témoin2, témoin3, ..."
+	 * @param observation
+	 * @return
+	 */
+	public String getTemoinsToString(){
+		StringBuilder membres = new StringBuilder();
+		List<FicheHasMembre> mp = this.getFicheHasMembre();
+		for(int j = 0 ; j<mp.size()-1 ; j++){
+			membres.append(mp.get(j).membre);
+			membres.append(", ");
+		}
+		if(!mp.isEmpty())
+			membres.append(mp.get(mp.size()-1).membre);
+		else
+			membres.append("et al.");
+		return membres.toString();
+	}
 }

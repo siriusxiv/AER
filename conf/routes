@@ -53,6 +53,8 @@ POST	/ajouterDateCharniere/:groupe_id					controllers.expert.GererDatesChanieres
 POST	/supprimerDateCharniere/:groupe_id/:date_charniere_id			controllers.expert.GererDatesChanieres.supprimer(groupe_id: Integer, date_charniere_id: Integer)
 GET		/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.main()
 POST	/deposerTemoignages/excel							controllers.expert.DeposerTemoignagesImportExcel.post()
+POST	/telecharger/majDeMasse/:groupe_id					controllers.expert.DeposerTemoignagesImportExcel.telechargerMajDeMasse(groupe_id: Integer)
+POST	/televerser/majDeMasse								controllers.expert.DeposerTemoignagesImportExcel.televerserMajDeMasse()
 GET		/gererTemoinsPassifs								controllers.expert.GererTemoinsPassifs.main()
 POST	/ajouterTemoinPassif								controllers.expert.GererTemoinsPassifs.ajouter()
 POST	/editerTemoin/:membre_id							controllers.expert.GererTemoinsPassifs.editPost(membre_id: Integer)

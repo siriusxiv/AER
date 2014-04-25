@@ -83,7 +83,6 @@ public class RowCheck {
 
 	/**
 	 * Vérifie que la ligne donnée est juste.
-	 * @param rowNumber
 	 */
 	public void checkRow(){
 		Cell cell = row.getCell(0);

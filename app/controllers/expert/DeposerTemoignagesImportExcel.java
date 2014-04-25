@@ -17,13 +17,20 @@
  ********************************************************************************/
 package controllers.expert;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import models.Groupe;
+import models.Membre;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import controllers.admin.Admin;
 import functions.excels.ImportExcel;
+import functions.excels.exports.ExportExcelEdit;
+import play.Play;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
@@ -33,12 +40,14 @@ import views.html.expert.deposerTemoignagesImportExcel;
 public class DeposerTemoignagesImportExcel extends Controller {
 	public static Result main(){
 		if(MenuExpert.isExpertConnected()){
-			return ok(deposerTemoignagesImportExcel.render(""));
+			Membre expert = Membre.find.where().eq("membre_email", session("username")).findUnique();
+			return ok(deposerTemoignagesImportExcel.render("",expert));
 		}else
 			return Admin.nonAutorise();
 	}
 
 	public static Result post() throws IOException{
+		Membre expert = Membre.find.where().eq("membre_email", session("username")).findUnique();
 		if(MenuExpert.isExpertConnected()){
 			MultipartFormData body = request().body().asMultipartFormData();
 			FilePart fp = body.getFile("xls");
@@ -49,16 +58,40 @@ public class DeposerTemoignagesImportExcel extends Controller {
 					ie.checkRows();
 					if(ie.noError()){
 						ie.saveToDatabase();
-						return ok(deposerTemoignagesImportExcel.render("L'import s'est déroulé avec succès."));
+						return ok(deposerTemoignagesImportExcel.render("L'import s'est déroulé avec succès.",expert));
 					}else{
-						return ok(deposerTemoignagesImportExcel.render(ie.getErrorReport()));
+						return ok(deposerTemoignagesImportExcel.render(ie.getErrorReport(),expert));
 					}
 				}else
-					return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas valide."));
+					return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas valide.",expert));
 			} catch (InvalidFormatException e) {
-				return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas un fichier Excel .xls conforme."));
+				return badRequest(deposerTemoignagesImportExcel.render("Le fichier que vous avez envoyé n'est pas un fichier Excel .xls conforme.",expert));
 			}
 		}else
 			return Admin.nonAutorise();
+	}
+	
+	public static Result telechargerMajDeMasse(Integer groupe_id) throws IOException{
+		if(MenuExpert.isExpertConnected()){
+			DynamicForm df = DynamicForm.form().bindFromRequest();
+			int contenu = 0;
+			String stadesexe = df.get("stadesexe");
+			String commune = df.get("commune");
+			if(stadesexe!=null)
+				contenu++;
+			if(commune!=null)
+				contenu+=2;
+			Groupe groupe = Groupe.find.byId(groupe_id);
+			ExportExcelEdit eee = new ExportExcelEdit(groupe,contenu);
+			eee.writeToDisk();
+			FileInputStream fis = new FileInputStream(new File(Play.application().configuration().getString("xls_generes.path")+eee.getFileName()));
+			response().setHeader("Content-Disposition", "attachment; filename="+eee.getFileName());
+			return ok(fis);
+		}else
+			return Admin.nonAutorise();
+	}
+	
+	public static Result televerserMajDeMasse(){
+		return ok();
 	}
 }
