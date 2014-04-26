@@ -207,8 +207,12 @@ public class RowCheckEdit {
 			determinateur = cell.getStringCellValue();
 		//Mémo
 		cell = row.getCell(13);
-		if(cell!=null)
-			memo = cell.getStringCellValue();
+		try{
+			if(cell!=null)
+				memo = cell.getStringCellValue();
+		}catch(IllegalStateException e){
+			addError("Le champ mémo n'est pas une chaîne de caractères");
+		}
 	}
 
 	/**
