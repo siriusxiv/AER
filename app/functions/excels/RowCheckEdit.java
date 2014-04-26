@@ -46,6 +46,7 @@ public class RowCheckEdit {
 	private Calendar creationTime;
 
 	private InformationsComplementaires complement = null;
+	private Observation observation = null;
 	private UTMS utm = null;
 	private String lieu_dit = "";
 	private Commune commune = null;
@@ -77,11 +78,17 @@ public class RowCheckEdit {
 	public void checkRow(){
 		//ID
 		Cell cell = row.getCell(0);
-		double info_id = 0;
+		double info_id = -1;
 		if(cell!=null && (info_id=cell.getNumericCellValue())>0)
 			complement = InformationsComplementaires.find.byId((long) info_id);
-		if(complement==null)
+		if(info_id!=0 && complement==null)
 			addError("ID information complémentaire inexistante "+info_id);
+		//ID observation
+		cell = row.getCell(1);
+		if(cell!=null && (info_id=cell.getNumericCellValue())>0)
+			observation = Observation.find.byId((long) info_id);
+		if(observation==null && complement==null)
+			addError("ID observation inexistante "+info_id);
 		//UTM
 		cell = row.getCell(3);
 		String utm_str = null;
@@ -225,27 +232,37 @@ public class RowCheckEdit {
 	 * Sauvegarde la Row dans la base de données.
 	 */
 	public void saveToDatabase() {
-		Observation o = complement.informations_complementaires_observation;
-		Fiche f = o.observation_fiche;
-		f.fiche_utm=this.utm;
-		f.fiche_lieudit=this.lieu_dit;
-		f.fiche_commune=this.commune;
-		f.fiche_date_min=this.date_min;
-		f.fiche_date=this.date;
-		f.fiche_memo=this.memo;
-		f.update();
-		o.observation_espece=this.espece;
-		o.observation_determinateur=this.determinateur;
-		o.observation_date_derniere_modification=this.creationTime;
-		o.observation_date_validation=this.creationTime;
-		o.update();
-		complement.informations_complementaires_nombre_de_specimens=this.nombre;
-		complement.informations_complementaires_stade_sexe=this.stade_sexe;
-		complement.update();
-		for(FicheHasMembre fhm : FicheHasMembre.find.where().eq("fiche", f).findList())
-			fhm.delete();
-		for(Membre temoin : temoins){
-			new FicheHasMembre(temoin,f).save();
+		Observation o;
+		if(this.complement!=null)
+			o = this.complement.informations_complementaires_observation;
+		else
+			o = this.observation;
+		if(complement!=null){
+			Fiche f = o.observation_fiche;
+			f.fiche_utm=this.utm;
+			f.fiche_lieudit=this.lieu_dit;
+			f.fiche_commune=this.commune;
+			f.fiche_date_min=this.date_min;
+			f.fiche_date=this.date;
+			f.fiche_memo=this.memo;
+			f.update();
+			o.observation_espece=this.espece;
+			o.observation_determinateur=this.determinateur;
+			o.observation_date_derniere_modification=this.creationTime;
+			o.observation_date_validation=this.creationTime;
+			o.update();
+			for(FicheHasMembre fhm : FicheHasMembre.find.where().eq("fiche", f).findList())
+				fhm.delete();
+			for(Membre temoin : temoins){
+				new FicheHasMembre(temoin,f).save();
+			}
+		}
+		if(complement!=null){
+			complement.informations_complementaires_nombre_de_specimens=this.nombre;
+			complement.informations_complementaires_stade_sexe=this.stade_sexe;
+			complement.update();
+		}else{
+			new InformationsComplementaires(o, nombre, stade_sexe).save();
 		}
 	}
 }

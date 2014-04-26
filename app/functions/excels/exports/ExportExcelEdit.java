@@ -55,9 +55,9 @@ public class ExportExcelEdit extends Excel{
 					);
 		donnees = query
 				.orderBy("informations_complementaires_observation.observation_fiche.fiche_date desc,"+
-						"informations_complementaires_id,"+
+						"informations_complementaires_observation.observation_fiche.fiche_id,"+
 						"informations_complementaires_observation.observation_id,"+
-						"informations_complementaires_observation.observation_fiche.fiche_id")
+						"informations_complementaires_id")
 						.findList();
 		Sheet sheet = wb.createSheet("Export des "+groupe+", "+donnees.size()+" lignes");
 		Row row = sheet.createRow(0);
