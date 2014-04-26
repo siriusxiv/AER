@@ -31,6 +31,7 @@ import models.Groupe;
 import models.InformationsComplementaires;
 import models.Observation;
 import models.StadeSexe;
+import functions.DateUtil;
 import functions.excels.Excel;
 
 public class ExportExcelEdit extends Excel{
@@ -88,12 +89,10 @@ public class ExportExcelEdit extends Excel{
 				row.createCell(5).setCellValue(f.fiche_commune.ville_nom_reel);
 			if(f.fiche_date_min!=null){
 				Cell cell = row.createCell(6);
-				cell.setCellStyle(cellStyleDate);
-				cell.setCellValue(f.fiche_date_min);
+				cell.setCellValue(DateUtil.toStringExcel(f.fiche_date_min));
 			}
 			Cell cell = row.createCell(7);
-			cell.setCellStyle(cellStyleDate);
-			cell.setCellValue(f.fiche_date);
+			cell.setCellValue(DateUtil.toStringExcel(f.fiche_date));
 			row.createCell(8).setCellValue(o.observation_espece.espece_nom);
 			if(info.informations_complementaires_nombre_de_specimens==null)
 				row.createCell(9).setCellValue("?");

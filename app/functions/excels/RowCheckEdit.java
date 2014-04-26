@@ -17,8 +17,8 @@
  ********************************************************************************/
 package functions.excels;
 
+import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.persistence.PersistenceException;
 
@@ -35,6 +35,8 @@ import models.UTMS;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+
+import functions.DateUtil;
 
 public class RowCheckEdit {
 	private Row row;
@@ -98,7 +100,7 @@ public class RowCheckEdit {
 		if(cell!=null){
 			String commune_nom = cell.getStringCellValue();
 			if(!commune_nom.isEmpty()){
-				Commune commune = Commune.findFromNomApproximatif(commune_nom);
+				commune = Commune.findFromNomApproximatif(commune_nom);
 				if(commune==null)
 					addError("La commune '"+commune_nom+"' n'est pas référencée.");
 			}
@@ -107,12 +109,11 @@ public class RowCheckEdit {
 		cell = row.getCell(6);
 		if(cell!=null){
 			try{
-				Date date_min_date = cell.getDateCellValue();
-				if(date_min_date!=null){
-					date_min = Calendar.getInstance();
-					date_min.setTime(date_min_date);
+				String date_min_str = cell.getStringCellValue();
+				if(date_min_str!=null && !date_min_str.isEmpty()){
+					date_min = DateUtil.toCalendarExcel(date_min_str);
 				}
-			}catch(IllegalStateException | NumberFormatException e){
+			}catch(ParseException e){
 				addError("Date min invalide");
 			}
 		}
@@ -120,12 +121,11 @@ public class RowCheckEdit {
 		cell = row.getCell(7);
 		if(cell!=null){
 			try{
-				Date date_date = cell.getDateCellValue();
-				if(date_date!=null){
-					date = Calendar.getInstance();
-					date.setTime(date_date);
+				String date_str = cell.getStringCellValue();
+				if(date_str!=null){
+					date = DateUtil.toCalendarExcel(date_str);
 				}
-			}catch(IllegalStateException | NumberFormatException e){
+			}catch(ParseException e){
 				addError("Date invalide");
 			}
 		}

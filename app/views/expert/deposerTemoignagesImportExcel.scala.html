@@ -38,8 +38,9 @@ Ici, vous pouvez récupérer un fichier Excel contenant tous les témoignages do
 <input type="checkbox" name="stadesexe" value="1"> Filtrer et ne garder que les stades/sexes indéterminés<br>
 <input type="checkbox" name="commune" value="2"> Filtrer et ne garder que les témoignages dont la commune n'est pas indiquée<br>
 <button>Télécharger le fichier Excel pour le groupe @mieog.groupe</button><br>
-}
 </form>
+}
+
 <p>Une fois vos modifications effectuées, téléversez le fichier :</p>
 <form action="/televerser/majDeMasse" method="POST" enctype="multipart/form-data">
 	<input type="file" name="xls" accept="*.xls">
