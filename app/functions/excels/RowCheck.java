@@ -17,8 +17,8 @@
  ********************************************************************************/
 package functions.excels;
 
+import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.persistence.PersistenceException;
 
@@ -35,6 +35,8 @@ import models.UTMS;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+
+import functions.DateUtil;
 
 public class RowCheck {
 	public StringBuilder errorReport;
@@ -55,9 +57,7 @@ public class RowCheck {
 	private String lieu_dit;
 	private String utm_str;
 	private UTMS utm;
-	private Date date_date;
 	private Calendar date = Calendar.getInstance();
-	private Date date_min_date;
 	private Calendar date_min = null;
 	private String[] temoins;
 	private Membre[] membres;
@@ -152,30 +152,27 @@ public class RowCheck {
 		cell = row.getCell(7);
 		if(cell!=null){
 			try{
-				date_min_date=cell.getDateCellValue();
-				if(date_min_date!=null){
-					date_min = Calendar.getInstance();
-					date_min.setTime(date_min_date);
+				String date_min_str = cell.getStringCellValue();
+				if(date_min_str!=null && !date_min_str.isEmpty()){
+					date_min = DateUtil.toCalendarExcel(date_min_str);
 				}
-			} catch (IllegalStateException e) {
-				addError("Date minimum spécifiée invalide.");
+			}catch(ParseException e){
+				addError("Date min invalide");
 			}
 		}
 		cell = row.getCell(8);
-		if(cell==null)
-			addError("Date non spécifiée.");
-		else{
+		if(cell!=null){
 			try{
-				date_date=cell.getDateCellValue();
-				date.setTime(date_date);
-				if(date_date==null)
-					addError("La date n'est pas spécifiée.");
-				if(date_min!=null && date!=null && date_min.compareTo(date)>=0)
-					addError("La date min est supérieure au égale à la date.");
-			} catch (IllegalStateException e) {
-				addError("Date invalide.");
+				String date_str = cell.getStringCellValue();
+				if(date_str!=null){
+					date = DateUtil.toCalendarExcel(date_str);
+				}
+			}catch(ParseException e){
+				addError("Date invalide");
 			}
 		}
+		if(date==null)
+			addError("La date est vide !");
 		cell = row.getCell(9);
 		if(cell==null)
 			addError("Témoin non spécifiée.");
