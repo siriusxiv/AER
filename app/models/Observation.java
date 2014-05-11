@@ -169,6 +169,22 @@ public class Observation extends Model {
 	public void supprimer(){
 		this.observation_validee=Observation.NON_VALIDEE;
 	}
+	
+	/**
+	 * Supprime définitivement une observation et toutes liens tables ayant une clef
+	 * étrangère de celle-ci.
+	 * Supprime la fiche dans laquelle est cette observation si c'est la seule
+	 * observation de la fiche.
+	 */
+	public void supprimerDefinitivement(){
+		for(InformationsComplementaires infos : this.getInfos()){
+			infos.delete();
+		}
+		Fiche fiche = this.observation_fiche;
+		this.delete();
+		if(fiche.getObservations().isEmpty())
+			fiche.supprimer();
+	}
 	/**
 	 * Renvoie true si l'observation est validée, false sinon.
 	 * @return

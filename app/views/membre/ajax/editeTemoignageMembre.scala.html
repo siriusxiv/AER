@@ -73,9 +73,12 @@ License. *
 				}
 			</td>
 			<td>
-				@for(ficheHasMembre <- observation.observation_fiche.getFicheHasMembre()){
-					@ficheHasMembre.membre<br>
+			@defining(observation.observation_fiche.getFicheHasMembre()){ fhms =>
+				@for(i:Int <- 0 to (fhms.size()-2)){
+					@fhms.get(i).membre,&nbsp;
 				}
+				@fhms.get(fhms.size()-1).membre
+			}
 			</td>
 			<td><input type="text" name="determinateur" value="@observation.observation_determinateur"></td>
 			<td><textarea name="memo">@observation.observation_fiche.fiche_memo</textarea></td>

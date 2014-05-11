@@ -121,12 +121,28 @@ public class Historique extends Controller {
 		observation.observation_date_derniere_modification=Calendar.getInstance();
 		if(observation.observation_vue_par_expert)
 			observation.observation_validee=Observation.EN_SUSPEND;
-		else
-			observation.observation_validee=Observation.NON_VALIDEE;
+		else{
+			observation.observation_vue_par_expert=false;
+			observation.observation_validee=Observation.EN_SUSPEND;
+		}
 		observation.update();
 		return redirect("/historique/page/"+session("page"));
 	}
 
+	/**
+	 * Permet à un témoin de supprimer une observation de la base de données.
+	 * @param observation_id
+	 * @return
+	 */
+	@Security.Authenticated(SecuredMembre.class)
+	public static Result supprimer(Long observation_id){
+		Observation observation = Observation.find.byId(observation_id);
+		if(observation!=null){
+			observation.supprimerDefinitivement();
+		}
+		return redirect("/historique/page/"+session("page"));
+	}
+	
 	/**
 	 * Télécharge les témoignages.
 	 * @return

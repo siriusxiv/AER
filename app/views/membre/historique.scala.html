@@ -45,7 +45,7 @@
 			<th>Mémo</th>
 			<th>Groupe</th>
 			<th>Déterminateur</th>
-			<th>Validé</th>
+			<th>Etat</th>
 			<th>Editer</th>
 		</tr>
 	</thead>
@@ -70,15 +70,24 @@
 				@informationsComplementaires.informations_complementaires_stade_sexe<br>
 				}
 			</td>
-			<td>@for(ficheHasMembre
-				<-observation.observation_fiche.getFicheHasMembre()){
-				@ficheHasMembre.membre<br> }
+			<td>
+				@defining(observation.observation_fiche.getFicheHasMembre()){ fhms =>
+					@for(i:Int <- 0 to (fhms.size()-2)){
+						@fhms.get(i).membre,&nbsp;
+					}
+					@fhms.get(fhms.size()-1).membre
+				}
 			</td>
 			<td>@observation.observation_fiche.fiche_memo</td>
 			<td>@observation.observation_espece.espece_sous_groupe.sous_groupe_groupe.groupe_nom</td>
 			<td>@observation.observation_determinateur</td>
-			<td>@if(observation.observation_validee==Observation.VALIDEE){Oui}else{Non}</td>
-			<td><button onClick="editer(@observation.observation_id)">Editer</button></td>
+			<td>@if(observation.observation_validee==Observation.VALIDEE){Validée}else{@if(observation.observation_validee==Observation.EN_SUSPEND){En suspend}else{Refusée}}</td>
+			<td>
+				<button onClick="editer(@observation.observation_id)">Editer</button>
+				<form id="supprimer@observation.observation_id" action="/historique/suppr/@observation.observation_id" method="POST">
+					<button onClick="supprimer(@observation.observation_id);return false">Supprimer</button>
+				</form>
+			</td>
 		</tr>
 		}
 	</tbody>
@@ -119,6 +128,10 @@ function confirmEditer(observation_id){
 	if(confirm('Validez-vous les changements ?')){
 		$('#edite'+observation_id).submit();
 	}
+}
+function supprimer(observation_id){
+	if(confirm('Vous allez supprimer cette observation. Cette action est irrémédiable. Êtes-vous sur ?'))
+		$('#supprimer'+observation_id).submit()
 }
 </script>
 }

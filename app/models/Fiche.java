@@ -77,6 +77,13 @@ public class Fiche extends Model {
 		List<FicheHasMembre> fhm=FicheHasMembre.find.where().eq("fiche", this).findList();
 		return fhm;
 	}
+	/**
+	 * Renvoie la liste des observations de cette fiche
+	 * @return
+	 */
+	public List<Observation> getObservations(){
+		return Observation.find.where().eq("observation_fiche", this).findList();
+	}
 	@Override
 	public String toString(){
 		return fiche_id+"-"+fiche_utm;
@@ -132,5 +139,20 @@ public class Fiche extends Model {
 		else
 			membres.append("et al.");
 		return membres.toString();
+	}
+	
+	/**
+	 * Supprime la fiche de la base de données, ainsi que les ficheHasMembres de cette fiche.
+	 */
+	public void supprimer() {
+		List<FicheHasMembre> fhms = this.getFicheHasMembre();
+		for(FicheHasMembre fhm : fhms)
+			fhm.delete();
+		for(Observation o : this.getObservations()){
+			for(InformationsComplementaires infos : o.getInfos())
+				infos.delete();
+			o.delete();
+		}
+		this.delete();
 	}
 }
