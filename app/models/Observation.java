@@ -85,8 +85,8 @@ public class Observation extends Model {
 		observation_espece=espece;
 		observation_fiche=fiche;
 		observation_commentaires=commentaires;
-		observation_vue_par_expert=false;
-		observation_validee=Observation.NON_VALIDEE;
+		observation_vue_par_expert=true;
+		observation_validee=Observation.EN_SUSPEND;
 		observation_date_derniere_modification=Calendar.getInstance();
 		observation_date_validation=null;
 	}

@@ -11,7 +11,7 @@ the specific language governing permissions and * limitations under the
 License. *
 ********************************************************************************@
 @(observation: Observation)
-
+@defining(observation.observation_fiche.getFicheHasMembre()){ fhms =>
 <form id="edite@observation.observation_id"
 	action="/historique/editer/@observation.observation_id"
 	method="POST">
@@ -73,12 +73,10 @@ License. *
 				}
 			</td>
 			<td>
-			@defining(observation.observation_fiche.getFicheHasMembre()){ fhms =>
-				@for(i:Int <- 0 to (fhms.size()-2)){
-					@fhms.get(i).membre,&nbsp;
+				@for(i:Int <- 0 to (fhms.size()-1)){
+				<input type="text" name="membre_nom@i" placeholder="Nom du membre" value="@fhms.get(i).membre.membre_nom" id="membre@i"><br>
 				}
-				@fhms.get(fhms.size()-1).membre
-			}
+				<button onClick="ajouterTemoin();return false;">Ajouter un témoin</button>
 			</td>
 			<td><input type="text" name="determinateur" value="@observation.observation_determinateur"></td>
 			<td><textarea name="memo">@observation.observation_fiche.fiche_memo</textarea></td>
@@ -87,9 +85,26 @@ License. *
 <button onClick="confirmEditer(@observation.observation_id);return false;">Valider les changements</button>
 </form>
 <script>
+var listeMembres = [@Html(controllers.ajax.Listes.listeMembres())];
 $(document).ready(function() {
 	setTimeout(function(){
 		$('#communeObservation'+@observation.observation_id).val('@if(observation.observation_fiche.fiche_commune!=null){@observation.observation_fiche.fiche_commune.ville_nom_reel}');
+		var nombre_temoin = @fhms.size();
+		for(var i = 0 ; i<nombre_temoin ; i++){
+			$('#membre'+i).autocomplete({
+				source : listeMembres,
+				minLength: 1
+			});
+		}
 	}, 300)
 });
+function ajouterTemoin(){
+	nombre_temoin++;
+	$('#membre'+(nombre_temoin-1)).after('<input type="text" name="membre_nom'+nombre_temoin+'" placeholder="Nom du membre" id="membre'+nombre_temoin+'">');
+	$('#membre'+nombreMembres).autocomplete({
+		source : listeMembres,
+		minLength: 1
+	});
+}
 </script>
+}
