@@ -51,7 +51,7 @@ public class PrevenirExperts {
 					.findList();
 			if(observation.size()>0){
 				if(mieog.membre.membre_email!=null && !mieog.membre.membre_email.isEmpty()){
-					Mail mail = new Mail("AER : Vous avez "+observation.size()+" observation(s) de "+mieog.groupe+" non vue(s)",
+					Mail mail = new Mail("AER : Vous avez "+observation.size()+" observation(s) de "+mieog.groupe+" en suspens",
 							mailDeRappelPourExperts.render(mieog,observation).toString(),
 							mieog.membre.membre_email,
 							mieog.membre.membre_nom);
