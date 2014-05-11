@@ -81,7 +81,7 @@
 			<td>@observation.observation_fiche.fiche_memo</td>
 			<td>@observation.observation_espece.espece_sous_groupe.sous_groupe_groupe.groupe_nom</td>
 			<td>@observation.observation_determinateur</td>
-			<td>@if(observation.observation_validee==Observation.VALIDEE){Validée}else{@if(observation.observation_validee==Observation.EN_SUSPEND){En suspend}else{Refusée}}</td>
+			<td>@if(observation.observation_validee==Observation.VALIDEE){Validée}else{@if(observation.observation_validee==Observation.EN_SUSPEND){En suspens}else{Refusée}}</td>
 			<td>
 				<button onClick="editer(@observation.observation_id)">Editer</button>
 				<form id="supprimer@observation.observation_id" action="/historique/suppr/@observation.observation_id" method="POST">

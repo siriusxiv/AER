@@ -83,6 +83,7 @@ public class Observation extends Model {
 	public Observation(Fiche fiche, Espece espece, String determinateur, String commentaires) {
 		observation_id=Observation.idSuivante();
 		observation_espece=espece;
+		observation_determinateur=determinateur;
 		observation_fiche=fiche;
 		observation_commentaires=commentaires;
 		observation_vue_par_expert=true;
