@@ -40,7 +40,7 @@ public class PrevenirExperts {
 					}
 				},
 				Akka.system().dispatcher()
-		); 
+				); 
 	}
 
 	public static void prevenirExperts() {
@@ -50,11 +50,14 @@ public class PrevenirExperts {
 					.eq("observation_espece.espece_sous_groupe.sous_groupe_groupe", mieog.groupe)
 					.findList();
 			if(observation.size()>0){
-				Mail mail = new Mail("AER : Vous avez "+observation.size()+" observation(s) de "+mieog.groupe+" non vue(s)",
-						mailDeRappelPourExperts.render(mieog,observation).toString(),
-						mieog.membre.membre_email,
-						mieog.membre.membre_nom);
-				mail.sendMail();
+				if(mieog.membre.membre_email!=null && !mieog.membre.membre_email.isEmpty()){
+					Mail mail = new Mail("AER : Vous avez "+observation.size()+" observation(s) de "+mieog.groupe+" non vue(s)",
+							mailDeRappelPourExperts.render(mieog,observation).toString(),
+							mieog.membre.membre_email,
+							mieog.membre.membre_nom);
+					mail.sendMail();
+				}else
+					System.out.println(mieog.membre+ " est un expert sans adresse mail.");
 			}
 		}
 	}

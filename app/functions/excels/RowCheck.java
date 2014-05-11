@@ -149,6 +149,7 @@ public class RowCheck {
 			if(utm==null)
 				addError("Maille UTM "+utm_str+" non existante.");
 		}
+		//Date_min
 		cell = row.getCell(7);
 		if(cell!=null){
 			try{
@@ -160,6 +161,7 @@ public class RowCheck {
 				addError("Date min invalide");
 			}
 		}
+		//Date
 		cell = row.getCell(8);
 		if(cell!=null){
 			try{
@@ -173,13 +175,14 @@ public class RowCheck {
 		}
 		if(date==null)
 			addError("La date est vide !");
+		//Témoins
 		cell = row.getCell(9);
 		if(cell==null)
-			addError("Témoin non spécifiée.");
+			addError("Témoin non spécifié.");
 		else{
 			String temoins_str=cell.getStringCellValue();
 			if(temoins_str==null)
-				addError("Témoin non spécifiée.");
+				addError("Témoin non spécifié.");
 			else{
 				temoins = temoins_str.split(",");
 				membres = new Membre[temoins.length];
