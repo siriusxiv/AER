@@ -18,13 +18,7 @@
 @(listObservation :List[Observation], groupe :Groupe)
  @main("Témoignages à valider"){
  <a href="/menuExpert">Retour</a><br>
-		<h1>Témoignages à valider</h1>
-	</header>
-	<h2>Sélectionnez le type de témoignage voulu</h2>
-	<form action="/temoignagesAValider/@groupe.groupe_id" method="GET"><button type="submit">Non Vus</button></form>
-	<form action="/temoignagesAValider/enSuspens/@groupe.groupe_id" method="GET"><button type="submit">En Suspens</button></form>
-
-        
+<h1>Témoignages à valider</h1>
 <span id="editObservation"></span>
         <table>
         	<tr>
