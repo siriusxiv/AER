@@ -295,24 +295,12 @@ public class Groupe extends Model {
 			
 	
 	/** 
-	* Renvoie la liste complète des sous-familles contenues dans le groupe
+	* Renvoie la liste complète des sous-familles
 	* @return
 	 */
-	 public List<SousFamille> getAllSousFamilles(){
-	 	 List<SousGroupe> sgs = this.getSousGroupes();
-	 	 List<Famille> fams = this.getAllFamilles();
-	 	 List<SousFamille> sousfams = new ArrayList<SousFamille>();
-	 	 for(Famille fam : fams){
-	 	 	 List<SousFamille> ssFamsDsFams = SousFamille.find.where().eq("sous_famille_famille",fam).eq("sous_famille_existe",true).findList();
-	 	 	sousfams.addAll(ssFamsDsFams);}
-	 	 for(SousGroupe sg : sgs){
-	 	 	List<SousFamilleHasSousGroupe> ssfhsgs = sg.getSousFamilles();
-	 	 	for(SousFamilleHasSousGroupe ssfhsg : ssfhsgs){
-	 	 		sousfams.add(ssfhsg.sous_famille);
-	 	 	}
-	 	 }
-	 	 return sousfams;
-	 }
+	public List<SousFamille> getAllSousFamilles(){
+	 	return SousFamille.find.where().eq("sous_famille_existe",true).findList();
+	}
 	 	 	
 	
 	/**

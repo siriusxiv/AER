@@ -73,7 +73,7 @@
 				@for(sousFamille <- espece.espece_sous_groupe.sous_groupe_groupe.getAllSousFamilles()){
 				<option value="@sousFamille.sous_famille_id"@if(sousFamille.sous_famille_id==espece.getSousFamille().sous_famille_id){ selected}>@sousFamille.sous_famille_nom</option>}
 			</select>
-			<button type="submit">Appliquer le changement</button>
+			<button type="submit">Changer la sous-famille</button>
 			</form>
 		</td>
 		<td>
@@ -84,7 +84,7 @@
 				@for(famille <- espece.espece_sous_groupe.sous_groupe_groupe.getAllFamilles()){
 				<option value="@famille.famille_id"@if(famille.famille_id==espece.getFamille().famille_id){ selected}>@famille.famille_nom</option>}
 			</select>
-			<button type="submit">Appliquer le changement</button>
+			<button type="submit">Changer la famille</button>
 			}
 		</form>
 		</td>
